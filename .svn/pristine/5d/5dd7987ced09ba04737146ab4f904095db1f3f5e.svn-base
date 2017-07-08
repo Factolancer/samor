@@ -1,0 +1,19 @@
+<md-card class="explore-fund-head" ngClass.lt-md="display-none">
+    Filters
+</md-card>
+<div fxHide.gt-sm="true" class="right-align mar-b-5">
+    <button fxHide.gt-sm="true" class="txt-12" md-raised-button color="primary" (click)="applyFilter()">Apply</button>
+</div>
+<md-card class="filter-data">
+    <app-category-filter></app-category-filter>
+    <hr/>
+    <app-sub-category-filter></app-sub-category-filter>
+    <hr/>
+    <app-amc-filter></app-amc-filter>
+    <hr/>
+    <app-aum-filter></app-aum-filter>
+    <hr/>
+    <app-age-filter></app-age-filter>
+    <hr/>
+    <app-rating-filter></app-rating-filter>
+</md-card>

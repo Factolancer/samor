@@ -1,0 +1,22 @@
+'use strict';
+// Development specific configuration
+// ==================================
+module.exports = {
+    DOMAIN: 'http://localhost:3000',
+    // MongoDB connection options
+    // Server port
+    mongo: {
+        uri: 'mongodb://10.1.0.2/'
+    },
+    playServer : {
+        ip :  'localhost',
+        port : 9000
+    },
+    NODEMAILER: {
+        service: 'Gmail',
+        auth: {
+            user: 'taiga@fincash.com',
+            pass: 'pswd'
+        }
+    }
+};

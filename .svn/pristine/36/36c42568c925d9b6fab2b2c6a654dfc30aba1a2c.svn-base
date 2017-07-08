@@ -1,0 +1,145 @@
+<div>
+    <div fxFlex="100" [ngClass]="{'section-header-expanded': !basiccollapsed, 'section-header-collapsed': basiccollapsed}">
+        <div fxLayout="row" class="cursor-pointer" (click)="toggleBasic()">
+            <div fxFlex="8" fxFlexOffset="2">
+                <md-icon *ngIf="basicsaved"
+                        [ngClass]="{'material-icons.md-2': true, 'md-brand-secondary': true}">
+                    check_circle
+                </md-icon>
+            </div>
+            <div fxFlex="83">
+                <span>{{heading.basicSectionHeading}}</span>
+            </div>
+            <div fxFlex="7">
+                <md-icon *ngIf="basiccollapsed">expand_more</md-icon>
+                <md-icon *ngIf="!basiccollapsed">expand_less</md-icon>
+            </div>
+
+        </div>
+    </div>
+
+    <div fxFlex="100" class="section-content">
+        <form [formGroup]="basicForm" (ngSubmit)="onBasicSubmit()" [@ShowHide]="state" novalidate>
+            <br/>
+            <br/>
+            <div>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <md-input-container>
+                            <input md-input required formControlName="panName" placeholder="Name (As on PAN card)">
+                            <md-hint align="end" *ngIf="formErrors.panName" class="errorMessage">{{formErrors.name}}
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+                        <md-input-container>
+                            <input md-input required formControlName="pan" placeholder="PAN" #pan
+                                   [value]="pan.value.toUpperCase()">
+                            <md-hint *ngIf="formErrors.pan" class="errorMessage">{{formErrors.pan}}</md-hint>
+                        </md-input-container>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <md-input-container>
+                            <input md-input required formControlName="fatherName" placeholder="Father/Spouse Name">
+                            <md-hint *ngIf="formErrors.fatherName" class="errorMessage">{{formErrors.fatherName}}
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+                        <md-input-container>
+                            <input md-input required formControlName="motherName" placeholder="Mother Name">
+                            <md-hint *ngIf="formErrors.motherName" class="errorMessage">{{formErrors.motherName}}
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="start center" formGroupName="contact">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <md-input-container>
+                            <span class="medium-grey-text" md-prefix>+91 </span>
+                            <input md-pr md-input required formControlName="mob" placeholder="Mobile no">
+                            <md-hint *ngIf="formErrorsContact.mob" class="errorMessage">{{formErrorsContact.mob}}
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+                        <md-input-container>
+                            <input md-input required formControlName="email" placeholder="Email Id">
+                            <md-hint *ngIf="formErrorsContact.email" class="errorMessage">{{formErrorsContact.email}}
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="start center" formGroupName="contact">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <md-input-container>
+                            <input md-input formControlName="tel" placeholder="Telephone No.">
+                            <md-hint *ngIf="formErrorsContact.tel" class="errorMessage">{{formErrorsContact.tel}}
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+                        <md-input-container>
+                            <input md-input formControlName="fax" placeholder="Fax No.">
+                            <md-hint *ngIf="formErrorsContact.fax" class="errorMessage">{{formErrorsContact.fax}}
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <md-input-container>
+                            <input md-input required type="date" formControlName="dob" placeholder="Date of Birth"
+                                   class="date_margin">
+                            <md-hint *ngIf="formErrors.dob" class="errorMessage">{{formErrors.dob}}</md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+                        <label class="field_label">Gender</label>
+                        <md-radio-group required formControlName="gender">
+                            <md-radio-button class="" value="M">Male</md-radio-button>
+                            <md-radio-button value="F">Female</md-radio-button>
+                            <md-radio-button value="O">Other</md-radio-button>
+                        </md-radio-group>
+                        <md-hint *ngIf="formErrors.gender" class="errorMessage">{{formErrors.gender}}</md-hint>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <label class="field_label">Marital Status</label>
+                        <md-radio-group required formControlName="maritalStatus">
+                            <md-radio-button value="Single">Single</md-radio-button>
+                            <md-radio-button value="Married">Married</md-radio-button>
+                            <md-radio-button value="Other">Other</md-radio-button>
+                        </md-radio-group>
+                        <md-hint *ngIf="formErrors.maritalStatus" class="errorMessage">{{formErrors.maritalStatus}}
+                        </md-hint>
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button md-raised-button color="primary" type="submit" [disabled]="!basicForm.valid">Save</button>
+                </div>
+                <br/>
+            </div>
+        </form>
+    </div>
+
+</div>

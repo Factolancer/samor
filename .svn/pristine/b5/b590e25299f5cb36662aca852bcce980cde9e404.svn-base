@@ -1,0 +1,24 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <md-card class="mar-tb-5 report-card no-padding">
+        <div fxLayout="row" fxLayoutAlign="center center" class="mar-tb-20">
+            <div fxFlex="90">
+                <div class="graph-box">
+                    <div class="title">
+                        Scheme Category vs Amount
+                    </div>
+                    <div class="graph">
+                        <div *ngIf="currentTab==4" fxFlex id="pie_chart"
+                             [chartData]="assetAllocationData"
+                             [chartOptions]="pieChartOptions" chartType="PieChart"
+                             GoogleChart style="height: 350px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div fxFlex="300"  id="pie_chart" class="pieChartLayout pad-20" [chartData]="data"
+             [chartOptions]="pieChartOptions"
+             chartType="PieChart" GoogleChart>
+        </div>-->
+    </md-card>
+
+</div>

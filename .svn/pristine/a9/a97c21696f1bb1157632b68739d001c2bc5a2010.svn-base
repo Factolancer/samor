@@ -1,0 +1,16 @@
+.pad-10 {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.dummy-height {
+    min-height: 250px;
+    margin-bottom: 20px;
+}
+
+.list-style {
+    list-style: none;
+    text-align: right;
+    font-weight: bold;
+    padding: 10px 0;
+}

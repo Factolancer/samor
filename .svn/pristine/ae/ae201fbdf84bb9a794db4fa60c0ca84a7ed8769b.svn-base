@@ -1,0 +1,326 @@
+import {Component, OnInit, Input} from '@angular/core';
+import {EquityAdvancedFactsheet} from "../equity-advanced-factsheet";
+import {max} from "rxjs/operator/max";
+
+@Component({
+    selector: 'app-equity-view',
+    templateUrl: './equity-view.component.html',
+    styleUrls: ['../factsheet.styles.scss']
+})
+export class EquityViewComponent implements OnInit {
+
+    sinceInceptionColumnGraphData: any;
+    annualReturnsColumnGraphData: any;
+    assetAllocationDonutData: any;
+    styleCoefficientsGraphData : any;
+    attributionAnalysisGraphData : any;
+    liquidityGraphData : any;
+    sipPerformanceLineChartDataMonthly: any;
+    sipPerformanceColumnChartDataYearly: any;
+    sipPerformanceAmountInvested: number[] = [];
+    sipPerformanceFund: number[] = [];
+    sipPerformanceBenchmark: number[] = [];
+    sipAmount = 1000;
+    heatMapPivot = 2;
+    selectedTab = 0;
+    constructor() {}
+
+    ngOnInit() {
+        
+    }
+
+    @Input() set _advancedFactsheet(value: any) {
+        this.advancedFactsheet = value;
+
+        this.sinceInceptionColumnGraphData = [["Years", "Fund", "Benchmark"]];
+        for (let index = 0; index < this.advancedFactsheet.sinceInceptionCmp.dataPoints.length; index++) {
+            this.sinceInceptionColumnGraphData.push([this.advancedFactsheet.sinceInceptionCmp.dataPoints[index],
+                +this.advancedFactsheet.sinceInceptionCmp.fundPerformance[index],
+                +this.advancedFactsheet.sinceInceptionCmp.benchmarkPerformance[index]]);
+        }
+
+        this.annualReturnsColumnGraphData = [["Year", "Fund", "Benchmark"]];
+        for (let index = 0; index < this.advancedFactsheet.annualReturns.dataPoints.length; index++) {
+            this.annualReturnsColumnGraphData.push([this.advancedFactsheet.annualReturns.dataPoints[index],
+                +this.advancedFactsheet.annualReturns.fundPerformance[index],
+                +this.advancedFactsheet.annualReturns.benchmarkPerformance[index]]);
+        }
+
+
+        this.assetAllocationDonutData = [["Assets", "Allocation"]];
+        for (let key in this.advancedFactsheet.assetAllocation.dataMap) {
+            this.assetAllocationDonutData .push([key, +this.advancedFactsheet.assetAllocation.dataMap[key]]);
+        }
+
+        this.sipPerformanceColumnChartDataYearly = [["Year", "Amount Invested", "Benchmark", "Fund"]];
+        for (let index = 0; index < this.advancedFactsheet.sipPerformance.dataPoints.length; index++) {
+            this.sipPerformanceAmountInvested.push(12 * this.sipAmount * +this.advancedFactsheet.sipPerformance.dataPoints[index]);
+            this.sipPerformanceFund.push(
+                this.calculateSipPerformanceValues(
+                    +this.advancedFactsheet.sipPerformance.dataPoints[index],
+                    +this.advancedFactsheet.sipPerformance.fundPerformance[index])
+            );
+
+            this.sipPerformanceBenchmark.push(
+                this.calculateSipPerformanceValues(
+                    +this.advancedFactsheet.sipPerformance.dataPoints[index],
+                    +this.advancedFactsheet.sipPerformance.benchmarkPerformance[index])
+            );
+
+            this.sipPerformanceColumnChartDataYearly.push(
+                [
+                    this.advancedFactsheet.sipPerformance.dataPoints[index] + " years",
+                    +this.sipPerformanceAmountInvested[index],
+                    +this.sipPerformanceBenchmark[index],
+                    +this.sipPerformanceFund[index],
+                ])
+        }
+
+
+        this.sipPerformanceLineChartDataMonthly = [["Year", "Amount", "Investment"]];
+        for (let index = 1; index < 6; index++) {
+            this.sipPerformanceLineChartDataMonthly.push(
+                [
+                    index + " years",
+                    12 * this.sipAmount * index,
+                    this.calculateSipPerformanceValues(index, +this.advancedFactsheet.sipPerformance.fundPerformance[2])
+                ])
+        }
+
+        let styleCoefficientHeaders:any = ['Genre'];
+        for(let assetClass of this.advancedFactsheet.styleCoefficients.assetClass){
+            styleCoefficientHeaders.push(assetClass);
+        }
+
+        styleCoefficientHeaders.push({ role: 'annotation' });
+        let styleCoefficientData:any = ['Coefficient'];
+        for(let coefficient of this.advancedFactsheet.styleCoefficients.coefficients){
+            styleCoefficientData.push(coefficient);
+        }
+        styleCoefficientData.push('');
+
+        this.styleCoefficientsGraphData = [styleCoefficientHeaders,styleCoefficientData];
+
+        this.attributionAnalysisGraphData = [['Genre','','','','']];
+        let styleReturn = this.advancedFactsheet.meanReturn.style;
+        let selectionReturn = this.advancedFactsheet.meanReturn.selection;
+        let selectionHigh = Math.max(styleReturn,styleReturn+selectionReturn);
+        let selectionLow = Math.min(styleReturn,styleReturn+selectionReturn);
+        this.attributionAnalysisGraphData.push(['Style',0,0,styleReturn,styleReturn]);
+        this.attributionAnalysisGraphData.push(['Selection',selectionLow,styleReturn,styleReturn+selectionReturn,selectionHigh]);
+        this.attributionAnalysisGraphData.push(['Total',0,0,styleReturn+selectionReturn,styleReturn+selectionReturn]);
+
+        this.liquidityGraphData = [['Days', 'Liquidable Portfolio'],
+            /*['0.5', 84.1],            // RGB value
+            ['1', 89.8],            // English color name
+            ['3', 93.0]*/];
+
+        for(let index = 0; index < this.advancedFactsheet.liquidity.days.length; index++){
+            this.liquidityGraphData.push([this.advancedFactsheet.liquidity.days[index].toString(), this.advancedFactsheet.liquidity.value[index]]);
+        }
+
+
+    }
+
+    public sinceInceptionColumnChartOptions = {
+        hAxis: {
+            title: 'Years',
+            minValue: 0,
+            textStyle: {
+                bold: true,
+                fontSize: 12,
+                color: '#4d4d4d'
+            },
+            titleTextStyle: {
+                bold: true,
+                fontSize: 18,
+                color: '#4d4d4d'
+            }
+        },
+        vAxis: {
+            title: 'Return(in %)',
+            textStyle: {
+                fontSize: 14,
+                bold: true,
+                color: '#848484'
+            },
+            titleTextStyle: {
+                fontSize: 14,
+                bold: true,
+                color: '#848484'
+            }
+        },
+        legend: {
+            position: 'top',
+            alignment: 'end'
+        }
+    };
+
+    public annualReturnsColumnChartOptions = {
+        hAxis: {
+            title: 'Year',
+            minValue: 0,
+            textStyle: {
+                bold: true,
+                fontSize: 12,
+                color: '#4d4d4d'
+            },
+            titleTextStyle: {
+                bold: true,
+                fontSize: 18,
+                color: '#4d4d4d'
+            }
+        },
+        vAxis: {
+            title: 'Return(in %)',
+            textStyle: {
+                fontSize: 14,
+                bold: true,
+                color: '#848484'
+            },
+            titleTextStyle: {
+                fontSize: 14,
+                bold: true,
+                color: '#848484'
+            }
+        },
+        legend: {
+            position: 'top',
+            alignment: 'end'
+        }
+    };
+
+    public assetAllocationDonutChartOptions = {
+        pieHole: 0.6,
+    };
+
+    public styleCoefficientsColumnChartOptions = {
+        isStacked: 'percent',
+        legend: {position: 'top', maxLines: 2},
+        vAxis: {
+            minValue: 0,
+            ticks: [0, .25, .50, .75, 1]
+        }
+    };
+
+    public attributionAnalysisChartOptions = {
+        legend: 'none',
+        bar: { groupWidth: '95%' }, // Remove space between bars.
+        candlestick: {
+            fallingColor: { strokeWidth: 0, fill: '#a52714' }, // red
+            risingColor: { strokeWidth: 0, fill: '#0f9d58' }   // green
+        }
+    };
+    public liquidityGraphDataOptions = {
+        chartArea: {left:80, width: 420},
+        isStacked:'percent',
+        legend: 'none',
+        hAxis: {
+            title: 'Days',
+            textStyle: {
+                bold: true,
+                fontSize: 12,
+                color: '#4d4d4d'
+            },
+            titleTextStyle: {
+                bold: true,
+                fontSize: 18,
+                color: '#4d4d4d'
+            }
+        },
+        vAxis :{
+            title: 'Liquidable Portfolio',
+            //minValue: 0,
+            //maxValue: 100,
+            //format: '#\'%\'',
+            textStyle: {
+                fontSize: 14,
+                bold: true,
+                color: '#848484'
+            },
+            titleTextStyle: {
+                fontSize: 14,
+                bold: true,
+                color: '#848484'
+            }
+        }
+    };
+    public sipPerformanceYearlyColumnChartOptions = {
+        hAxis: {
+            minValue: 0,
+            textStyle: {
+                bold: true,
+                fontSize: 12,
+                color: '#4d4d4d'
+            },
+            titleTextStyle: {
+                bold: true,
+                fontSize: 18,
+                color: '#4d4d4d'
+            }
+        }
+        ,
+        vAxis: {
+            textStyle: {
+                fontSize: 14,
+                bold: true,
+                color: '#848484'
+            },
+            titleTextStyle: {
+                fontSize: 14,
+                bold: true,
+                color: '#848484'
+            }
+        }
+        ,
+        legend: {
+            position: 'bottom'
+        }
+    };
+
+    public sipPerformanceMonthlyLineChartOptions = {
+        curveType: 'function',
+        pointSize: 3,
+        legend: {position: 'bottom'},
+        series: {
+            0: {
+                annotations: {
+                    stemLength: 3,
+                    stemColor: 'white',
+                    position: 'down'
+                }
+            },
+            1: {
+                annotations: {
+                    stemLength: 5,
+                    stemColor: 'white'
+                }
+            }
+
+            // textStyle: {fontSize: 12, color: 'green' }
+        }
+    }
+
+    advancedFactsheet: EquityAdvancedFactsheet;
+
+
+    calculateSipPerformanceValues(years: number, rate: number): number {
+        let months: number = years * 12;
+        let compoundFrequency: number = 12;
+        let calculationFactor: number = (1 + rate / 100) ** (1 / compoundFrequency);
+        let denom: number = calculationFactor - 1;
+        let numerator: number = (calculationFactor ** months - 1) * calculationFactor;
+        let amount: number = this.sipAmount * numerator / denom;
+
+        /* console.log("years:" + years);
+         console.log("rate:" + rate);
+         console.log("months:" + months);
+         console.log("calculation factor:" + calculationFactor);
+         console.log("denom:" + denom);
+         console.log("num:" + numerator);
+         console.log("amount:" + amount);
+         console.log("sipAmount:" + this.sipAmount);*/
+
+        return amount;
+    }
+}

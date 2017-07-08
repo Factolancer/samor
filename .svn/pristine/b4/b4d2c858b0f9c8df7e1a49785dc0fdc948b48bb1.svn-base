@@ -1,0 +1,25 @@
+<div class="partners-container" >
+    <div class="wrapper">
+        <div class="center-align mar-b-20">
+            <div class="heading-24-dark-grey mar-b-15">Our Partners</div>
+            <div fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="center center" fxLayout.lt-md="column" class="bg-white">
+                <div fxFlex="27" *ngFor="let partner of partners">
+                    <figure class="center-align display-inline-block">
+                        <img class="no-select" src="{{staticImagePath+partner.image}}">
+                    </figure>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="center center" class="bg-white pad-15">
+            <div fxFlex="100" class="heading-24-dark-grey mar-b-15 center-align">Partner AMCs</div>
+            <div fxFlex.gt-sm="85" fxFlex.lt-md="98" fxLayout="row" fxLayoutWrap.gt-sm="wrap" class="amc-list" ngClass.gt-sm="pad-20">
+                <div fxFlex.gt-sm="25" fxFlex.lt-md="50" *ngFor="let amcPartner of amcPartners">
+                   <figure class="center-align clickable" (click)="navigateToAMC(amcPartner.link)">
+                        <img class="no-select" src="{{staticImagePath+amcPartner.image}}">
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

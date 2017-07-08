@@ -1,0 +1,42 @@
+import {Component, OnInit, ViewContainerRef, OnDestroy} from "@angular/core";
+import {Router} from "@angular/router";
+import {LoginService} from "../../core/services/login.service";
+import {Subscription} from "rxjs";
+
+@Component({
+    selector: 'app-navigation-panel',
+    templateUrl: './navigation-panel.component.html',
+    styleUrls: ['./navigation-panel.component.scss'],
+})
+export class NavigationPanelComponent implements OnInit, OnDestroy {
+    invested: boolean;
+    result: any;
+    investedSub:Subscription;
+
+    constructor(public router: Router, public loginService: LoginService, private viewContainerRef: ViewContainerRef) {
+    }
+
+    ngOnInit() {
+        this.ifInvested();
+    }
+
+    ngOnDestroy() {
+        this.investedSub.unsubscribe();
+    }
+
+    ifInvested() {
+        this.investedSub = this.loginService.userObservable.subscribe(userObject =>{
+            if (userObject && userObject.foliocount && userObject.foliocount > 0) {
+                this.invested = true;
+            } else {
+                this.invested = false;
+            }
+        })
+    }
+
+    goTo(link) {
+        this.router.navigateByUrl(link);
+    }
+
+
+}

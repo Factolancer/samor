@@ -1,0 +1,74 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+
+    <md-toolbar color="lightgray" class="sectiontitle">
+        <div style="width: 100%">
+            <i [ngClass]="{'material-icons': true, 'md-dark': !uploadsaved, 'md-inactive': !uploadsaved, 'blue600': uploadsaved}">check</i>
+            <a (click)="toggleUploadDocs()" role="button">{{heading.uploadSectionHeading}}</a>
+            <i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="uploadcollapsed">expand_more</i>
+            <i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="!uploadcollapsed">expand_less</i>
+        </div>
+    </md-toolbar>
+
+    <form (ngSubmit)="onUploadDocSaved()" [@ShowHide]="state" novalidate
+          class="kycform">
+        <md-grid-list cols="2" rowHeight="75px">
+            <md-grid-tile>
+                <div class="uploaddiv">
+                    <label for="passport_photo">
+                        <i [ngClass]="{'material-icons': true, 'blue600': photoFile}">file_upload</i>
+                    </label> &nbsp; &nbsp;
+                    <input id="passport_photo" type="file" accept="image/*, .pdf"
+                           (change)="photoFileChangeEvent($event)"
+                           style="display: none">
+                    <label>Passport Size Photograph</label>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <div class="uploaddiv">
+                    <label for="pan">
+                        <i [ngClass]="{'material-icons': true, 'blue600': panFile}">file_upload</i>
+                    </label> &nbsp; &nbsp;
+                    <input id="pan" type="file" accept="image/*, .pdf" (change)="panFileChangeEvent($event)"
+                           style="display: none">
+                    <label>PAN Card</label>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <div class="uploaddiv">
+                    <label for="proof_of_address">
+                        <i [ngClass]="{'material-icons': true, 'blue600': addressFile}">file_upload</i>
+                    </label> &nbsp; &nbsp;
+                    <input id="proof_of_address" type="file" accept="image/*, .pdf"
+                           (change)="addressFileChangeEvent($event)"
+                           style="display: none">
+                    <label>Proof of Address</label>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <div class="uploaddiv">
+                    <label for="signature">
+                        <i [ngClass]="{'material-icons': true, 'blue600': signatureFile}">file_upload</i>
+                    </label> &nbsp; &nbsp;
+                    <input id="signature" type="file" accept="image/*, .pdf" (change)="signatureFileChangeEvent($event)"
+                           style="display: none">
+                    <label>Signature</label>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <div class="uploaddiv">
+                    <label for="cheque">
+                        <i [ngClass]="{'material-icons': true, 'blue600': chequeFile}">file_upload</i>
+                    </label> &nbsp; &nbsp;
+                    <input id="cheque" type="file" accept="image/*, .pdf" (change)="chequeFileChangeEvent($event)"
+                           style="display: none">
+                    <label>Cancelled Cheque</label>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile [colspan]="2">
+                <button md-raised-button color="primary">Save</button>
+            </md-grid-tile>
+        </md-grid-list>
+
+    </form>
+
+</div>

@@ -1,0 +1,16 @@
+import {TransactionDetails} from "./transaction-details";
+export class Transaction {
+
+    folioNo:string;
+    fundName:string;
+    modeOfHolding:string;
+    fundType:string;
+    fundId:number;
+    prevUnits:number;
+    prevValue:string;
+    transactionList:TransactionDetails[];
+    currentUnits:number;
+    currentValue:string;
+
+    constructor(){}
+}

@@ -1,0 +1,9 @@
+export interface TaxCalcQuestion {
+    id: number;
+    statement: string;
+    answer?: any;
+    prefix?: string;
+    min?: number;
+    max?: number;
+    maxLength?: number;
+}

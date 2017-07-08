@@ -1,0 +1,35 @@
+<md-toolbar _ngcontent-tuk-17="" class="header">
+    <div class="md-toolbar-layout">
+        <md-toolbar-row>
+            <span>Fincash Logo</span>
+            <button md-button="">Solution</button>
+            <button md-button="">user</button>
+            <button md-button="" routerLink="/sip">Sip</button>
+            <button md-fab="" routerLink="/cart">
+                <md-icon class="md-24 material-icons" role="img" aria-label="cart">&#xE8CC;</md-icon>
+            </button>
+        </md-toolbar-row>
+    </div>
+</md-toolbar>
+<div class="col-md-10 col-md-offset-1 data-area">
+    <router-outlet></router-outlet>
+</div>
+<div class="footer">
+    <md-toolbar _ngcontent-tuk-17="" class="footer-top">
+        <div class="md-toolbar-layout">
+            <md-toolbar-row>
+                <span _ngcontent-tuk-17="">Have any queries call us!</span>
+
+            </md-toolbar-row>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar _ngcontent-tuk-17="" class="footer-bottom">
+        <div class="md-toolbar-layout">
+            <md-toolbar-row>
+                <span _ngcontent-tuk-17="">Site map, social links etc!</span>
+
+            </md-toolbar-row>
+        </div>
+    </md-toolbar>
+</div>

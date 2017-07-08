@@ -1,0 +1,12 @@
+<div class="row filter">
+    <div class="col-md-12"><span class="filter-title">Category</span>
+        <button md-button="" (click)="clearFilter()" class="float-right filter-clear"
+                *ngIf="searchInput.category != ''">Clear
+        </button>
+    </div>
+    <div class="col-md-12  filter-content">
+        <span *ngFor="let category of categoryList; let lastVal = last;">
+        <input type="radio" name="category" #age value="{{category.name}}"
+               (click)="filter($event.target.value)"> {{category.name}} <small>({{category.count}})</small><br></span>
+    </div>
+</div>

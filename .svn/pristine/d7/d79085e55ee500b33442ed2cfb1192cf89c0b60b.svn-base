@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-sip-table',
+  templateUrl: './sip-table.component.html',
+  styleUrls: ['./sip-table.component.css']
+})
+export class SipTableComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

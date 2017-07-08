@@ -1,0 +1,31 @@
+<div class="row">
+    <section *ngIf="totalNumFound>searchInputRows">
+        <!--previous funds-->
+        <div class="col-md-3">
+            <span *ngIf="searchInputFrom + 1 > searchInputRows" class="float-right">
+                  <button md-button="" (click)="prev()">PREVIOUS</button>
+            </span>
+        </div>
+
+        <div class="col-md-6">
+        <span *ngFor="let page of displayPageNumbers">
+            <span *ngIf="page == currentPosition">
+                <button md-mini-fab="" color="accent" (click)="gotoPage(page)">
+                {{page+1}}
+                </button>
+            </span>
+            <span *ngIf="!(page == currentPosition)">
+                <button md-icon-button="" (click)="gotoPage(page)">
+                    {{page+1}}
+                </button>
+            </span>
+        </span>
+        </div>
+        <!--Next Funds-->
+        <div class="col-md-3">
+            <span *ngIf="searchInputFrom< (totalNumFound- searchInputRows)">
+            <button md-button="" (click)="next()">NEXT</button>
+        </span>
+        </div>
+    </section>
+</div>

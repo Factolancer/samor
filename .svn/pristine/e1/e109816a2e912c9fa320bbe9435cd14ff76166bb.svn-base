@@ -1,0 +1,36 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MdToolbarModule } from '@angular2-material/toolbar';
+import { MdButtonModule } from '@angular2-material/button';
+import { MdCardModule } from '@angular2-material/card';
+import { MdInputModule, MdHint } from '@angular2-material/input';
+import { MdRadioModule } from '@angular2-material/radio';
+import { MdGridListModule } from '@angular2-material/grid-list';
+import { MdMenuModule } from '@angular2-material/menu';
+import { MdCheckboxModule} from '@angular2-material/checkbox';
+
+import { BasicSectionModule } from './sections/basic-section/basic-section.module'
+import { RegistrationComponent } from './registration.component';
+import { registrationrouting } from './registration.routing'
+import {KycSectionModule} from "./sections/kyc-section/kyc-section.module";
+import {BankSectionModule} from "./sections/bank-section/bank-section.module";
+import {OtherSectionModule} from "./sections/other-section/other-section.module";
+
+@NgModule({
+  imports: [
+    CommonModule, FormsModule, registrationrouting, ReactiveFormsModule,
+    BasicSectionModule, KycSectionModule, BankSectionModule, OtherSectionModule,
+      MdToolbarModule.forRoot(),
+      MdButtonModule.forRoot(),
+      MdCardModule.forRoot(),
+      MdInputModule.forRoot(),
+      MdRadioModule.forRoot(),
+      MdGridListModule.forRoot(),
+      MdMenuModule.forRoot(),
+      MdCheckboxModule.forRoot()
+  ],
+  declarations: [RegistrationComponent]
+})
+export class RegistrationModule { }

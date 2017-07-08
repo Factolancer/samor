@@ -1,0 +1,17 @@
+import {Component, OnInit, Input} from '@angular/core';
+
+@Component({
+  selector: 'app-compare-funds',
+  templateUrl: './compare-funds.component.html',
+  styleUrls: ['./compare-funds.component.css']
+})
+export class CompareFundsComponent implements OnInit {
+
+ // @Input comparisonList: string[];
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

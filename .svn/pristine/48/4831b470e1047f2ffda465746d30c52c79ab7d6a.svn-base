@@ -1,0 +1,34 @@
+import {Component, OnInit, OnDestroy} from '@angular/core';
+
+@Component({
+  selector: 'app-product-feature',
+  templateUrl: './product-feature.component.html',
+  styleUrls: ['./product-feature.component.scss']
+})
+export class ProductFeatureComponent implements OnInit, OnDestroy {
+
+  constructor() { }
+  productFeatures = [{
+                      image:'../../../assets/img/features/easy-to-use-hollow.svg',
+                      content:'Easy to use'
+                    },{
+                      image:'../../../assets/img/features/resource-center.svg',
+                      content:'Resource center'
+                    },{
+                      image:'../../../assets/img/features/proven-methodology.svg',
+                      content:'proven methodology'
+                    },{
+                      image:'../../../assets/img/features/secure.svg',
+                      content:'Safe & Secure Transaction'
+                    },{
+                      image:'../../../assets/img/features/top-service.svg',
+                      content:'Top-notch Service'
+                    }];
+
+  ngOnInit() {
+  }
+  ngOnDestroy(){
+
+  }
+
+}

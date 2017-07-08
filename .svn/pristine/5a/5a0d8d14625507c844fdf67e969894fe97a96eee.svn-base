@@ -1,0 +1,158 @@
+import {Injectable} from "@angular/core";
+import {Transaction} from "../transaction";
+import {TransactionDetails} from "../transaction-details";
+import {TransactionFilter} from "./transaction-filter";
+
+@Injectable()
+export class TransactionReportService {
+
+  constructor() { }
+    getTransactions(transFilter:TransactionFilter){
+
+        let funds : Transaction[];
+        let trans1 = new Transaction();
+
+        trans1.folioNo = '4369784/04';
+        trans1.fundId = 1;
+        trans1.fundName = 'HDFC Tax Saver - Growth';
+        trans1.prevUnits = 248.607;
+        trans1.prevValue = '10.25 Lakh';
+        trans1.currentUnits = 49.784;
+        trans1.currentValue = '2.22 Lakh';
+        trans1.modeOfHolding = "Single";
+        trans1.fundType = "Dividend";
+
+        let trans1Details = new TransactionDetails();
+        trans1Details.transDate = new Date("01-Jul-16");
+        trans1Details.transDescription = "Redemption Transaction ID: 47592432";
+        trans1Details.transType = 2;
+        trans1Details.amount = -200000;
+        trans1Details.nav = 1004.579;
+        trans1Details.units = -199.088;
+        let trans2Details = new TransactionDetails();
+        trans2Details.transDate = new Date("05-Jul-16");
+        trans2Details.transDescription = "Dividend Reinvestment @Rs. 1.59 per unit 47602358";
+        trans2Details.transType = 3;
+        trans2Details.amount = 78.96;
+        trans2Details.nav = 1003.7;
+        trans2Details.units = 0.079;
+        let trans3Details = new TransactionDetails();
+        trans3Details.transDate = new Date("07-Jul-16");
+        trans3Details.transDescription = "Dividend Reinvestment @Rs. 1.55 per unit 47612358";
+        trans3Details.transType = 3;
+        trans3Details.amount = 78.96;
+        trans3Details.nav = 1003.7;
+        trans3Details.units = 0.079;
+        if(transFilter.transType == 0){
+            trans1.transactionList = [trans1Details, trans2Details/*,trans3Details*/];
+        } else if(transFilter.transType == 1){
+            trans1.transactionList = [];
+        } else if(transFilter.transType == 3){
+            trans1.transactionList = [trans1Details];
+        } else if(transFilter.transType == 2){
+            trans1.transactionList = [trans2Details/*,trans3Details*/];
+        }
+
+        let trans2 = new Transaction();
+        trans2.fundId = 2;
+        trans2.folioNo = '1017708682';
+        trans2.fundName = ' Birla Sun Life Frontline Equity Fund - Dividend';
+        trans2.prevUnits = 248.607;
+        trans2.prevValue = '10.25 Lakh';
+        trans2.currentUnits = 49.784;
+        trans2.currentValue = '2.22 Lakh';
+        trans2.modeOfHolding = "Single";
+        trans2.fundType = "Dividend";
+
+        trans1Details = new TransactionDetails();
+        trans1Details.transDate = new Date("01-Jul-16");
+        trans1Details.transDescription = "Redemption Transaction ID: 47592432";
+        trans1Details.transType = 2;
+        trans1Details.amount = -200000;
+        trans1Details.nav = 1004.579;
+        trans1Details.units = -199.088;
+        trans2Details = new TransactionDetails();
+        trans2Details.transDate = new Date("05-Jul-16");
+        trans2Details.transDescription = "Dividend Reinvestment @Rs. 1.59 per unit 47602358";
+        trans2Details.transType = 3;
+        trans2Details.amount = 78.96;
+        trans2Details.nav = 1003.7;
+        trans2Details.units = 0.079;
+        trans3Details = new TransactionDetails();
+        trans3Details.transDate = new Date("07-Jul-16");
+        trans3Details.transDescription = "Dividend Reinvestment @Rs. 1.55 per unit 47612358";
+        trans3Details.transType = 3;
+        trans3Details.amount = 78.96;
+        trans3Details.nav = 1003.7;
+        trans3Details.units = 0.079;
+        if(transFilter.transType == 0){
+            trans2.transactionList = [trans1Details, trans2Details/*,trans3Details*/];
+        } else if(transFilter.transType == 1){
+            trans2.transactionList = [];
+        } else if(transFilter.transType == 3){
+            trans2.transactionList = [trans1Details];
+        } else if(transFilter.transType == 2){
+            trans2.transactionList = [trans2Details/*,trans3Details*/];
+        }
+
+        let trans3 = new Transaction();
+        trans3.fundId = 2;
+        trans3.folioNo = '1073769613';
+        trans3.fundName = 'IDFC Arbitrage - Regular';
+        trans3.prevUnits = 248.607;
+        trans3.prevValue = '10.25 Lakh';
+        trans3.currentUnits = 49.784;
+        trans3.currentValue = '2.22 Lakh';
+        trans3.modeOfHolding = "Single";
+        trans3.fundType = "Dividend";
+
+        trans1Details = new TransactionDetails();
+        trans1Details.transDate = new Date("01-Jul-16");
+        trans1Details.transDescription = "Redemption Transaction ID: 47592432";
+        trans1Details.transType = 2;
+        trans1Details.amount = -200000;
+        trans1Details.nav = 1004.579;
+        trans1Details.units = -199.088;
+        trans2Details = new TransactionDetails();
+        trans2Details.transDate = new Date("05-Jul-16");
+        trans2Details.transDescription = "Dividend Reinvestment @Rs. 1.59 per unit 47602358";
+        trans2Details.transType = 3;
+        trans2Details.amount = 78.96;
+        trans2Details.nav = 1003.7;
+        trans2Details.units = 0.079;
+        trans3Details = new TransactionDetails();
+        trans3Details.transDate = new Date("07-Jul-16");
+        trans3Details.transDescription = "Dividend Reinvestment @Rs. 1.55 per unit 47612358";
+        trans3Details.transType = 3;
+        trans3Details.amount = 78.96;
+        trans3Details.nav = 1003.7;
+        trans3Details.units = 0.079;
+
+        if(transFilter.transType == 0){
+            trans3.transactionList = [trans1Details, trans2Details/*,trans3Details*/];
+        } else if(transFilter.transType == 1){
+            trans3.transactionList = [];
+        } else if(transFilter.transType == 3){
+            trans3.transactionList = [trans1Details];
+        } else if(transFilter.transType == 2){
+            trans3.transactionList = [trans2Details/*,trans3Details*/];
+        }
+
+
+        if(transFilter.fundId == 0){
+            funds = [
+                trans1, trans2,trans3
+            ]
+        } else if(transFilter.fundId == 1 && trans1.transactionList.length > 0){
+            funds = [trans1];
+        } else if(transFilter.fundId == 2 && trans2.transactionList.length > 0){
+            funds = [trans2];
+        } else if(transFilter.fundId == 3 && trans3.transactionList.length > 0){
+            funds = [trans3];
+        } else{
+            funds = [];
+        }
+
+        return funds;
+    }
+}

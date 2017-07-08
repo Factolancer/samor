@@ -1,0 +1,271 @@
+import {Injectable, Inject} from "@angular/core";
+import {HttpService} from "./http-service.service";
+import {NavigationEnd, Router} from "@angular/router";
+import {LocalStorageService} from "angular-2-local-storage";
+import {isNullOrUndefined} from "util";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
+import {Cart} from "../../models/cart";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {Fund} from "../../models/fund";
+import {Logger} from "../logger/logger";
+import {Subscription} from "rxjs/Subscription";
+import {LoginService} from "./login.service";
+
+
+@Injectable()
+export class CartService {
+
+    emptyCartSubject: BehaviorSubject<boolean>;
+    notemptyCartSubject: BehaviorSubject<boolean>;
+    cartSubject: BehaviorSubject<Cart>;
+    cartObservable: Observable<Cart>;
+    private cart: Cart;
+    className: string;
+    public previousURL: string;
+    getCartSubscription : Subscription;
+    constructor(private httpService: HttpService, public  router: Router, public loginService: LoginService,
+                @Inject(APP_CONFIG) private config: IAppConfig, private localStorageService: LocalStorageService,
+                private logger: Logger) {
+        this.emptyCartSubject = new BehaviorSubject(false);
+        this.notemptyCartSubject = new BehaviorSubject(true);
+        this.className = "CartService";
+        this.cart = new Cart();
+        this.cartSubject = new BehaviorSubject<Cart>(this.cart);
+        this.cartObservable = this.cartSubject.asObservable();
+        this.router.events
+            .filter(event => event instanceof NavigationEnd)
+            .map((event: NavigationEnd) => {
+                this.logger.debug(this.className, this.previousURL);
+                this.previousURL = event['url'];
+            })
+            .subscribe(() => {
+                this.logger.debug(this.className, this.previousURL);
+            });
+        this.initCart();
+    }
+
+    initCart(){
+        let token = this.localStorageService.get(this.config.cartToken);
+        this.logger.debug(this.className, "initCart()", token)
+        if(!isNullOrUndefined(token)){
+            // just to fire http request map method will process and set relevant subjects
+            this.getCartSubscription = this.getCartData(token).subscribe(resp_value =>{
+                this.logger.debug(this.className, " cart data initCart()", resp_value)
+            })
+        }
+
+        if(isNullOrUndefined(token)){
+            this.setCartSubjectState(new Cart());
+        }
+    }
+
+    addFundToCart(funds: Fund[]): Observable<any> {
+
+        let cart = this.getCartSubjectState();
+        if (this.checkIfFundExists(funds)) {
+            return Observable.of({message: "Fund already exists in cart!"});
+        } else {
+            cart.funds.push(funds[0]);
+            return this.saveCartPost(cart).map(
+                response => {
+                    cart.id = response.cartId;
+                    this.setCartSubjectState(cart);
+                    return {message: "Fund successfully added to cart!"}
+                    //return response;
+                })
+        }
+
+    }
+
+    updateCartData(funds: Fund[]) {
+        let cart = this.getCartSubjectState();
+        cart.funds = funds;
+        return this.saveCartPost(cart).map(res => {
+            cart.id = res.cartId;
+            this.setCartSubjectState(cart);
+            return res;
+        });
+    }
+
+    // addFundsToCart(fundIds: string[], investmentMode: string) {
+    //     return this.httpService.post("/fund/addFundsToCart", {"fundIdList": fundIds, "investmentMode": investmentMode});
+    // }
+
+    removeFundFromCart(fundsList: Fund[], isFinal : boolean) {
+        if(isNullOrUndefined(fundsList) || (fundsList.length==0 && !isFinal)){
+            this.logger.debug(this.className,"removeFundFromCart() fundList > ", fundsList)
+            return null
+        }
+
+        let cart = this.getCartSubjectState();
+        this.logger.debug(this.className,"removeFundFromCart() cart > ", cart)
+        if(cart && !isNullOrUndefined(cart['id']) && cart.funds.length>0){
+            if(isFinal){
+                cart.funds = fundsList;
+            }else{
+                for (let fund of fundsList){
+                    cart.funds = cart.funds.filter(fundData => {
+                        if(fundData.id == fund.id){
+                            if(fundData.investmentMode == fund.investmentMode){
+                                return false
+                            }
+                            return true
+                        }
+                        return true
+                    })
+                }
+            }
+
+            return this.saveCartPost(cart).map(res => {
+                cart.id = res.cartId;
+                if(res['success']){
+                    this.setCartSubjectState(cart);
+                }
+                return res;
+            });
+        }
+        this.logger.debug(this.className,"removeFundFromCart() cart.funds > ", cart)
+        return null
+
+    }
+
+    removeFundById(soptRfnum: string) {
+        return this.httpService.securePost("/checkout/removeFundById", {"id": soptRfnum, "cartid": this.getCartSubjectState().id}).subscribe(res => {
+            let cart = this.getCartSubjectState();
+            cart.funds = cart.funds.filter(fund => fund.id != res);
+            this.setCartSubjectState(cart);
+        });
+    }
+
+    getCartData(cartId: any) {
+        return this.httpService.post("/checkout/getCartData", {"id": cartId}).map(response => {
+            let cart = response as Cart;
+            this.setCartSubjectState(cart);
+            return response
+        },
+        err =>{
+            this.logger.error(this.className, err)
+        })
+    }
+
+    addFundsToCart(funds: Fund[]) {
+        let cart = this.getCartSubjectState();
+        funds.forEach(fund => {
+            cart.funds = cart.funds.filter(existingFund => {
+                if (existingFund.id != fund.id) {
+                    this.logger.debug(this.className, "true", existingFund, fund);
+                    return true;
+                } else if (fund.investmentMode != existingFund.investmentMode) {
+                    this.logger.debug(this.className, "true", existingFund, fund);
+                    return true;
+                } else {
+                    this.logger.debug(this.className, "false", existingFund, fund);
+                    return false;
+                }
+            });
+        });
+
+        funds.forEach(fund => {
+            cart.funds.push(fund);
+        });
+
+        this.saveCartPost(cart).subscribe(
+                response => {
+                    cart.id = response.cartId;
+                    this.setCartSubjectState(cart);
+                    this.router.navigate(['/cart']);
+                }
+            )
+    }
+
+    mergeCart(cartId?  : any) {
+        if (this.isCartPresent() || (cartId && cartId.length>0)) {
+            let _cartId = "";
+            if(cartId){
+                _cartId = cartId;
+            }else {
+                _cartId = this.getCartToken();
+            }
+            this.httpService.securePost("/checkout/mergeCart", {"cartId": _cartId}).subscribe(res => {
+                let cart = res as Cart;
+                this.setCartSubjectState(cart);
+            });
+        } else {
+            this.httpService.securePost("/checkout/mergeCart", {"cartId": ""}).subscribe(res => {
+                let cart = res as Cart;
+                this.setCartSubjectState(cart);
+            });
+        }
+    }
+
+    resetCart() {
+        this.setCartSubjectState(new Cart());
+        this.localStorageService.remove(this.config.cartToken);
+    }
+
+    isCartPresent() {
+        let cartId = this.getCartToken();
+        if (isNullOrUndefined(cartId) && cartId.length>0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    getCartToken() {
+        return this.cartSubject.getValue().id
+    }
+
+    setCartToken(cartId: string) {
+        if (cartId && cartId.length>0) {
+            this.localStorageService.set(this.config.cartToken, cartId);
+        }
+    }
+
+    setCartSubjectState(cart: Cart) {
+        this.logger.debug("CartService", "setCartSubjectState() ", cart);
+        this.logger.debug("CartService", "setCartSubjectState() ", cart.funds);
+
+        if(isNullOrUndefined(cart) || isNullOrUndefined(cart.funds)){
+            this.emptyCartSubject.next(true);
+            this.notemptyCartSubject.next(false);
+            return;
+        }
+
+        if(cart.funds.length==0){
+            this.emptyCartSubject.next(true);
+            this.notemptyCartSubject.next(false);
+        }else{
+            this.emptyCartSubject.next(false);
+            this.notemptyCartSubject.next(true);
+        }
+        this.cart = cart;
+        this.setCartToken(cart.id);
+        this.cartSubject.next(cart);
+    }
+
+    getCartSubjectState() {
+        return this.cartSubject.getValue();
+    }
+
+    checkIfFundExists(funds: Fund[]): boolean {
+        let isFound = false;
+        funds.forEach(fund => {
+            this.cart.funds.forEach(existingFund => {
+                if (existingFund.id == fund.id && existingFund.investmentMode == fund.investmentMode) {
+                    isFound = true;
+                }
+            });
+        });
+        return isFound
+    }
+
+    saveCartPost(cart : any) : Observable<any>{
+        if(this.loginService.loginSubject.getValue()){
+            return this.httpService.securePost("/checkout/saveCart", cart);
+        }else{
+            return this.httpService.post("/checkout/saveCart", cart);
+        }
+    }
+}

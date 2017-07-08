@@ -1,0 +1,29 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "./http-service.service";
+import {Map} from "Immutable";
+import {Observable, Subject, BehaviorSubject} from "rxjs";
+import {Logger} from "../logger/logger";
+
+@Injectable()
+export class LookUpService {
+
+    cndDataMap: Map<string,Subject<any>>;
+
+    constructor(public httpService: HttpService, private logger: Logger) {
+        this.cndDataMap = Map<string,Subject<any>>();
+    }
+
+    getByGroup(group: string): Observable<any> {
+
+        if (this.cndDataMap.has(group)) {
+            return this.cndDataMap.get(group).asObservable();
+        } else {
+            this.cndDataMap = this.cndDataMap.set(group, new Subject<any>());
+            return this.httpService.get('/lookup/byGroup/' + group).map(res => {
+                this.cndDataMap.get(group).next(res);
+                return res;
+            })
+        }
+
+    }
+}

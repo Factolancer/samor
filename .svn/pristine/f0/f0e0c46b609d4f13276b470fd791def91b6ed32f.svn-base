@@ -1,0 +1,73 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="60" fxFlex.xs="100">
+        <div fxLayout="column" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex class="heading-32-dark-grey">Please Answer the Questions Below</div>
+        </div>
+        <div class="grey-back pad-30">
+            <md-card class="card">
+                <div fxLayout="row" fxLayoutAlign="center stretch" fxLayoutWrap>
+                    <div fxFlex="30" fxFlex.xs="100" class="left-pane">
+                        <div class="icon"><img src="{{goal.imagePath}}"></div>
+                        <div class="highlight">{{goal.name}}</div>
+                    </div>
+                    <div fxFlex="70" fxFlex.xs="100" class="right-pane">
+                        <form [formGroup]="calcFormGroup" #form="ngForm">
+                            <div class="question">
+                                <div>
+                                    {{questions[selectedIndex].statement}}<br/>
+                                    <span *ngIf="questions[selectedIndex].helperText" class="helper">{{questions[selectedIndex].helperText}}</span>
+                                </div>
+                                <div>
+                                    <md-input-container align="end">
+                                        <input mdInput type="number"
+                                               [formControl]="calcFormGroup.get('first')" autocomplete="off"/>
+                                        <span mdPrefix [innerHTML]="questions[selectedIndex].prefix"></span>
+                                        <span mdSuffix [innerHTML]="questions[selectedIndex].suffix"></span>
+                                        <md-hint *ngIf="calcFormErrors.first" class="form-error">
+                                            {{calcFormErrors.first}}
+                                        </md-hint>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div class="question">
+                                <div>
+                                    {{questions[selectedIndex+1].statement}}<br/>
+                                    <span *ngIf="questions[selectedIndex+1].helperText" class="helper">{{questions[selectedIndex+1].helperText}}</span>
+                                </div>
+                                <div>
+                                    <md-input-container align="end">
+                                        <input mdInput type="number"
+                                               [formControl]="calcFormGroup.get('second')" autocomplete="off"/>
+                                        <span mdPrefix [innerHTML]="questions[selectedIndex+1].prefix"></span>
+                                        <span mdSuffix [innerHTML]="questions[selectedIndex+1].suffix"></span>
+                                        <md-hint *ngIf="calcFormErrors.second"
+                                                 class="form-error">
+                                            {{calcFormErrors.second}}
+                                        </md-hint>
+                                    </md-input-container>
+                                </div>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-around center" class="">
+                                <div fxFlex>
+                                    <button md-button type="button" (click)="prev()" *ngIf="selectedIndex!=0">Previous
+                                    </button>
+                                </div>
+                                <div fxFlex class="right-align">
+                                    <button md-button type="button" (click)="next()">Next</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </md-card>
+        </div>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" class=" wrapper">
+    <div fxFlex="60" fxFlex.xs="100">
+        <span (click)="seeDisclaimers()" class="disclaimer-text clickable">Disclaimers: The projections and charts are based
+        upon the basic information you have provided and are simulated based on expected long term returns...<u>read more</u></span>
+    </div>
+</div>

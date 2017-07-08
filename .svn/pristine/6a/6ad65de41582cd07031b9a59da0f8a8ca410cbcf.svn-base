@@ -1,0 +1,132 @@
+md-input{
+    width: 90%;
+}
+
+md-grid-tile{
+    display: block;
+}
+
+md-toolbar-row{
+    margin-top: -20px;
+}
+
+figure{
+    display: block !important;
+}
+
+section{
+     width: 45%;
+     align-self: center;
+     margin: auto;
+    border-bottom: 0.5px solid #0081c9;
+ }
+
+.sectiontitle{
+    border-left: 0.5px solid #0081c9;
+}
+
+.kycform{
+    border-right: 0.5px solid lightgray;
+    border-bottom: 0.5px solid lightgray;
+    border-left: 0.5px solid #0081c9;
+}
+
+ select{
+     width: 90%;
+     height: 22px;
+ }
+
+ label{
+     display: block;
+ }
+
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+.material-icons.blue600{ color: #337ab7; }
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+.downarrow {
+    float: right;
+    margin-right: 10px;
+}
+
+.info-div{
+    display: inline-flex;
+    padding-left: 32px;
+    font-size: 16px;
+}
+
+.info-label{
+    color: steelblue;
+}
+
+ .button-list-margins {
+     margin-bottom: 5%;
+     margin-top: -5%;
+ }
+
+ 
+ .field_label{
+     color: rgba(0, 0, 0, 0.38);
+     display: block;
+     font-family: Roboto, "Helvetica Neue", sans-serif;
+     text-align: left;
+     font-size: 11px;
+     font-weight: 700;
+     line-height: 20px;
+     position: absolute;
+     text-align: left;
+     margin-bottom: 5px;
+     margin-left: -105px;
+     margin-top: -20px;
+     padding-bottom: 5px;
+ }
+
+ .addressbox{
+     border: solid 0.5px lightgray;
+     margin-left: 10px;
+     margin-right: 10px;
+ }
+
+ .charactercountlabel {
+     float: left;
+     margin-top: 5px;
+ }
+
+ .uploaddiv{
+     margin-left: 60px;
+     display: flex;
+     width: 100%;
+ }
+
+.autosuggest, .dropdown, .bankslist {
+    margin:0;
+    padding:0;
+    border:0;
+}
+
+.autosuggest {
+    padding:4px;
+    border:1px solid #000;
+}
+
+.bankslist {
+    list-style:none;
+    z-index: 2;
+    background-color: lightgray;
+    padding: 0;
+    margin: 0;
+}
+
+.bankslist li {
+    padding:5px;
+    border:1px solid #000;
+    border-top:0;
+    cursor: pointer;
+}
+
+.bankslist li:hover {
+    background:#444;
+    color:#fff;
+}

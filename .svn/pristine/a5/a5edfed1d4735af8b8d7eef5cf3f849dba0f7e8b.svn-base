@@ -1,0 +1,13 @@
+<div fxLayout="row" fxLayoutAlign="center" class="product-feature-container pad-tb-20">
+    <div fxFlex="90" class="wrapper">
+        <div align="center" class="sub-heading pad-tb-10">PRODUCT FEATURES</div>
+        <div fxLayout="row" fxLayoutAlign="center" fxLayoutWrap="wrap" fxLayoutAlign.xs="space-around">
+            <div *ngFor="let prodFeature of productFeatures" class="prod-feature mar-tb-25" fxFlex="18" fxFlex.xs="30" fxLayout="row" fxLayoutAlign="center">
+                <div style="max-width: 100px">
+                    <img src={{prodFeature.image}} alt="{{prodFeature.alt}}">
+                    <p>{{prodFeature.content}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

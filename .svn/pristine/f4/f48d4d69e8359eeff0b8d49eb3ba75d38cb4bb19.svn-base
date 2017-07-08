@@ -1,0 +1,98 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <div fxFlex class="summary-heading report-card">Investment Gain/Loss Statement</div>
+    <div fxFlex class="report-card" *ngFor="let fund of funds">
+        <div fxLayout="column" fxLayoutAlign="start start">
+            <div fxFlex class="report-card">
+                <md-card class="mar-tb-5 no-padding">
+                    <div fxLayout="column" fxLayoutAlign="start start" class="total-allocation-details">
+                        <div fxFlex class="mar-tb-5 mar-lr-30">
+                            AMC:{{fund.amc}}
+                        </div>
+                        <div fxFlex class="mar-tb-5 mar-lr-30">
+                            Folio No:{{fund.folioNo}}
+                        </div>
+                        <div fxFlex class="mar-tb-5 mar-lr-30">
+                            Status : {{fund.status}}
+                        </div>
+                        <div fxFlex class="mar-tb-5 mar-lr-30">
+                            PAN:{{fund.pan}}
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+            <div fxFlex class="mar-t-20 total-allocation-details">
+                {{fund.fundName}}
+            </div>
+            <div fxFlex class="report-card">
+                <md-card class="mar-tb-5 no-padding">
+                    <div fxLayout="row" fxLayoutAlign="center center" class="allocation-header allocation-heading">
+                        <div fxFlex="50">
+                            Redemption/Switch-out
+                        </div>
+                        <div fxFlex="30">
+                            Corresponding units in Purchase/Switch-In/Div-Reinvestment
+                        </div>
+                        <div fxFlex="20">
+                            Capital Gains/Losses
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex>
+                            <hr>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" class="allocation-header pad-lr-30 mar-tb-20">
+                        <div fxFlex>Description</div>
+                        <div fxFlex class="right-align">Date</div>
+                        <div fxFlex class="right-align">Units</div>
+                        <div fxFlex class="right-align">Price(Rs.)</div>
+                        <div fxFlex class="right-align">Amount(Rs.)</div>
+                        <div fxFlex class="right-align">Date</div>
+                        <div fxFlex class="right-align">Units</div>
+                        <div fxFlex class="right-align">Unit Cost(Rs.)</div>
+                        <div fxFlex class="right-align">Short Term</div>
+                        <div fxFlex class="right-align">Long Term</div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex>
+                            <hr>
+                        </div>
+                    </div>
+                    <div *ngFor="let trans of fund.transactionsList" fxLayout="row" fxLayoutAlign="start center"
+                         class="pad-lr-30 mar-tb-20 total-allocation-details">
+                        <div fxFlex>{{trans.desc}}</div>
+                        <div fxFlex class="right-align">{{trans.redeemDate | date:'dd-MM-yy'}}</div>
+                        <div fxFlex class="right-align">{{trans.units | number : '1.2-3'}}</div>
+                        <div fxFlex class="right-align">{{trans.price | number : '1.2-2'}}</div>
+                        <div fxFlex class="right-align">{{trans.amount | number : '1.2-2'}}</div>
+                        <div fxFlex class="right-align">{{trans.purchaseDate | date:'dd-MM-yy'}}</div>
+                        <div fxFlex class="right-align">{{trans.purchaseUnits}}</div>
+                        <div fxFlex class="right-align">{{trans.purchasePrice}}</div>
+                        <div fxFlex class="right-align">{{trans.shortTermGain | number : '1.2-2'}}</div>
+                        <div fxFlex class="right-align">{{trans.longTermGain | number : '1.2-2'}}</div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="lastRow">
+                        <div fxFlex>
+                            <div fxLayout="row" fxLayoutAlign="start center" class="pad-lr-30 mar-tb-20 total-allocation-details">
+                                <div fxFlex>Total</div>
+                                <div fxFlex></div>
+                                <div fxFlex class="right-align">{{fund.totalUnits| number : '1.2-3'}}</div>
+                                <div fxFlex></div>
+                                <div fxFlex class="right-align">{{fund.totalAmount| number : '1.2-2'}}</div>
+                                <div fxFlex></div>
+                                <div fxFlex></div>
+                                <div fxFlex></div>
+                                <div fxFlex class="right-align">{{fund.totalShortTermGain | number : '1.2-2'}}</div>
+                                <div fxFlex class="right-align">{{fund.totalLongTermGain | number : '1.2-2'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+        </div>
+
+    </div>
+    <div fxFlex class="report-card font-10">
+        Note: Short term (less than 1year) redemption of units/amount would incur a taxation of 1%
+    </div>
+</div>

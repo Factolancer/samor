@@ -1,0 +1,35 @@
+/**
+ * Created by Fincash on 24-01-2017.
+ */
+import { Component, OnInit } from '@angular/core';
+import {GoogleChart} from '../../shared/google-chart.directive';
+
+@Component({
+    selector : 'app-sub-chart',/*
+     directives: [GoogleChart],*/
+    templateUrl: './sub-chart.component.html',
+    styleUrls: ['./chart.component.scss'],
+})
+export class SubChartComponent implements OnInit {
+
+    public pie_ChartData = [
+        ['Component', 'Share'],
+        ['F1',   2],
+        ['F2',      3],
+        ['F3',  5],
+        ['F4', 4]];
+
+    public pie_ChartOptions  = {
+        title: '',
+        legend:{position:'bottom'}/*,
+         width: 600,
+         height: 500*/
+    };
+
+    constructor() { }
+
+    ngOnInit() {
+    }
+
+}
+

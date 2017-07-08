@@ -1,0 +1,64 @@
+import {Component, OnInit} from "@angular/core";
+import {Input} from "@angular/core/src/metadata/directives";
+import {FilterData} from "./filter-data";
+import {ExploreFundsService} from "../explore-funds.service";
+
+@Component({
+    selector: 'app-category-filter',
+    templateUrl: 'category-filter.component.html',
+    styleUrls: ['filters.css']
+})
+export class CategoryFilterComponent implements OnInit {
+
+
+    @Input() set categoryFilterData(list: FilterData[]) {
+        list.forEach(listItem => {
+            if (this.currentArray.indexOf(listItem.id) > -1)
+                listItem.selected = true
+        });
+        this._categoryFilterData = list;
+    }
+
+    _categoryFilterData: FilterData[];
+    filterTitle: string;
+    checkedCount = 0;
+    currentArray: string[] = [];
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+
+    }
+
+    filter(checked: any, item: FilterData) {
+        let fundSearchInput = this.exploreFundsService.getFundSearchInput();
+        if (checked) {
+            this.checkedCount += 1;
+            this.currentArray.push(item.id);
+        } else {
+            this.checkedCount -= 1;
+            let newArray: string[] = [];
+            this.currentArray.forEach(elm => {
+                if (elm != item.id)
+                    newArray.push(elm)
+            });
+            this.currentArray = newArray;
+        }
+        fundSearchInput.category = this.currentArray;
+        this.exploreFundsService.filterFunds(fundSearchInput);
+
+    }
+
+    clearFilter() {
+        this.checkedCount = 0;
+        this.currentArray = [];
+        let fundSearchInput = this.exploreFundsService.getFundSearchInput()
+        fundSearchInput.category = [];
+        this.exploreFundsService.filterFunds(fundSearchInput);
+    }
+
+
+    ngOnInit() {
+        this.filterTitle = "Category";
+    }
+
+
+}

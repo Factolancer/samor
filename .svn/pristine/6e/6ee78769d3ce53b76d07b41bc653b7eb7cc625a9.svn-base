@@ -1,0 +1,15 @@
+<md-card class="explore-fund-head">
+    Filters
+</md-card>
+<md-card class="filter-data">
+    <app-category-filter></app-category-filter>
+    <hr>
+    <!--<app-amc-filter [amcFilterData] = "searchResults.amcFilterData"></app-amc-filter>
+    <hr>-->
+    <app-aum-filter></app-aum-filter>
+    <hr>
+    <app-age-filter></app-age-filter>
+    <hr>
+    <app-rating-filter></app-rating-filter>
+    <!-- <app-amc-filter></app-amc-filter>-->
+</md-card>

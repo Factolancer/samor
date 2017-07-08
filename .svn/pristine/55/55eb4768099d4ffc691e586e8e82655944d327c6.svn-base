@@ -1,0 +1,345 @@
+<div class="row wrapper">
+    <div class="col-sm-10 col-sm-offset-1">
+        <app-user-journey></app-user-journey>
+        <div class="row">
+            <div class="col-sm-12 center-align heading-32-blue pad-tb-15">Investment Summary</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="row  grey-back pad-tb-20 mar-tb-20" *ngIf="sipProducts.length>0">
+                    <div class="col-sm-12">
+                        <md-card class="checkout-product-head">
+                            <div class="row">
+                                <div class="col-sm-6 left-align">
+                                    Fund
+                                </div>
+                                <div class="col-sm-2">
+                                    Monthly SIP Date
+                                </div>
+                                <div class="col-sm-2">
+                                    SIP Tenure
+                                </div>
+                                <div class="col-sm-2">
+                                    Investment Amount
+                                </div>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div *ngFor="let product of sipProducts">
+                        <div class="col-sm-12">
+                            <!-- <span class="heading-18">{{productEnum[product.productName]}}</span>-->
+                        </div>
+                        <div class="col-sm-12">
+                            <md-card class="checkout-product-item">
+                                <div *ngFor="let fundItem of product.funds">
+                                    <div class="row fund">
+                                        <div class="col-sm-6 left-align">
+                                            {{fundItem.name}}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <md-icon class="material-icons md-14">&#xE88E;</md-icon>
+                                            {{fundItem.startDate}}
+                                        </div>
+                                        <div class="col-sm-2">{{fundItem.months}}</div>
+                                        <div class="col-sm-2">{{fundItem.investmentAmount |
+                                            currency:'INR':true:'1.0-0'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </md-card>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row  grey-back pad-tb-20 mar-tb-20" *ngIf="lumpsumProducts.length>0">
+                    <div class="col-sm-12">
+                        <md-card class="checkout-product-head">
+                            <div class="row">
+                                <div class="col-sm-4 left-align">
+                                    Fund
+                                </div>
+                                <div class="col-sm-4">
+                                    Investment Date
+                                </div>
+                                <div class="col-sm-4">
+                                    Investment Amount
+                                </div>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div *ngFor="let product of lumpsumProducts">
+                        <div class="col-sm-12">
+                            <!-- <span class="heading-18">{{productEnum[product.productName]}}</span>-->
+                        </div>
+                        <div class="col-sm-12">
+                            <md-card class="checkout-product-item">
+                                <div *ngFor="let fundItem of product.funds">
+                                    <div class="row fund">
+                                        <div class="col-sm-4 left-align">
+                                            {{fundItem.name}}
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <md-icon class="material-icons md-14">&#xE88E;</md-icon>
+                                            {{fundItem.startDate}}
+                                        </div>
+                                        <div class="col-sm-4">{{fundItem.investmentAmount |
+                                            currency:'INR':true:'1.0-0'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </md-card>
+                        </div>
+                    </div>
+                </div>
+                <div class="row  grey-back pad-tb-20 mar-tb-20">
+                    <div class="col-sm-12">
+                        <md-card>
+                            <md-card-title class="heading-14">
+                                Disclaimers
+                            </md-card-title>
+                            <div class="row" style="max-height: 100px; font-size: 8px; overflow-y:auto;">
+                                <div class="col-sm-12 disclaimer-text">
+                                    <p><b>Disclaimer 1:</b>Your risk appetit.....</p>
+                                    <p><b>Disclaimer 2:</b>Cutoff:</p>
+                                    <p><b>Disclaimer 3:</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                                        do
+                                        eiusmod
+                                        tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                                        nostrud
+                                        exercitation
+                                        ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                                        in
+                                        reprehenderit
+                                        in
+                                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                                        occaecat
+                                        cupidatat
+                                        non
+                                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem
+                                        ipsum
+                                        dolor
+                                        sit
+                                        amet,
+                                        consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                                        dolore
+                                        magna
+                                        aliqua.
+                                        Ut
+                                        enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                                        ex
+                                        ea
+                                        commodo
+                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                                        dolore eu
+                                        fugiat
+                                        nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                                        qui
+                                        officia
+                                        deserunt
+                                        mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit,
+                                        sed do
+                                        eiusmod
+                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                        quis
+                                        nostrud
+                                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                                        irure dolor
+                                        in
+                                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                        Excepteur sint
+                                        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+                                        id
+                                        est
+                                        laborum.Lorem
+                                        ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                        incididunt
+                                        ut
+                                        labore et
+                                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                                        laboris nisi
+                                        ut
+                                        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                                        voluptate
+                                        velit
+                                        esse
+                                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                        proident, sunt
+                                        in
+                                        culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit
+                                        amet,
+                                        consectetur
+                                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                                        aliqua.
+                                        Ut enim
+                                        ad
+                                        minim
+                                        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                        consequat.
+                                        Duis
+                                        aute
+                                        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                                        nulla
+                                        pariatur.
+                                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                                        deserunt
+                                        mollit
+                                        anim
+                                        id
+                                        est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                        eiusmod
+                                        tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                                        nostrud
+                                        exercitation
+                                        ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                                        in
+                                        reprehenderit
+                                        in
+                                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                                        occaecat
+                                        cupidatat
+                                        non
+                                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem
+                                        ipsum
+                                        dolor
+                                        sit
+                                        amet,
+                                        consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                                        dolore
+                                        magna
+                                        aliqua.
+                                        Ut
+                                        enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                                        ex
+                                        ea
+                                        commodo
+                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                                        dolore eu
+                                        fugiat
+                                        nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                                        qui
+                                        officia
+                                        deserunt
+                                        mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit,
+                                        sed do
+                                        eiusmod
+                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                        quis
+                                        nostrud
+                                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                                        irure dolor
+                                        in
+                                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                        Excepteur sint
+                                        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+                                        id
+                                        est
+                                        laborum.Lorem
+                                        ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                        incididunt
+                                        ut
+                                        labore et
+                                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                                        laboris nisi
+                                        ut
+                                        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                                        voluptate
+                                        velit
+                                        esse
+                                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                        proident, sunt
+                                        in
+                                        culpa qui officia deserunt mollit anim id est laborum.</p>
+
+                                </div>
+                            </div>
+                        </md-card>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <md-card class="mar-tb-20">
+                    <md-card-title class="heading-18-blue">
+                        Investor Details
+                        <hr/>
+                    </md-card-title>
+                    <md-card-content>
+                        <div class="row pad-tb-10">
+                            <div class="col-sm-6">
+                                Name
+                            </div>
+                            <div class="col-sm-6">
+                                {{summaryData.name}}
+                            </div>
+                        </div>
+                        <div class="row pad-tb-10">
+                            <div class="col-sm-6">
+                                PAN Card
+                            </div>
+                            <div class="col-sm-6">
+                                {{summaryData.pan}}
+                            </div>
+                        </div>
+                        <div class="row pad-tb-10">
+                            <div class="col-sm-6">
+                                Nominee
+                            </div>
+                            <div class="col-sm-6">
+                                {{summaryData.nominee}}
+                            </div>
+                        </div>
+                        <div class="row pad-tb-10">
+                            <div class="col-sm-6">
+                                Bank
+                            </div>
+                            <div class="col-sm-6">
+                                {{summaryData.bank}}
+                            </div>
+                        </div>
+                        <div class="row pad-tb-10" style="padding-bottom: 30px !important;">
+                            <div class="col-sm-6">
+                                KYC &amp; Risk Profiling
+                            </div>
+                            <div class="col-sm-6">
+                                <md-icon class="material-icons md-24">&#xE86C;</md-icon><!--Tick Mark-->
+                            </div>
+                        </div>
+                    </md-card-content>
+                    <md-card-footer class="total-inv-summary">
+                        <div class="row">
+                            <div class="col-md-6">Total Investment</div>
+                            <div class="col-md-6 text-right">
+                                {{summaryData.totalInvestment | currency:'INR':true:'1.0-0'}}
+                            </div>
+                        </div>
+                    </md-card-footer>
+                </md-card>
+                <div class="row">
+                    <div class="col-sm-12 text-right ip-details">
+                        <div>Time: {{summaryData.time}}</div>
+                        <div>IP Address: {{summaryData.ipAddress}}</div>
+                    </div>
+                </div>
+                <md-card class="mar-tb-15 no-padding">
+                    <div class="row pad-15">
+                        <div class="col-sm-12">
+                            <md-checkbox [(ngModel)]="summaryData.agreement">
+                                I have read the disclaimers and I agree to the Terms & Conditions
+                            </md-checkbox>
+                        </div>
+                        <div class="col-sm-12">
+                            <button color="primary" md-raised-button="" [disabled]="!summaryData.agreement"
+                                    class="cta-50" (click)="proceed()">
+                                Proceed to Pay
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+        </div>
+    </div>
+</div>

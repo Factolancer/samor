@@ -1,0 +1,142 @@
+/**
+ * Main application routes
+ */
+
+'use strict';
+
+var errors = require('./components/errors'),
+    multer = require('multer'),
+    config = require('./config/environment'),
+    mime = require('mime'),
+    fs = require('fs'),
+    path = require('path')
+
+module.exports = function (app) {
+    // Insert routes below
+
+    fileUpload(app);
+    app.use('/api/kyc', require('./api/kyc'));
+    app.use('/api/bse', require('./api/bse'));
+    //app.use('/api/users', require('./api/user'));
+    app.use('/*', require('./api/default'));
+    //app.use('/auth', require('./auth'));
+    // All undefined asset or api routes should return a 404
+    //app.route('/:url(api|auth|components|app|bower_components|assets)/*').get(errors[404]);
+
+};
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        var userId = '';
+        var fieldName = file.fieldname;
+        if (fieldName.indexOf('-') > 0) {
+            var fArray = fieldName.split('-');
+            if (fArray.length > 1) {
+                userId = fArray[1];
+            }
+        }
+        var dirpath;
+        if (userId.length > 0) {
+            dirpath = path.join(config.root, config.document.rootPath,config.document.upload + '/' + userId);
+        } else {
+            dirpath = path.join(config.root, config.document.rootPath,config.document.upload);
+        }
+
+        if (!fs.existsSync(dirpath)) {
+            fs.mkdir(dirpath);
+        }
+        //console.log("file destination >> " + dirpath);
+        cb(null, dirpath);
+    },
+    filename: function (req, file, cb) {
+        var extention = mime.extension(file.mimetype);
+        var fileName = file.originalname.replace(/[^a-zA-Z]/g, "");
+        if (fileName.length > 30) {
+            fileName = fileName.substring(0, 30);
+        }
+        var fieldName = file.fieldname;
+        var ffileName = fieldName + '-' + fileName + "-" + Date.now() + "." + extention;
+        console.log("file name >> " + ffileName);
+        cb(null, ffileName);
+    }
+});
+
+var upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 10485760 // 10 MB upload file limit
+    },
+    includeEmptyFields: false
+}).any();
+
+function fileUpload(app) {
+    app.post('/api/file/upload', function (req, res) {
+        upload(req, res, function (err) {
+            var userId = '';
+            var fieldName = req.files[0].filename;
+            if (fieldName.indexOf('-') > 0) {
+                var fArray = fieldName.split('-');
+                if (fArray.length > 1) {
+                    userId = fArray[1];
+                }
+            }
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            if (err) {
+                res.json({success: false, msg: err});
+                return
+            }
+            // Everything went fine
+            if(userId.length==0){
+                res.json({success: true, msg: "success", uploadfile: config.document.upload+'/'+req.files[0].filename});
+            }else{
+                res.json({success: true, msg: "success", uploadfile: config.document.upload+'/'+userId+'/'+req.files[0].filename});
+            }
+        })
+    });
+
+    app.post('/api/file/snapshot', function (req, res) {
+        //console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  /api/file/snapshot  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        var body = req.body;
+        var orderId = body.id;
+        var folder = body.type;
+        var base64Data = body.snapshot;
+        var dirpath;
+        if (folder) {
+            folder = folder.replace(/[^a-zA-Z]/g, "");
+            dirpath = path.join(config.root, config.document.rootPath, config.document.snapshot + '/' + folder);
+        } else {
+            dirpath = path.join(config.root, config.document.rootPath, config.document.snapshot);
+        }
+        if (!fs.existsSync(dirpath)) {
+            fs.mkdir(dirpath);
+        }
+        if (base64Data) {
+            base64Data = base64Data.replace(/^data:image\/png;base64,/, "");
+            base64Data += base64Data.replace('+', ' ');
+            var binaryData = new Buffer(base64Data, 'base64').toString('binary');
+            if (orderId) {
+            } else {
+                orderId = '';
+            }
+            var fileName = orderId + "-" + Date.now() + ".png";
+            fs.writeFile(dirpath + "/" + fileName, binaryData, "binary", function (err) {
+                if (err) {
+                    res.json({success: false, msg: err});
+                    return
+                }
+                if(folder && folder.length>0){
+                    res.json({success: true, msg: "success", uploadfile: config.document.snapshot+'/'+folder+'/'+fileName});
+                }else{
+                    res.json({success: true, msg: "success", uploadfile: config.document.snapshot+'/'+fileName});
+                }
+            });
+        }else{
+            res.json({success: false, msg: "no snapshot parameter"});
+        }
+    });
+}
+
+

@@ -1,0 +1,133 @@
+<div>
+    <div fxFlex="100" [ngClass]="{'section-header-expanded': !bankcollapsed, 'section-header-collapsed': bankcollapsed}">
+        <div fxLayout="row" class="cursor-pointer" (click)="toggleBank()">
+            <div fxFlex="8" fxFlexOffset="2">
+                <md-icon *ngIf="banksaved"
+                        [ngClass]="{'material-icons': true, 'md-8': true, 'md-brand-secondary': true}">
+                    check_circle
+                </md-icon>
+            </div>
+            <div fxFlex="83">
+                <span>{{heading.bankSectionHeading}}</span>
+            </div>
+            <div fxFlex="7">
+                <md-icon *ngIf="bankcollapsed">expand_more</md-icon>
+                <md-icon *ngIf="!bankcollapsed">expand_less</md-icon>
+            </div>
+        </div>
+    </div>
+
+    <div fxFlex="100" class="section-content">
+        <form [formGroup]="bankForm" (ngSubmit)="onBankSubmit()" [@ShowHide]="state" novalidate>
+            <br/>
+            <br/>
+            <div>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <md-input-container>
+                            <input mdInput required formControlName="holderName" placeholder="Name as on Cheque Book"
+                                   #holderName [value]="holderName.value.toUpperCase()">
+                            <md-hint
+                                    *ngIf="!bankForm.controls['holderName'].valid && (bankForm.controls['holderName'].touched)"
+                                    class="errorMessage">
+                                Name is Required
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+                        <md-select required formControlName="accountType" placeholder="Account Type">
+                            <md-option *ngFor="let actype of accountType" [value]="actype.cndrfnum">{{actype.cndname}}</md-option>
+                        </md-select>
+                        <!--<md-hint
+                                *ngIf="!bankForm.controls['accountType'].valid && (bankForm.controls['accountType'].touched)"
+                                class="errorMessage">
+                            Select account type
+                        </md-hint>-->
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="start center" formGroupName="bank">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <md-select required formControlName="bankName" #bankName placeholder="Bank Name"
+                                   (blur)="setBankName()">
+                            <md-option *ngFor="let item of banks" [value]="item.name">{{item.name}}</md-option>
+                        </md-select>
+                        <!--<md-hint
+                                *ngIf="(!bankForm.controls['bank'].get('bankName').valid) && (bankForm.controls['bank'].get('bankName').touched)"
+                                class="errorMessage">
+                            Please select bank name
+                        </md-hint>-->
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+                        <md-input-container>
+                            <input mdInput required formControlName="branch" placeholder="Branch" #branch
+                                   [value]="branch.value.toUpperCase()"
+                                   (keyup)="searchForBranch($event.target.value)">
+                            <md-hint *ngIf="showbanklist" class="dropdown">
+                                <ul *ngFor="let item of bankList" class="bankslist">
+                                    <li>
+                                        <a (click)="select(item)">{{item.branch}}-{{item.city}}-{{item.IFSC}}</a>
+                                    </li>
+                                </ul>
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="start center" formGroupName="bank">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <md-input-container>
+                            <input mdInput required formControlName="city" placeholder="City"
+                                   [(ngModel)]="user.userBank.bank.city">
+                            <md-hint
+                                    *ngIf="!bankForm.controls['bank'].get('city').valid && (bankForm.controls['bank'].get('city').touched)"
+                                    class="errorMessage">
+                                City is required
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+                        <md-input-container>
+                            <input mdInput required formControlName="IFSC" placeholder="IFSC Code"
+                                   [(ngModel)]="user.userBank.bank.IFSC">
+                            <md-hint
+                                    *ngIf="!bankForm.controls['bank'].get('IFSC').valid && (bankForm.controls['bank'].get('IFSC').touched)"
+                                    class="errorMessage">
+                                IFSC code is required
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="start center" formGroupName="account">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <md-input-container>
+                            <input mdInput required formControlName="accountNumber" placeholder="Bank Account Number"
+                                   [(ngModel)]="acnumber">
+                            <md-hint
+                                    *ngIf="(!bankForm.controls['account'].get('accountNumber').valid) && (bankForm.controls['account'].get('accountNumber').touched)"
+                                    class="errorMessage">
+                                Account Number is incorrect
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+                        <md-input-container>
+                            <input mdInput required formControlName="confirmAccountNumber" onpaste="return false"
+                                   placeholder="Confirm Bank Account Number">
+                        </md-input-container>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button md-raised-button color="primary" type="submit" [disabled]="!bankForm.valid">Save</button>
+                </div>
+                <br/>
+            </div>
+        </form>
+    </div>
+</div>

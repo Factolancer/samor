@@ -1,0 +1,34 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {CheckoutComponent} from "./checkout.component";
+import {CheckoutResolveService} from "./checkout-data-resolve-service";
+import {SummaryComponent} from "./summary/summary.component";
+import {SummaryResolveService} from "./summary-data-resolve-service";
+import {AuthGuard} from "../auth.guard";
+
+const checkoutRoutes: Routes = [
+    {
+        path: 'checkout',
+        children: [
+            {
+                path: 'init',
+                component: CheckoutComponent,
+                resolve: {
+                    checkoutData: CheckoutResolveService
+                }
+            },
+            {
+                path: 'summary',
+                // canActivate: [AuthGuard],
+                component: SummaryComponent,
+                resolve: {
+                    summaryData: SummaryResolveService
+                }
+            }
+        ]
+    }
+];
+
+export const checkoutRouting: ModuleWithProviders = RouterModule.forChild(checkoutRoutes);
+
+

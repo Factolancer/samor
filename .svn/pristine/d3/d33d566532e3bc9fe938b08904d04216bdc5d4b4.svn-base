@@ -1,0 +1,12 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Tax Calculator</h1>
+            <h3 class="center-align">Figure out how much tax you can save!</h3>
+        </div>
+    </section>
+    <section class="data-body">
+        <p>Places where you invest:</p>
+
+    </section>
+</div>

@@ -1,0 +1,48 @@
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Fund} from "../../models/fund";
+import {Injectable} from "@angular/core";
+import {Title} from "@angular/platform-browser";
+import {title} from "../../../properties/title";
+import {Logger} from "../logger/logger";
+
+@Injectable()
+export class TitleService {
+
+    private fundCompareDataSource = new BehaviorSubject<Fund[]>([]);
+    compareData = this.fundCompareDataSource.asObservable();
+
+    constructor(private title: Title, private logger: Logger) {
+    }
+
+    setTitle(key: string, data?: any) {
+        let titleString = `${title[key]}`;
+        if (!titleString || titleString.length == 0) {
+            titleString = `${title["home"]}`
+        }
+        let parsedTitle = this.parseTitleString(titleString, data);
+        this.title.setTitle(parsedTitle);
+    }
+
+    private parseTitleString(titleString: string, data: any): string {
+        let regEx = /{([a-zA-Z0-9.]+)}/;
+        let titleStringArray = titleString.match(regEx);
+        this.logger.debug("TitleService", data);
+
+        while (titleStringArray) {
+            let keyString = titleStringArray[1];
+            let keyStringArray = keyString.split('.');
+            let tempData = data;
+            let replacementString = titleStringArray[0];
+            keyStringArray.forEach(key => {
+                if (tempData && tempData[key]) {
+                    tempData = tempData[key];
+                } else {
+                    tempData = "";
+                }
+            });
+            titleString = titleString.replace(replacementString, tempData);
+            titleStringArray = titleString.match(regEx);
+        }
+        return titleString;
+    }
+}

@@ -1,0 +1,10 @@
+import {CheckoutProduct} from "./checkout-product";
+export interface Checkout {
+    products: CheckoutProduct[],
+    nomineeList: string[],
+    selectedNominee?: string,
+    bankList: string[],
+    selectedBank?: string,
+    totalInvestmentAmount?: number,
+
+}

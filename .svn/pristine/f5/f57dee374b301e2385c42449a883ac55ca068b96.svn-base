@@ -1,0 +1,30 @@
+import {NgModule} from "@angular/core";
+import {FundComponent} from "./fund.component";
+import {SearchModule} from "../search/search.module";
+import {CompareFundsComponent} from "./compare/compare-funds.component";
+import {FundService} from "./fund.service";
+import {HttpService} from "../services/http-service.service";
+import {BasicFactsheetComponent} from "./factsheet/basic-factsheet.component";
+import {AdvancedFactsheetComponent} from "./factsheet/advanced-factsheet.component";
+import {fundRouting} from "./fund.routes";
+import {FundSelectionComponent} from "./fund-selection.component";
+import {SharedModule} from "../shared/shared.module";
+import {FundViewPanelComponent} from "./fund-view-panel.component";
+import {FundPaginationPanelComponent} from "./fund-pagination-panel.component";
+import {GoogleChart} from "./google-chart.directive";
+
+
+@NgModule({
+    imports: [
+        SearchModule,
+        SharedModule,
+        fundRouting,
+    ],
+    exports: [FundComponent, FundSelectionComponent, FundViewPanelComponent],
+    providers: [FundService, HttpService],
+    declarations: [FundComponent, FundSelectionComponent, CompareFundsComponent,
+        BasicFactsheetComponent, AdvancedFactsheetComponent, FundViewPanelComponent, FundPaginationPanelComponent,
+    GoogleChart],
+})
+export class FundModule {
+}

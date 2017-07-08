@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-md-11">
+        <span *ngIf="allowTotals && totalNumFound>0">Showing <b>{{searchInputFrom + 1}}</b>-
+            <span *ngIf="searchInputFrom+searchInputRows >= totalNumFound"><b>{{totalNumFound}}</b></span>
+            <span *ngIf="searchInputFrom+searchInputRows < totalNumFound"><b>{{searchInputFrom+searchInputRows}}</b></span>
+                of <b>{{totalNumFound}}</b> results
+        </span>
+        <select (change)="setRowsToDisplay($event.target.value)" *ngIf="allowRowChange" value="{{searchInputRows}}">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+        </select>
+    </div>
+    <!--<div class="col-md-1">
+        <button *ngIf="allowViewChange" color="accent" md-icon-button="" class="md-accent float-right"
+                ng-reflect-color="accent"
+                (click)="toggleView()">
+            &lt;!&ndash;grid-icon&ndash;&gt;
+            <md-icon class="md-24 material-icons" *ngIf="fundDisplay.isListView">&#xE3EC;</md-icon>
+            &lt;!&ndash;list-icon&ndash;&gt;
+            <md-icon class="md-24 material-icons" *ngIf="!fundDisplay.isListView">
+                &#xE8EF;</md-icon>
+        </button>
+    </div>-->
+</div>

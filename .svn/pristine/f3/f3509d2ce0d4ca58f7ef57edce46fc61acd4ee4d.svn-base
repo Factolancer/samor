@@ -1,0 +1,85 @@
+/**
+ * Created by Fincash on 17-02-2017.
+ */
+import {Component, ElementRef, HostListener, Input, OnInit, OnDestroy} from '@angular/core';
+
+import {Subscription, Observable} from "rxjs";
+
+@Component({
+    selector: '[carousel]',
+    template: `
+             <ul class="carousel">
+                <li *ngIf="image"  fxFlex="row" fxLayoutAlign="center center">                   
+                  <img src="{{image.url}}" alt="{{image.alt}}">
+                </li>             
+            </ul>
+  `,
+    styles: [`
+                ul{margin:0 !important; padding: 0 !important;}
+                ul.carousel{
+                    overflow:hidden;
+                    width:100%;
+                    text-align: center;
+                    position:relative;  
+                    background-color:rgba(0,0,0,0.15);
+                }                
+                ul.carousel img{
+                    display:block;
+                    width:100%;
+                    max-width:100%;
+                    height:auto;}
+  `],
+})
+
+export class CarouselComponent implements OnInit, OnDestroy{
+    @Input('carousel') carouselContent: any;
+
+        /*make sure url passed do have absolute path*/
+
+    constructor(private el: ElementRef) {
+
+    }
+
+    carouselTimer:Subscription;
+    image:any;
+    /*------ hover pause and start--------*/
+/*
+    @HostListener('mouseenter') onMouseEnter() {
+        this.pause();
+    }
+    @HostListener('mouseleave') onMouseLeave() {
+        this.start();
+    }*/
+
+    i:number;
+    cImage:any;
+    length:number;
+
+    ngOnInit() {
+        this.i = 0;
+        this.cImage = this.carouselContent[this.i];
+        this.image = this.cImage;
+        this.length = this.carouselContent.length;
+        this.start();
+    };
+    start(){
+        this.carouselTimer = Observable.timer(5000, 5000).subscribe(t => {
+            this.i = (this.i+1)%this.length;
+            this.cImage = this.carouselContent[this.i];
+            this.image = this.cImage;
+            this.image.alt = this.image.url.split('/').pop().split('.')[0]+'_banner';
+        });
+    }
+
+    /*pause(){
+        if(this.carouselTimer)
+            this.carouselTimer.unsubscribe();
+    }*/
+
+   ngOnDestroy(){
+       if(this.carouselTimer)
+           this.carouselTimer.unsubscribe();
+   }
+}
+
+

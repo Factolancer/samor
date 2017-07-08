@@ -1,0 +1,25 @@
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {CashComponent} from "./cash.component";
+import {cashrouting} from "./cash.routing";
+import {SharedModule} from "../shared/shared.module";
+import {CashCardComponent} from "./cashcard.component";
+import {DemoModule} from "./demo/demo.module";
+import {DemoaModule} from "./demoa/demoa.module";
+import {DemobModule} from "./demob/demob.module";
+import {DemoallModule} from "./demoall/demoall.module";
+import {SavingsPlusFundResolveService} from "./cashfunds/savings-plus-fund-resolve.service";
+import {CashfundsComponent} from "./cashfunds/cashfunds.component";
+import {SavingsPlusCardComponent} from "./cashfunds/savings-plus-card.component";
+import {WrapperCartService} from "../services/wrapper.service";
+
+@NgModule({
+    imports: [
+        cashrouting, SharedModule, DemoModule, DemoaModule, DemobModule, DemoallModule
+
+    ],
+    declarations: [CashComponent, CashCardComponent, CashfundsComponent, SavingsPlusCardComponent],
+    providers: [SavingsPlusFundResolveService, WrapperCartService]
+})
+export class CashModule {
+}

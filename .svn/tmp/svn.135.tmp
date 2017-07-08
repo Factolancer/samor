@@ -1,0 +1,70 @@
+import {Injectable, Inject} from "@angular/core";
+import {Http, Response, Headers, RequestOptions} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+import {Logger} from "../shared/logger/logger";
+import {CONFIG, IConfig} from "./../../environments/environment";
+
+@Injectable()
+export class HttpService {
+
+    constructor(private http: Http,private logger: Logger, @Inject(CONFIG) private config: IConfig) {
+
+    }
+
+    className: string = this.constructor.toString().match(/\w+/g)[1];
+
+    get(path: string): Observable<any> {
+        let headers = this.setHeader(this.logger, this.className);
+        let options = new RequestOptions({headers: headers})
+        return this.http.get(this.config.playAPIUrl+'/secure' + path, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    post(path: string, data: any): Observable<any> {
+        let headers = this.setHeader(this.logger, this.className);
+        let options = new RequestOptions({headers: headers})
+        this.logger.debug(this.className +" In HTTP service POST")
+        this.logger.debug(this.className +" " +this.config.playAPIUrl+'/secure' + path)
+        this.logger.debug(this.className +" "+JSON.stringify(data));
+        return this.http.post(this.config.playAPIUrl+'/secure' + path, data, options)
+            .map()
+            .subscribe(res => {this.extractData(res, this.localStoragePrefix)} )
+            .catch(this.handleError)
+    }
+
+    private setHeader(logger : Logger, className : string) {
+        let getToken = localStorage.getItem(this.config.localStoragePrefix+'id_token');
+        let token =  getToken ? getToken : "";
+        logger.debug(" setHeader Token is " + token);
+        let headers = new Headers({'Authorization': `Bearer ${token}`});
+        return headers;
+    }
+
+    private extractData(res: Response, localstoragePrefix: String) {
+        console.debug("responseHeaders >> " +JSON.stringify(res.headers));
+        let body = res.json();
+        //console.debug("extractData >> " + JSON.stringify(body));
+        let header = res.headers;
+        let token : string = header.get("id_token");
+        if (token && token.trim().length>0) {
+<<<<<<< .mine
+            localStorage.setItem(localstoragePrefix+'id_token', token);
+=======
+            // hardcoded storage as  windows is not available need  to figure  out how to make it generic in nature
+            localStorage.setItem('fcashid_token', token);
+>>>>>>> .r1386
+        }
+        return body || {};
+    }
+
+    private handleError(error: any) {
+        // In a real world app, we might use a remote logging infrastructure
+        // We'd also dig deeper into the error to get a better message
+        let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.error("handleError >> "+errMsg);
+        return Observable.throw(errMsg);
+    }
+}
+

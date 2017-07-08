@@ -1,0 +1,7 @@
+import {Fund} from "./fund";
+import {ProductInvestment} from "./product-investment";
+export class Cart {
+
+    constructor(public funds:Fund[],
+                public investmentModeList:ProductInvestment[]){}
+}

@@ -1,0 +1,39 @@
+<div class="wrapper" fxLayout="column" fxLayoutAlign="center center">
+    <div fxFlex="90">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex="80" fxFlex.lt-md="100" class="center-align">
+                <div ngClass.gt-sm="heading-32-dark-grey " ngClass.lt-md="heading-24-dark-grey">Registration & KYC
+                </div>
+                <div ngClass.gt-sm="sub-heading-16-medium-grey" ngClass.lt-md="txt-14" style="padding-bottom: 15px;">
+                    <hr/>
+                    As per Indian regulations, KYC (Know Your Customer) is a one-time exercise required to transact in Mutual Funds
+                </div>
+            </div>
+        </div>
+        <div ngClass.gt-sm="pad-lr-60" ngClass.lt-md="pad-lr-10">
+            <div fxLayout="column" fxLayoutAlign.lt-md="center stretch">
+                <basic-section (makeVisible)="makeKycVisible()"></basic-section>
+
+                <kyc-section [kyccollapsed]="addressCollapsed" [state]="addressState" (makeVisible)="makeBankVisible()"></kyc-section>
+
+                <bank-section [bankcollapsed]="bankCollapsed" [state]="bankState" (makeVisible)="makeOtherVisible()"></bank-section>
+
+                <other-section [othercollapsed]="otherCollapsed" [state]="otherState" (makeVisible)="makeNomineeVisible()"></other-section>
+
+                <nominee-section [nomineecollapsed]="nomineeCollapsed" [state]="nomineeState"></nominee-section>
+            </div>
+        </div>
+        <div class="pad-tb-10 agreement" ngClass.gt-sm="pad-lr-75" ngClass.lt-md="pad-lr-20">
+            <md-checkbox [(ngModel)]="agreementSelected">
+                I agree to the <a (click)="goTo(tcUrl)" class="link">Terms & Conditions</a> and the <a (click)="goTo(privacyPolicyUrl)" class="link">Privacy Policy</a>
+            </md-checkbox>
+        </div>
+        <br/>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button md-raised-button color="primary" (click)="toToUpload()" [disabled]="!agreementSelected">Proceed to Upload</button>
+        </div>
+    </div>
+</div>
+
+
+

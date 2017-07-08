@@ -1,0 +1,72 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {FundSearchInput} from "../fund-search-input";
+import {Subscription} from "rxjs";
+import {ExploreFundsService} from "../../services/explore-funds.service";
+import {ExploreFundConstants} from "../explore-funds.constants";
+
+@Component({
+    selector: 'app-aum-filter',
+    templateUrl: './aum-filter.component.html',
+    styleUrls: ['./filters.styles.scss']
+})
+export class AumFilterComponent implements OnDestroy, OnInit {
+
+    searchInput: FundSearchInput;
+    searchInputSubscription: Subscription;
+    filterTitle: string;
+    minAUM = 0;
+    maxAUM = 30000;
+    selectedMin = this.minAUM;
+    selectedMax = this.maxAUM;
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+
+    }
+
+    filter() {
+        if (this.selectedMin > this.selectedMax) {
+            this.selectedMax = this.selectedMin;
+        }
+        this.searchInput.ar = this.selectedMin + " TO " + this.selectedMax;
+        this.exploreFundsService.filterFunds(this.searchInput);
+    }
+
+    clearFilter() {
+        this.selectedMin = this.minAUM;
+        this.selectedMax = this.maxAUM;
+        this.searchInput.ar = "";
+        //this.searchInput.ar = this.selectedMin + " TO " + this.selectedMax;
+        this.exploreFundsService.filterFunds(this.searchInput);
+    }
+
+    ngOnInit() {
+        this.filterTitle = "AUM";
+
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput.subscribe(
+            searchInput => {
+                this.searchInput = searchInput;
+                if (searchInput.qt == ExploreFundConstants.SEARCH_QUERY) {
+                    this.selectedMin = this.minAUM;
+                    this.selectedMax = this.maxAUM;
+                } else {
+                    if (this.searchInput.ar) {
+                        let range: string[] = this.searchInput.ar.split(' ');
+                        this.selectedMin = +range[0];
+                        this.selectedMax = +range[2];
+                    }
+                }
+            }
+        )
+
+        /*this.exploreFundsService.getFilterData("/sip/getAUMRange").subscribe(
+         output => {
+         this.minAUM = output.min;
+         this.maxAUM = output.max;
+         });*/
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+    }
+
+}

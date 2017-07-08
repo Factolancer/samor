@@ -1,0 +1,32 @@
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {SnackBarService} from "../services/snack-bar.service";
+
+@Component({
+    selector: 'fincash-footer',
+    templateUrl: './footer.component.html',
+    styleUrls: ['./footer.component.scss']
+})
+export class FooterComponent implements OnInit, OnDestroy {
+
+    copyYear: string;
+    contact: string;
+    supEmail: string;
+
+    constructor(private viewContainerRef: ViewContainerRef, private httpService: HttpService, private snackBarService: SnackBarService) {
+        this.copyYear = new Date().getFullYear() + '';
+        this.contact = '022-813456543';
+        this.supEmail = 'support@fincash.com'
+    }
+
+    ngOnInit() {
+        this.httpService.httpErrorObservable.subscribe(error => {
+            this.snackBarService.showSnackBar("PLEASE TRY AGAIN", "OKAY", this.viewContainerRef);
+        });
+    }
+
+    ngOnDestroy() {
+
+    }
+
+}

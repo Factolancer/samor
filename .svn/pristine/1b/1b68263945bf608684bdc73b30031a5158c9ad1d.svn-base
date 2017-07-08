@@ -1,0 +1,21 @@
+import {NgModule} from "@angular/core";
+import {LoginComponent} from "./login.component";
+import {ForgotPasswordComponent} from "./forgot-password.component";
+import {LoginToInvestComponent} from "./logintoinvest.component";
+import {LoginService} from "../core/services/login.service";
+import {ForgotPasswordService} from "./forgot-password.service";
+import {SharedModule} from "../shared/shared.module";
+import {loginRouting} from "./login.routes";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        loginRouting
+    ],
+    exports: [LoginComponent, ForgotPasswordComponent],
+    declarations: [LoginComponent, ForgotPasswordComponent, LoginToInvestComponent],
+    entryComponents: [LoginComponent, ForgotPasswordComponent],
+    providers: [ForgotPasswordService]
+})
+export class LoginModule {
+}

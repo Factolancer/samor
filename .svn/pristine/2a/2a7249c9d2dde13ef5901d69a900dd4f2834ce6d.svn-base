@@ -1,0 +1,99 @@
+<!--Header-->
+<header>
+    <md-toolbar class="header">
+        <span><a routerLink="/"><img src="../assets/img/logo.png"></a></span>
+        <span class="nav">
+         <button md-button="" class="nav-btn" [md-menu-trigger-for]="solutionsMenu">
+             SOLUTIONS <md-icon class="material-icons md-16">&#xE313;</md-icon>
+         </button>
+         <button md-button="" class="nav-btn" routerLink="/report">REPORT</button>
+         <button md-button="" class="nav-btn" routerLink="/cart">CART</button>
+         <button md-button="" class="nav-btn" routerLink="/checkout/init">CHECKOUT</button>
+         <button md-button="" class="nav-btn" routerLink="/checkout/summary">SUMMARY</button>
+    </span>
+
+        <span style="flex: 1 1 auto"></span>
+
+        <span *ngIf="!userLoggedIn()" role="button" (click)="logUserIn()" class="login-btn-area">
+            <span class="text">LOGIN/SIGNUP</span>
+        </span>
+        <!--<span *ngIf="!userLoggedIn()" role="button" (click)="signUserUp()" class="signup-btn-area">
+        <span class="text">SIGNUP</span>
+        </span>-->
+        <span *ngIf="userLoggedIn()" role="button" (click)="logUserOut()" class="signup-btn-area">
+            <span class="text">LOGOUT</span>
+        </span>
+        <span role="button" (click)="checkKYC()" class="checkKYC-btn-area">
+            <span class="text">CHECK KYC</span>
+        </span>
+        <md-menu #solutionsMenu="mdMenu" y-position="below">
+            <button md-menu-item routerLink="/sip"> SIP</button>
+            <button md-menu-item routerLink="/cash">CASH</button>
+            <button md-menu-item routerLink="/tax">TAX</button>
+            <button md-menu-item routerLink="/explore/all"> Explore All</button>
+        </md-menu>
+    </md-toolbar>
+</header>
+
+<!--Body-->
+<div class="fc-body">
+    <router-outlet></router-outlet>
+</div>
+
+
+<!--Footer-->
+<footer class="footer">
+    <md-toolbar class="top">
+        <span>Questions? Get in touch!</span>
+        <span style="flex: 1 1 auto"></span>
+    </md-toolbar>
+    <div class="bottom">
+        <div fxLayout="row" fxLayoutAlign="start start" class="wrapper">
+            <div fxFlex="19">
+                <div class="section-title">ABOUT US</div>
+                <md-list>
+                    <md-list-item><a routerLink="#">Why Fincash</a></md-list-item>
+                    <md-list-item><a routerLink="#">Team</a></md-list-item>
+                    <md-list-item><a routerLink="#">Careers</a></md-list-item>
+                    <md-list-item><a routerLink="#">Partners</a></md-list-item>
+                </md-list>
+            </div>
+            <div fxFlex="19">
+                <div class="section-title">PRODUCT SOLUTIONS</div>
+                <md-list>
+                    <md-list-item><a routerLink="#">SavingsPlus</a></md-list-item>
+                    <md-list-item><a routerLink="#">SmartSIP</a></md-list-item>
+                    <md-list-item><a routerLink="#">TaxSaver</a></md-list-item>
+                    <md-list-item><a routerLink="#">Top Funds</a></md-list-item>
+                </md-list>
+            </div>
+            <div fxFlex="19">
+                <div class="section-title">RESOURCES</div>
+                <md-list>
+                    <md-list-item><a routerLink="#">Explore Funds</a></md-list-item>
+                    <md-list-item><a routerLink="#">Compare Funds</a></md-list-item>
+                    <md-list-item><a routerLink="#">SIP Calculator</a></md-list-item>
+                    <md-list-item><a routerLink="#">Tax Saving Calculator</a></md-list-item>
+                    <md-list-item><a routerLink="#">Resource Center</a></md-list-item>
+                </md-list>
+            </div>
+            <div fxFlex="19">
+                <div class="section-title">LEGAL</div>
+                <md-list>
+                    <md-list-item><a routerLink="#">Privacy Policy</a></md-list-item>
+                    <md-list-item><a routerLink="#">Terms &amp; Conditions</a></md-list-item>
+                    <md-list-item><a routerLink="#">Disclaimers</a></md-list-item>
+                </md-list>
+            </div>
+            <div fxFlex="24">
+                <div class="section-title">CONTACT US</div>
+                <md-list>
+                    <md-list-item><a routerLink="#">A -204, Technocity, Plot No X-4/1 & X-4/2,
+                        TTC, MIDC, Mahape, Navi Mumbai - 400710</a></md-list-item>
+                    <md-list-item><a routerLink="#">Social Icons</a></md-list-item>
+                </md-list>
+            </div>
+        </div>
+    </div>
+
+</footer>

@@ -1,0 +1,166 @@
+<section class="data-head">
+
+</section>
+<section class="data-body">
+    <div class="col-md-12 text-center"><label>Portfolio Summary</label></div>
+
+    <div class="col-md-11 form-group port-value-div" >
+        <div class="row col-md-3">
+            <span>Invested Amount: Rs.</span>
+        </div>
+        <div class="col-md-3">
+            <span>Current Value: Rs.</span>
+        </div>
+        <div class="col-md-3">
+            <span>Unrealized Gain: Rs.</span>
+        </div>
+        <div class="col-md-3">
+            <span>Realized Gain: Rs.</span>
+        </div>
+    </div>
+    <div class="col-md-1 text-right">
+        <span (click)="download()"><i class="material-icons">&#xE8AD;</i></span>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <tr>
+                    <th colspan="5" style="text-align: center;">Portfolio Allocation by Asset Class</th>
+                </tr>
+
+                <tr>
+                    <td>Asset Class</td>
+                    <td>Invested Amount</td>
+                    <td>Share(%)</td>
+                    <td>Current Value</td>
+                    <td>Share(%)</td>
+                </tr>
+                <tr>
+                    <td>Equity Funds</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Debt Funds</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Liquid Funds</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Hybrid Funds</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Gold</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="portfolioReport" *ngIf="false">
+        <div class="col-md-12 text-center"><label>Portfolio Summary</label></div>
+
+        <div class="col-md-11 form-group port-value-div" >
+            <div class="row col-md-3">
+                <span>Invested Amount: Rs.</span>
+            </div>
+            <div class="col-md-3">
+                <span>Current Value: Rs.</span>
+            </div>
+            <div class="col-md-3">
+                <span>Unrealized Gain: Rs.</span>
+            </div>
+            <div class="col-md-3">
+                <span>Realized Gain: Rs.</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <tr>
+                        <th colspan="5" style="text-align: center;">Portfolio Allocation by Asset Class</th>
+                    </tr>
+
+                    <tr>
+                        <td>Asset Class</td>
+                        <td>Beginning Amount</td>
+                        <td>Value(%)</td>
+                        <td>End Amount</td>
+                        <td>Value(%)</td>
+                    </tr>
+                    <tr>
+                        <td>Equity Funds</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Debt Funds</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Liquid Funds</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Hybrid Funds</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gold</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="data-foot">
+    <!--<button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+            (click)="openDialog()">Print
+    </button>-->
+</section>

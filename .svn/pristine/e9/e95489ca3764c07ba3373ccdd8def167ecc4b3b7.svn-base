@@ -1,0 +1,679 @@
+<div>
+    <div fxFlex="100" class="section-header">
+        <div fxLayout="row">
+            <div fxFlex="8" fxFlexOffset="2">
+                <md-icon
+                        [ngClass]="{'material-icons': true, 'md-dark': !kycsaved, 'md-inactive': !kycsaved, 'blue600': kycsaved}">
+                    check
+                </md-icon>
+            </div>
+            <div fxFlex="83">
+                <span>{{heading.kycSectionHeading}}</span>
+            </div>
+            <div fxFlex="7">
+                <md-icon *ngIf="kyccollapsed" clickable (click)="toggleKyc()">expand_more</md-icon>
+                <md-icon *ngIf="!kyccollapsed" clickable (click)="toggleKyc()">expand_less</md-icon>
+            </div>
+
+        </div>
+        <md-toolbar-row *ngIf="kycsaved">
+            <div class="info-div">
+                <div>
+                    <span class="info-label">Annual Income</span>
+                    <span>{{kycForm.controls['income'].value}} &nbsp;&nbsp;</span>
+                </div>
+                <div>
+                    <span class="info-label">State</span>
+                    <span>{{kycForm.controls['current_address'].get('state').value}}</span>
+                </div>
+            </div>
+        </md-toolbar-row>
+    </div>
+
+    <div fxFlex="100" class="section-content">
+        <form [formGroup]="kycForm" (ngSubmit)="onKYCSubmit()" [@ShowHide]="state" novalidate>
+            <br/>
+            <br/>
+            <div>
+                <label class="address-header">Correspondance Address</label>
+                <div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="current_address">
+                        <div fxFlex="80">
+                            <md-input-container>
+                                <input md-input type="text" required formControlName="address1" #curadd1
+                                       placeholder="Address line 1">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['current_address'].get('address1').valid && (kycForm.controls['current_address'].get('address1').touched)"
+                                        class="errorMessage">
+                                    Please enter your communication address
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="current_address">
+                        <div fxFlex="80">
+                            <md-input-container>
+                                <input md-input type="text" formControlName="address2" #curadd2
+                                       placeholder="Address line 2">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="current_address">
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required formControlName="pin" placeholder="Pin Code"
+                                       (blur)="GetPinDetails()">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['current_address'].get('pin').valid && (kycForm.controls['current_address'].get('pin').touched)"
+                                        class="errorMessage">
+                                    Please enter valid 6 digit Pin Code
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input formControlName="landmark" placeholder="Near landmark">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="current_address">
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required type="text" formControlName="city" placeholder="City">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['current_address'].get('city').valid && (kycForm.controls['current_address'].get('city').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required type="text" formControlName="district" placeholder="District">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['current_address'].get('district').valid && (kycForm.controls['current_address'].get('district').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="current_address">
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required type="text" formControlName="state" placeholder="State">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['current_address'].get('state').valid && (kycForm.controls['current_address'].get('state').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="40">
+                            <md-select required formControlName="country" Placeholder="Select Country">
+                                <md-option *ngFor="let country of countries" [value]="country.name">{{country.name}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div style="margin-left: 78px">
+                    <md-checkbox [(ngModel)]="permanantEqualsPresent" [ngModelOptions]="{standalone: true}">
+                        My permanent address is same as above
+                    </md-checkbox>
+                </div>
+                <label class="address-header" *ngIf="!permanantEqualsPresent">Permanent Address</label>
+                <div *ngIf="!permanantEqualsPresent">
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="permanent_address">
+                        <div fxFlex="80">
+                            <md-input-container>
+                                <input md-input type="text" required formControlName="address1" #curadd1
+                                       placeholder="Address line 1">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['permanent_address'].get('address1').valid && (kycForm.controls['permanent_address'].get('address1').touched)"
+                                        class="errorMessage">
+                                    Please enter your permanent address
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="permanent_address">
+                        <div fxFlex="80">
+                            <md-input-container>
+                                <input md-input type="text" formControlName="address2" #curadd2
+                                       placeholder="Address line 2">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="permanent_address">
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required formControlName="pin" placeholder="Pin Code"
+                                       (blur)="GetPinDetails()">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['permanent_address'].get('pin').valid && (kycForm.controls['permanent_address'].get('pin').touched)"
+                                        class="errorMessage">
+                                    Please enter valid 6 digit Pin Code
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input formControlName="landmark" placeholder="Near landmark">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="permanent_address">
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required type="text" formControlName="city" placeholder="City">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['permanent_address'].get('city').valid && (kycForm.controls['permanent_address'].get('city').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required type="text" formControlName="district" placeholder="District">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['permanent_address'].get('district').valid && (kycForm.controls['permanent_address'].get('district').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="permanent_address">
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required type="text" formControlName="state" placeholder="State">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['permanent_address'].get('state').valid && (kycForm.controls['permanent_address'].get('state').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="40">
+                            <md-select required formControlName="country" Placeholder="Select Country">
+                                <md-option *ngFor="let country of countries" [value]="country.name">{{country.name}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div style="margin-left: 78px">
+                    <md-checkbox [(ngModel)]="nomineepresent" [ngModelOptions]="{standalone: true}">
+                        I want to add a nominee
+                    </md-checkbox>
+                </div>
+                <br/>
+                <div *ngIf="nomineepresent">
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="nominee">
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required type="text" formControlName="nominee_name"
+                                       placeholder="Nominee Name">
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="40">
+                            <md-select required formControlName="nominee_relation" Placeholder="Relationship to you">
+                                <md-option *ngFor="let item of relations" [value]="item.name">{{item.name}}</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="nominee">
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required type="date" formControlName="nominee_dob"
+                                       placeholder="Date of Birth of Nominee">
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="40">
+                            <md-select reqired [(ngModel)]="nominee_address_type" [ngModelOptions]="{standalone: true}"
+                                       placeholder="Nominee Address">
+                                <md-option [value]="1">Current Address</md-option>
+                                <md-option [value]="2">Permanent Address</md-option>
+                                <md-option [value]="3">Other Address</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </div>
+                <label class="address-header" *ngIf="nominee_address_type==3">Nominee Address</label>
+                <div *ngIf="nominee_address_type==3">
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="nominee_address">
+                        <div fxFlex="80">
+                            <md-input-container>
+                                <input md-input type="text" required formControlName="address1" #curadd1
+                                       placeholder="Address line 1">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['nominee'].controls['nominee_address'].get('address1').valid && (kycForm.controls['nominee'].controls['nominee_address'].get('address1').touched)"
+                                        class="errorMessage">
+                                    Please enter communication address
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="nominee_address">
+                        <div fxFlex="80">
+                            <md-input-container>
+                                <input md-input type="text" formControlName="address2" #curadd2
+                                       placeholder="Address line 2">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="nominee_address">
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required formControlName="pin" placeholder="Pin Code"
+                                       (blur)="GetPinDetails()">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['nominee_address'].get('pin').valid && (kycForm.controls['nominee_address'].get('pin').touched)"
+                                        class="errorMessage">
+                                    Please enter valid 6 digit Pin Code
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input formControlName="landmark" placeholder="Near landmark">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="nominee_address">
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required type="text" formControlName="city" placeholder="City">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['nominee_address'].get('city').valid && (kycForm.controls['nominee_address'].get('city').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required type="text" formControlName="district" placeholder="District">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['nominee_address'].get('district').valid && (kycForm.controls['nominee_address'].get('district').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" formGroupName="nominee_address">
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input md-input required type="text" formControlName="state" placeholder="State">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['nominee_address'].get('state').valid && (kycForm.controls['nominee_address'].get('state').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="40">
+                            <md-select required Placeholder="Select Country">
+                                <md-option *ngFor="let country of countries" [value]="country.name">{{country.name}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <button md-raised-button color="primary" type="submit" [disabled]="!kycForm.valid">Save</button>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--<div fxLayout="column" fxLayoutAlign="center center">-->
+<!--<md-toolbar color="lightgray" class="sectiontitle">-->
+<!--<div style="width: 100%">-->
+<!--<i [ngClass]="{'material-icons': true, 'md-dark': !kycsaved, 'md-inactive': !kycsaved, 'blue600': kycsaved}">check</i>-->
+<!--<a (click)="toggleKyc()" role="button">{{heading.kycSectionHeading}}</a>-->
+<!--<i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="kyccollapsed">expand_more</i>-->
+<!--<i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="!kyccollapsed">expand_less</i>-->
+<!--</div>-->
+<!--<md-toolbar-row *ngIf="kycsaved">-->
+<!--<div class="info-div">-->
+<!--<div>-->
+<!--<span class="info-label">Annual Income</span>-->
+<!--<span>{{kycForm.controls['income'].value}} &nbsp;&nbsp;</span>-->
+<!--</div>-->
+<!--<div>-->
+<!--<span class="info-label">State</span>-->
+<!--<span>{{kycForm.controls['current_address'].get('state').value}}</span>-->
+<!--</div>-->
+<!--</div>-->
+<!--</md-toolbar-row>-->
+<!--</md-toolbar>-->
+<!--<form [formGroup]="kycForm" (ngSubmit)="onKYCSubmit()" [@ShowHide]="state" novalidate class="kycform">-->
+<!--<md-grid-list cols="2" rowHeight="75px">-->
+<!--<md-grid-tile>-->
+<!--<label class="field_label">Annual Income</label>-->
+<!--<select required formControlName="income">-->
+<!--<option *ngFor="let income of incomerange" value="income.value">{{income.value}}</option>-->
+<!--</select>-->
+<!--<md-hint *ngIf="!kycForm.controls['income'].valid && (kycForm.controls['income'].touched)"-->
+<!--class="errorMessage">-->
+<!--Required field-->
+<!--</md-hint>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<label class="field_label">Occupation</label>-->
+<!--<select required formControlName="job">-->
+<!--<option *ngFor="let item of occupations" [value]="item.name">{{item.name}}</option>-->
+<!--</select>-->
+<!--<md-hint *ngIf="!kycForm.controls['job'].valid && (kycForm.controls['job'].touched)"-->
+<!--class="errorMessage">-->
+<!--Required field-->
+<!--</md-hint>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile>-->
+<!--<md-input required formControlName="father_spouse" placeholder="Father/Spouse Name">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['father_spouse'].valid && (kycForm.controls['father_spouse'].touched)"-->
+<!--class="errorMessage">-->
+<!--Please enter Father/Spouse name-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<label class="field_label">Address Proof</label>-->
+<!--<select formControlName="address_proof">-->
+<!--<option *ngFor="let item of addressprooofs" [value]="item.name">{{item.name}}</option>-->
+<!--</select>-->
+<!--<md-hint *ngIf="!kycForm.controls['address_proof'].valid && (kycForm.controls['address_proof'].touched)"-->
+<!--class="errorMessage">-->
+<!--Required Field-->
+<!--</md-hint>-->
+<!--</md-grid-tile>-->
+<!--</md-grid-list>-->
+
+<!--<div class="addressbox">-->
+<!--<label style="margin: 10px">Correspondance Address</label>-->
+<!--<div formGroupName="current_address">-->
+<!--<md-grid-list cols="2" rowHeight="75px">-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" required formControlName="address1" #curadd1-->
+<!--placeholder="Address line 1">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['current_address'].get('address1').valid && (kycForm.controls['current_address'].get('address1').touched)"-->
+<!--class="errorMessage">-->
+<!--Please enter your communication address-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--<label class="charactercountlabel">{{curadd1.characterCount}}/50</label>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" formControlName="address2"-->
+<!--placeholder="Address line 2">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['current_address'].get('address2').valid && (kycForm.controls['current_address'].get('address1').touched)"-->
+<!--class="errorMessage">-->
+<!--Please enter valid address-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<md-input required formControlName="pin" placeholder="Pin Code" (blur)="GetPinDetails()">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['current_address'].get('pin').valid && (kycForm.controls['current_address'].get('pin').touched)"-->
+<!--class="errorMessage">-->
+<!--Please enter valid 6 digit Pin Code-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" required formControlName="city" placeholder="City">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['current_address'].get('city').valid && (kycForm.controls['current_address'].get('city').touched)"-->
+<!--class="errorMessage">-->
+<!--Required-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" required formControlName="state" placeholder="State">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['current_address'].get('state').valid && (kycForm.controls['current_address'].get('state').touched)"-->
+<!--class="errorMessage">-->
+<!--Required-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<label class="field_label">Country of Residence</label>-->
+<!--<select required>-->
+<!--<option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>-->
+<!--</select>-->
+<!--</md-grid-tile>-->
+<!--</md-grid-list>-->
+<!--</div>-->
+<!--</div>-->
+<!--<md-grid-list cols="1" style="margin: 10px">-->
+<!--<md-checkbox [(ngModel)]="permanantEqualsPresent" [ngModelOptions]="{standalone: true}">-->
+<!--My permanent address is same as above-->
+<!--</md-checkbox>-->
+<!--</md-grid-list>-->
+<!--<div class="addressbox">-->
+<!--<label *ngIf="!permanantEqualsPresent" style="margin: 10px">Permanent Address</label>-->
+<!--<div formGroupName="permanent_address" *ngIf="!permanantEqualsPresent">-->
+<!--<md-grid-list cols="2" rowHeight="75px">-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" required formControlName="address1" #address1-->
+<!--placeholder="Address line 1">-->
+<!--<md-hint align="end"-->
+<!--*ngIf="!kycForm.controls['permanent_address'].get('address1').valid && (kycForm.controls['permanent_address'].get('address1').touched)"-->
+<!--class="errorMessage">-->
+<!--Please enter your Permanent address-->
+<!--</md-hint>-->
+<!--<label class="charactercountlabel">{{address1.characterCount}}/50</label>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" formControlName="address2"-->
+<!--placeholder="Address line 2">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['permanent_address'].get('address2').valid && (kycForm.controls['permanent_address'].get('address1').touched)"-->
+<!--class="errorMessage">-->
+<!--Please enter valid address-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile>-->
+<!--<md-input required formControlName="pin" placeholder="Pin Code" (blur)="GetPinDetails()">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['permanent_address'].get('pin').valid && (kycForm.controls['permanent_address'].get('pin').touched)"-->
+<!--class="errorMessage">-->
+<!--Please enter valid 6 digit Pin Code-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" required formControlName="city" placeholder="City">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['permanent_address'].get('city').valid && (kycForm.controls['permanent_address'].get('city').touched)"-->
+<!--class="errorMessage">-->
+<!--Required-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+
+<!--&lt;!&ndash;<md-grid-tile>&ndash;&gt;-->
+<!--&lt;!&ndash;<md-input type="text" required formControlName="district" placeholder="District">&ndash;&gt;-->
+<!--&lt;!&ndash;<md-hint&ndash;&gt;-->
+<!--&lt;!&ndash;*ngIf="!kycForm.controls['permanent_address'].get('district').valid && (kycForm.controls['permanent_address'].get('district').touched)"&ndash;&gt;-->
+<!--&lt;!&ndash;class="errorMessage">&ndash;&gt;-->
+<!--&lt;!&ndash;Required&ndash;&gt;-->
+<!--&lt;!&ndash;</md-hint>&ndash;&gt;-->
+<!--&lt;!&ndash;</md-input>&ndash;&gt;-->
+<!--&lt;!&ndash;</md-grid-tile>&ndash;&gt;-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" required formControlName="state" placeholder="State">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['current_address'].get('state').valid && (kycForm.controls['current_address'].get('state').touched)"-->
+<!--class="errorMessage">-->
+<!--Required-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+
+<!--</md-grid-list>-->
+<!--</div>-->
+<!--</div>-->
+<!--<md-grid-list cols="1" style="margin: 10px">-->
+<!--<md-checkbox [(ngModel)]="nomineepresent" [ngModelOptions]="{standalone: true}">-->
+<!--I want to add a nominee-->
+<!--</md-checkbox>-->
+<!--</md-grid-list>-->
+<!--<div formGroupName="nominee" *ngIf="nomineepresent">-->
+<!--<md-grid-list cols="2" rowHeight="75px">-->
+<!--<md-grid-tile>-->
+<!--<md-input formControlName="nominee_name" placeholder="Your Nominee Name"></md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<label class="field_label">Relationship to you</label>-->
+<!--<select formControlName="nominee_relation">-->
+<!--<option *ngFor="let item of relations" [value]="item.name">{{item.name}}</option>-->
+<!--</select>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile>-->
+<!--<label class="field_label">Nominee DOB</label>-->
+<!--<md-input formControlName="nominee_dob" type="date" class="date_margin"></md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<label class="field_label">Nominee Address</label>-->
+<!--<select [(ngModel)]="nominee_address_type" [ngModelOptions]="{standalone: true}">-->
+<!--<option [value]="1">Current Address</option>-->
+<!--<option [value]="2">Permanent Address</option>-->
+<!--<option [value]="3">Other Address</option>-->
+<!--</select>-->
+<!--</md-grid-tile>-->
+<!--</md-grid-list>-->
+
+<!--<div formGroupName="nominee_address" *ngIf="nominee_address_type==3" class="addressbox">-->
+<!--<label style="margin: 10px">Nominee Address</label>-->
+<!--<div>-->
+<!--<md-grid-list cols="2" rowHeight="75px">-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" formControlName="address1" #address1-->
+<!--placeholder="Address line 1">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['nominee'].controls['nominee_address'].get('address1').valid && (kycForm.controls['nominee'].controls['nominee_address'].get('address1').touched)"-->
+<!--class="errorMessage">-->
+<!--Please enter your communication address-->
+<!--</md-hint>-->
+<!--<label class="charactercountlabel">{{address1.characterCount}}/50</label>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" formControlName="address2"-->
+<!--placeholder="Address line 2">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['nominee'].controls['nominee_address'].get('address2').valid && (kycForm.controls['nominee'].controls['nominee_address'].get('address1').touched)"-->
+<!--class="errorMessage">-->
+<!--Please enter valid address-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile>-->
+<!--<md-input formControlName="pin" placeholder="Pin Code" (blur)="GetPinDetails()">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['nominee'].controls['nominee_address'].get('pin').valid && (kycForm.controls['nominee'].controls['nominee_address'].get('pin').touched)"-->
+<!--class="errorMessage">-->
+<!--Please enter valid 6 digit Pin Code-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" formControlName="city" placeholder="City">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['nominee'].controls['nominee_address'].get('city').valid && (kycForm.controls['nominee'].controls['nominee_address'].get('city').touched)"-->
+<!--class="errorMessage">-->
+<!--Required-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+
+<!--&lt;!&ndash;<md-grid-tile>&ndash;&gt;-->
+<!--&lt;!&ndash;<md-input type="text" formControlName="district" placeholder="District">&ndash;&gt;-->
+<!--&lt;!&ndash;<md-hint&ndash;&gt;-->
+<!--&lt;!&ndash;*ngIf="!kycForm.controls['nominee'].controls['nominee_address'].get('district').valid && (kycForm.controls['nominee'].controls['nominee_address'].get('district').touched)"&ndash;&gt;-->
+<!--&lt;!&ndash;class="errorMessage">&ndash;&gt;-->
+<!--&lt;!&ndash;Required&ndash;&gt;-->
+<!--&lt;!&ndash;</md-hint>&ndash;&gt;-->
+<!--&lt;!&ndash;</md-input>&ndash;&gt;-->
+<!--&lt;!&ndash;</md-grid-tile>&ndash;&gt;-->
+<!--<md-grid-tile>-->
+<!--<md-input type="text" formControlName="state" placeholder="State">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['nominee'].controls['nominee_address'].get('state').valid && (kycForm.controls['nominee'].controls['nominee_address'].get('state').touched)"-->
+<!--class="errorMessage">-->
+<!--Required-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+<!--</md-grid-list>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--</div>-->
+<!--<div formGroupName="ipv">-->
+<!--<label style="margin: 10px">Schedule a call for online IPV (In Person Verification)</label>-->
+<!--<md-grid-list cols="2" rowHeight="75px">-->
+<!--<md-grid-tile>-->
+<!--<label class="field_label">Choose how to connect with you</label>-->
+<!--<select formControlName="ipvoption">-->
+<!--<option *ngFor="let ipv of ipvoptions" [value]="ipv.name">{{ipv.name}}</option>-->
+<!--</select>-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['ipv'].get('ipvoption').valid && (basicForm.controls['ipv'].get('ipvoption').touched)"-->
+<!--class="errorMessage">-->
+<!--Please select an option-->
+<!--</md-hint>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile>-->
+<!--<label class="field_label">IPV schedule</label>-->
+<!--<md-input formControlName="ipvschedule" type="datetime-local">-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['ipv'].get('ipvschedule').valid && (basicForm.controls['ipv'].get('ipvschedule').touched)"-->
+<!--class="errorMessage">-->
+<!--Invalid-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile>-->
+<!--<md-input formControlName="ipvid" placeholder='ID'>-->
+<!--<md-hint-->
+<!--*ngIf="!kycForm.controls['ipv'].get('ipvid').valid && (basicForm.controls['ipv'].get('ipvid').touched)"-->
+<!--class="errorMessage">-->
+<!--Please enter valid id-->
+<!--</md-hint>-->
+<!--</md-input>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile [colspan]="2">-->
+<!--<button md-raised-button color="primary" [disabled]="!kycForm.valid">Save</button>-->
+<!--</md-grid-tile>-->
+<!--</md-grid-list>-->
+<!--</div>-->
+<!--</form>-->
+<!--</div>-->
+
+

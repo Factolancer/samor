@@ -1,0 +1,17 @@
+<div class="product-container">
+  <div class="highlight">Invest in our Products</div>
+  <div fxLayout="row">
+    <md-card fxFlex="50" align="center" *ngFor="let product of productSolutions, let i=index">
+      <md-card-title>
+        <img src={{product.image}}><br/>
+       {{product.title}}
+      </md-card-title>
+      <md-card-content>
+        <p>{{product.content[0]}}</p>
+        <p>{{product.content[1]}}</p>
+        <p>{{product.content[2]}}</p>
+      </md-card-content>
+      <button class="invest-button" (click)="invest(i)">invest</button>
+    </md-card>
+  </div>
+</div>

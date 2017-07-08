@@ -1,0 +1,64 @@
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {FundService} from "./fund.service";
+import {Subscription} from "rxjs";
+import {FundDisplay} from "./models/fund-display";
+import {Input} from "@angular/core/src/metadata/directives";
+
+@Component({
+    selector: 'app-fund-view-panel',
+    templateUrl: './fund-view-panel.component.html'
+})
+export class FundViewPanelComponent implements OnInit,OnDestroy {
+
+    //subscriptions
+    fundDisplaySubscription: Subscription;
+
+    //variables
+    fundDisplay: FundDisplay;
+    _allowTotals: boolean = true;
+    _allowRowChange: boolean = true;
+    _allowViewChange: boolean = true;
+
+
+    @Input() set allowTotals(allowed: boolean) {
+        this._allowTotals = allowed;
+    }
+
+    @Input() set allowRowChange(allowed: boolean) {
+        this._allowRowChange = allowed;
+    }
+
+    @Input() set allowViewChange(allowed: boolean) {
+        this._allowViewChange = allowed;
+    }
+
+    constructor(private fundService: FundService) {
+        this.fundDisplaySubscription = fundService.fundDisplay.subscribe(
+            fd => {
+                this.fundDisplay = fd;
+            }
+        )
+    }
+
+    setRowsToDisplay(selectedRows: number) {
+        this.fundDisplay.rows = selectedRows;
+        this.fundService.setFundDisplay(this.fundDisplay);
+    }
+
+
+    toggleView() {
+        this.fundDisplay.isListView = !this.fundDisplay.isListView;
+        this.fundService.setFundDisplay(this.fundDisplay);
+    }
+
+
+    ngOnInit() {
+       // this.fundDisplay = this.fundService.getFundDisplay();
+
+    }
+
+    ngOnDestroy() {
+        this.fundDisplaySubscription.unsubscribe();
+    }
+
+}

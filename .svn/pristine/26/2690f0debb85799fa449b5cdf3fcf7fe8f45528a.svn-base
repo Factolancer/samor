@@ -1,0 +1,204 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {LogoImdData} from "../constants";
+import {ReportService} from "../report.service";
+import {Subscription} from "rxjs";
+import {CapitalGainsReportService} from "./capital-gains-report.service";
+import {CapitalGains, FundDetails, FinancialYear} from "./capital-gains";
+import {CustomJspdf} from "../transaction-report/jsPDFext";
+import {isNullOrUndefined} from "util";
+import {DatePipe} from "@angular/common";
+
+declare let jsPDF;
+
+@Component({
+    selector: 'app-capital-gains-report',
+    templateUrl: './capital-gains-report.component.html',
+    styleUrls: ['../report.styles.scss']
+})
+export class CapitalGainsReportComponent implements OnInit,OnDestroy {
+
+    capitalGainTabSubscription: Subscription;
+    finYear:number;
+    funds: FundDetails[];
+    finYearList:FinancialYear[]=[];
+    capitalGain:CapitalGains;
+    constructor(private reportService: ReportService, private capitalGainsService: CapitalGainsReportService) {
+
+    }
+
+    ngOnInit() {
+        this.capitalGainTabSubscription = this.reportService.capitalGainsTabResult.subscribe((loadTab: boolean)=> {
+            if (loadTab == true) {
+                this.getLastThreeFinYear();
+                this.finYear = 0;
+                this.capitalGainsService.getFundsCapitalGains(this.finYear)
+                    .subscribe(capitalGain => {
+
+                        this.capitalGain = capitalGain as CapitalGains;
+
+                        this.funds = capitalGain.fundDetailsList;
+                    });
+
+            } else {
+                this.funds = [];
+            }
+        });
+    }
+
+    getFinYearCapitalGains(){
+        this.capitalGainsService.getFundsCapitalGains(this.finYear)
+            .subscribe(capitalGain => {
+
+                this.capitalGain = capitalGain as CapitalGains;
+
+                this.funds = capitalGain.fundDetailsList;
+            });
+    }
+    getLastThreeFinYear(){
+        let currentDate = new Date();
+
+        for(let offset = 0; offset < 3; offset++){
+            let currentYear = new DatePipe("en-US").transform(currentDate,'yy');
+            let previousYear = new DatePipe("en-US").transform(currentDate.setFullYear(currentDate.getFullYear() - 1),'yyyy');
+
+            let yearLabel = "FY "+previousYear + "-"+currentYear;
+            this.finYearList.push(new FinancialYear(yearLabel,offset));
+        }
+    }
+    ngOnDestroy() {
+        this.capitalGainTabSubscription.unsubscribe();
+    }
+
+    download() {
+        var wrapperPdf = new CustomJspdf('p', 'pt');
+        var pdf = wrapperPdf.jspdf;
+        var totalPagesExp = "{total_pages_count_string}";
+
+        pdf.setFontSize(12);
+        wrapperPdf.myText("Investment Gain/Loss Statement", {align: "center"}, 0, 100);
+
+        pdf.autoTable([], [], {addPageContent: pageContent});
+
+        var columns = [{title: "Description", dataKey: "desc"},
+            {title: "Date", dataKey: "redeemDate"},
+            {title: "Units", dataKey: "units"},
+            {title: "Price      (Rs.)", dataKey: "price"},
+            {title: "Amount (Rs.)", dataKey: "amount"},
+            {title: "Date", dataKey: "purchaseDate"},
+            {title: "Units", dataKey: "purchaseUnits"},
+            {title: "Unit Cost(Rs.)", dataKey: "purchasePrice"},
+            {title: "Short Term Gain", dataKey: "shortTermGain"},
+            {title: "Long Term Gain", dataKey: "longTermGain"}];
+        pdf.setFontSize(10);
+
+        let startY = 150;
+        var currentpage = 0;
+        for(let fund of this.funds){
+
+            pdf.setFontStyle('normal');
+            pdf.setFontSize(8);
+            pdf.text("AMC: "+fund.amc, 40, startY);
+            wrapperPdf.myText("Folio No: " + fund.fundBasicDetails.folioNo, {align: "right"}, 0, startY);
+            //pdf.text("Folio No: "+fund.folioNo, 40, startY+15);
+            pdf.text("Status: "+ this.capitalGain.status, 40, startY+10);
+            wrapperPdf.myText("PAN: " + this.capitalGain.pan, {align: "right"}, 0, startY+10);
+            //pdf.text("PAN: " + this.capitalGain.pan, 40, startY+45);
+
+
+            let redemptionList = fund.redemptionDetailsList;
+            var rows = [];
+            for(let redemption of redemptionList){
+                let longTermGain = "";
+                let shortTermGain = "";
+                if(!isNullOrUndefined(redemption.longTermGain)){
+                    longTermGain = redemption.longTermGain.toFixed(2)
+                }
+                if(!isNullOrUndefined(redemption.shortTermGain)){
+                    shortTermGain = redemption.shortTermGain.toFixed(2)
+                }
+                let formattedRedeemDate = new DatePipe("en-US").transform(redemption.redeemDate,'dd-MM-yyyy');
+                let formattedPurchaseDate = new DatePipe("en-US").transform(redemption.purchaseDate,'dd-MM-yyyy');
+                rows.push({desc:redemption.desc,redeemDate:formattedRedeemDate,units:redemption.units.toFixed(2),
+                    price:redemption.price.toFixed(2),amount:redemption.amount.toFixed(2),purchaseDate:formattedPurchaseDate,
+                    purchaseUnits:redemption.purchaseUnits.toFixed(2),purchasePrice:redemption.purchasePrice.toFixed(2),
+                    shortTermGain:shortTermGain,longTermGain:longTermGain})
+            }
+            let totalLongTermGain = "";
+            let totalShortTermGain = "";
+            if(!isNullOrUndefined(fund.totalLongTermGain)){
+                totalLongTermGain = fund.totalLongTermGain.toFixed(2)
+            }
+            if(!isNullOrUndefined(fund.totalShortTermGain)){
+                totalShortTermGain = fund.totalShortTermGain.toFixed(2)
+            }
+            rows.push({desc:"Total",redeemDate:"",units:fund.totalRedeemedUnits.toFixed(2),
+                price:"",amount:fund.totalAmount.toFixed(2),purchaseDate:"",
+                purchaseUnits:"",purchasePrice:"",
+                shortTermGain:totalShortTermGain,longTermGain:totalLongTermGain});
+
+            pdf.setFillColor(41, 128, 185);
+            pdf.rect(40.25, startY+20, 515, 23, 'F');
+            /*pdf.rect(315, startY+50, 150, 23, 'F');
+            pdf.rect(465,startY+50,90.5,23,'F');*/
+            pdf.setTextColor(255, 255, 255);
+            pdf.setFontStyle('bold');
+            wrapperPdf.textInWindow("Redemption/Switch-out", 0, startY+30, 275);
+            var splitTitle = pdf.splitTextToSize("Corresponding units in Purchase/Switch-In/Div-Reinvestment", 130);
+            pdf.text(290, startY+30, splitTitle);
+            splitTitle = pdf.splitTextToSize("Capital Gains/Losses", 91);
+            pdf.text(440, startY+30, splitTitle);
+
+            var pageContent = function (data) {
+                // HEADER
+                pdf.setFontSize(20);
+                pdf.setFontStyle('normal');
+                pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+                // FOOTER
+                if (currentpage < pdf.internal.getNumberOfPages()) {
+                    var str = "Page " + pdf.internal.getNumberOfPages();
+                    // Total page number plugin only available in jspdf v1.0+
+                    if (typeof pdf.putTotalPages === 'function') {
+                        str = str + " of " + totalPagesExp;
+                    }
+                    pdf.setFontSize(10);
+                    //pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 30);
+                    pdf.setFontStyle('normal');
+                    pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 25);
+                    currentpage = pdf.internal.getNumberOfPages();
+                }
+            };
+
+            var tableStyle = {
+                styles: {overflow: 'linebreak'},
+                startY: startY+43,
+                addPageContent: pageContent,
+                pageBreak: 'avoid',
+                margin: {top: 90},
+                headerStyles: {rowHeight: 15, fontSize: 8},
+                bodyStyles: {rowHeight: 12, fontSize: 8, valign: 'middle'},
+                drawCell: function (cell, data) {
+                    if (data.row.index == rows.length - 1) {
+                        pdf.setFontStyle('bold');
+                    }
+                    /*if (row.index === 0) {
+                        pdf.text("Birla Sun Life Manufacturing Equity Fund-Regular Growth (Equity (G))", 45, row.y + row.height / 2);
+                        data.cursor.y += 20;
+                    }*/
+                }
+            };
+            pdf.autoTable(columns, rows, tableStyle);
+            startY = pdf.autoTableEndPosY() + 60
+        }
+
+
+        pdf.setFontStyle('bold');
+        pdf.text("Your cumulative short term capital gain/loss is "+this.capitalGain.cumulativeShortTermGain.toFixed(2), 40, pdf.autoTableEndPosY() + 20);
+        pdf.text("Your cumulative long term capital gain/loss is "+this.capitalGain.cumulativeLongTermGain.toFixed(2), 40, pdf.autoTableEndPosY() + 30);
+        pdf.setFontStyle('normal');
+        pdf.text("Note: Short term (less than 1year) redemption of units/amount would incur a taxation of 1%", 40, pdf.autoTableEndPosY() + 50);
+        if (typeof pdf.putTotalPages === 'function') {
+            pdf.putTotalPages(totalPagesExp);
+        }
+        pdf.save('Capital Gains Report.pdf');
+    }
+}

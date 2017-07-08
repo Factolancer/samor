@@ -1,0 +1,88 @@
+@import "../../styles/partials/web-partials";
+
+.checkout-product-head {
+  background-color: $brand-secondary;
+  color: $white;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  border-radius: 0;
+  padding: 15px;
+}
+
+.checkout-product {
+  margin-bottom: 25px;
+}
+
+.checkout-product-divider {
+  border-color: $dark-grey;
+  padding: 5px 0;
+}
+
+.checkout-product-item {
+  background-color: $white;
+  border-radius: 0;
+  color: $black;
+  padding: 15px;
+
+  .fund {
+    padding: 10px 0;
+  }
+
+  .product-tag {
+    color: #BFBFBF;
+    font-size: 10px;
+    border: solid 1px #BFBFBF;
+    border-radius: 5px;
+    padding: 1px 5px;
+  }
+}
+
+.remove-btn {
+  color: $black;
+  background-color: $white;
+  border: none;
+  font-size: 16px;
+  outline-style: none;
+
+  &:hover {
+    color: $brand-secondary;
+  }
+}
+
+.add-funds {
+  padding-top: 5px;
+  color: $brand-secondary;
+  font-size: 12px;
+}
+
+.total-inv-checkout {
+  padding: 20px;
+  font-weight: 700;
+  background-color: $light-grey;
+  color: $brand-secondary;
+}
+
+.total-inv-summary {
+  padding: 20px 24px;
+  margin: 10px -24px -24px -24px;
+  font-weight: 700;
+  background-color: $light-grey;
+  color: $brand-secondary;
+}
+
+.ip-details {
+  font-size: 10px;
+  color: $dark-grey;
+  padding: 10px 0;
+}
+
+.disclaimer-text {
+  max-height: 100px;
+  font-size: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 10px 5px;
+}

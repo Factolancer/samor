@@ -1,0 +1,15 @@
+.filter-content {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.filter-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 10px 5px 10px 0;
+    line-height: 36px;
+}
+
+.filter-clear {
+    color: #0081c9;
+}

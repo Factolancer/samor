@@ -1,0 +1,4 @@
+export class TransactionType {
+
+    constructor(private id:number,private transType:string){}
+}

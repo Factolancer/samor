@@ -1,0 +1,41 @@
+<!--Header-->
+<md-toolbar class="header">
+    <img src="public/images/logo.png">
+    <span style="flex: 1 1 auto"></span>
+    <button md-button="" (click)="getSS()"> Get SS</button>
+    <button md-button="" routerLink="/registration">Reg</button>
+    <button md-button="" routerLink="/explore/all">Explore</button>
+    <button md-button="" routerLink="/sip">Sip</button>
+    <button md-button="" routerLink="/cash">Cash</button>
+    <button md-button="" routerLink="/tax">Tax</button>
+    <button md-button="" routerLink="/report">PortFolio Report</button>
+    <button md-button="" routerLink="/checkout/init">Checkout</button>
+    <button md-button="" routerLink="/checkout/summary">Summary</button>
+    <button md-icon-button="" color="accent" routerLink="/dashboard1">
+        <md-icon class="md-36 material-icons">&#xE871;</md-icon><!--Dashboard icon-->
+    </button>
+    <button md-icon-button="" color="accent" routerLink="/dashboard">
+        <md-icon class="md-36 material-icons">&#xE8F0;</md-icon><!--view module icon-->
+    </button>
+    <button md-icon-button="" color="accent" routerLink="/watchlist">
+        <md-icon class="md-36 material-icons">&#xE922;</md-icon><!--watchlist-->
+    </button>
+    <button md-icon-button="" color="primary" routerLink="/cart">
+        <md-icon class="md-36 material-icons">&#xE8CC;</md-icon> <!--cart-icon-->
+    </button>
+</md-toolbar>
+<!--Body-->
+<div class="data-area container-fluid">
+    <router-outlet></router-outlet>
+</div>
+<!--Footer-->
+<md-toolbar class="footer-top">
+    Question? Visit the <a href="#">Support Centre</a>
+    <span style="flex: 1 1 auto"></span>
+    <span><md-icon class="material-icons md-18">&#xE0BE;</md-icon><!--Email-icon-->
+        contact@fincash.com</span>
+</md-toolbar>
+<md-toolbar class="footer-bottom">
+    Site map, social links etc!
+</md-toolbar>
+

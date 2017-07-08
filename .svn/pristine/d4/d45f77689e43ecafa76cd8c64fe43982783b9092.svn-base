@@ -1,0 +1,15 @@
+<md-card class="explore-fund-head">
+    Filters
+</md-card>
+<md-card class="filter-data">
+    <app-category-filter *ngIf="showCategoryFilter"></app-category-filter>
+    <md-divider *ngIf="showCategoryFilter"></md-divider>
+    <app-amc-filter *ngIf="showAMCFilter"></app-amc-filter>
+    <md-divider *ngIf="showAMCFilter"></md-divider>
+    <app-aum-filter *ngIf="showAUMFilter"></app-aum-filter>
+    <md-divider *ngIf="showAUMFilter"></md-divider>
+    <app-age-filter *ngIf="showAgeFilter"></app-age-filter>
+    <md-divider *ngIf="showAgeFilter"></md-divider>
+    <app-rating-filter *ngIf="showRatingFilter"></app-rating-filter>
+    <!-- <app-amc-filter></app-amc-filter>-->
+</md-card>

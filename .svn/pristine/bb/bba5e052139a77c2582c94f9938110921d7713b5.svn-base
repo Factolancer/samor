@@ -1,0 +1,12 @@
+<div class="right-align fund-count">
+    <span *ngIf="allowTotals && totalNumFound>0">Showing <b>{{searchInputFrom + 1}}</b>-
+                <span *ngIf="searchInputFrom+searchInputRows >= totalNumFound"><b>{{totalNumFound}}</b></span>
+                <span *ngIf="searchInputFrom+searchInputRows < totalNumFound"><b>{{searchInputFrom+searchInputRows}}</b></span>
+                    of <b>{{totalNumFound}}</b> results
+            </span>
+    <select (change)="setRowsToDisplay($event.target.value)" *ngIf="allowRowChange" value="{{searchInputRows}}">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+    </select>
+</div>

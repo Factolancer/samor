@@ -1,0 +1,68 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "./http-service.service";
+import {Logger} from "../logger/logger";
+import {Redemption} from "../../redemption/models/redemption";
+import {RedemptionBank} from "../../redemption/models/redemption-bank";
+import {RedemptionNominee} from "../../redemption/models/redemption-nominee";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
+import {RedemptionFund} from "../../redemption/models/redemption-fund";
+import {RedemptionSummary} from "../../redemption/models/redemption-summary";
+import {CartService} from "./cart.service";
+
+@Injectable()
+export class RedemptionService {
+    className: string;
+    redemptionData: BehaviorSubject<Redemption>;
+    redemptionObservable: Observable<Redemption>;
+    errorRedemptionData: RedemptionFund[];
+
+    constructor(private httpService: HttpService, private logger: Logger, private cartService: CartService) {
+        this.className = "RedemptionService";
+        let redemption = new Redemption("", [], [], [], new RedemptionBank(1, "", "", "", ""), new RedemptionNominee("", "", ""), 0);
+        this.redemptionData = new BehaviorSubject<Redemption>(redemption);
+        this.redemptionObservable = this.redemptionData as Observable<Redemption>;
+    }
+
+    getRedemptionAutoCompleteData(term: string) {
+        return this.httpService.securePost("/redeem/getRedeemSuggestion", {term: term});
+    }
+
+    getRedemptionData() {
+        // return new Redemption("", [], [], [], new RedemptionBank(1, "HDFC Bank", "Mahape", "22", "HDFC0002334"), new RedemptionNominee("", "", ""), 0);
+        return this.httpService.securePost("/checkout/getRedemptionDataSummary", {"cartId": this.cartService.getCartSubjectState().id})
+            .subscribe(value => {
+                let redemptionTemp = this.redemptionData.getValue();
+                if (redemptionTemp.fundsData.length > 0 && value.fundsData.length > 0){
+                    redemptionTemp.fundsData.push(value.fundsData);
+                    // value.fundsData.push(funds);
+                }
+                this.redemptionData.next(redemptionTemp);
+                this.logger.debug(this.className, this.redemptionData.getValue());
+            });
+    }
+
+    postRedemptionData() {
+        return this.httpService.securePost("/checkout/saveRedemptionData", {"cartId": this.cartService.getCartSubjectState().id, "redemption": this.redemptionData.getValue()})
+    }
+
+    invest(imagePath: string) {
+        return this.httpService.securePost("/checkout/redeem", this.prepareSummary(imagePath));
+    }
+
+    prepareSummary(imagePath: string): any {
+        let summaryFunds: RedemptionFund[] = [];
+
+        this.redemptionData.getValue().fundsData.forEach(fund => {
+            summaryFunds.push(new RedemptionFund(fund.fund, fund.plan, fund.option, fund.folioNo, fund.holdingMode, fund.selectedRedemptionMode,
+                fund.selectedAWPFrequency, +fund.selectedAWPDate, +fund.noOfInstallment, +fund.amount, fund.amountUnitFlag, +fund.totalUnits, +fund.redeemableUnits,
+                +fund.currValue, +fund.currNav, fund.navDate));
+        });
+        return new RedemptionSummary(summaryFunds, this.redemptionData.getValue().selectedBank.id,
+            this.redemptionData.getValue().totalRedemptionAmount, imagePath);
+    }
+
+    getSummaryInfo() {
+        return this.httpService.secureGet("/checkout/getSummaryInfo");
+    }
+}

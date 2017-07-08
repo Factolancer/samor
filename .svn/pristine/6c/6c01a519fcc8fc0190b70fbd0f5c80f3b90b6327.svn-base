@@ -1,0 +1,39 @@
+<h2> Card-Risk </h2>
+
+<div class="container">
+  <md-card style="display: block;">
+    <template ngFor let-question [ngForOf]="[selectedQuestion]">
+      <div [@questionAnimation]="orientation" class="friend">
+        <div class="name">
+          {{ question.que }} &mdash; {{answer}}
+        </div>
+        <md-radio-group [(ngModel)]="answer">
+          <md-radio-button *ngFor="let option of question.options" [value]="option" style="display: block; margin: 8px">
+            {{option}}
+          </md-radio-button>
+        </md-radio-group>
+      </div>
+    </template>
+
+    <p class="control">
+      &laquo;
+      <button md-button (click)="prev()">Previous</button>
+      &mdash;
+      <button md-button (click)="next()">Next</button>
+      &raquo;
+    </p>
+  </md-card>
+
+</div>
+
+<div>
+  <h2>ng-if animation example</h2>
+  <button (click)="toggleElement()">toggle</button>
+  <div class="elemnt"
+       *ngIf="toggle"
+       [@flyInOut]="toggle">
+    element
+  </div>
+</div>
+
+

@@ -1,0 +1,43 @@
+@import "../../styles/partials/web-partials";
+
+.fund-name {
+  font-weight: 700;
+  color: $brand-secondary;
+}
+
+.sip-title-area {
+  margin: 21px 0;
+  border-radius: 100px;
+  border: solid 1px $brand-primary;
+  text-align: center;
+  padding: 2px 33px;
+
+  .text {
+    line-height: 47px;
+    font-size: 24px;
+    color: $brand-primary;
+  }
+}
+
+.sip-product-des {
+
+  .text {
+    text-align: center;
+    padding: 15px 0;
+  }
+
+  .icon {
+    border-radius: 50%;
+    border: solid 1px $brand-secondary;
+    background: $white;
+    max-width: 60%;
+    margin: auto;
+
+    img {
+      margin: auto;
+      max-width: 80%;
+      padding: 10% 10%;
+    }
+  }
+
+}

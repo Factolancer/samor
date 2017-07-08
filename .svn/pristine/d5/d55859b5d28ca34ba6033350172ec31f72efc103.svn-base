@@ -1,0 +1,35 @@
+import { Component, OnInit,style, state, animate, transition, trigger } from '@angular/core';
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
+})
+
+export class DashboardComponent implements OnInit {
+  public invested:Boolean;
+  public showDistribution:Boolean = false;
+  expanded = false;
+  expandedState = 'collapsed';
+
+  constructor() { };
+  check(){
+    console.log("checking");
+    this.showDistribution = !this.showDistribution;
+  }
+  invest(){
+    console.log("invested");
+  }
+
+  ngOnInit() {
+    let ran = Math.floor(Math.random()*10);
+    //this.invested = (ran%2==0) ? true: false;
+    this.invested = false;
+
+  }
+  toggleExpandedState() {
+    this.expandedState = this.expanded ? 'collapsed' : 'expanded';
+    this.expanded = !this.expanded;
+  }
+
+}

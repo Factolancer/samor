@@ -1,0 +1,22 @@
+<div class="wrapper" fxLayoutWrap="wrap" fxLayout="row" fxLayoutAlign="stretch" xmlns="http://www.w3.org/1999/html">
+    <div fxFlex="100" class="tax-product">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <div fxFlex class="heanpding-32-landingpage"><img src="/assets\img\landingpage/banner_img4.jpg"></div>
+            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="1px" class="landingpage-feature-area">
+
+                <div fxFlex class="heading-text-landingpage pad-25">START AN INVESTMENT PLAN</div>
+
+
+
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="1px" class="landingpage-feature-area">
+            <div  class="no-padding" fxFlex="90">
+                My Age
+            </div>
+            <div  class="no-padding" fxFlex="90" flex-offset="15">
+                My Age
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

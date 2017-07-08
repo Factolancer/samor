@@ -1,0 +1,76 @@
+import {Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {ExploreFundsService} from "../core/services/explore-funds.service";
+import {FundSearchResults} from "./fund-search-results";
+import {Subscription} from "rxjs";
+import {ExploreFundConstants} from "./explore-funds.constants";
+import {FundSearchInput} from "./fund-search-input";
+import {Logger} from "../core/logger/logger";
+
+@Component({
+    selector: 'app-fund-view-panel',
+    templateUrl: './fund-view-panel.component.html',
+    styleUrls: ['./explore-funds.styles.scss']
+})
+export class FundViewPanelComponent implements OnInit, OnDestroy {
+
+
+    @Input() allowTotals: boolean = true;
+    @Input() allowRowChange: boolean = true;
+    @Input() allowViewChange: boolean = true;
+    searchResultsSubscription: Subscription;
+    searchInputSubscription: Subscription;
+    searchInputFrom: number;
+    searchInputRows: number;
+    totalNumFound: number;
+    searchInput: FundSearchInput;
+    className: string;
+
+    constructor(private exploreFundsService: ExploreFundsService, private logger: Logger) {
+
+    }
+
+    setRowsToDisplay(selectedRows: string) {
+        this.searchInput.r = +selectedRows;
+        this.searchInput.qt = ExploreFundConstants.PAGE_QUERY;
+        if (this.totalNumFound <= +selectedRows) {
+            this.searchInput.f = 0;
+        }
+        console.log("calling ssi f page view query!")
+        this.exploreFundsService.navigateToExplore(this.searchInput);
+    }
+
+
+    toggleView() {
+        //this.fundDisplay.isListView = !this.fundDisplay.isListView;
+    }
+
+    ngOnInit() {
+
+        this.searchInputRows = 10;
+        this.totalNumFound = 10;
+        this.className = this.constructor.toString().match(/\w+/g)[1];
+
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput.subscribe(
+            (searchInput: FundSearchInput) => {
+
+                this.searchInput = searchInput;
+                this.searchInputFrom = searchInput.f;
+                if (this.searchInputRows != searchInput.r) {
+                    this.searchInputRows = searchInput.r;
+                }
+            }
+        )
+
+        this.searchResultsSubscription = this.exploreFundsService.fundSearchResult.subscribe(
+            (searchResults: FundSearchResults) => {
+                this.logger.debug(this.className, searchResults);
+                this.totalNumFound = searchResults.numFound;
+            });
+    }
+
+    ngOnDestroy() {
+        this.searchResultsSubscription.unsubscribe();
+        this.searchInputSubscription.unsubscribe();
+    }
+
+}

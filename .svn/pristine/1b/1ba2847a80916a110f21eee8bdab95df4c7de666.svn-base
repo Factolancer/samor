@@ -1,0 +1,57 @@
+import {Component, OnInit, ViewEncapsulation, OnDestroy, HostListener, Inject} from '@angular/core';
+import {Logger} from "../core/logger/logger";
+import {Router} from "@angular/router";
+import {IAppConfig, APP_CONFIG} from "../../environments/environment";
+import {HeaderService} from "../core/services/header.service";
+
+
+@Component({
+    selector: 'app-landingpage',
+    templateUrl: 'landingpage.component.html',
+    styleUrls: ['./landingpage.component.scss'],
+    encapsulation: ViewEncapsulation.None
+})
+export class LandingpageComponent implements OnInit, OnDestroy {
+
+    constructor(private logger: Logger, private router: Router, @Inject(APP_CONFIG) private config: IAppConfig,
+                private headerService: HeaderService) {
+    }
+
+    minAge: number = 18;
+    maxAge: number = 60;
+    minExpns: number = 5000;
+    maxExpns: number = 200000;
+    stepExpns: number = 5000;
+    defaultExpns: number = 5000;
+
+    ngOnInit() {
+        this.headerService.allowHeaderHiding(true);
+    }
+
+    carouselContent = [
+        {
+            "quote": ["I made my first investment", " at the age eleven.", "I was wasting my life up until then."],
+            "quoteAuthor": "Warren Buffet",
+            "url": this.config.staticImagePath + "/assets/img/landingpage/investing.jpg"
+        },
+        {
+            "quote": ["Start Inveseting Just", " INR5000 p.m.", "at the age of 22"],
+            "quoteAuthor": "At 60, your invested 23 lakhs would grow to 4 crores",
+            "url": this.config.staticImagePath + "/assets/img/landingpage/sip-investment.jpg"
+        },
+        {
+            "quote": ["Over", " 10 million", " Trusted Customers Across India are Investing in Mutual Funds."],
+            "quoteAuthor": "More than 17 lakh crore rupees is being managed by Mutual Fund Industry.",
+            "url": this.config.staticImagePath + "/assets/img/landingpage/industry.jpg"
+        }
+    ];
+
+    calculate(age: number, expense: number) {
+        this.logger.info('age', age, 'expense', expense);
+        this.router.navigate(['/calculator/sip/goals/questions/1', {'a': age, 'e': expense}]);
+    }
+
+    ngOnDestroy() {
+        this.headerService.allowHeaderHiding(false);
+    }
+}

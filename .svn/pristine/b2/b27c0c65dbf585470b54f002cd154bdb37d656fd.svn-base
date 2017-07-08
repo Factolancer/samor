@@ -1,0 +1,36 @@
+import {Injectable} from "@angular/core";
+import {Logger} from "../core/logger/logger";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
+import {Subscription} from "rxjs/Subscription";
+
+import {Section} from "../models/reg-section";
+
+
+@Injectable()
+export class SectionService{
+
+    sectionSubject: BehaviorSubject<Section>;
+    currentSection: Observable<Section>;
+
+    usersubscription: Subscription;
+
+    className: string;
+
+    constructor(public logger: Logger){
+        this.className = "SectionService";
+
+        let obj = new Section(false, true, true, true, true, 'show', 'hide', 'hide', 'hide', 'hide');
+
+        this.sectionSubject = new BehaviorSubject<Section>(obj);
+        this.currentSection = this.sectionSubject.asObservable();
+    }
+
+    public setSectionSubject(section: Section){
+        this.sectionSubject.next(section);
+    }
+
+    public  getSectionSubject(){
+        this.sectionSubject.getValue();
+    }
+}

@@ -1,0 +1,64 @@
+import { Contact } from './contact';
+import { Address } from './address';
+import { Bank } from './bank';
+import { Nominee } from './nominee';
+
+export class User{
+
+    constructor(
+        public Basic: {
+            pan: string;
+            name: string;
+            contact: Contact;
+            // mob: string;
+            // email: string;
+            dob: string;
+            gender: string;
+            // country: string;
+            marital_status?: string;
+            // tel?: string;
+            // fax?: string;
+        },
+        public KYC: {
+            job: string;
+            income: string;
+            father_spouse: string;
+            address_proof: string;
+            current_address: Address;
+            permanent_address: Address;
+            // pin: string,
+            // address: string,
+            // district: string,
+            // state: string,
+            nominee?: Nominee;
+        },
+        public Bank:{
+            holder_name: string;
+            bank: Bank;
+            account_type: string;
+            account_number: string;
+        },
+        public Other:{
+            investor_type: string;
+            birth_country: string;
+            nationality: string;
+            tax_country: string;
+
+            overseas_address?: Address;
+            // international_address?: string,
+            // international_postal_code?: string,
+            // international_district?: string,
+            // international_state?: string,
+
+            politically_exposed: string;
+            politically_related: string;
+        },
+        public Docs?: {
+            passport_photo: File;
+            pan_card: File;
+            proof_of_address: File;
+            signature: File;
+            cancelled_cheque: File;
+        }
+    ){ }
+}

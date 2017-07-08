@@ -1,0 +1,204 @@
+<div class="login-dialog">
+    <div fxLayout="row" fxLayoutAlign="center center" class="login-header" md-dialog-title>
+        <div fxFlex="95">
+            Welcome to Fincash
+        </div>
+        <div fxFlex="5" class="close-dialog">
+            <md-icon class="md-18 clickable" (click)="closeClicked()">&#xE888;</md-icon>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="login-content">
+        <div fxFlex="55" fxAlign="center" style="border-right: 0.5px solid lightgray">
+            <div fxFlex="90" fxFlexOffset="5">
+                <md-tab-group>
+                    <md-tab label="Log in">
+                        <div>
+                            <form [formGroup]="LoginForm" (ngSubmit)="onLogIn()">
+                                <div fxLayout="column">
+                                    <br/>
+                                    <md-input-container fxFlex>
+                                        <input md-input required formControlName="email" placeholder="Email Id">
+                                    </md-input-container>
+                                    <md-input-container fxFlex>
+                                        <input md-input required type="password" formControlName="password" placeholder="Password">
+                                    </md-input-container>
+                                    <!--<div>
+                                      <re-captcha (captchaResponse)="captchaResponse = $event" site_key="<6Lf5ZigTAAAAAPOhSyDkbLv4JGbKLHCMgmlwQm5L>"></re-captcha>
+                                    </div>-->
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <div fxFlex fxAlign="center">
+                                        <button md-raised-button color="primary" class="login-button" [disabled]="!LoginForm.valid">
+                                            LOGIN
+                                        </button>
+                                    </div>
+                                    <div fxFlex>
+                                        <div fxLayout="row">
+                                            <div fxFlexAlign="end" class="forgot-password">
+                                                Forgot password
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </md-tab>
+                    <md-tab label="Sign up">
+                        <div>
+                            <form [formGroup]="signUpForm" (ngSubmit)="onSignUp()">
+                                <div fxLayout="column">
+                                    <br/>
+                                    <md-input-container fxFlex>
+                                        <input md-input required formControlName="email" placeholder="Email Id" onblur="checkUsername()">
+                                    </md-input-container>
+                                    <div formGroupName="password" fxLayout="column">
+                                        <md-input-container fxFlex>
+                                            <input md-input required type="password" formControlName="enter_password" placeholder="Password">
+                                        </md-input-container>
+                                        <md-input-container fxFlex>
+                                            <input md-input required type="password" formControlName="confirm_password" placeholder="Confirm Password"
+                                                   onpaste="return false">
+                                        </md-input-container>
+                                    </div>
+                                    <br/>
+                                    <div fxFlex fxAlign="center">
+                                        <button md-raised-button color="primary" class="login-button" [disabled]="!signUpForm.valid">SIGNUP</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </md-tab>
+                </md-tab-group>
+            </div>
+        </div>
+        <div fxFlex="45" fxAlign="center">
+            <div fxFlex="90" fxFlexOffset="5">
+                <button class="google-fb-button login-google">
+                    Sign In with Google
+                </button>
+                <br/>
+                <br/>
+                <button class="google-fb-button login-facebook">
+                    Login with Facebook
+                </button>
+            </div>
+
+        </div>
+
+        <!--<div fxFlex="45"  fxAlign="center">-->
+            <!--<md-tab-group>-->
+                <!--<md-tab label="Log in">-->
+                    <!--<div>-->
+                        <!--<form [formGroup]="LoginForm" (ngSubmit)="onLogIn()">-->
+                            <!--<div fxLayout="column">-->
+                                <!--<br/>-->
+                                <!--<md-input-container fxFlex>-->
+                                    <!--<input md-input required formControlName="email" placeholder="Email Id">-->
+                                <!--</md-input-container>-->
+                                <!--<md-input-container fxFlex>-->
+                                    <!--<input md-input required type="password" formControlName="password" placeholder="Password">-->
+                                <!--</md-input-container>-->
+                                <!--&lt;!&ndash;<div>-->
+                                  <!--<re-captcha (captchaResponse)="captchaResponse = $event" site_key="<6Lf5ZigTAAAAAPOhSyDkbLv4JGbKLHCMgmlwQm5L>"></re-captcha>-->
+                                <!--</div>&ndash;&gt;-->
+                                <!--<br/>-->
+                                <!--<br/>-->
+                                <!--<br/>-->
+                                <!--<br/>-->
+                                <!--<div fxFlex fxAlign="center">-->
+                                    <!--<button md-raised-button color="primary" class="login-button" [disabled]="!LoginForm.valid">-->
+                                        <!--LOGIN-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                                <!--<div fxFlex>-->
+                                    <!--<div fxLayout="row">-->
+                                        <!--<div fxFlexAlign="end" class="forgot-password">-->
+                                            <!--Forgot password-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                <!--</md-tab>-->
+                <!--<md-tab label="Sign up">-->
+                    <!--<div>-->
+                        <!--<form [formGroup]="signUpForm" (ngSubmit)="onSignUp()">-->
+                            <!--<div fxLayout="column">-->
+                                <!--<br/>-->
+                                <!--<md-input-container fxFlex>-->
+                                    <!--<input md-input required formControlName="email" placeholder="Email Id" onblur="checkUsername()">-->
+                                <!--</md-input-container>-->
+                                <!--<div formGroupName="password" fxLayout="column">-->
+                                    <!--<md-input-container fxFlex>-->
+                                        <!--<input md-input required type="password" formControlName="enter_password" placeholder="Password">-->
+                                    <!--</md-input-container>-->
+                                    <!--<md-input-container fxFlex>-->
+                                        <!--<input md-input required type="password" formControlName="confirm_password" placeholder="Confirm Password"-->
+                                               <!--onpaste="return false">-->
+                                    <!--</md-input-container>-->
+                                <!--</div>-->
+                                <!--<br/>-->
+                                <!--<div fxFlex fxAlign="center">-->
+                                    <!--<button md-raised-button color="primary" class="login-button" [disabled]="!signUpForm.valid">SIGNUP</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                <!--</md-tab>-->
+            <!--</md-tab-group>-->
+        <!--</div>-->
+        <!--<div fxFlex="3" fxFlexAlign="center" style="border-right: 1px solid black">-->
+
+        <!--</div>-->
+        <!--<div fxFlex="2" style="border-left: 1px solid black"></div>-->
+        <!--<div fxFlex="45" fxFlexAlign="center">-->
+            <!--<button class="google-fb-button login-google">-->
+            <!--Sign In with Google-->
+        <!--</button>-->
+            <!--<br/>-->
+            <!--<br/>-->
+            <!--<button class="google-fb-button login-facebook">-->
+                <!--Login with Facebook-->
+            <!--</button>-->
+        <!--</div>-->
+    </div>
+</div>
+<!--<div class="login jumbotron center-block">-->
+<!--<h1>Login</h1>-->
+<!--<form role="form" #loginform="ngForm" (submit)="login($event, username.value, password.value)" novalidate>-->
+<!--<div class="form-group">-->
+<!--<label for="username">Username</label>-->
+<!--<input type="text" #username class="form-control" id="username" placeholder="Username" required-->
+<!--(blur)="checkmail($event.target.value)">-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="password">Password</label>-->
+<!--<input type="password" #password class="form-control" id="password" placeholder="Password" required>-->
+<!--</div>-->
+<!--<div>-->
+<!--<re-captcha (captchaResponse)="captchaResponse = $event" site_key="<6Lf5ZigTAAAAAPOhSyDkbLv4JGbKLHCMgmlwQm5L>"></re-captcha>-->
+<!--</div>-->
+<!--<button [disabled]="!loginform.form.valid" type="submit" class="btn btn-default">Submit</button>-->
+<!--<a (click)="signupUser()" role="button">New user? SignUp here!!</a>-->
+<!--</form>-->
+<!--</div>-->
+
+<!--<div *ngIf="newUser" class="signup center-block">
+  <h1>Signup</h1>
+  <form role="form" (submit)="signup($event, username.value, password.value)">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" #username class="form-control" id="username" placeholder="Username">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" #password class="form-control" id="password" placeholder="Password">
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+  <a (click)="loginUser()" role="button">Already registered? Login here!!</a>
+</div>-->
+

@@ -1,0 +1,154 @@
+import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Subscription} from "rxjs";
+import {FundService} from "./fund.service";
+import {Input} from "@angular/core/src/metadata/directives";
+import {FundDetails} from "./models/fund";
+import {FundDisplay} from "./models/fund-display";
+
+
+@Component({
+    selector: 'app-fund',
+    templateUrl: './fund.component.html',
+    styleUrls: ['./fund.component.css']
+})
+export class FundComponent implements OnInit, OnDestroy {
+
+    //inputs
+    @Input() set funds(funds: FundDetails[]) {
+        this._funds = funds || [];
+        this.fundDisplay.totalCount = funds.length;
+        this.fundSerivce.setFundDisplay(this.fundDisplay);
+    }
+
+    @Input() set showListView(allowed: boolean) {
+        this.fundDisplay.isListView = allowed;
+        this.fundSerivce.setFundDisplay(this.fundDisplay);
+    }
+
+    @Input() set showCardView(allowed: boolean) {
+        this.fundDisplay.isListView = !allowed;
+        this.fundSerivce.setFundDisplay(this.fundDisplay);
+    }
+
+    //subscriptions
+    fundDisplaySubscription: Subscription;
+
+    /*
+     results: SearchResults;
+     resultSubscription: Subscription;
+     searchInputSubscription: Subscription;
+     searchInput: SearchInput;
+     */
+    //variables
+    //defaultSortOrder: string;
+    //currentSortElement: string;
+    // comparisonList: string[];
+    //isDesc: boolean;
+    fundDisplay: FundDisplay;
+    //_isListView: boolean;
+    //_isCardView: boolean;
+    // rows: number = 10;
+    //from: number = 0;
+    // factSheetId: number;
+
+    constructor(private fundSerivce: FundService) {
+        /*//subscription for search results
+         this.resultSubscription = this.searchService.searchResults.subscribe(
+         rs => {
+         console.log("Infund Component" + rs);
+         this.results = rs;
+         });
+         //subscription for search input
+         this.searchInputSubscription = this.searchService.searchInput.subscribe(
+         si => {
+         this.searchInput = si;
+         this.from = si.from;
+         this.rows = si.rows;
+         this.currentSortElement = si.sortElement;
+         });*/
+
+        //subscription for fund display
+        this.fundDisplaySubscription = this.fundSerivce.fundDisplay.subscribe(
+            fd => {
+                this.fundDisplay = fd;
+            }
+        )
+
+        this.fundDisplay = this.fundSerivce.getFundDisplay();
+
+        //setting default values
+        // this.isDesc = true;
+        //this.isListView = true;
+        //  this.defaultSortOrder = "desc";
+
+    }
+
+    //used for column level sorting of fields
+    /*sort(value: string) {
+     console.log(value);
+     this.currentSortElement = value;
+     if (this.searchInput.sortElement === this.currentSortElement) {
+     this.searchInput.sortOrder = this.toggleSortOrder();
+     } else {
+     this.searchInput.sortElement = this.currentSortElement;
+     this.searchInput.sortOrder = this.defaultSortOrder;
+     this.isDesc = true
+     }
+
+     this.searchService.sort(this.searchInput)
+     }*/
+
+    /* //used for toggling the sort order
+     toggleSortOrder() {
+     if (this.isDesc) {
+     this.isDesc = false
+     return "asc"
+     } else {
+     this.isDesc = true
+     return "desc"
+     }
+     }*/
+
+    /*//used for moving to next page on the search reults
+     next() {
+     this.searchInput.from = this.searchInput.from + this.searchInput.rows;
+     this.searchService.changePage(this.searchInput)
+     }
+
+     //used for moving to previous page on search results
+     prev() {
+     this.searchInput.from = this.searchInput.from - this.searchInput.rows;
+     this.searchService.changePage(this.searchInput)
+     }
+     */
+
+    /* //supposed to be used for view toggling
+     toggleView() {
+     this.isListView = !this.isListView;
+     }*/
+
+
+    /* //to be used to set the number of rows to be shows selected manually
+     setRowsToDisplay(value: string) {
+     this.searchInput.rows = +value;
+     this.searchService.searchFund(this.searchInput);
+     }*/
+
+    viewFactSheet(id: number) {
+        this.factSheetId = id;
+    }
+
+    //on destroy to handle memory leak on element destroy
+    ngOnDestroy() {
+        /* this.resultSubscription.unsubscribe();
+         this.searchInputSubscription.unsubscribe();*/
+        this.fundDisplaySubscription.unsubscribe();
+    }
+
+    ngOnInit() {
+
+
+    }
+
+
+}

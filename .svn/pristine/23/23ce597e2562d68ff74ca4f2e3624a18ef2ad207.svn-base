@@ -1,0 +1,99 @@
+import {NgModule} from "@angular/core";
+import {BrowserModule, Title} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
+import {routes, appRoutingProviders} from "./app.routes";
+import {SipModule} from "./sip";
+import {RiskModule} from "./risk";
+import {RegistrationModule} from "./registration/registration.module";
+import {AppComponent} from "./app.component";
+import {HomeComponent} from "./home";
+import {AuthGuard} from "./gaurds/auth.guard";
+import {ReCaptchaComponent} from "./components/angular2-recaptcha/angular2-recaptcha.component";
+import {CashModule} from "./cash/cash.module";
+import {ExploreFundsModule} from "./explore-funds/explore-funds.module";
+import {CompareModule} from "./compare/compare.module";
+import {FactsheetModule} from "./factsheet/factsheet.module";
+import {MaterialModule} from "@angular/material";
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {CheckoutModule} from "./checkout/checkout.module";
+import {TaxModule} from "./tax/tax.module";
+import {ReportModule} from "./report/report.module";
+import {WatchlistModule} from "./watchlist/watchlist.module";
+import {DashboardModule} from "./dashboard/dashboard.module";
+import {RiskProfilingModule} from "./risk-profiling/risk-profiling.module";
+import {UserModule} from "./user/user.module";
+import {SharedModule} from "./shared/shared.module";
+import {LoginService} from "./services/login.service";
+import {ForgotPasswordService} from "./login/forgot-password.service";
+import {LoginModule} from "./login/login.module";
+import {LandingpageModule} from "./landingpage/landingpage.module";
+import {AboutUsModule} from "./about-us/about-us.module";
+import {JwtHelper} from "angular2-jwt";
+import {KYCStatusdModule} from "./kyc-status/kyc-status.module";
+import {APP_CONFIG, AppConfig} from "./../environments/environment";
+import {LocalStorageModule} from "angular-2-local-storage";
+import {InfiniteScrollModule} from "angular2-infinite-scroll";
+import {HeaderComponent} from "./header/header.component";
+import {FooterComponent} from "./footer/footer.component";
+import {OrderModule} from "./order/order.module";
+import {ChartModule} from "angular2-highcharts";
+import {CartModule} from "./cart/cart.module";
+import {SnackBarService} from "./services/snack-bar.service";
+import {CartService} from "./services/cart.service";
+import {HttpService} from "./services/http-service.service";
+
+
+@NgModule({
+    imports: [BrowserModule,
+        FormsModule,
+        HttpModule,
+        routes,
+        SharedModule,
+        RiskModule,
+        RegistrationModule,
+        LandingpageModule,
+        CashModule,
+        SipModule,
+        ExploreFundsModule,
+        CompareModule,
+        FactsheetModule,
+        CheckoutModule,
+        TaxModule,
+        ReportModule,
+        WatchlistModule,
+        OrderModule,
+        DashboardModule,
+        RiskProfilingModule,
+        UserModule,
+        LoginModule,
+        KYCStatusdModule,
+        LandingpageModule,
+        AboutUsModule,
+        InfiniteScrollModule,
+        CartModule,
+        ChartModule.forRoot(require('highcharts'), require('highcharts/highcharts-3d')),
+        LocalStorageModule.withConfig({
+            prefix: 'fincash',
+            storageType: 'localStorage'
+        })
+    ],
+    declarations: [AppComponent, HomeComponent, ReCaptchaComponent, HeaderComponent, FooterComponent], // brath added forgotpass
+    providers: [
+        {provide: APP_CONFIG, useValue: AppConfig},
+        HttpModule,
+        AuthGuard,
+        appRoutingProviders,
+        Title,
+        LoginService,
+        ForgotPasswordService,
+        JwtHelper,
+        SnackBarService,
+        CartService,
+    ],
+    entryComponents: [],
+    bootstrap: [AppComponent]
+})
+
+export class AppModule {
+}

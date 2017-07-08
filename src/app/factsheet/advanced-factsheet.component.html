@@ -1,0 +1,34 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80">
+        <div fxLayout="row" fxLayoutAlign="start center" class=" grey-back pad-10 mar-tb-20" fxLayoutGap="20px">
+            <div fxFlex="85" class="fund-title-area">
+                <div class="name">
+                    {{advancedFactsheet.basicFactsheet.name}}
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start" class="pad-tb-5">
+                    <div fxFlex="20" class="nav">
+                        <span>{{advancedFactsheet.basicFactsheet.nav |
+                        currency:'INR':true:'1.0-0'}}</span>
+                        <span><md-icon class="md-18">&#xE5C5;</md-icon>{{advancedFactsheet.basicFactsheet.navValueChange}} ({{advancedFactsheet.basicFactsheet.navPercentageChange}})</span><br>
+                        <span class="date">NAV as of {{advancedFactsheet.basicFactsheet.navAsOfDate}}</span>
+                    </div>
+                    <div fxFlex="25" class="rating">
+                        <span>Fincash Rating </span>
+                        <span [outerHTML]="advancedFactsheet.basicFactsheet.fincashRating | rating"></span>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="15">
+                <!--<app-add-to-cart-button [btnText]="'Add to Cart'"
+                                        [fundId]="advancedFactsheet.basicFactsheet.id"
+                                        [cssClass]="'cta-36'"></app-add-to-cart-button>-->
+            </div>
+        </div>
+        <div class="grey-back pad-25">
+            <app-equity-view [_advancedFactsheet]="advancedFactsheet"
+                             *ngIf="advancedFactsheet.basicFactsheet.category === 'Equity'"></app-equity-view>
+            <app-debt-view [_advancedFactsheet]="advancedFactsheet"
+                           *ngIf="advancedFactsheet.basicFactsheet.category === 'Debt'"></app-debt-view>
+        </div>
+    </div>
+</div>

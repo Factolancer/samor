@@ -1,0 +1,177 @@
+/***********************IMPORTS********************************/
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+/***********************GENERAL********************************/
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+a, a:hover, a:active, a:focus, a:visited {
+    text-decoration: none;
+    color: #0081c9;
+}
+
+/* Rules for sizing the icon. */
+.material-icons.md-14 {
+    font-size: 14px;
+    height: 14px;
+    width: 14px;
+}
+
+.material-icons.md-18 {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+}
+
+.material-icons.md-24 {
+    font-size: 24px;
+    height: 24px;
+    width: 24px;
+}
+
+.material-icons.md-36 {
+    font-size: 36px;
+    height: 36px;
+    width: 36px;
+}
+
+.material-icons.md-48 {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+}
+
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.material-icons.md-dark.md-inactive {
+    color: rgba(0, 0, 0, 0.26);
+}
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light {
+    color: rgba(255, 255, 255, 1);
+}
+
+.material-icons.md-light.md-inactive {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+hr {
+    margin: 5px 0 0 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+.header {
+
+    background-color: #ffffff;
+    border-bottom: 1px solid #0081c9;
+}
+
+.footer-top {
+    background-color: #0067a0;
+    color: #ffffff;
+    min-height: 60px;
+}
+
+.footer-bottom {
+    background-color: #0081c9;
+    color: #ffffff;
+}
+
+.data-area {
+
+}
+
+.data-body {
+    padding: 10px;
+}
+
+.data-head {
+
+}
+
+.data-foot {
+    margin: 10px 0;
+}
+
+.star {
+    color: #edb71e;
+}
+
+.clickable:hover {
+    cursor: pointer;
+}
+
+.grey-back {
+    background-color: #f7f7f7;
+}
+
+/***********************TABLE********************************/
+.table-header {
+    background-color: #0081c9;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    color: #ffffff;
+    min-height: 50px;
+}
+
+.table-row {
+    background-color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    margin: 50px;
+}
+.table-row:hover{
+    background-color: lightgray;
+}
+
+.table-row:active{
+    background-color: gray;
+}
+
+.selected-row {
+    background-color: lightgray;
+}
+
+.table-element {
+    padding: 5px;
+    border: 1px solid white;
+}
+
+.table-col-width-100 {
+    width: 100px;
+}
+
+.table-col-width-150 {
+    width: 150px;
+}
+
+.table-col-width-200 {
+    width: 200px;
+}
+
+/***********************ALIGN********************************/
+.left-align {
+    text-align: left;
+}
+
+.center-align {
+    text-align: center;
+}
+
+.float-right {
+    float: right;
+}
+
+/***********************BUTTONS********************************/
+
+.invest-button {
+    margin: 5px 0 5px 0;
+}

@@ -1,0 +1,115 @@
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {MdDialogConfig, MdDialog} from "@angular/material";
+import {InfoDialogComponent} from "../../shared/info-dialog.component";
+import {disclaimers} from "../../../properties/discalimers";
+
+@Component({
+    selector: 'app-tax-calc',
+    templateUrl: './tax-calc.component.html',
+    styleUrls: ['./tax-calc.styles.scss']
+})
+export class TaxCalcComponent implements OnInit {
+
+    investmentOpportunity = 0;
+    currentInvestment = 0;
+    taxSaved = 0;
+    annualSalary = 0;
+    salaryHint: string = "";
+    completeTherm = 0;
+    remainingTherm = 100;
+
+    elssAmt = 0;
+    pfAmt = 0;
+    lifeInsuranceAmt = 0;
+    fdAmt = 0;
+    nscAmt = 0;
+    scssAmt = 0;
+    sukanyaAmt = 0;
+    ulipAmt = 0;
+
+
+    //display variables
+    showResults = false;
+    showAll = false;
+
+    back() {
+        this.showResults = false;
+        this.showAll = false;
+        this.elssAmt = 0;
+        this.pfAmt = 0;
+        this.lifeInsuranceAmt = 0;
+        this.fdAmt = 0;
+        this.nscAmt = 0;
+        this.scssAmt = 0;
+        this.sukanyaAmt = 0;
+        this.ulipAmt = 0;
+        this.annualSalary = 0;
+        this.salaryHint = "";
+        this.completeTherm = 0;
+        this.remainingTherm = 100;
+        this.currentInvestment = 0;
+        this.investmentOpportunity = 0;
+
+    }
+
+    calculate() {
+
+        if (this.annualSalary <= 0) {
+            this.salaryHint = "Please provide salary";
+        } else {
+            if (this.annualSalary <= 250000) {
+                this.taxSaved = 0;
+                this.investmentOpportunity = 0;
+            }
+            else if (this.currentInvestment >= 150000) {
+                this.taxSaved = 0;
+                this.investmentOpportunity = 0;
+            } else {
+                this.investmentOpportunity = 150000 - this.currentInvestment;
+                if (this.annualSalary > 1000000) {
+                    this.taxSaved = this.investmentOpportunity * 30 / 100;
+                } else if (this.annualSalary > 500000) {
+                    this.taxSaved = this.investmentOpportunity * 20 / 100;
+                } else if (this.annualSalary > 250000) {
+                    this.taxSaved = this.investmentOpportunity * 10 / 100;
+                }
+            }
+            this.showResults = true;
+        }
+    }
+
+    thermometer() {
+        this.currentInvestment = this.elssAmt + this.pfAmt + this.lifeInsuranceAmt + this.fdAmt
+            + this.nscAmt + this.scssAmt + this.sukanyaAmt + this.ulipAmt;
+        if (this.currentInvestment >= 150000) {
+            this.completeTherm = 100;
+            this.remainingTherm = 0;
+        } else {
+            this.completeTherm = this.currentInvestment / 1500;
+            this.remainingTherm = (150000 - this.currentInvestment) / 1500;
+        }
+
+    }
+
+    seeDisclaimers() {
+        let config = new MdDialogConfig();
+        config.width = "60vw";
+        config.height = "80vh";
+        config.viewContainerRef = this.viewContainerRef;
+
+        let infoDialogConfig = {
+            infoTitle: "Disclaimers",
+            infoText: [`${disclaimers.calculator_1}`, `${disclaimers.calculator_2}`, `${disclaimers.calculator_3}`, `${disclaimers.calculator_4}`]
+        }
+
+        let dialogRef = this.dialog.open(InfoDialogComponent, config);
+        dialogRef.componentInstance.config = infoDialogConfig;
+    }
+
+    constructor(private viewContainerRef: ViewContainerRef, private dialog: MdDialog) {
+    }
+
+    ngOnInit() {
+    }
+
+}

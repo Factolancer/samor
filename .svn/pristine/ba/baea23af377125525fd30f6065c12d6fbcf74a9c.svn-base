@@ -1,0 +1,17 @@
+/**
+ * Created by Fincash on 18-02-2017.
+ */
+
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {TeamComponent} from "./team.component";
+
+const aboutUsRoutes: Routes = [
+    {
+        path: 'about-us',
+        component: TeamComponent,
+    },
+
+];
+
+export const aboutUsRouting: ModuleWithProviders = RouterModule.forChild(aboutUsRoutes);

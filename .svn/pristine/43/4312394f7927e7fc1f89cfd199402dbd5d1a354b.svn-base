@@ -1,0 +1,88 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex="60">
+                <div class="heading-32-dark-grey center-align">How would you like to Invest in a SIP?</div>
+                <hr/>
+                <div class="center-align sub-heading-16-medium-grey">Start saving monthly for a better future!</div>
+            </div>
+        </div>
+        <div fxFlex class="grey-back pad-tb-25">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <div fxFlex="35">
+                    <md-card class="product-card">
+                        <div class="card-head">Do a SmartSIP</div>
+                        <div>
+                            <md-list>
+                                <md-list-item class="list-item">
+                                    <div>
+                                        <img class="list-icon" src="../../assets/img/sip/smart_sip_1.svg"
+                                             alt="hand of healthy returns icon">
+                                    </div>
+                                    Selected after analysis of 20,000 schemes
+                                </md-list-item>
+                                <md-list-item class="list-item">
+                                    <div>
+                                        <img src="../../assets/img/sip/smart_sip_2.svg"
+                                             alt="hand of healthy returns icon" class="list-icon">
+                                    </div>
+                                    Pre-selected top 3 best SIP schemes
+                                </md-list-item>
+                                <md-list-item class="list-item">
+                                    <div>
+                                        <img src="../../assets/img/sip/smart_sip_3.svg"
+                                             alt="hand of healthy returns icon" class="list-icon">
+                                    </div>
+                                    Earn healthy returns
+                                </md-list-item>
+                            </md-list>
+                            <div class="card-foot">
+                                <button class="cta-50" md-raised-button="" routerLink='smartsip' color="primary">
+                                    INVEST
+                                </button>
+                            </div>
+                        </div>
+
+                    </md-card>
+                </div>
+                <div fxFlex="35" fxFlexOffset="10">
+                    <md-card class="product-card">
+                        <div class="card-head">Select on your own</div>
+                        <div>
+                            <md-list>
+                                <md-list-item class="list-item pad-tb-20">
+                                    <div>
+                                        <img src="../../assets/img/sip/explore_1.svg"
+                                             alt="hand of healthy returns icon" class="list-icon">
+                                    </div>
+                                    Search from 5,000 schemes
+                                </md-list-item>
+                                <md-list-item class="list-item pad-tb-35">
+                                    <div>
+                                        <img src="../../assets/img/sip/explore_2.svg"
+                                             alt="hand of healthy returns icon" class="list-icon">
+                                    </div>
+                                    Do your own analysis with our Funds Explorer
+                                </md-list-item>
+                            </md-list>
+                            <div class="card-foot">
+                                <button class="cta-50" md-raised-button="" color="primary"
+                                        (click)="navigateToExplore()">EXPLORE FUNDS
+                                </button>
+                            </div>
+                        </div>
+
+                    </md-card>
+                </div>
+            </div>
+
+        </div>
+        <div class="pad-tb-20">
+            <div class="calc-text">Plan a SIP for your Goal using our <a routerLink='calculator'>SIP
+                Calculator</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+

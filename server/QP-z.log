@@ -1,0 +1,8 @@
+uncaughtException
+{ [Error: listen EADDRINUSE 127.0.0.1:3000]
+  code: 'EADDRINUSE',
+  errno: 'EADDRINUSE',
+  syscall: 'listen',
+  address: '127.0.0.1',
+  port: 3000 }
+error: Forever detected script exited with code: 1

@@ -1,0 +1,63 @@
+import {Component, OnInit, Inject, OnDestroy} from "@angular/core";
+import {Logger} from "../core/logger/logger";
+import {Router, ActivatedRoute, Params} from "@angular/router";
+import {IAppConfig, APP_CONFIG} from "../../environments/environment";
+import {isNullOrUndefined} from "util";
+import {LoginService} from "../core/services/login.service";
+import {LocalStorageService} from "angular-2-local-storage";
+import {Subscription} from "rxjs/Subscription";
+
+@Component({
+    selector: 'app-social-login',
+    templateUrl: '../shared/blanktemplate.html'
+})
+
+export class SocialLoginComponent implements OnInit, OnDestroy {
+    className: string;
+    token: any;
+    routeSubscription: Subscription;
+    loginSubscription: Subscription;
+
+    constructor(private logger: Logger, private router: Router, private route: ActivatedRoute, @Inject(APP_CONFIG) private config: IAppConfig,
+                private loginService: LoginService, private localStorageService: LocalStorageService) {
+        this.className = "ResetPasswordComponent"
+        this.token = "";
+    }
+
+    ngOnInit() {
+        this.routeSubscription = this.route.params.subscribe((params: Params) => {
+            this.token = params['token'];
+            if (isNullOrUndefined(this.token) || this.token.length == 0) {
+                this.router.navigate([this.config.dloginUrl]);
+            }
+            else {
+                let retunrurl = this.localStorageService.get(this.config.returnUrlParam);
+                this.loginSubscription = this.loginService.isUserLoggedIn().subscribe(loggedIn => {
+                        if (loggedIn) {
+                            if (!isNullOrUndefined(retunrurl)) {
+                                this.router.navigate([retunrurl])
+                                this.localStorageService.remove(this.config.returnUrlParam);
+                            }
+                            else {
+                                this.router.navigate([this.config.defaultAfterLogin])
+                            }
+                        }
+                    },
+                    error => {
+                        this.logger.debug(this.className, "Error in login")
+                    }
+                );
+
+                this.localStorageService.set(this.config.authToken, this.token)
+                this.loginService.initUserFromStorage()
+            }
+        });
+    }
+
+    ngOnDestroy(){
+        if (this.loginSubscription){
+            this.loginSubscription.unsubscribe();
+        }
+        this.routeSubscription.unsubscribe();
+    }
+}

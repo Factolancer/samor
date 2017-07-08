@@ -1,0 +1,14 @@
+import {NgModule} from "@angular/core";
+import {BankSearchService} from "./search.service";
+import {SharedModule} from "../../../shared/shared.module";
+import {HttpService} from "../../../core/services/http-service.service";
+
+@NgModule({
+    imports: [
+        SharedModule
+    ],
+    providers: [BankSearchService]
+})
+
+export class SearchModule {
+}

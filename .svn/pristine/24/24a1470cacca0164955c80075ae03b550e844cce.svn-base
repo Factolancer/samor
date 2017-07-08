@@ -1,0 +1,47 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper mar-t-20">
+    <div fxFlex="80" class="right-align ">
+        <button md-mini-fab color="primary" *ngIf="selectedTab==0">
+            <md-icon (click)="summaryReport.download()">&#xE2C4;</md-icon>
+        </button>
+        <button md-mini-fab color="primary" *ngIf="selectedTab==1">
+            <md-icon (click)="holdingReport.download()">&#xE2C4;</md-icon>
+        </button>
+        <button md-mini-fab color="primary" *ngIf="selectedTab==2">
+            <md-icon (click)="transactionReport.download()">&#xE2C4;</md-icon>
+        </button>
+        <button md-mini-fab color="primary" *ngIf="selectedTab==3">
+            <md-icon (click)="capitalGainReport.download()">&#xE2C4;</md-icon>
+        </button>
+        <button md-mini-fab color="primary" *ngIf="selectedTab==4">
+            <md-icon (click)="assetAllocationReport.download()">&#xE2C4;</md-icon>
+        </button>
+        <button md-mini-fab color="primary" *ngIf="selectedTab==5">
+            <md-icon (click)="irrReport.download()">&#xE2C4;</md-icon>
+        </button>
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper mar-tb-20 ">
+    <div fxFlex="80">
+        <md-tab-group class="report-tab-header" [(selectedIndex)]="selectedTab" (selectChange)="loadTab()">
+            <md-tab label="Summary Report">
+                <app-summary-report #summaryReport></app-summary-report>
+            </md-tab>
+            <md-tab label="Holding Report">
+                <app-holding-report #holdingReport></app-holding-report>
+            </md-tab>
+            <md-tab label="Transaction Report">
+                <app-transaction-report #transactionReport></app-transaction-report>
+            </md-tab>
+            <md-tab label="Capital Gains Report">
+                <app-capital-gains-report #capitalGainReport></app-capital-gains-report>
+            </md-tab>
+            <md-tab label="Asset Allocation">
+                <app-asset-allocation #assetAllocationReport [currentTab]="selectedTab"></app-asset-allocation>
+            </md-tab>
+            <md-tab label="IRR Report">
+                <app-irr-report #irrReport></app-irr-report>
+            </md-tab>
+        </md-tab-group>
+    </div>
+
+</div>

@@ -1,0 +1,158 @@
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {IAppConfig} from "../../../environments/environment";
+import {LocalStorageService} from "angular-2-local-storage";
+import {JwtHelper} from "angular2-jwt";
+import {Logger} from "../logger/logger";
+import {Response, Http, RequestOptions, Headers} from "@angular/http";
+import {isNullOrUndefined} from "util";
+import {Observable} from "rxjs/Observable";
+import {UserLogin} from "../../models/userLogin";
+
+export class UserDataProviderService{
+
+    className: string;
+    public loginSubject: BehaviorSubject<boolean>;
+    public userSubject: BehaviorSubject<UserLogin>;
+    public customerName: BehaviorSubject<string>;
+    private tokenSubject : BehaviorSubject<any>;
+    public tokenObservable: Observable<any>;
+    logger: Logger;
+    localStorageService: LocalStorageService;
+    jwtHelper: JwtHelper;
+    defaultHttp: Http;
+    config : IAppConfig;
+    constructor(_config: IAppConfig, _logger: Logger, _localStorageService: LocalStorageService, _jwtHelper: JwtHelper, _defaultHttp: Http){
+        this.className = "UserDataProviderService";
+        this.logger= _logger;
+        this.localStorageService = _localStorageService;
+        this.jwtHelper =_jwtHelper;
+        this.defaultHttp = _defaultHttp;
+        this.config = _config;
+        this.loginSubject = new BehaviorSubject<boolean>(false);
+        this.userSubject = new BehaviorSubject<any>(new UserLogin);
+        this.customerName = new BehaviorSubject<string>("");
+        this.tokenSubject = new BehaviorSubject<any>({});
+        this.tokenObservable = this.tokenSubject.asObservable();
+        this.initToken()
+    }
+
+    public initToken(){
+        let getToken = this.localStorageService.get(this.config.authToken)
+        this.logger.debug(this.className,"initToken()",getToken);
+        if(!isNullOrUndefined(getToken)){
+            this.setToken(getToken)
+        }else{
+            this.setToken("")
+        }
+        //this.logger.debug(this.className,"initToken() checking value",this.getToken());
+    }
+
+    setHeader() {
+        let getToken = this.getToken();
+        let token = getToken ? getToken : "";
+        // this.logger.debug(this.className, " setHeader Token " + token);
+        let headers = new Headers({'Authorization': `Bearer ${token}`});
+        return new RequestOptions({headers: headers});
+    }
+
+    public getToken(){
+        return this.tokenSubject.getValue()
+    }
+
+    public setToken(value : any){
+        this.tokenSubject.next(value)
+    }
+
+    public processToken(res: Response, isLoginCase : boolean) {
+        // this.logger.debug(this.className," raw respose ", res);
+        if (!isNullOrUndefined(res)) {
+            let token = "";
+            if(isLoginCase){
+                let body = res.json();
+                let bodyToken = body[''+this.config.authToken];
+                let userData = body['userData'];
+                this.logger.debug(this.className, "body token >>> " , bodyToken);
+                this.logger.debug(this.className, "body >>> " , body);
+                if(!isNullOrUndefined(bodyToken)){
+                    token = bodyToken;
+                    if(!isNullOrUndefined(userData)){
+                        let userlogin = userData as UserLogin;
+                        this.userSubject.next(userlogin);
+                    }
+                }else{
+                    return
+                }
+            }else{
+                let headerToken = res.headers.get(this.config.authToken);
+                if(headerToken && headerToken.length>0){
+                    token = res.headers.get(this.config.authToken);
+                }else{
+                    return
+                }
+            }
+
+            //this.logger.debug(this.className," setting token >>>>>  ",token);
+            this.setToken(token);
+            this.localStorageService.set(this.config.authToken, token);
+            let decoded = this.jwtHelper.decodeToken(token);
+            this.logger.debug(this.className,"Token Expiration Date >>> ", this.jwtHelper.getTokenExpirationDate(token), " is Expired >>>  "  + this.jwtHelper.isTokenExpired(token));
+            this.logger.debug(this.className," user object ",decoded);
+            if (decoded && decoded.username && !decoded.username.includes("Anonymous")) {
+                this.loginSubject.next(true);
+                this.setNameOfUser(this.userSubject.getValue());
+            }else{
+                this.loginSubject.next(false);
+                this.userSubject.next(new UserLogin);
+            }
+
+        }
+    }
+
+    public processUserData(){
+        this.defaultHttp.get(this.config.playAPIUrl+'/secure/jwt/getDetails',this.setHeader())
+            .subscribe(
+                response => {
+                    if(!isNullOrUndefined(response)){
+                        let body = response.json();
+                        if(!isNullOrUndefined(body)){
+                            let success = body['success'];
+                            let userData = body['userData'];
+                            let id_token = body[''+this.config.authToken];
+                            if(!isNullOrUndefined(success) && success){
+                                if(!isNullOrUndefined(userData)){
+                                    let userlogin = userData as UserLogin;
+                                    this.userSubject.next(userlogin);
+                                    this.setNameOfUser(userlogin);
+                                    this.logger.debug(this.className,"initUserFromStorage() user data >>> ", userlogin);
+                                }
+                                if(!isNullOrUndefined(id_token)){
+                                    // update with latest token
+                                    this.setToken(id_token);
+                                    this.localStorageService.set(this.config.authToken, id_token);
+                                }
+                            }
+                        }
+                        this.logger.debug(this.className,"processUserData() body >>> ", body);
+                    }
+                },
+                error => {
+                    this.logger.debug(this.className," /secure/jwt/getDetails in initUserFromStorage", error);
+                });
+    }
+
+    public setNameOfUser(user : UserLogin){
+        let username = "";
+        if (user && user.username.toLowerCase().indexOf("anonymous")==-1){
+            if (user.firstname && user.firstname.length>0){
+                username = user.firstname
+            }
+            else {
+                username = user.username
+            }
+        }else{
+            username = "";
+        }
+
+        this.customerName.next(username);
+    }
+}

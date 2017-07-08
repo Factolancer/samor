@@ -1,0 +1,100 @@
+
+
+    <section class="data-head">
+
+    </section>
+    <section class="data-body">
+        <div class="col-md-12">Statement of Transaction</div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <tr>
+                        <td colspan="2" style="text-align: center;">Portfolio Movement</td>
+                    </tr>
+                    <tr>
+                        <td >Type:</td>
+                        <td >Dividend</td>
+                    </tr>
+                    <tr>
+                        <td >Plan:</td>
+                        <td >Institutional Plan- Weekly Dividend</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Folio No.</th>
+                        <th>Mode of Holding</th>
+                        <th>KYC of Investor</th>
+                        <th>Nominee</th>
+                    </tr>
+                    <tr>
+                        <td > 514279920473/0 </td>
+                        <td >Single</td>
+                        <td>KYC OK</td>
+                        <td>Registered</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Mobile No.</th>
+                        <th>Email</th>
+                    </tr>
+                    <tr>
+                        <td >9706953703</td>
+                        <td >product@fincash.com</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Date</th>
+                        <th>Transaction Description</th>
+                        <th>Amount(Rs.)</th>
+                        <th>NAV(Rs.)</th>
+                        <th>Units</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <th ></th>
+                        <th>Opening Balance</th>
+                        <th></th>
+                        <th></th>
+                        <th>248.607</th>
+                        <th>10.25 Lakh</th>
+                    </tr>
+                    <tr>
+                        <td>01-Jul-16</td>
+                        <td>Redemption Transaction ID: 47592432</td>
+                        <td>-200000</td>
+                        <td>1004.579</td>
+                        <td>-199.088</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>05-Jul-16</td>
+                        <td>Dividend Reinvestment @Rs. 1.59 per unit 47602358</td>
+                        <td>78.96</td>
+                        <td>1003.7</td>
+                        <td>0.079</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <th>Closing Balance</th>
+                        <th></th>
+                        <th></th>
+                        <th>49.784</th>
+                        <th>2.022 Lakh</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+    <section class="data-foot">
+
+    </section>

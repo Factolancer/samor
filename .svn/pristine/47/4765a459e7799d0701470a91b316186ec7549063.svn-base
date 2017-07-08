@@ -1,0 +1,29 @@
+<div class="product-container" xmlns="http://www.w3.org/1999/html">
+  <div class="highlight">Invest in our Products</div>
+  <div fxLayout="row">
+    <md-card fxFlex="50" align="center" *ngFor="let product of productSolutions, let i=index">
+      <md-card-title>
+        <img src={{product.image}}><br/>
+       {{product.title}}
+      </md-card-title>
+      <md-card-content>
+        <tr>
+          <td><img src="{{product.content[0]['image']}}"></td>
+          <td><p>{{product.content[0]['text']}}</p></td>
+        </tr>
+        <tr>
+          <td><img src="{{product.content[1]['image']}}"></td>
+          <td><p>{{product.content[1]['text']}}</p></td>
+        </tr>
+        <tr>
+          <td><img src="{{product.content[2]['image']}}"></td>
+          <td><p>{{product.content[2]['text']}}</p> </td>
+        </tr>
+      </md-card-content>
+      <div class="btn-box">
+        <button class="invest-button" (click)="invest(i)">invest</button>
+      </div>
+
+    </md-card>
+  </div>
+</div>

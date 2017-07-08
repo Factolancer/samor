@@ -1,0 +1,113 @@
+@import "../../../styles/partials/web-partials";
+
+.card {
+  color: $text-dark-grey;
+  border: solid 1px $light-grey;
+  padding:0;
+  img{max-width: 100%; height:auto;}
+  .icon-space {
+    text-align: center;
+
+    &:first-of-type {
+      border-right: 2px solid $brand-primary;
+    }
+
+    .highlight {
+      padding: 20px;
+      color: $brand-primary;
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+
+  .question {
+    padding: 25px 10px;
+
+    .helper {
+      font-size: 10px;
+      color: $text-medium-grey;
+      font-style: italic;
+    }
+  }
+
+  .left-pane {
+    background-color: $brand-primary;
+    color: $white;
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 2px;
+
+    .icon {
+      background-color: $light-grey;
+      height: 150px;
+      width: 150px;
+      border: solid 5px $brand-secondary;
+      border-radius: 50%;
+      margin: 35px auto;
+
+      img {
+        margin: 12%;
+      }
+    }
+  }
+
+  .right-pane {
+    padding: 24px;
+
+    .result-body {
+      border: solid 1px $medium-grey;
+    }
+
+    .highlight {
+      background-color: $light-grey;
+      color: $text-dark-grey;
+      padding: 5px 20px;
+    }
+
+    .result-questions {
+      padding: 20px 25px 10px 25px;
+    }
+
+    .result-text {
+      //background-color: $medium-grey;
+      color: $text-dark-grey;
+      letter-spacing: 1px;
+      font-size: 16px;
+      font-weight: 700;
+
+      .focus-text {
+        color: $brand-primary;
+      }
+    }
+
+    /*.question {
+      font-size: 14px;
+      color: $text-dark-grey;
+      letter-spacing: 1px;
+      border-bottom: solid 1px $dark-grey;
+
+      &:last-of-type {
+        border: none;
+      }
+    }*/
+  }
+
+}
+
+.goal-card {
+  color: $text-dark-grey;
+  margin: 10px;
+
+  .goal-title {
+    padding: 16px 0;
+    color: $brand-primary;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 700;
+  }
+
+}
+
+
+
+

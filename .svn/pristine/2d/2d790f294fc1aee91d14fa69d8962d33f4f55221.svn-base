@@ -1,0 +1,24 @@
+import {NgModule} from "@angular/core";
+import {TaxCalcComponent} from "./tax-calc.component";
+import {taxCalculatorRouting} from "./tax-calculator.routes";
+import {SharedModule} from "../../shared/shared.module";
+import {ChartModule} from "angular2-highcharts";
+import {HighchartsStatic} from "angular2-highcharts/dist/HighchartsService";
+
+export function highChartsFactory() {
+    var hc = require('highcharts');
+    return hc;
+}
+
+@NgModule({
+    imports: [
+        SharedModule,
+        ChartModule,
+        taxCalculatorRouting
+    ],
+    providers: [{provide : HighchartsStatic, useFactory : highChartsFactory}],
+    declarations: [TaxCalcComponent],
+})
+
+export class TaxCalculatorModule {
+}

@@ -1,0 +1,43 @@
+@import "../../../styles/partials/web-partials";
+
+.investment-step-container{
+  .title{background-color: #f9f9f9;}
+  .content{
+    background-color: #fcfcfc;
+    padding: 10px 30px;text-align: center;
+    .type-title{font-size: 20px; color: $dark-grey;font-weight: 400;}
+    .num{
+
+      height: 40px;
+      line-height: 40px;
+      width: 40px;
+      border: 1px solid $dark-grey;
+      border-radius: 50%;
+      font-weight: 600;
+      font-size: 35px;
+      color:$dark-grey;
+    }
+    .body{font-size: 12px; min-height: 90px;}
+    figure{border-right: 1px solid $medium-grey;}
+  }
+  .std-btn{
+     background-color: $white;color:$dark-grey;border:1px solid $brand-secondary;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    &:hover{
+      cursor: pointer;
+      background-color: $brand-secondary;color:$white;border:1px solid $brand-secondary;
+    }
+    &:active{
+      @include ripple();
+
+    }
+  }
+  .vline{
+    height:60%;
+    border-right:2px solid $medium-grey;
+  }
+  .mar-l-60{margin-left: 60px !important;}
+
+}

@@ -1,0 +1,47 @@
+import {ModuleWithProviders} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+
+<<<<<<< .mine
+import { registrationRoutes } from './registration/registration.routing';
+import { RegistrationComponent} from './registration/registration.component';
+import { HomeComponent } from './home';
+import { LoginComponent } from './login';
+import { SignupComponent } from './signup';
+=======
+import {HomeComponent} from './home';
+import {LoginComponent} from './login';
+import {SignupComponent} from './signup';
+>>>>>>> .r325
+import { AuthGuard } from './auth.guard';
+import {SipComponent} from "./sip/sip.component";
+import {ModerateComponent} from "./sip/moderate/moderate.component";
+import {ExpertComponent} from "./sip/expert/expert.component";
+import {QuickSipComponent} from "./sip/quick-sip/quick-sip.component";
+import {FundSelectionComponent} from "./sip/fund-selection.component";
+import {CartComponent} from "./cart/cart.component";
+
+const appRoutes: Routes = [
+<<<<<<< .mine
+  { path: 'registration', component: RegistrationComponent},
+  { path: '', redirectTo: '/registration', pathMatch: 'full'},
+  { path: 'login',  component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'home',   component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '**',     component: LoginComponent },
+=======
+    {path: '', redirectTo: '/login', pathMatch: 'full'},
+    {path: 'sip/:type', component: FundSelectionComponent},
+    {path: 'sip', component: SipComponent},
+    {path: 'cart', component: CartComponent},
+    {path: 'login', component: LoginComponent},
+    {path: 'signup', component: SignupComponent},
+    {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+    {path: '**', component: LoginComponent},
+>>>>>>> .r325
+];
+
+export const routes: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+
+export const appRoutingProviders: any[] = [];
+
+export const routedComponents = [LoginComponent, SignupComponent, HomeComponent];

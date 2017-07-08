@@ -1,0 +1,22 @@
+import {NgModule} from "@angular/core";
+import {SipComponent} from "./sip.component";
+import {FundModule} from "../fund/fund.module";
+import {CartModule} from "../cart/cart.module";
+import {SearchModule} from "../search/search.module";
+import {sipRouting} from "./sip.routes";
+import {QuickSipComponent} from "./quick-sip/quick-sip.component";
+import {SharedModule} from "../shared/shared.module";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        FundModule,
+        CartModule,
+        SearchModule,
+        sipRouting,
+    ],
+    declarations: [SipComponent,QuickSipComponent],
+})
+
+export class SipModule {
+}

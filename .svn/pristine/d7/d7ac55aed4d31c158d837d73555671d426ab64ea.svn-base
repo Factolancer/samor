@@ -1,0 +1,16 @@
+<div class="confirmation-dialog">
+    <div fxLayout="row" fxLayoutAlign="center center" md-dialog-title class="title">
+        <div fxFlex="90">
+            {{config.confirmationTitle}}
+        </div>
+        <div fxFlex="10">
+            <md-icon class="md-18 clickable" (click)="dialogRef.close()">&#xE888;</md-icon>
+        </div>
+    </div>
+    <div md-dialog-content class="body">{{config.confirmationText}}</div>
+    <div md-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+        <div *ngFor="let action of config.confirmationActions;" fxFlex="40">
+            <button md-button="" (click)="dialogRef.close(action)" class="{{action[2]}}">{{action[1]}}</button>
+        </div>
+    </div>
+</div>

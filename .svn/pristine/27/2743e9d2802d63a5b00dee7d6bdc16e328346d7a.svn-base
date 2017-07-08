@@ -1,0 +1,93 @@
+<md-card class="explore-fund-head">
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <div fxFlex="5"> Add to Compare</div>
+        <div fxFlex="25" class="clickable" #fund (click)="sort(fund.title)" title="dname">Fund Name
+            <span *ngIf="currentSortElement === fund.title ">
+                <md-icon *ngIf="isDesc" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="!isDesc" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="10" class="clickable" #rating (click)="sort(rating.title)" title="drat">
+            Fincash Rating
+            <span *ngIf="currentSortElement === rating.title ">
+                <md-icon *ngIf="isDesc" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="!isDesc" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="10" class="clickable" #ret3 (click)="sort(ret3.title)" title="drt3y">3 Yr Return (%)
+            <span *ngIf="currentSortElement === ret3.title ">
+                <md-icon *ngIf="isDesc" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="!isDesc" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="10" class="clickable" #risk (click)="sort(risk.title)" title="drisk">Riskometer
+            <span *ngIf="currentSortElement === risk.title ">
+                <md-icon *ngIf="isDesc" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="!isDesc" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="7" class="clickable" #age (click)="sort(age.title)" title="dage">Fund Age (Years)
+            <span *ngIf="currentSortElement === age.title ">
+                <md-icon *ngIf="isDesc" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="!isDesc" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="10" class="clickable" #aum (click)="sort(aum.title)" title="daum">AUM (Cr.)
+            <span *ngIf="currentSortElement === aum.title ">
+                <md-icon *ngIf="isDesc" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="!isDesc" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+        <div fxFlex="7">Min Investment</div>
+        <div fxFlex="16">Action</div>
+    </div>
+</md-card>
+
+<div fxFlex *ngIf="funds.length>0">
+    <md-card *ngFor="let fundItem of funds" class="fund-list">
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="5">
+                <md-checkbox [checked]="fundItem.selected"
+                             (change)="addToCompare(fundItem)"></md-checkbox>
+            </div>
+            <div class="left-align clickable" fxFlex="25" (click)="viewFactSheet(fundItem)">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex="8">
+                        <md-icon class="factsheet-icon md-14">&#xE873;</md-icon>
+                    </div>
+                    <div fxFlex="92">{{fundItem.name}}</div>
+                </div>
+            </div>
+            <div fxFlex="10">
+                <span [innerHTML]="fundItem.rating | rating" class="star"></span>
+            </div>
+            <div fxFlex="10">{{fundItem.basicFactsheet.ret3yr | number:'1.1-1'}}</div>
+            <div fxFlex="10">{{fundItem.basicFactsheet.riskometer | riskometer}}</div>
+            <div fxFlex="7">{{fundItem.age}}</div>
+            <div fxFlex="10">{{fundItem.aum | currency:'INR':true:'1.0-0' }}</div>
+            <div *ngIf="fundItem.basicFactsheet.minSIPAmt <= fundItem.basicFactsheet.minLumpsum" fxFlex="7">
+                {{fundItem.basicFactsheet.minSIPAmt | currency:'INR':true:'1.0-0'}}
+            </div>
+            <div *ngIf="fundItem.basicFactsheet.minSIPAmt > fundItem.basicFactsheet.minLumpsum" fxFlex="7">
+                {{fundItem.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}
+            </div>
+            <div fxFlex="16">
+                <app-add-to-cart-button [btnText]="'Invest'"
+                                        [fundId]="fundItem.id"></app-add-to-cart-button>
+                <button md-icon-button="" class="watchlist-icon-btn" title="Add to Watchlist">
+                    <md-icon class="md-24 watchlist-icon">&#xE8F4;</md-icon><!--EYE ICON-->
+                </button>
+            </div>
+        </div>
+    </md-card>
+</div>
+<div fxFlex *ngIf="funds.length == 0">No results found!</div>
+
+
+
+

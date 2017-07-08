@@ -1,0 +1,35 @@
+import {Component, OnInit, Input} from "@angular/core";
+import {BasicFactSheet} from "./basic-factsheet";
+import {FactsheetService} from "./factsheet.service";
+import {MdDialogRef} from "@angular/material";
+import {Router} from "@angular/router";
+
+@Component({
+    selector: 'app-basic-factsheet',
+    templateUrl: './basic-factsheet.component.html',
+    styleUrls: ['./basic-factsheet.component.css']
+})
+export class BasicFactsheetComponent implements OnInit {
+
+    constructor(private factsheetService: FactsheetService, public dialogRef: MdDialogRef<BasicFactsheetComponent>,
+                private router: Router) {
+
+
+    }
+
+    factsheetId: number;
+    basicFactSheet: BasicFactSheet;
+    advancedViewPath: string;
+
+    ngOnInit() {
+        this.advancedViewPath = "/factsheet/" + this.factsheetId;
+        this.factsheetService.getBasicFactsheet(this.factsheetId).subscribe(output =>
+            this.basicFactSheet = output as BasicFactSheet);
+    }
+
+
+    showAdvancedView() {
+        this.dialogRef.close();
+        this.router.navigateByUrl(this.advancedViewPath);
+    }
+}

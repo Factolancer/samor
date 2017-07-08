@@ -1,0 +1,18 @@
+import {Injectable} from "@angular/core";
+import {Transaction} from "../transaction";
+import {TransactionFilter} from "./transaction-filter";
+import {HttpService} from "../../services/http-service.service";
+import {Observable} from "rxjs";
+
+@Injectable()
+export class TransactionReportService {
+
+    constructor(private httpService: HttpService) {
+    }
+
+    getTransactions(transFilter: TransactionFilter): Observable<Transaction[]> {
+
+        return this.httpService.post('/getTransactionReport', transFilter)
+            .map(res => res as Transaction[]);
+    }
+}

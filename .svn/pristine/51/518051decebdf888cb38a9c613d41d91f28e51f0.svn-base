@@ -1,0 +1,121 @@
+<div class="wrapper" fxLayout="row" fxLayoutAlign="center center" xmlns="http://www.w3.org/1999/html">
+    <div fxFlex="90">
+        <div class="pad-tb-15" fxLayout="column" fxLayoutAlign="center center">
+            <div class="heading-32-cash border-down">Earn more by investing in
+                <span class="imp">SavingsPlus</span>
+            </div>
+
+            <div class="heading-14-demo" style="padding-bottom: 15px;">
+                <hr/>
+                Benefits of Bank Account with better returns to double your savings
+            </div>
+        </div>
+
+        <div fxLayout="row" fx fxLayoutAlign="center center">
+            <div fxFlex="50" class="demo-slide-box mar-tb-20">
+                <!--<md-card class="no-padding mar-tb-20">-->
+                <md-card class="no-padding">
+                    <md-card-content>
+                        <div fxLayout="row" fxLayoutAlign="center center" class="demo-slide-title pad-20">
+                            <div fxFlex>Let's have a look at the <b>Earnings</b> & <b>Expenses</b> of an individual
+                            </div>
+                        </div>
+                        <md-card class="demo-header">
+                            <md-card-content fxLayout="column">
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <div fxFlex class="pad-10">Date</div>
+                                    <div fxFlex class="pad-10">Cash Flow</div>
+                                    <div fxFlex class="pad-10">Amount</div>
+                                    <div fxFlex class="pad-10">Account Balance</div>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                        <!--<button style="margin-top: 2rem;" (click)="init()">Run</button>-->
+                        <md-card class="grey-border pad-05">
+                            <md-card-content fxLayout="column">
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <!--<div fxFlex class="pad-10">{{'1 Jan' | date:'d MMM'}}</div>-->
+                                    <!--<div fxFlex class="pad-10">Salary</div>-->
+                                    <!--<div fxFlex class="pad-10">&#8377; 70,000</div>-->
+                                    <!--<div fxFlex class="pad-10">&#8377; 70,000</div>-->
+
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[0]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[1]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[2]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[3]}}</div>
+                                </div>
+                                <div fxLayout="row">
+                                    <!--<div fxFlex class="pad-10">{{'9 Jan' | date:'d MMM'}}</div>-->
+                                    <!--<div fxFlex class="pad-10 red-italic">Expense 1</div>-->
+                                    <!--<div fxFlex class="pad-10 red-italic">&#8377; 20,000</div>-->
+                                    <!--<div fxFlex class="pad-10">&#8377; 50,000</div>-->
+
+
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[4]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[5]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{ values[6]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[7]}}</div>
+                                </div>
+                                <div fxLayout="row">
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[8]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[9]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{values[10]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[11]}}</div>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                        <md-card class="grey-border pad-05">
+                            <md-card-content fxLayout="column">
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[12]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[13]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[14]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[15]}}</div>
+                                </div>
+                                <div fxLayout="row">
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[16]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[17]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{values[18]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[19]}}</div>
+                                </div>
+                                <div fxLayout="row">
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[20]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[21]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{values[22]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[23]}}</div>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                        <md-card class="grey-border pad-05">
+                            <md-card-content fxLayout="column">
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[24]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[25]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[26]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[27]}}</div>
+                                </div>
+                                <div fxLayout="row">
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[28]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[29]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{values[30]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[31]}}</div>
+                                </div>
+                                <div fxLayout="row">
+                                    <div fxFlex class="pad-lr-10 demo-row-height">{{values[32]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[33]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{values[34]}}</div>
+                                    <div fxFlex class="pad-lr-10 demo-row-height"> {{values[35]}}</div>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </md-card-content>
+                </md-card>
+                <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center" class="pad-tb-30">
+                    <div fxFlex="30">
+                        <button class="btn-border" routerLink="../demoa">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

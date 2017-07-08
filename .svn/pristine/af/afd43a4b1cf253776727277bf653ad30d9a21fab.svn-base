@@ -1,0 +1,70 @@
+import {Inject, Injectable, PLATFORM_ID} from "@angular/core";
+import {Logger} from "../logger/logger";
+import {isPlatformBrowser, isPlatformWorkerApp, isPlatformWorkerUi, PlatformLocation} from "@angular/common";
+import {DOCUMENT} from "@angular/platform-browser";
+import "../../../lib/modernizr.js";
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+import {UtilityService} from "./utility.service";
+
+@Injectable()
+export class BrowserSupportService {
+    isPlatformBrowser: boolean;
+    document: any;
+    baseUrl: string;
+
+    constructor(private logger: Logger, @Inject(PLATFORM_ID) private platformId: any,
+                private platformLocation: PlatformLocation, @Inject(APP_CONFIG) private config: IAppConfig,
+                @Inject(DOCUMENT) private _document: any, private utilityService: UtilityService) {
+        this.isPlatformBrowser = isPlatformBrowser(this.platformId) || isPlatformWorkerApp(this.platformId) || isPlatformWorkerUi(this.platformId)
+        this.baseUrl = this.platformLocation['location'].origin;
+    }
+
+    checkBasicBrowserSupport() {
+        if (this.isPlatformBrowser) {
+            let featureList = ["flexbox", "canvas", "flexwrap", "mediaqueries", "svg", "promises", "intl"];
+
+            let missingFeaturesList = featureList.filter(feature => !Modernizr[feature])
+            if (missingFeaturesList.length > 0) {
+                let url = this.config.browserSupportMissingURL + this.prepareUrlSuffix(featureList);
+                this.utilityService.redirectionByWindow(url);
+            } else {
+                this.logger.debug("This browser supports all basic features required");
+            }
+        } else {
+            this.logger.debug("Not a platform browser");
+        }
+    }
+
+    prepareUrlSuffix(featureList: string[]): string {
+        let urlParams = "?";
+        featureList.forEach(featureString => {
+            if (!Modernizr[featureString]) {
+                urlParams += this.getMissingSupportUrl(urlParams, featureString, Modernizr[featureString])
+            }
+        })
+        return urlParams
+    }
+
+    getMissingSupportUrl(urlParams: string, paramName: string, isFeatureSupported: boolean): string {
+        if (urlParams.length > 1) {
+            urlParams += ("&" + paramName + "=" + isFeatureSupported)
+        } else {
+            urlParams += ( paramName + "=" + isFeatureSupported)
+        }
+        return urlParams
+    }
+
+    isFeatureSupported(featureName: string): boolean {
+        if (this.isPlatformBrowser) {
+            return Modernizr[featureName]
+        } else {
+            return false
+        }
+    }
+
+    isLocalStorageSupported(): boolean {
+        return this.isFeatureSupported("localstorage")
+    }
+
+
+}

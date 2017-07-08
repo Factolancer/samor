@@ -1,0 +1,127 @@
+/**
+ * Created by Fincash on 17-02-2017.
+ */
+import {Component, ElementRef, Input, OnInit, OnDestroy} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {Subscription} from "rxjs/Subscription";
+
+@Component({
+    selector: '[carousel]',
+    template: `
+             <ul class="carousel">
+             <i class="material-icons prev" (click)="prev()">keyboard_arrow_left</i>
+             <i class="material-icons next" (click)="next()">keyboard_arrow_right</i>
+             
+                <li [ngClass]="{'remove':hideBlurred}"  style="filter:blur(10px); -webkit-filter:blur(10px);">
+                     <img src="{{blurredImg}}">
+                </li>
+                <li *ngIf="image"  class="sharpen" fxFlex="row" fxLayoutAlign="center center">                   
+                  <img src="{{image.url}}" alt="{{image.alt}}">
+                </li>    
+
+            </ul>
+  `,
+    styles: [`
+                .remove{opacity:0.2;z-index: -1;position: absolute;top:0;}
+                ul{margin:0 !important; padding: 0 !important; position: relative;}
+                .prev{position:absolute; top:45%;left:0; }
+                .next{position:absolute; top:45%;right:0; }
+                .prev,.next{
+                    background-color: transparent;
+                    border: 0;
+                    cursor: pointer;
+                    outline: none;
+                    color: white;
+                    font-size: 3em;
+                }
+                .prev:hover,.next:hover{
+                background-color: rgba(0,0,0,0.15);
+                }
+                i{border-radius: 50%;}
+                ul.carousel{
+                    overflow:hidden;
+                    width:100%;
+                    text-align: center;
+                    position:relative;  
+                    background-color:rgba(0,0,0,0.35);
+                }                
+                ul.carousel img{
+                    display:block;
+                    width:100%;
+                    max-width:100%;
+                    height:auto;}
+                .sharpen{animation: sharpen 1s;}
+                  @keyframes sharpen {
+                    0%{filter:blur(10px); opacity: 0.2;}
+                    100%{filter:blur(0px); opacity: 1;}
+                  }
+  `],
+})
+
+export class CarouselComponent implements OnInit, OnDestroy {
+    @Input('carousel') carouselContent: any;
+
+    /*make sure url passed do have absolute path*/
+    blurredImg: string;
+    hideBlurred :boolean;
+
+    constructor(private el: ElementRef) {
+        this.hideBlurred  = false;
+    }
+
+    carouselTimer: Subscription;
+    image: any;
+    /*------ hover pause and start--------*/
+    /*
+     @HostListener('mouseenter') onMouseEnter() {
+     this.pause();
+     }
+     @HostListener('mouseleave') onMouseLeave() {
+     this.start();
+     }*/
+
+    i: number;
+    length: number;
+
+    ngOnInit() {
+        this.length = this.carouselContent.length;
+
+        let n = this.carouselContent[0].url.lastIndexOf(".");
+        let url = this.carouselContent[0].url;
+        this.blurredImg = url.substr(0, n) + "_blurred" + url.substr(n,url.length);
+
+        this.i = -1;
+        this.image = this.carouselContent[this.i];
+        this.start();
+    };
+
+    start() {
+        this.carouselTimer = Observable.timer(1500, 5000).subscribe(t => {
+            this.hideBlurred = true;
+            this.i = (this.i + 1) % this.length;
+            this.image = this.carouselContent[this.i];
+            this.image.alt = this.image.url.split('/').pop().split('.')[0] + '_banner';
+        });
+    }
+
+    pause(){
+     if(this.carouselTimer)
+     this.carouselTimer.unsubscribe();
+     }
+    next(){
+        this.pause();
+        this.i = (this.i + 1) % this.length;
+        this.image = this.carouselContent[this.i];
+    }
+    prev(){
+        this.pause();
+        this.i = ((this.i - 1) + this.length)%this.length;
+        this.image = this.carouselContent[this.i];
+    }
+    ngOnDestroy() {
+        if (this.carouselTimer)
+            this.carouselTimer.unsubscribe();
+    }
+}
+
+

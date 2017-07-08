@@ -1,0 +1,26 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Your Cart</h1>
+        </div>
+    </section>
+    <section class="data-body">
+        <div class="row" *ngIf="cartProducts.length==0">
+            <div class="col-md-12">
+                <h3 class="center-align">Your Cart is empty!</h3>
+                <button md-raised-button="" routerLink="/explore/sip" class="center-align">Explore</button>
+            </div>
+        </div>
+        <app-cart-product-view *ngFor="let item of cartProducts" [_product]="item" class="cart-product"
+                               (remove)="removeProduct($event)"></app-cart-product-view>
+    </section>
+    <section class="data-foot" *ngIf="cartProducts.length!=0">
+        <div class="row">
+            <div class="col-md-12">
+                <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                        (click)="loginUser()"> <!--routerLink="/checkout/init"-->Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

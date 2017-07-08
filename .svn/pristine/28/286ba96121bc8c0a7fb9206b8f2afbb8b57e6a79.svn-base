@@ -1,0 +1,84 @@
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Checkout} from "./checkout";
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+
+@Component({
+    selector: 'app-checkout',
+    templateUrl: './checkout.component.html',
+    styleUrls: ['./checkout.component.css']
+})
+export class CheckoutComponent implements OnInit {
+
+    checkoutData: Checkout;
+    checkoutFormGroup: FormGroup;
+
+    constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {
+    }
+
+    ngOnInit() {
+
+        let productFormGroupArray = this.fb.array([]);
+        let minInvForCart = 0;
+        this.route.data.forEach((data: { checkoutData: Checkout }) => {
+            this.checkoutData = data.checkoutData;
+        });
+
+        this.checkoutData.products.forEach(product => {
+            let fundFormGroupArray = this.fb.array([]);
+            let minInv = 0;
+            product.funds.forEach(fund => {
+                minInv += fund.minInvestment;
+                fundFormGroupArray.push(this.fb.group({
+                    investmentAmount: [fund.minInvestment, Validators.required],
+                    selectedSubOption: ['', Validators.required],
+                    selectedDeductionDate: ['', Validators.required],
+                }))
+            });
+
+            product.investmentAmount = minInv;
+            minInvForCart += minInv;
+            productFormGroupArray.push(this.fb.group({
+                investmentAmount: [product.investmentAmount, Validators.required],
+                investmentPeriod: [product.investmentPeriod, Validators.required],
+                startPaymentToday: [product.startPaymentToday, Validators.required],
+                funds: fundFormGroupArray
+            }))
+        })
+
+        this.checkoutData.totalInvestmentAmount = minInvForCart;
+
+        this.checkoutFormGroup = this.fb.group({
+            selectedNominee: [this.checkoutData.selectedNominee, Validators.required],
+            selectedBank: [this.checkoutData.selectedBank, Validators.required],
+            products: productFormGroupArray
+        });
+
+       // console.log(this.checkoutFormGroup);
+
+        this.checkoutFormGroup.valueChanges
+            .map((value) => {
+                console.log(value);
+            }).subscribe(value => console.log(value));
+
+    }
+
+    removeProduct(value: any) {
+        this.checkoutData.products = this.checkoutData.products.filter(product => product.product != value);
+        this.doInvestmentAmountUpdate();
+        if (this.checkoutData.products.length == 0) {
+            this.router.navigateByUrl("/cart");
+        }
+    }
+
+    doInvestmentAmountUpdate() {
+        this.checkoutData.totalInvestmentAmount = 0;
+        this.checkoutData.products.forEach(product => this.checkoutData.totalInvestmentAmount += product.investmentAmount)
+    }
+
+    onCheckoutSubmit() {
+        console.log("checkout form submitted!");
+    }
+
+
+}

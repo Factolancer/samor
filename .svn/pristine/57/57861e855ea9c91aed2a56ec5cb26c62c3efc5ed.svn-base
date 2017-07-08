@@ -1,0 +1,22 @@
+.pieChartLayout{
+    width: 600px;
+    height: 400px;
+}
+.red{
+    color: red;
+}
+.fundName{
+    color:blue;
+    cursor: pointer;
+}
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+.port-value-div{
+    background-color:#c2c2a3;
+}

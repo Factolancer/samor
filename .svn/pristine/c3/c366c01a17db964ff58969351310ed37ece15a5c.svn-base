@@ -1,0 +1,21 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <md-card class="mar-tb-5 report-card no-padding">
+        <div fxLayout="row" fxLayoutAlign="center center" class="mar-tb-20">
+            <div fxFlex="90">
+                <div class="graph-box">
+                    <div class="highlight">
+                        Scheme Category vs Amount
+                    </div>
+                    <div class="graph" id="graph" fxLayout="row" fxLayoutAlign="center">
+                        <!--<chart  [options]="options" class="clickable" *ngIf="assetAllocationDataAvailable" >
+                            <series>
+                                <point (select)="onPointSelect($event)"></point>
+                            </series>
+                        </chart>-->
+                        <app-chart></app-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-card>
+</div>

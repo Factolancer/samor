@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="365px" height="218px" viewBox="0 0 365 218" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>cash invest  copy 20</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="1" y="202.354211" width="362.927953" height="16"></rect>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="362.927953" height="16" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="cash-invest--copy-20">
+            <path d="M363.927953,202.081459 C363.927953,101.716271 282.683763,20.3542112 182.463976,20.3542112 C82.2441896,20.3542112 1,101.716271 1,202.081459 L65.75533,202.081459 C65.9583667,137.496397 118.301364,85.2029385 182.840458,85.2029385 C247.379552,85.2029385 299.722549,137.496397 299.925543,202.081459 L363.927953,202.081459 Z" id="Combined-Shape" stroke="#979797" fill="#D8D8D8"></path>
+            <use id="Rectangle-13" stroke="#979797" mask="url(#mask-2)" stroke-width="2" fill="#727272" xlink:href="#path-1"></use>
+            <path d="M201.418971,148.665754 L19.4533083,148.665754" id="Line" stroke="#979797" stroke-linecap="square" transform="translate(110.677714, 149.042781) rotate(36.000000) translate(-110.677714, -149.042781) "></path>
+            <path d="M183.549444,202.434685 L127.077252,29.0020416" id="Line" stroke="#979797" stroke-linecap="square"></path>
+            <path d="M239.221671,203.125387 L183.356349,30.4616341" id="Line" stroke="#979797" stroke-linecap="square" transform="translate(211.592445, 116.800928) rotate(36.000000) translate(-211.592445, -116.800928) "></path>
+            <path d="M184.285264,202.032866 L330.36,95.711115" id="Line" stroke="#979797" stroke-linecap="square"></path>
+            <path d="M183.778745,201.354211 L1,201.354211" id="Path-16" stroke="#979797"></path>
+            <path d="M66.0917969,201.230188 C66.0917969,201.230188 63.9534034,166.463027 88.5783673,132.811115 C66.4100908,116.207915 43.0126849,100.112342 36.5,95.3542112 C4.25390625,138.532922 2.76953125,184.910852 2,201.230188 C13.697391,201.230188 66.0917969,201.230188 66.0917969,201.230188 Z" id="Path-17" fill="#12CC5E"></path>
+            <path d="M123.900762,131.223331 C123.900762,131.223331 122.900598,93.901681 146.689984,61.9999898 C124.277583,45.8916378 100.412595,28.6276721 94.4109542,23.8043713 C64.2115273,60.8644122 58.125365,114.84399 59.3651061,131.223331 C71.0624971,131.223331 123.900762,131.223331 123.900762,131.223331 Z" id="Path-17" fill="#62F06E" transform="translate(102.953333, 77.513851) rotate(36.000000) translate(-102.953333, -77.513851) "></path>
+            <path d="M213.709953,107.185998 C213.709953,107.185998 211.921529,69.5769427 236.524685,38.3855588 C214.112284,22.2772068 190.728865,4.82330083 184.727224,2.84217094e-14 C155.026735,38.5546537 147.623306,91.0068178 148.863048,107.386158 C160.560439,107.386158 213.709953,107.185998 213.709953,107.185998 Z" id="Path-17" fill="#F2C301" transform="translate(192.629508, 53.693079) rotate(72.000000) translate(-192.629508, -53.693079) "></path>
+            <path d="M298.740205,139.607279 C298.740205,139.607279 296.81571,103.109132 319.990538,71.213641 C297.578137,55.105289 274.318319,38.9671876 268.316678,34.1438867 C238.512157,74.9616538 233.133942,123.720988 234.373683,140.100329 C246.253262,140.484093 298.740205,139.607279 298.740205,139.607279 Z" id="Path-17" fill="#FE751F" transform="translate(277.101225, 87.170693) rotate(109.000000) translate(-277.101225, -87.170693) "></path>
+            <path d="M347.945189,216.501101 C347.945189,216.501101 344.718767,183.543161 369.547861,148.677275 C347.13546,132.568923 324.68297,116.081024 318.497032,111.586677 C289.268781,152.459301 281.660453,199.678178 284.034839,216.465329 C295.73223,216.465329 347.945189,216.501101 347.945189,216.501101 Z" id="Path-17" fill="#F91E00" transform="translate(326.588461, 164.043889) rotate(144.000000) translate(-326.588461, -164.043889) "></path>
+            <g id="Group" transform="translate(156.006693, 164.037442) rotate(4.000000) translate(-156.006693, -164.037442) translate(125.506693, 127.037442)">
+                <g id="Group-2" transform="translate(0.000000, 0.000000)">
+                    <path d="M60.1833162,72.3247574 L2.86937054,16.3836542 L2.23820962e-13,4.97379915e-14 L16.0772687,5.28998495 L60.1833162,72.3247574 Z" id="Path-3" fill="#C5C5C5"></path>
+                    <g id="Group-3" fill-opacity="0.821727808" fill="#4D4D4D">
+                        <polygon id="Path-2" points="60.9857604 73.5042725 -1.33226763e-12 -1.84030569e-12 15.8681427 5.03667853"></polygon>
+                    </g>
+                </g>
+            </g>
+            <text id="Moderate" transform="translate(184.714150, 56.109934) rotate(-1.000000) translate(-184.714150, -56.109934) " font-family="Roboto-Medium, Roboto" font-size="14" font-weight="400" letter-spacing="0.743750036" fill="#FFFFFF">
+                <tspan x="151.316493" y="53.1099335">Moderate </tspan>
+            </text>
+            <text id="Moderate-Low" transform="translate(100.851594, 84.913414) rotate(-46.000000) translate(-100.851594, -84.913414) " font-family="Roboto-Medium, Roboto" font-size="14" font-weight="400" letter-spacing="0.743750036" fill="#FFFFFF">
+                <tspan x="67.8258129" y="73.9134144">Moderate</tspan>
+                <tspan x="86.3894849" y="89.9134144">Low </tspan>
+            </text>
+            <ellipse id="Oval" fill="#676767" cx="183.505925" cy="201.862321" rx="1.50592512" ry="1.50810994"></ellipse>
+            <text id="Low" transform="translate(35.015946, 153.055528) rotate(-73.000000) translate(-35.015946, -153.055528) " font-family="Roboto-Medium, Roboto" font-size="14" font-weight="400" letter-spacing="0.743750036" fill="#FFFFFF">
+                <tspan x="20.9257116" y="158.055528">Low</tspan>
+            </text>
+            <text id="Moderately-High" transform="translate(272.082974, 79.707658) rotate(38.000000) translate(-272.082974, -79.707658) " font-family="Roboto-Medium, Roboto" font-size="14" font-weight="400" letter-spacing="0.743750036" fill="#FFFFFF">
+                <tspan x="232.746255" y="76.7076581">Moderately </tspan>
+                <tspan x="255.98024" y="92.7076581">High</tspan>
+            </text>
+            <text id="High" transform="translate(337.666384, 151.394502) rotate(73.000000) translate(-337.666384, -151.394502) " font-family="Roboto-Medium, Roboto" font-size="14" font-weight="400" letter-spacing="0.743750036" fill="#FFFFFF">
+                <tspan x="337.666384" y="148.394502"></tspan>
+                <tspan x="321.56365" y="164.394502">High</tspan>
+            </text>
+            <text id="Low" font-family="Roboto-Medium, Roboto" font-size="14" font-weight="400" letter-spacing="0.743750036" fill="#FFFFFF">
+                <tspan x="18.6392381" y="215.354211">Low</tspan>
+            </text>
+            <text id="High" font-family="Roboto-Medium, Roboto" font-size="14" font-weight="400" letter-spacing="0.743750036" fill="#FFFFFF">
+                <tspan x="318.509843" y="215.354211">High</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

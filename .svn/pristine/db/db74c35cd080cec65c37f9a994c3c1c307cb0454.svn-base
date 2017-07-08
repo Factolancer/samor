@@ -1,0 +1,62 @@
+import { Component, OnInit } from '@angular/core';
+import {NgForm, FormGroup, Validators, FormControl, FormBuilder, Validator, FormControlName} from '@angular/forms';
+import {Subscription} from "rxjs";
+
+import {EmailValidator} from '../../../validator';
+import {User} from "../../../models/user";
+import {UserService} from '../../user.service';
+
+@Component({
+  selector: 'basic-section',
+  templateUrl: 'basic-section.component.html',
+  styleUrls: ['../../registration.component.css']
+})
+
+export class BasicSection implements OnInit {
+
+  basicForm: FormGroup;
+  basicsaved = false;
+  basiccollapsed = true;
+  user: User
+  usersubscription: Subscription;
+
+  constructor(private fb: FormBuilder, public userService: UserService) {
+
+
+    this.usersubscription = this.userService.currentUser.subscribe(
+        result => {
+          this.user = result
+        }
+    )
+  }
+
+  ngOnInit() {
+    this.basicForm = this.fb.group({
+      pan: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}')])],
+      name: ['', Validators.compose([Validators.required])],
+      contact: this.fb.group({
+        mob: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern('^[0-9]{10}$')])],
+        email: ['', Validators.compose([Validators.required, EmailValidator.isValidMailFormat])],
+        tel: ['', Validators.compose([Validators.pattern('^[0-9]{10}$')])],
+        fax: ['', Validators.compose([Validators.pattern('^[0-9]{10}$')])]
+      }),
+      dob: ['', [Validators.required]],
+      gender: ['', [Validators.required]],
+      marital_status: ['', Validators.required]
+    });
+  }
+
+  onBasicSubmit() {
+    this.basicsaved = true;
+      this.userService.updateBasicData(this.basicForm.value);
+    // this.user.Basic = this.basicForm.value;
+    // console.log(this.user);
+    this.toggleBasic();
+  }
+
+  toggleBasic() {
+    if (this.basiccollapsed == true) this.basiccollapsed = false;
+    else this.basiccollapsed = true;
+  }
+
+}

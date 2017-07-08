@@ -1,0 +1,42 @@
+<div class="product-container">
+  <div class="title">Invest in our Product</div>
+  <div fxLayout="row">
+    <md-card fxFlex="50" align="center">
+      <md-card-title>
+        <img src="../../../assets/img/product/smart-sip.svg"><br/>
+       {{productSolutions[0].title}}
+      </md-card-title>
+      <md-card-content>
+        {{productSolutions[0].content[0]}}<br/><br/>
+        {{productSolutions[0].content[1]}} <br/><br/>
+        {{productSolutions[0].content[2]}} <br/><br/>
+      </md-card-content>
+      <button class="invest-button" (click)="invest()">invest</button>
+    </md-card>
+    <md-card fxFlex="50" fxFlexOffset="15px" align="center">
+      <md-card-title>
+        <img src="{{productSolutions[1].image}}"><br/>
+        {{productSolutions[1].title}}
+      </md-card-title>
+      <md-card-content>
+        {{productSolutions[1].content[0]}}<br/><br/>
+        {{productSolutions[1].content[1]}}<br/><br/>
+        {{productSolutions[1].content[2]}}
+
+      </md-card-content>
+      <button  (click)="invest()" class="invest-button">invest</button>
+    </md-card>
+    <md-card fxFlex="50" fxFlexOffset="15px" align="center">
+      <md-card-title>
+        <img src="../../../assets/img/product/tax-saver.svg"><br/>
+        {{productSolutions[2].title}}
+      </md-card-title>
+      <md-card-content>
+        {{productSolutions[2].content[0]}}<br/><br/><br/>
+        {{productSolutions[2].content[1]}}<br/><br/><br/>
+        {{productSolutions[2].content[2]}}<br/><br/>
+      </md-card-content>
+      <button  class="invest-button" (click)="invest()">invest</button>
+    </md-card>
+  </div>
+</div>

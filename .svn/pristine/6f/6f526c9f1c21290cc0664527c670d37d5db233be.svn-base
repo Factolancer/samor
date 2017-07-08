@@ -1,0 +1,167 @@
+import {Component, OnInit, ViewContainerRef, ChangeDetectorRef} from "@angular/core";
+import {Subscription} from "rxjs";
+import {ExploreFundsService} from "./explore-funds.service";
+import {Input} from "@angular/core/src/metadata/directives";
+import {CartService} from "../cart/cart.service";
+import {Fund} from "../models/fund";
+import {FundSearchInput} from "./fund-search-input";
+import {ExploreFundConstants} from "./explore-funds.constants";
+import {MdDialogRef, MdDialog, MdSnackBar, MdSnackBarConfig} from "@angular/material";
+import {BasicFactsheetComponent} from "../factsheet/basic-factsheet.component";
+import {CompareService} from "../compare/compare.service";
+import {FactsheetService} from "../factsheet/factsheet.service";
+
+
+@Component({
+    selector: 'app-fund',
+    templateUrl: './fund.component.html',
+    styleUrls: ['./explore-funds.styles.scss']
+})
+
+
+export class FundComponent implements OnInit {
+
+    //inputs
+    funds: Fund[] = [];
+    @Input() showListView: boolean;
+    @Input() showCardView: boolean;
+
+    //subscriptions
+    searchInputSubscription: Subscription;
+    searchResultSubscription: Subscription;
+    searchInput: FundSearchInput;
+
+    //variables
+    defaultSortOrder: string;
+    currentSortElement: string;
+    // comparisonList: string[];
+    isDesc: boolean;
+    //_isListView: boolean;
+    //_isCardView: boolean;
+    // rows: number = 10;
+    //from: number = 0;
+    //factSheetId: number;
+    comparisonStatus: [boolean, string];
+    factsheetDialogRef: MdDialogRef<BasicFactsheetComponent>;
+
+
+    constructor(private exploreFundsService: ExploreFundsService, private cartService: CartService,
+                private compareService: CompareService, public dialog: MdDialog, private mdSnackBar: MdSnackBar,
+                private viewContainerRef: ViewContainerRef, private cdRef: ChangeDetectorRef,
+                public factsheetService: FactsheetService) {
+
+
+
+
+        //this.isListView = true;
+        //  this.fundDisplay = this.fundSerivce.getFundDisplay();
+
+        //setting default values
+        this.isDesc = true;
+        this.defaultSortOrder = ExploreFundConstants.SORT_DESC;
+
+
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput
+            .subscribe(searchInput => {
+                this.searchInput = searchInput;
+                if (searchInput.queryType == ExploreFundConstants.SEARCH_QUERY) {
+                    this.currentSortElement = "";
+                    this.defaultSortOrder = ExploreFundConstants.SORT_DESC;
+                }
+            });
+
+        this.searchResultSubscription = this.exploreFundsService.fundSearchResult.subscribe(searchResults => {
+            this.funds = searchResults.funds;
+        })
+
+    }
+
+    //used for column level sorting of fields
+    sort(value: string) {
+        console.log(value);
+        this.currentSortElement = value;
+        if (this.searchInput.sortElement === this.currentSortElement) {
+            this.searchInput.sortOrder = this.toggleSortOrder();
+        } else {
+            this.searchInput.sortElement = this.currentSortElement;
+            this.searchInput.sortOrder = this.defaultSortOrder;
+            this.isDesc = true
+        }
+        this.searchInput.from = 0;
+        this.searchInput.queryType = ExploreFundConstants.SORT_QUERY;
+        this.exploreFundsService.setFundSearchInput(this.searchInput);
+    }
+
+    //used for toggling the sort order
+    toggleSortOrder() {
+        if (this.isDesc) {
+            this.isDesc = false
+            return ExploreFundConstants.SORT_ASC;
+        } else {
+            this.isDesc = true
+            return ExploreFundConstants.SORT_DESC;
+        }
+    }
+
+
+    /* //supposed to be used for view toggling
+     toggleView() {
+     this.isListView = !this.isListView;
+     }*/
+
+
+    /* //to be used to set the number of rows to be shows selected manually
+     setRowsToDisplay(value: string) {
+     this.fundSearchInput.rows = +value;
+     this.searchService.searchFund(this.fundSearchInput);
+     }*/
+
+    viewFactSheet(id: number) {
+        let config = this.factsheetService.getFactsheetDialogConfig();
+        config.viewContainerRef = this.viewContainerRef;
+        this.factsheetDialogRef = this.dialog.open(BasicFactsheetComponent, config);
+        this.factsheetDialogRef.componentInstance.factsheetId = id;
+
+    }
+
+
+    ngOnInit() {
+
+    }
+
+    addToCompare(fund: Fund) {
+        console.log(fund.selected + ":fund selection status");
+        if (fund.selected) {
+            this.compareService.removeFromCompare(+fund.id);
+            fund.selected = false;
+            this.cdRef.detectChanges();
+
+        } else {
+
+            // this.cdRef.detectChanges();
+            this.comparisonStatus = this.compareService.addToCompare(fund);
+            console.log(this.comparisonStatus);
+            if (this.comparisonStatus[0]) {
+                fund.selected = true;
+                console.log("fund added to compare!");
+            } else {
+                console.log("fund not added to compare!");
+                fund.selected = true;
+                this.cdRef.detectChanges();
+                fund.selected = false;
+                this.cdRef.detectChanges();
+
+                /*this.funds.forEach(eachFund => {
+                 if (eachFund.id == fund.id) {
+                 eachFund.selected = false;
+                 console.log(eachFund);
+                 }
+                 });*/
+                let config = new MdSnackBarConfig();
+                config.duration = 2000;
+                config.viewContainerRef = this.viewContainerRef;
+                this.mdSnackBar.open(this.comparisonStatus[1], "Okay", config);
+            }
+        }
+    }
+}

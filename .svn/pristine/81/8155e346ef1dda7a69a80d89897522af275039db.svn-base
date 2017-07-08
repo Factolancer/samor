@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-md-6">
+        <h3 style="margin-top:0px">{{productEnum[product.product]}}</h3>
+    </div>
+    <div class="col-md-6" *ngIf="isFincashProduct">
+        <button md-raised-button=""  class="pull-right" (click)="removeProduct(product.product)">Remove {{productEnum[product.product]}}
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <md-input placeholder="{{productEnum[product.product]}} Investment Amount" type="number"
+                  [(ngModel)]="product.investmentAmount">
+            <span md-prefix>&#x20B9;</span><!--Rupee icon-->
+        </md-input>
+    </div>
+    <div class="col-md-6">
+        <md-input placeholder="{{productEnum[product.product]}} Investment Period" type="number"
+                  [(ngModel)]="product.investmentPeriod"></md-input>
+        <span md-suffix>months</span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table>
+            <thead class="table-header">
+            <td class=" table-element">Fund</td>
+            <td class="table-element">Sub Option</td>
+            <td class="table-element">Risk</td>
+            <td class="table-element">Min Investment</td>
+            <td class="table-element">Start Date</td>
+            <td class="table-element">Investment Amount</td>
+            <td class=" table-element" *ngIf="!isFincashProduct">Action</td>
+            </thead>
+            <tbody>
+            <tr *ngFor="let fundItem of product.funds" class="table-row">
+                <td class="table-element left-align clickable">
+                    <a routerLink="/factsheet/{{fundItem.id}}">
+                        <md-icon class="material-icons factsheet-icon md-14">&#xE873;</md-icon>
+                        {{fundItem.name}}
+                    </a>
+                </td>
+                <td class="table-element">
+                    <select required>
+                        <option *ngFor="let subOption of fundItem.subOptionList" [value]="subOption">{{subOption}}
+                        </option>
+                    </select>
+                </td>
+                <td class="table-element">{{fundItem.risk}}</td>
+                <td class="table-element">{{fundItem.minInvestment | currency:'INR':true:'1.0-0'}}</td>
+                <td class="table-element">
+                    <md-input type="date" required placeholder="Start Date" [(ngModel)]="fundItem.startDate"></md-input>
+                </td>
+                <td class="table-element">
+                    <md-input type="number" placeholder="Investment Amount">
+                        <span md-prefix>&#x20B9;</span><!--Rupee icon-->
+                    </md-input>
+                </td>
+                <td class="table-element" *ngIf="!isFincashProduct"
+                    (click)="removeFund(fundItem.id, product.investmentType)">
+                    <button md-icon-button=""><i class="material-icons">&#xE14C;</i></button><!--Clear icon-->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

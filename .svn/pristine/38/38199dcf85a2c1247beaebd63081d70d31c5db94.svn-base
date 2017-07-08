@@ -1,0 +1,72 @@
+import {Component, OnInit} from "@angular/core";
+import {Router} from "@angular/router";
+import {MdDialogRef, MdDialog} from "@angular/material";
+import {FormBuilder, FormGroup, Validators, AbstractControl} from "@angular/forms";
+import {PANValidator} from "../validator";
+import {HttpService} from "../services/http-service.service";
+
+@Component({
+    selector: 'check-kyc',
+    templateUrl: './check-kyc.component.html',
+    styleUrls: ['./check-kyc.component.scss']
+})
+
+export class CheckKYCComponent implements OnInit {
+
+    otpSent:boolean = false;
+    validPhone:boolean = false;
+    kycCompliant:boolean;
+    panGiven:boolean = false;
+
+    pan: string;
+    KYCStatusForm: FormGroup;
+    PhoneValidationForm: FormGroup;
+    OTPValidationForm: FormGroup;
+    constructor(public router: Router, public http: HttpService, public dialogref: MdDialogRef<CheckKYCComponent>,
+                private fb: FormBuilder) { }
+
+
+    onSendOTP(){
+        console.log("OTP sent, please check mobile");
+        this.otpSent = true;
+        console.log(this.otpSent);
+   }
+    onValidateOTP(){
+        console.log("Success!");
+        this.otpSent = false;
+        this.validPhone = true;
+        console.log(this.otpSent);
+    }
+    checkPAN(){
+        console.log("Right PAN!");
+        this.pan = this.KYCStatusForm.controls['pan'].value;
+        this.http.post('/user/checkKYC', {"pan": this.pan})
+            .subscribe(
+                response => {
+                    console.log(response);
+                    this.kycCompliant = (response.statusCode=="KS100") ? true : false;
+                    this.panGiven = true;
+                },
+                error => {
+                    console.log("Error occurred in KYC status checking " + error.error);
+                }
+            )
+
+    }
+
+    closeClicked() {
+        this.dialogref.close();
+    }
+    ngOnInit() {
+        this.PhoneValidationForm = this.fb.group({
+            mob: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern('^[0-9]{10}$')])]
+        });
+        this.KYCStatusForm = this.fb.group({
+            pan: ['', Validators.compose([Validators.required, Validators.minLength(10),PANValidator.isValidPANFormat])]
+        });
+        this.OTPValidationForm = this.fb.group({
+            otp: ['', Validators.compose([Validators.required])]
+        })
+
+    }
+}

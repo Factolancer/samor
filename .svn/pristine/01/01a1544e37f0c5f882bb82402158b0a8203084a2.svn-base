@@ -1,0 +1,13 @@
+
+export const Occupation = [
+    {id: 1, name: "Private sector company employee"},
+    {id: 2, name: "Public sector company employee"},
+    {id: 3, name: "Government service employee"},
+    {id: 4, name: "Business"},
+    {id: 5, name: "Professional/Consultant"},
+    {id: 6, name: "Agricultural"},
+    {id: 7, name: "Retired"},
+    {id: 8, name: "Student"},
+    {id: 9, name: "Forex Dealer"},
+    {id: 10, name: "Other"}
+];

@@ -1,0 +1,468 @@
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {Params, ActivatedRoute, Router} from "@angular/router";
+import {FundSearchResults} from "../explore-funds/fund-search-results";
+import {Title} from "@angular/platform-browser";
+import {FundSearchInput} from "../explore-funds/fund-search-input";
+import {Subscription} from "rxjs/Subscription";
+import "rxjs/add/operator/switchMap";
+import "rxjs/add/operator/take";
+import {ExploreFundsService} from "../core/services/explore-funds.service";
+import {CompareService} from "../core/services/compare.service";
+import {URLAccessGuard} from "../core/guards/urlAccess.guard";
+import {Fund} from "../models/fund";
+import {Logger} from "../core/logger/logger";
+import {SnackBarService} from "../core/services/snack-bar.service";
+import {HeaderService} from "../core/services/header.service";
+import {Observable} from "rxjs/Observable";
+import {Subject} from "rxjs/Subject";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {RedemptionService} from "../core/services/redemption.service";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Redemption} from "./models/redemption";
+import {RedemptionModeEnum} from "../enum/redemption-mode-enum";
+import {RedemptionFund} from "./models/redemption-fund";
+import {InvestmentModeEnum} from "../enum/investment-mode-enum";
+import {DISABLED} from "@angular/forms/src/model";
+import {isEmpty} from "rxjs/operator/isEmpty";
+import {RedemptionValidationMessages} from "./redemption-validations";
+import {NumberValidator} from "../validators/validator";
+import {SchemeCodes} from "../constants/SchemeCodes";
+import {ConfirmationDialogComponent} from "../shared/confirmation-dialog.component";
+import {MdDialog, MdDialogConfig} from "@angular/material";
+
+
+@Component({
+    selector: 'app-redemption',
+    templateUrl: './redemption.component.html',
+    styleUrls: ['./redemption.styles.scss']
+})
+
+export class RedemptionComponent implements OnInit {
+    searchResults: FundSearchResults;
+    routeInputSubscription: Subscription;
+    showFilterContent: boolean;
+    redeemFundList: Fund[];
+    showComparisonList: boolean;
+
+    redData: Redemption;
+    redemptionFormGroup: FormGroup;
+    redemptionFormErrors: any;
+    totalRedemptionAmount: number;
+    className: string;
+    fullRedemption: boolean;
+    amountOrUnit: boolean;
+
+    navToolTipText: string;
+    shake: boolean;
+    shakeSub: Subscription;
+
+    constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder,
+                private exploreFundsService: ExploreFundsService, private titleService: Title,
+                private redemptionService: RedemptionService, private urlAccessGuard: URLAccessGuard,
+                private snackBarService: SnackBarService, private viewContainerRef: ViewContainerRef,
+                private logger: Logger, private headerService: HeaderService, private dialog: MdDialog) {
+        this.className = "RedemptionComponent";
+        this.fullRedemption = false;
+        this.amountOrUnit = false;
+        this.navToolTipText = "If you are placing order before 2pm the NAV of the same day will be applicable. Else the NAV of the       succeeding day will be applicable on your redemption order. In case the market value falls down the entered amount your order will be rejected. It will be a good practice to opt for full redemption of units or amount less than or equal to 90% of the current market value";
+    }
+
+    ngOnInit() {
+        this.logger.debug(this.className, this.redemptionService.getRedemptionStateSubject());
+        this.titleService.setTitle("Redeem Funds");
+        Observable.timer(1000).subscribe(()=> {
+            this.redemptionService.getRedemptionData();
+        });
+
+        /*.subscribe(data => {
+         // this.redemptionService.redemptionObservable.subscribe(funds => {
+         let funds = this.redemptionService.getRedemptionStateSubject()['fundsData'];
+         if (funds.length > 0){
+         data.fundsData.push(funds);
+         }
+         // this.redemptionService.redemptionData.next(data);
+         this.redData = data; // this.redemptionService.getRedemptionStateSubject();
+         this.logger.debug(this.className, this.redData);
+         this.setFieldDefaults();
+         this.redeemFormInitialisation();
+         // })
+         })*/
+        /*.map(values => {
+         this.redData = values
+         this.setFieldDefaults();
+         this.redeemFormInitialisation();
+         });*/
+        this.redemptionService.redemptionObservable.subscribe(data => {
+            this.logger.debug(this.className, data);
+            this.redData = data;
+            this.setFieldDefaults();
+            this.redeemFormInitialisation();
+        });
+
+        /*this.route.params.switchMap((params: Params) => {
+         this.logger.debug(params);
+         return this.exploreFundsService.getSearchFundFromRoute(params);
+         }).subscribe(searchInput => {
+         this.headerService.onDemandProgressBar();
+         this.searchInput = searchInput;
+         this.logger.debug(this.className, "emitting search Input");
+         this.exploreFundsService.setFundSearchInput(searchInput);
+         this.titleService.setTitle(this.exploreFundsService.getExploreTitle(searchInput));
+         this.logger.debug(this.className, searchInput);
+         this.exploreFundsService.search(searchInput).subscribe(results => {
+         this.searchResults = results;
+         this.checkAgainstRedemptionList();
+         this.exploreFundsService.setFundSearchResult(results);
+         this.logger.debug(results);
+         });
+         });*/
+
+    }
+
+    setFieldDefaults() {
+        if (!this.redData.selectedBank) {
+            this.redData.selectedBank = this.redData.bankList[0];
+        }
+
+        if (!this.redData.selectedNominee) {
+            this.redData.selectedNominee = this.redData.nomineeList[0];
+        }
+    }
+
+    redeemFormInitialisation() {
+        let fundFormGroupArray = this.fb.array([]);
+        let fundFormErrorsArray = [];
+        let selectedBank = this.redemptionService.getRedemptionStateSubject()['selectedBank'];
+        let selectedNominee = this.redemptionService.getRedemptionStateSubject()['selectedNominee'];
+        this.totalRedemptionAmount = 0;
+
+        this.redData.fundsData.forEach(fundData => {
+            let fund = fundData.fund;
+            let option = fundData.option;
+            let plan = fundData.plan;
+            let selectedRedemptionMode = fundData.selectedRedemptionMode;
+            let amount = fundData.amount;
+
+            this.totalRedemptionAmount += amount;
+
+            if (selectedRedemptionMode == RedemptionModeEnum[RedemptionModeEnum.SWP]) {
+                let selectedAWPFrequency = fundData.selectedAWPFrequency;
+                let selectedAWPDate = fundData.selectedAWPDate;
+                let noOfInstallments = fundData.noOfInstallment;
+
+
+                fundFormGroupArray.push(this.fb.group({
+                    // redemptionMode: [selectedRedemptionMode || '', Validators.required],
+                    selectedAWPFrequency: [selectedAWPFrequency || '', Validators.required],
+                    selectedAWPDate: [selectedAWPDate || '', Validators.required],
+                    noOfInstallments: [noOfInstallments || '', Validators.required],
+                    redemptionType: [this.fullRedemption || false, Validators.required],
+                    amountUnitFlag: [fundData.amountUnitFlag || false, Validators.required],
+                    redemptionAmountOrUnit: [amount || '', Validators.required],
+                }));
+                fundFormErrorsArray.push({
+                    // redemptionMode: '',
+                    selectedAWPFrequency: '',
+                    selectedAWPDate: '',
+                    noOfInstallments: '',
+                    redemptionType: '',
+                    amountUnitFlag: '',
+                    redemptionAmountOrUnit: '',
+                });
+            }
+            else {
+                fundFormGroupArray.push(this.fb.group({
+                    // redemptionMode: [selectedRedemptionMode || '', Validators.required],
+                    redemptionType: [false, Validators.required],
+                    amountUnitFlag: [fundData.amountUnitFlag || false, Validators.required],
+                    redemptionAmountOrUnit: [amount || '', Validators.compose([Validators.required])]
+                }));
+                fundFormErrorsArray.push({
+                    // redemptionMode: '',
+                    redemptionType: '',
+                    amountUnitFlag: '',
+                    redemptionAmountOrUnit: ''
+                });
+            }
+        });
+
+
+        /*if (this.nomineeExists) {
+         this.checkoutFormGroup = this.fb.group({
+         selectedNominee: [selectedNominee || '', Validators.required],
+         selectedBank: [selectedBank || '', Validators.required],
+         fundsData: fundFormGroupArray
+         });
+         this.logger.debug(this.className, "Form ", this.checkoutFormGroup);
+
+         this.checkoutFormErrors = {
+         selectedNominee: '',
+         selectedBank: '',
+         fundsData: fundFormErrorsArray
+         };
+         } else {*/
+        this.redemptionFormGroup = this.fb.group({
+            // selectedBank: [selectedBank || '', Validators.required],
+            fundsData: fundFormGroupArray
+        });
+
+        this.redemptionFormErrors = {
+            // selectedBank: '',
+            fundsData: fundFormErrorsArray
+        };
+        // }
+
+        this.redemptionFormGroup.valueChanges
+            .subscribe(data => {
+                if (!this.redemptionFormGroup) {
+                    return;
+                } else {
+                    this.updateModelValues();
+                    this.updateErrorMessages();
+                    this.logger.debug(this.className, this.redemptionFormGroup);
+                }
+            });
+    }
+
+
+    //checking if the fund is in comparison list then it is updated else it is not marked
+    checkAgainstRedemptionList() {
+        if (this.redeemFundList.length > 0 && this.searchResults.funds.length > 0) {
+            this.searchResults.funds.forEach(fund => {
+                let fundExists = false;
+                this.redeemFundList.forEach(comparisonFund => {
+                    if (comparisonFund.id == fund.id)
+                        fundExists = true;
+                });
+                if (fundExists) {
+                    fund.selected = true;
+                } else {
+                    fund.selected = false;
+                }
+            })
+        } else {
+            this.searchResults.funds.forEach(fund => fund.selected = false)
+        }
+    }
+
+    updateErrorMessages() {
+        const form = this.redemptionFormGroup;
+
+        //funds validation
+        let formFundsArray = form.get('fundsData') as FormArray;
+        this.redemptionFormErrors['fundsData'].forEach((fund, index) => {
+
+            //selected Redemption Amount or Units
+            fund.redemptionAmountOrUnit = '';
+            let redemptionAmountControl = formFundsArray.at(index).get('redemptionAmountOrUnit');
+            if (redemptionAmountControl && redemptionAmountControl.dirty) {
+                const messages = RedemptionValidationMessages.redemptionAmountOrUnit;
+                this.logger.debug(this.className, redemptionAmountControl.errors);
+                /*if (formFundsArray.at(index).get('amountUnitFlag').value && formFundsArray.at(index).get('redemptionAmountOrUnit').value > this.redData.fundsData[index].currValue){
+                 formFundsArray.at(index).get('redemptionAmountOrUnit').setValue(this.redData.fundsData[index].currValue);
+                 }
+                 if (!formFundsArray.at(index).get('amountUnitFlag').value && formFundsArray.at(index).get('redemptionAmountOrUnit').value > this.redData.fundsData[index].redeemableUnits){
+                 formFundsArray.at(index).get('redemptionAmountOrUnit').setValue(this.redData.fundsData[index].redeemableUnits);
+                 }*/
+                for (const key in redemptionAmountControl.errors) {
+                    // if (formFundsArray.at(index).get('amountUnitFlag').value){
+                        switch (key) {
+                            case "minValue":
+                                fund.redemptionAmountOrUnit += messages[key] + redemptionAmountControl.errors[key].requiredValue + ' ';
+                                break;
+                            case "maxValue":
+                                fund.redemptionAmountOrUnit += messages[key] + redemptionAmountControl.errors[key].requiredValue + ' '; //this.redData.fundsData[index].currValue;
+                                // messages[key] + redemptionAmountControl.errors[key].requiredValue + ' ';
+                                break;
+                            case "minUnits":
+                                fund.redemptionAmountOrUnit += messages[key] + redemptionAmountControl.errors[key].requiredValue + ' ';
+                                break;
+                            case "maxUnits":
+                                fund.redemptionAmountOrUnit += messages[key] + redemptionAmountControl.errors[key].requiredValue + ' ';
+                                break;
+                            /*case "isMultiple":
+                             fund.redemptionAmountOrUnit += messages[key] + redemptionAmountControl.errors[key].requiredValue + ' ';
+                             break;*/
+                            default:
+                                fund.redemptionAmountOrUnit += messages[key] + ' ';
+                                break;
+                        }
+                    // }
+                    /*else {
+                        switch (key) {
+                            /!*case "minValue":
+                                fund.redemptionAmountOrUnit += messages[key] + redemptionAmountControl.errors[key].requiredValue + ' ';
+                                break;
+                            case "maxValue":
+                                fund.redemptionAmountOrUnit += messages[key] + redemptionAmountControl.errors[key].requiredValue + ''; //this.redData.fundsData[index].currValue;
+                                // messages[key] + redemptionAmountControl.errors[key].requiredValue + ' ';
+                                break;*!/
+                            case "minUnits":
+                                fund.redemptionAmountOrUnit += messages[key] + redemptionAmountControl.errors[key].requiredValue + '';
+                                break;
+                            case "maxUnits":
+                                fund.redemptionAmountOrUnit += messages[key] + redemptionAmountControl.errors[key].requiredValue + '';
+                                break;
+                            /!*case "isMultiple":
+                             fund.redemptionAmountOrUnit += messages[key] + redemptionAmountControl.errors[key].requiredValue + ' ';
+                             break;*!/
+                            default:
+                                fund.redemptionAmountOrUnit += messages[key] + ' ';
+                                break;
+                        }
+                    }*/
+                }
+            }
+        });
+    }
+
+    updateModelValues() {
+        const form = this.redemptionFormGroup;
+        this.totalRedemptionAmount = 0;
+        let formFundsArray = form.get('fundsData') as FormArray;
+
+        formFundsArray.controls.forEach((fundGroup, index) => {
+            this.logger.debug(this.className, "formFundsArray: ", formFundsArray.at(index).get('amountUnitFlag').status);
+            let maxRedUnits = this.redData.fundsData[index].redeemableUnits;
+            let maxRedValue = this.redData.fundsData[index].currValue;
+            let minRedUnits = this.redData.fundsData[index].minQuantity;
+            let minRedAmount = this.redData.fundsData[index].minAmount;
+
+            /*if (fundGroup.get('redemptionType').value && (fundGroup.get('amountUnitFlag').value.value || !fundGroup.get('amountUnitFlag').value.disabled)) {
+             // formFundsArray.at(index).get('amountUnitFlag').setValue(false);
+             fundGroup.get('amountUnitFlag').setValue({value: false, disabled: true});
+             // formFundsArray.at(index).get('amountUnitFlag').setValue({value: false, disabled: true});
+             }*/
+            if (fundGroup.get('redemptionType').value && (fundGroup.get('amountUnitFlag').value)) {
+                fundGroup.get('amountUnitFlag').setValue(false);
+                fundGroup.get('redemptionAmountOrUnit').setValue(this.redData.fundsData[index].redeemableUnits);
+            }
+            if (fundGroup.get('amountUnitFlag').value) {
+
+            }
+            // Partial Flag
+            if (!fundGroup.get('redemptionType').value) {
+                // Unit Flag
+                if (!fundGroup.get('amountUnitFlag').value) {
+                    fundGroup.get('redemptionAmountOrUnit').clearValidators();
+                    fundGroup.get('redemptionAmountOrUnit').setValidators(Validators.compose([Validators.required, NumberValidator.maxUnits(maxRedUnits), NumberValidator.minUnits(minRedUnits)]));
+                }
+                // Amount Flag
+                else {
+                    fundGroup.get('redemptionAmountOrUnit').clearValidators();
+                    fundGroup.get('redemptionAmountOrUnit').setValidators(Validators.compose([Validators.required, NumberValidator.maxValue(Math.floor(maxRedValue)), NumberValidator.minValue(Math.floor(minRedAmount))]));
+                }
+            }
+
+            this.redData.fundsData[index].fullPartialFlag = fundGroup.get('redemptionType').value;
+            this.redData.fundsData[index].amountUnitFlag = fundGroup.get('amountUnitFlag').value;
+            this.redData.fundsData[index].amount = fundGroup.get('redemptionAmountOrUnit').value;
+
+            /* if (formGroup.get('redemptionType') && !formGroup.get('amountUnitFlag')){
+             formGroup.get('amountUnitFlag').disable()
+             }*/
+
+            /*if (formGroup.get('investmentMode').value == RedemptionModeEnum[RedemptionModeEnum.SWP]) {
+             this.logger.debug(this.className, formGroup.get('investmentMode').value);
+             this.redemptionService.getRedemptionStateSubject().fundsData[index].selectedAIPFrequency = formGroup.get('selectedAIPFrequency').value;
+             this.redemptionService.getRedemptionStateSubject().fundsData[index].selectedDeductionDate = formGroup.get('selectedDeductionDate').value;
+             this.redemptionService.getRedemptionStateSubject().fundsData[index].noOfInstallment = formGroup.get('noOfInstallments').value;
+             }
+             this.checkoutData.fundsData[index].amount = formGroup.get('investmentAmount').value;*/
+        });
+        /*this.checkoutData.selectedBank = form.get('selectedBank').value;
+         if (this.nomineeExists) {
+         this.checkoutData.selectedNominee = form.get('selectedNominee').value;
+         }*/
+
+        this.logger.debug(this.className, "RedemptionData ", this.redemptionService.redemptionData);
+    }
+
+    removeFund(fund: RedemptionFund, index: number) {
+        let redemptionData = this.redemptionService.getRedemptionStateSubject();
+        redemptionData.fundsData.splice(index, 1);
+        this.redemptionService.redemptionData.next(redemptionData);
+    }
+
+    onRedemptionProceed() {
+        if (this.redemptionFormGroup.valid) {
+            this.urlAccessGuard.allow = true;
+            this.updateModelValues();
+            // this.redData.
+            this.redemptionService.redemptionData.next(this.redData);
+            let savingsPlusFunds = this.redData.fundsData.filter(x => x.option.soptRfnum === SchemeCodes.SavingsPlus_Reliance);
+            if (savingsPlusFunds.length > 0){
+                this.openSavingsPlusIntemationDialog().subscribe(value => {
+                    if (value) {
+                        this.redemptionService.postRedemptionData().subscribe(data => {
+                            if (data && !data['success']) {
+                                this.snackBarService.showSnackBar("Please try again later.", "Okay", this.viewContainerRef);
+                            }
+                            else {
+                                this.redData.redemptionId = data['redemptionId'];
+                                this.redemptionService.redemptionData.next(this.redData);
+                                this.router.navigate(['summary'], {relativeTo: this.route.parent});
+                            }
+                        });
+                    }
+                })
+            }
+            else {
+                this.redemptionService.postRedemptionData().subscribe(data => {
+                    if (data && !data['success']) {
+                        this.snackBarService.showSnackBar("Please try again later.", "Okay", this.viewContainerRef);
+                    }
+                    else {
+                        this.redData.redemptionId = data['redemptionId'];
+                        this.redemptionService.redemptionData.next(this.redData);
+                        this.router.navigate(['summary'], {relativeTo: this.route.parent});
+                    }
+                });
+            }
+        } else {
+            this.shake = true;
+            this.freezeShake();
+            this.logger.debug(this.className, "RedemptionFormGroup: ", this.redemptionFormGroup);
+            // this.showErrorOnSubmit();
+            this.snackBarService.showSnackBar("Please specify correct details to proceed to redemption!", "Okay", this.viewContainerRef);
+        }
+    }
+
+    openSavingsPlusIntemationDialog() {
+        return this.openDialog("SavingsPlus in Redemption Cart", "You seem to be crossing the daily withdrawal limit for the  instant redemption per fund per day, based on our assessment of your folios with us. It might take little longer to get credited in your account. Ideally it would take 3 working days.  Do you want to proceed?")
+    }
+    openDialog(title?: string, message?: string){
+        let config = new MdDialogConfig();
+        let device = this.headerService.deviceType();
+        if (device === 'xs' || device === 'sm') {
+            config.width = '100%';
+        }else {
+            config.width = '40vw';
+        }
+        config.disableClose = true;
+        config.viewContainerRef = this.viewContainerRef;
+
+        let confirmationConfig = {
+            confirmationTitle: title,
+            confirmationText: message,
+            confirmationActions: [['Y', 'Yes', 'hollow-cta-36'], ['N', 'No', 'hollow-cta-36']]
+        };
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, config);
+        dialogRef.componentInstance.config = confirmationConfig;
+        return dialogRef.afterClosed().map( (result) => {
+            if (result[0] === 'Y') {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+    }
+
+    freezeShake() {
+        this.shakeSub = Observable.timer(1000).subscribe(t => {
+            this.shake = false;
+        });
+    }
+
+}

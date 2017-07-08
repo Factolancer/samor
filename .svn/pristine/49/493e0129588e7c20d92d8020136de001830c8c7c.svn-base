@@ -1,0 +1,306 @@
+@import "../../styles/partials/web-partials";
+
+.portfolio-allocation-heading{
+    margin-top: 25px;
+    margin-bottom:15px ;
+}
+.no-transaction{
+    font-size: 16px;
+    font-weight: 700;
+    color:$dark-grey;
+}
+.report-card{
+    width:99%;
+}
+.width-100{
+    width: 100%;
+}
+.download-icon{
+    color:$dark-grey;
+}
+.allocation-header{
+    color:$brand-primary;
+    font-weight: 700;
+}
+.filter-mar{
+    margin-top: 0.5em;
+}
+.differentiate{
+    border-top: 1px solid $medium-grey;
+}
+.individual-closing{
+    border-bottom: 1px solid $medium-grey;
+}
+.individualTotal{
+    font-weight:700;
+}
+.summary-heading{
+    color:$dark-grey;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 30px 0px 20px 0px;
+    text-align: center;
+}
+.empty-filter{
+    md-checkbox {
+        font-size: 14px;
+        /deep/ .mat-checkbox-layout {
+            .mat-checkbox-inner-container {
+                height: 15px;
+                width: 15px;
+            }
+       }
+    }
+}
+.empty-filter2{
+md-checkbox {
+    font-size: 14px;
+/deep/ .mat-checkbox-layout {
+.mat-checkbox-inner-container {
+    height: 15px;
+    width: 15px;
+}
+}
+}
+}
+.mar-r-1{
+    margin-right: 1%;
+}
+.allocation-heading {
+    padding: 30px 0px 20px 30px;
+    font-weight: 700;
+}
+.allocation-details{
+    padding: 30px 0px 20px 30px;
+
+}
+.total{
+    color:$text-dark-grey;
+    font-weight: 700;
+}
+.iir_total{
+    color: $text-dark-grey;
+    font-weight: 700;
+    font-size: 16px;
+}
+.summary-details{
+    color:$text-dark-grey;
+    font-weight:700;
+}
+.md-text-head{
+    color:$text-medium-grey;
+    font-weight:700;
+}
+.md-text-col{
+    color:$text-medium-grey;
+    font-weight:400;
+}
+.font-16{
+    font-size: 16px !important;
+}
+.font-10 {
+    font-size: 10px !important;
+}
+.asset-class{
+    color:$text-dark-grey;
+    font-weight: 700;
+}
+.asset-class-details{
+    color:$text-dark-grey;
+}
+.summary-card1{
+    background-color: $light-grey;
+    padding: 10px 0px 10px 5px;
+}
+.error{
+    color:$error;
+}
+.lastRow {
+    background-color: $medium-grey;
+    font-weight:700;
+}
+.total-allocation-details{
+    color:$text-dark-grey;
+    font-weight: 700;
+}
+.tableHeader{
+    background-color: $light-grey;
+}
+.pieChartLayout{
+    width: 100%;
+    height:400px;
+}
+i{
+    font-size: 0.8em;
+}
+.planOption{
+    color: $text-medium-grey;
+}
+.fundName{
+    color:$brand-secondary;
+    cursor: pointer;
+}
+.mar-b-20{
+    margin-bottom: 20px;
+}
+.brd-r{
+    border-right:1px solid $dark-grey;
+}
+.brd-l{
+    border-left:1px solid $dark-grey;
+
+}
+.increase{
+    color:green;
+    font-weight:700;
+}
+.decrease{
+    color:red;
+    font-weight:700;
+}
+.upArrow{
+    font-size:14px;
+    width:14px;
+    height:14px;
+    font-weight:700;
+    color:green;
+}
+.downArrow{
+    font-size:14px;
+    width:14px;
+    height:14px;
+    font-weight:700;
+    color:red;
+}
+.reportHeader {
+    font-weight: 700;
+    font-size: 32px;
+}
+.graph-box {
+    border: solid 1px $medium-grey;
+    width: 100%;
+    margin: 30px 0;
+
+    .highlight {
+        background-color: $light-grey;
+        color: $text-dark-grey;
+        padding: 15px 0;
+        text-align: center;
+        border-bottom: solid 1px $medium-grey;
+        font-weight: 700;
+    }
+
+    .graph {
+        padding: 5px;
+    }
+}
+
+.focus:hover{
+    .asset-class{
+        color:$brand-primary;
+        font-weight: 700;
+    }
+    .asset-class-details{
+        color:$brand-primary;
+    }
+    background-color: $light-grey;
+}
+
+.redeem-button {
+    position: fixed;
+    bottom: 20px;
+    right: 15px;
+    z-index: 1000;
+    float: right;
+    margin: 10px;
+}
+
+.redeem-list {
+    position: fixed;
+    bottom: 20px;
+    right: 15px;
+    z-index: 999;
+    background-color: $white;
+    width: 320px;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+    transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
+    will-change: box-shadow;
+    font-size: 12px;
+
+    .top-bar {
+        padding: 10px;
+        background-color: $light-grey;
+        border-bottom: solid 1px $medium-grey;
+    }
+
+    .list-text {
+        padding: 10px;
+        font-size: 14px;
+        font-weight: 400;
+        color: $text-dark-grey;
+
+        &:hover {
+            background-color: $light-grey;
+        }
+    }
+
+    .remove-button {
+        color: $text-medium-grey;
+    }
+}
+
+.redeem-btn-holding{
+    padding: 5px 10px;
+    margin-left: 10px;
+    width: 70px;
+    background-color: $light-grey;color:$dark-grey;border:1px solid $brand-secondary;
+    font-size: 12px;
+    font-weight: 500;
+    outline: none;
+    &:hover{
+        cursor: pointer;
+        background-color: $material-warn;color:$white;border:1px solid $material-warn;
+    }
+    &:active{
+        @include ripple();
+    }
+}
+
+.buy-btn-holding{
+    padding: 5px 10px;
+    margin-left: 10px;
+    width: 70px;
+    margin-top: 5px;
+
+    background-color: #00bcd4;
+    color:white;
+    border:1px solid #00bcd4;
+    font-size: 12px;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+}
+
+.bg-secondary{
+        background-color: $brand-secondary;
+}
+.circular-white-border{
+    @include circularBorder(3px, $white);
+}
+
+.bg-lgray{
+    background-color: #f7f6f6;
+}
+.report-container{
+    .report-title{
+        color:$text-dark-grey;
+    }
+    button{
+        border: none;
+        box-shadow: none;
+    }
+    md-icon{
+        @include circularBorder(3px, $dark-grey); padding: 2px;color: $dark-grey;
+        &:active{@include ripple();}
+    }
+}

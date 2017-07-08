@@ -1,0 +1,30 @@
+import {Component, OnInit} from "@angular/core";
+import {MdDialogRef, MdDialog} from "@angular/material";
+import {PrintReportService} from "./print-report.service";
+
+@Component({
+    selector: 'app-print-report',
+    templateUrl: './print-report.component.html',
+    styleUrls: ['./print-report.component.css'],
+    providers: [PrintReportService]
+})
+export class PrintReportComponent implements OnInit {
+
+    ledgerReport: boolean;
+    transactionReport: boolean;
+    capitalGainsReport:boolean;
+    assetAllocationReport:boolean;
+    irrReport:boolean;
+    completeReport:boolean;
+
+    constructor(public dialogRef: MdDialogRef<PrintReportComponent>,private printReportService:PrintReportService) {
+    }
+
+    ngOnInit() {
+    }
+
+    generateReport(dialog: MdDialog){
+        this.printReportService.generateReport();
+        //dialog.close();
+    }
+}

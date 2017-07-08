@@ -1,0 +1,316 @@
+<div class="wrapper" fxLayout="row" fxLayoutAlign="center center" xmlns="http://www.w3.org/1999/html">
+    <div fxFlex="90">
+        <div class="pad-tb-15" fxLayout="column" fxLayoutAlign="center center">
+            <div class="heading-32-cash border-down">Earn more by investing in
+                <span class="imp">SavingsPlus</span>
+            </div>
+
+            <div class="heading-14-demo" style="padding-bottom: 15px;">
+                <hr/>
+                Double your savings from SavingsPlus | Benefits
+                of bank account with more returns - SavingsPlus
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center center" [@flyInOut]="mystate">
+            <div fxFlex="90" class="no-padding">
+                <md-card class="no-padding">
+                    <md-card-content>
+                        <div fxLayout="row" fx fxLayoutAlign="center center">
+                            <div fxFlex="90" class="demo-slide-box mar-tb-20">
+                                <!--<md-card class="no-padding mar-tb-20">-->
+                                <div fxLayout="row" fxLayoutAlign="center center" class="demo-slide-title pad-tb-20">
+                                    <div fxFlex>Lets Have a look at what the <b>Earning</b> and <br />
+                                        <b>Expenses</b> of an individuals is like
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="demo-slide-align">Average Balance</label>
+                                </div>
+
+
+                                <div fxLayout="row" fxFlex="90" fxLayoutGap="5px"
+                                     class="pad-05">
+                                    <div fxFlex="30" class="demo-slide-other-header background-white">Month 1</div>
+
+                                    <div class="demo-slide-other-header background-secondary black-border" fxFlex="30">
+                                        Salary
+                                    </div>
+
+                                    <div fxFlex="30" class="black-border demo-slide-other-header background-white">
+                                        70,000
+                                    </div>
+                                    <div></div>
+                                    <div class="demo-slide-other-header background-secondary black-border" fxFlex="30">
+                                        Expenses
+                                    </div>
+                                    <div class="demo-slide-other-header background-white black-border" fxFlex="30">
+                                        20,000
+                                    </div>
+                                    <div></div>
+                                    <div fxFlex="30" class="demo-slide-other-header background-white black-border">50,000</div>
+                                </div>
+
+                                <div fxLayout="row" fxFlex="90" fxLayoutGap="5px" fxLayoutAlign="center"
+                                     class="pad-05">
+                                    <div fxFlex="30" class="demo-slide-other-header background-white">Month 2</div>
+
+                                    <div class="demo-slide-other-header background-secondary black-border" fxFlex="30">
+                                        Salary
+                                    </div>
+                                    <div fxFlex="30" class="black-border background-white demo-slide-other-header">
+                                        70,000
+                                    </div>
+                                    <div></div>
+                                    <div class="demo-slide-other-header background-secondary black-border" fxFlex="30">
+                                        Expenses
+                                    </div>
+                                    <div class="demo-slide-other-header black-border  background-white" fxFlex="30">
+                                        -7,000
+                                    </div>
+                                    <div></div>
+                                    <div fxFlex="30" class="demo-slide-other-header background-white black-border">1,00,000</div>
+                                </div>
+                                <div fxLayout="row" fxFlex="90" fxLayoutGap="5px" fxLayoutAlign="center"
+                                     class="pad-05 mar-b-60">
+                                    <div fxFlex="30" class="demo-slide-other-header background-white">Month 3</div>
+
+                                    <div class="demo-slide-other-header background-secondary black-border" fxFlex="30">
+                                        Salary
+                                    </div>
+                                    <div fxFlex="30" class="black-border demo-slide-other-header background-white">
+                                        70,000
+                                    </div>
+                                    <div></div>
+                                    <div class="demo-slide-other-header background-secondary black-border" fxFlex="30">
+                                        Expenses
+                                    </div>
+                                    <div class="demo-slide-other-header background-white black-border" fxFlex="30">
+                                        20,000
+                                    </div>
+                                    <div></div>
+                                    <div fxFlex="30" class="demo-slide-other-header background-white black-border">150,000</div>
+                                </div>
+                                <!--</md-card>-->
+                            </div>
+
+                        </div>
+
+
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+
+        <!--footer-->
+        <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center" class="pad-tb-30">
+            <div>
+                <button  class="btn-border" (click)="prevScreen()">Back</button>
+            </div>
+            <div>
+                <button  class="btn-border" (click)="NextScreen()">Next</button>
+            </div>
+        </div>
+        <!--footer-->
+    </div>
+
+</div>
+
+
+
+
+<!--<div class="col-md-8 col-md-offset-2">-->
+<!--<div>-->
+<!--<md-grid-list cols="24" rowHeight="80px">-->
+<!--<md-grid-tile [colspan]="24">-->
+<!--Product Details >> Fund Selection >> Investment Portfolio >> Summary & Checkout-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="24" [@showhide]="heading" class="screenheading">-->
+<!--{{headingarray[index]}}-->
+<!--</md-grid-tile>-->
+<!--&lt;!&ndash;[ngClass]="{'screenheading': headingvisible, 'step': !headingvisible}"&ndash;&gt;-->
+<!--<md-grid-tile [rowspan]="4"></md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="12" [rowspan]="4">-->
+<!--<md-card>-->
+<!--<md-card-content>-->
+<!--<div style="text-align: center; background-color: #0081c9; color: white;">-->
+<!--<h4 style="padding: 5px; margin-bottom: 0;">Example of an account statement</h4>-->
+<!--</div>-->
+
+<!--<table style="width: 100%">-->
+<!--<colgroup>-->
+<!--<col width="25%">-->
+<!--<col width="25%">-->
+<!--<col width="25%">-->
+<!--<col width="25%">-->
+<!--</colgroup>-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th>Date</th>-->
+<!--<th>Cash flow</th>-->
+<!--<th>Amount</th>-->
+<!--<th>Account Balance</th>-->
+<!--</tr>-->
+<!--</thead>-->
+
+<!--<tbody>-->
+<!--<tr>-->
+<!--<td>{{'1 Jan' | date:'d MMM'}}</td>-->
+<!--<td class="green" style="text-align: center">Salary</td>-->
+<!--<td class="green" style="text-align: center">70,000</td>-->
+<!--<td class="darkblue" style="text-align: right">70,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>9 Jan</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 1</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-20,000</td>-->
+<!--<td class="darkblue" style="text-align: right">50,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>{{'15 Jan' | date:'d-MMM'}}</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 2</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-10,000</td>-->
+<!--<td class="darkblue" style="text-align: right">40,000</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+
+<!--<tbody style="background-color: #ffffff">-->
+<!--<tr>-->
+<!--<td>1 Feb</td>-->
+<!--<td class="green" style="text-align: center">Salary</td>-->
+<!--<td class="green" style="text-align: center">70,000</td>-->
+<!--<td class="darkblue" style="text-align: right">1,10,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>10 Feb</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 1</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-7,000</td>-->
+<!--<td class="darkblue" style="text-align: right">1,03,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>20 Feb</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 2</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-15,000</td>-->
+<!--<td class="darkblue" style="text-align: right">88,000</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+
+<!--<tbody>-->
+<!--<tr>-->
+<!--<td>1 Mar</td>-->
+<!--<td class="green" style="text-align: center">Salary</td>-->
+<!--<td class="green" style="text-align: center">70,000</td>-->
+<!--<td class="darkblue" style="text-align: right">1,58,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>11 Mar</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 1</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-10,000</td>-->
+<!--<td class="darkblue" style="text-align: right">1,48,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>29 Mar</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 2</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-15,000</td>-->
+<!--<td class="darkblue" style="text-align: right">1,33,000</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</md-card-content>-->
+<!--</md-card>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [rowspan]="4">-->
+<!--<i class="material-icons" style="font-size: xx-large">forward</i>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="3" [rowspan]="4" >-->
+<!--<div>-->
+<!--<button *ngIf="!balanceVisible" (click)="showBalance()">Show Average Monthly Balance</button>-->
+<!--<avgbal *ngIf="balanceVisible"></avgbal>-->
+<!--</div>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="3" [rowspan]="4" >-->
+<!--<div>-->
+<!--<button *ngIf="!savningsEarningVisible && balanceVisible" (click)="showSavingAcc()">-->
+<!--How much you get from Bank?-->
+<!--</button>-->
+<!--<accearning *ngIf="savningsEarningVisible"></accearning>-->
+<!--</div>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="3" [rowspan]="4" >-->
+<!--<div>-->
+<!--<button *ngIf="!cashMagEarningVisible && savningsEarningVisible" (click)="showCashMag()">-->
+<!--And here's how much you'll get from SavingsPlus-->
+<!--</button>-->
+<!--<cashearning *ngIf="cashMagEarningVisible"></cashearning>-->
+<!--</div>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [rowspan]="4"></md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="13" [rowspan]="4">-->
+<!--<div *ngIf="differenceVisible" id="line_chart" [chartData]="data" [chartOptions]="line_ChartOptions"-->
+<!--chartType="LineChart" GoogleChart>-->
+<!--</div>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [rowspan]="4">-->
+<!--<button *ngIf="cashMagEarningVisible" (click)="showGraph()"><i class="material-icons"-->
+<!--style="font-size: xx-large">arrow_back</i>-->
+<!--</button>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="9" [rowspan]="3">-->
+<!--<md-card *ngIf="cashMagEarningVisible">-->
+<!--<md-card-content>-->
+<!--<table style="width: 100%">-->
+<!--<colgroup>-->
+<!--<col width="34%">-->
+<!--<col width="33%">-->
+<!--<col width="33%">-->
+<!--</colgroup>-->
+<!--<tbody style="border: 0">-->
+<!--<tr style="background-color: white">-->
+<!--<td></td>-->
+<!--<td><i class="material-icons" style="font-size: xx-large" *ngIf="cashMagEarningVisible">arrow_downward</i>-->
+<!--</td>-->
+<!--<td><i class="material-icons" style="font-size: xx-large" *ngIf="cashMagEarningVisible">arrow_downward</i>-->
+<!--</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>Earnings for quarter</td>-->
+<!--<td>&#x20B9; 1000</td>-->
+<!--<td>&#x20B9; 2000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>Earnings for year</td>-->
+<!--<td>&#x20B9; 13000</td>-->
+<!--<td>&#x20B9; 26000</td>-->
+<!--</tr>-->
+<!--<tr style="background-color: white">-->
+<!--<td colspan="2">-->
+<!--<b>Extra earning from SavingsPlus</b>-->
+<!--</td>-->
+<!--<td style="font-size: x-large">&#x20B9; 13000</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+
+<!--</table>-->
+<!--</md-card-content>-->
+<!--</md-card>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="24">-->
+<!--<button md-raised-button (click)="toFunds()" style="float: right" color="primary">Click to Invest !-->
+<!--</button>-->
+<!--</md-grid-tile>-->
+
+<!--</md-grid-list>-->
+<!--</div>-->
+<!--</div>-->
+

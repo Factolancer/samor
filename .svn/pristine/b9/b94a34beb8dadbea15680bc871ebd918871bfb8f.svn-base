@@ -1,0 +1,24 @@
+export class ComparisonFund {
+    constructor(public id: number,
+                public name: string,
+                public nav: string,
+                public category: string,
+                public subCategory: string,
+                public netAssets: string,
+                public expenseRatio: string,
+                public fincashRating: string,
+                public exitLoad: string,
+                public benchmarkName: string,
+                public retSinceInception: string,
+                public ret1mn: string,
+                public ret3mn: string,
+                public ret6mn: string,
+                public ret1yr: string,
+                public ret3yr: string,
+                public ret5yr: string,
+                public riskometer: string,
+                public debtYield: string,
+                public maturity: string,
+                public duration: string,) {
+    }
+}

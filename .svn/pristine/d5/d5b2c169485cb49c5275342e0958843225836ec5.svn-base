@@ -1,0 +1,35 @@
+import {FormControl} from '@angular/forms';
+import {Http} from '@angular/http';
+import {HttpService} from './services/http-service.service';
+
+
+export class EmailValidator {
+
+    static isValidMailFormat(control: FormControl){
+        let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+
+        if (control.value != "" && (control.value.length <= 5 || !EMAIL_REGEXP.test(control.value))) {
+            return { "isValidMailFormat": control.value };
+        }
+
+        return null;
+    }
+
+    static isEmailCorrect(control: FormControl) {
+        var httpserivce: HttpService;
+        var url = 'https://api.mailgun.net/v2/address/validate?address='+control.value;
+        url = url + '&api_key=pubkey-b492fb4e9e8ad8f2ce0c2ae87e12272c'
+        httpserivce.get(url)
+            .subscribe(response => {
+                    console.log(response.json().is_valid)
+                    if (!response.json().is_valid){
+                        return { "Please provide a valid email": true };
+                    }
+
+
+                }
+            )
+        return null;
+    }
+
+}

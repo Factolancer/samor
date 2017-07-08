@@ -1,0 +1,23 @@
+import {NgModule} from "@angular/core";
+import {CheckoutComponent} from "./checkout.component";
+import {SharedModule} from "../shared/shared.module";
+import {checkoutRouting} from "./checkout.routes";
+import {CheckoutService} from "./checkout.service";
+import {CheckoutResolveService} from "./checkout-data-resolve-service";
+import {SummaryComponent} from "./summary/summary.component";
+import {LookUpService} from "../services/lookup.service";
+import {URLAccessGuard} from "../gaurds/urlAccess.guard";
+import {SummaryResolveService} from "./summary-data-resolve-service";
+import {KycGuard} from "../gaurds/kyc.guard";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        checkoutRouting
+    ],
+    providers: [CheckoutService, CheckoutResolveService, SummaryResolveService, LookUpService, URLAccessGuard],
+    declarations: [CheckoutComponent, SummaryComponent]
+})
+
+export class CheckoutModule {
+}

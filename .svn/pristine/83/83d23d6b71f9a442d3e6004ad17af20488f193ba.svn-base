@@ -1,0 +1,21 @@
+/**
+ * Created by Fincash on 06-02-2017.
+ */
+
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {RiskProfilingComponent} from "./risk-profiling.component";
+
+import {AuthGuard} from "../auth.guard";
+
+const riskProfilingRoutes: Routes = [
+    {
+        path: 'riskprofiling',
+        component: RiskProfilingComponent
+        //canActivate: [AuthGuard]
+    }
+];
+
+export const riskProfileRouting: ModuleWithProviders = RouterModule.forChild(riskProfilingRoutes);
+
+

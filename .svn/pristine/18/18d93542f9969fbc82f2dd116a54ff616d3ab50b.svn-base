@@ -1,0 +1,7 @@
+import {Bank} from "../../../models/bank";
+
+export class BankSearchResults {
+    constructor(public numFound: number,
+                public banks: Bank[]) {
+    }
+}

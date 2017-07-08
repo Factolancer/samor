@@ -1,0 +1,152 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80" fxFlex.lt-md="95" *ngIf="notemptyCartObservable | async">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <div fxFlex ngClass.gt-sm="heading-32-dark-grey pad-tb-25" ngClass.lt-md="heading-24-dark-grey pad-tb-10">Your Cart</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex class="grey-back" ngClass.gt-sm="pad-30">
+                <md-card class="cart-product-head">
+                    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center center"
+                         fxLayoutAlign.lt-md="start start">
+                        <div fxFlex="45">
+                            Fund Name
+                        </div>
+                        <div fxFlex="20">
+                            Investment Mode
+                        </div>
+                        <div fxFlex="15">
+                            Risk
+                        </div>
+                        <div fxFlex="15">
+                            Min Investment
+                        </div>
+                        <div fxFlex="5">
+                            Action
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="cart-product-item">
+                    <div *ngFor="let fundItem of cartItems; let index=index;" fxLayout="row" fxLayout.lt-md="column"
+                         fxLayoutAlign="start start" ngClass.lt-md="bor-b-1-gray mar-b-20">
+                        <!--Show for fincash product-->
+                        <div fxFlex="45" class="fund">
+                        <span (click)="viewFactSheet(fundItem)" class="clickable">
+                            {{fundItem.name}}
+                        </span><br/>
+                            <span class="product-tag no-select" fxAlign="start"
+                                  *ngIf="(fundItem.productObj &&((!fundItem.productObj.productOptions[0].investmentMode) ||
+                            (fundItem.productObj.productOptions[0].investmentMode == fundItem.investmentMode)))"
+                                  mdTooltip="This fund is a part of {{fundItem.productObj.productName}} bundle">
+                            <md-icon class="md-10">&#xE88E;</md-icon>
+                            {{fundItem.productObj.productName}}
+                        </span>
+                        </div>
+                        <div fxFlex="20" ngClass.lt-md="pad-tb-5">
+                            <md-select (onClose)="investmentModeUpdate(fundItem,index)"
+                                       [(ngModel)]="fundItem.investmentMode">
+                                <md-option [value]="investmentMode[investmentMode.SIP]" *ngIf="fundItem.sipAllowed">
+                                    {{investmentMode[investmentMode.SIP]}}
+                                </md-option>
+                                <md-option [value]="investmentMode[investmentMode.LUMPSUM]">
+                                    {{investmentMode[investmentMode.LUMPSUM]}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <div fxFlex="15" ngClass.lt-md="pad-tb-5">{{fundItem.risk | riskometer}}</div>
+                        <!--<div class="col-sm-2">{{fundItem.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}</div>-->
+                        <div fxFlex="15" ngClass.lt-md="pad-tb-5">
+                            <span *ngIf="fundItem.investmentMode == investmentMode[investmentMode.SIP]">{{fundItem.basicFactsheet.minSIPAmt | currency:'INR':true:'1.0-0'}}</span>
+                            <span *ngIf="fundItem.investmentMode == investmentMode[investmentMode.LUMPSUM]">{{fundItem.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}</span>
+                        </div>
+                        <div fxFlex="5" ngClass.lt-md="pad-tb-5 pos-abs" fxFlexAlign.lt-md="end" >
+                            <button class="remove-btn clickable" (click)="removeFund(fundItem,index)">
+                                <md-icon ngClass.gt-sm="md-16" ngClass.lt-md="md-22">&#xE888;</md-icon><!--highlight off icon-->
+                            </button>
+                        </div>
+                    </div>
+
+                </md-card>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-around center" class="pad-tb-20"
+             *ngIf="existingTransactions.length == 0 && notemptyCartObservable | async">
+            <div fxFlex="20" fxFlex.lt-md="45" class="add-funds">
+                <button md-button="" routerLink="/explore">
+                    <md-icon class="md-18">&#xE147;</md-icon>
+                    Add Funds
+                </button>
+            </div>
+            <div fxFlex="20" fxFlex.lt-md="45" fxFlexOffset="60" fxFlexOffset.lt-md="0">
+                <button color="primary" md-raised-button="" class="cta-50"
+                        (click)="validate()">INVEST NOW
+                </button>
+            </div>
+        </div>
+
+        <div class="transaction-container" *ngIf="existingTransactions.length > 0" fxLayout="column">
+            <div class="highlight" align="center">
+                <div fxFlex="10" fxFlex.lt-md="15" class="pad-10"><img fxFlex="100" src="../../../assets/img/fund/bell.svg"></div>
+                <div fxFlex="90" class="trans-heading">Your order/s in same funds are awaiting payment initiation</div>
+            </div>
+            <div fxLayout="row">
+                <table ngClass.lt-md="scroll-x">
+                    <thead>
+                    <th>Order Id</th>
+                    <th>Type</th>
+                    <th>Fund</th>
+                    <th>Mode</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let transaction of existingTransactions|slice:from:to">
+                        <td>{{transaction.orderId}}/{{transaction.subOrderId}}</td>
+                        <td>{{transaction.orderType}}</td>
+                        <td>{{transaction.fundName}}<br><i>Plan-{{transaction.dividendFreq}}
+                            {{transaction.schemePlan}}, Option-{{transaction.dividendOption}}</i>
+                        </td>
+                        <td>{{transaction.subOrderInvestmentMode}}</td>
+                        <td>{{transaction.subOrderDate | date}}</td>
+                        <td>
+                            <span *ngIf="transaction.subOrderAmount > 0">{{transaction.subOrderAmount | currency:'INR':true:'1.0-0'}}</span>
+                            <span *ngIf="transaction.quantity">{{transaction.quantity}} Units</span>
+                        </td>
+                        <td>{{transaction.subOrderStatus}}</td>
+                        <td [ngClass]="{'pay-now':transaction.paymentAllowed, 'cancel':!transaction.paymentAllowed}">
+                            <button md-raised-button="" color="primary" class="oval" *ngIf="transaction.paymentAllowed" (click)="payOrder(transaction)">Pay Now</button>
+                            <button class="cancel-txn" [ngClass]="{'cancel-mar':!transaction.paymentAllowed}" *ngIf="transaction.cancelAllowed" (click)="cancelOrder(transaction)">Cancel</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" class="pad-tb-20 "
+             *ngIf="existingTransactions.length > 0 && notemptyCartObservable | async">
+            <div fxFlex fxFlex.lt-md="45" fxFlexOffset.lt-md="0" class="right-align">
+                <button color="primary" md-raised-button="" class="ignore-button"
+                        (click)="ignoreAndPlaceOrder()">Ignore & Place Fresh Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div fxFlex="40" fxFlex.lt-md="100" *ngIf="emptyCartObservable | async" class="mar-tb-45 no-funds">
+        <div class="center-align"><img src="../../assets/img/empty-cart.svg"></div>
+        <div class="text pad-tb-10"><span>No Funds</span> In your cart!</div>
+        <hr/>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="pad-tb-20">
+            <div fxFlex="35" fxFlex.xs="45">
+                <button md-button="" class="hollow-cta-40" routerLink="/explore">Explore Funds</button>
+            </div>
+            <div fxFlex="35" fxFlex="45">
+                <button md-raised-button="" color="primary" class="cta-40" routerLink="/products">Product Solutions
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

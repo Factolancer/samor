@@ -1,0 +1,12 @@
+'use strict';
+
+var express = require('express'),
+    controller = require('./file-controller');
+/*
+var config = require('../../config/environment');
+var auth = require('../../auth/auth.service');
+*/
+
+var router = express.Router();
+router.post('/upload', controller.index);
+module.exports = router;

@@ -1,0 +1,40 @@
+import { Component, OnInit } from '@angular/core';
+import {DashboardDataService} from "../dashboard-data.service";
+
+@Component({
+  selector: 'app-top-performer',
+  templateUrl: './top-performer.component.html',
+  styleUrls: ['./top-performer.component.scss'],
+  providers: [DashboardDataService]
+})
+export class TopPerformerComponent implements OnInit {
+
+  performersDataAvailable: boolean = false;
+  performers: Array<Object>;
+  topPerformerCount : Number;
+  active:Number;
+  serverError:Object={
+      topPerformer:false
+    };
+  constructor(public dataService: DashboardDataService) { }
+
+  ngOnInit() {
+    this.getTopPerformers();
+    this.topPerformerCount = 3;
+    this.active = 0;
+  }
+  getTopPerformers(){
+    this.dataService.getTopPerformers()
+        .subscribe(
+            res=>{
+              this.performers = res;
+              this.performersDataAvailable = true;
+            },
+            err=>{
+                console.log('an error occured');
+                this.serverError['topPerformer'] =  true;
+            }
+        )
+  }
+
+}

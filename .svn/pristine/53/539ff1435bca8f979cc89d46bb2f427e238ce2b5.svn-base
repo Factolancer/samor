@@ -1,0 +1,40 @@
+export class ExploreFundConstants {
+
+    /* Solr Constants*/
+    public static get SEARCH_QUERY(): string {
+        return "search";
+    }
+
+    public static get FILTER_QUERY(): string {
+        return "filter";
+    }
+
+    public static get SORT_QUERY(): string {
+        return "sort";
+    }
+
+    public static get PAGE_QUERY(): string {
+        return "page";
+    }
+
+    public static get SORT_ASC(): string {
+        return "asc";
+    }
+
+    public static get SORT_DESC(): string {
+        return "desc";
+    }
+
+    /* Search type constants */
+    public static get SIP_FUNDS(): string {
+        return "sip";
+    }
+
+    public static get ELSS_FUNDS(): string {
+        return "elss";
+    }
+
+    public static get ALL_FUNDS(): string {
+        return "all";
+    }
+}

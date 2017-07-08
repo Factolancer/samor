@@ -1,0 +1,72 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <!--<div fxFlex="10" class="pad-tb-25" *ngIf="!orderSummary">
+        <md-progress-spinner color="primary" mode="indeterminate"></md-progress-spinner>
+    </div>-->
+    <div fxFlex="65" fxFlex.lt-md="98" class="heading-32-dark-grey center-align pad-tb-25" *ngIf="ordersList && ordersList.length && !hideDetails">
+        Your order has been initiated!
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper" *ngIf="ordersList && ordersList.length">
+    <div fxFlex="60" fxFlex.lt-md="98" class="order-ack">
+        <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="!hideDetails">
+            <div fxFlex="30" class="title">
+                Order Details
+            </div>
+            <div fxFlex="20" class="print clickable" (click)="print()">
+                <md-icon class="md-14">&#xE8AD;</md-icon>
+                Print
+            </div>
+        </div>
+        <md-card class="no-padding" *ngFor="let order of ordersList; let i = index;" [ngClass]="{'mar-t-10':i > 0}">
+            <div [ngClass]="{'head':!hideDetails}"  fxLayout="row" fxLayoutAlign="start center">
+                <div fxFlex>Order Id: {{order.orderId}}</div>
+                <div fxFlex class="right-align">Order Time: {{order.orderSummary.orderTime}}</div>
+            </div>
+            <div class="body">
+                <div fxLayout="row" fxLayoutAlign="center center" class="table-head">
+                    <div fxFlex="50" class="left-align">Fund</div>
+                    <div fxFlex="25">Investment Mode</div>
+                    <div fxFlex="25">Status</div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center"
+                     *ngFor="let fund of order.orderSummary.subOrderList; let index = index"
+                     class="table-body">
+                    <div fxFlex="50">
+                        <div class="dark-grey-text bold">{{fund.schemeDisplayName}}</div>
+                        <div class="plan-option">Plan-<span>{{fund.schemePlan}}</span> Option-<span>{{fund.schemeOption}}</span>
+                        </div>
+                    </div>
+                    <div fxFlex="25" class="center-align">
+                        <div>{{fund.investmentMode}}<span
+                                *ngIf="fund.investmentMode == investmentMode[investmentMode.SIP]"> - {{fund.sipFrequency}}</span>
+                        </div>
+                        <div *ngIf="fund.investmentMode == investmentMode[investmentMode.SIP]">
+                            {{fund.sipNoOfInstallments}} Installments
+                        </div>
+                    </div>
+                    <div fxFlex="25" class="center-align">
+                        <div class="dark-grey-text bold">Amount: {{fund.amount}}</div>
+                        <div *ngIf="!order.subOrderPaymentStatus[index] || !order.subOrderPaymentStatus[index].statusCode"><img
+                                src="../../../assets/img/loading.gif" width="20">
+                        </div>
+                        <div *ngIf="order.subOrderPaymentStatus[index] && order.subOrderPaymentStatus[index].status"
+                             [ngClass]="{'success-msg': order.subOrderPaymentStatus[index].statusCode == 2 ||
+                              order.subOrderPaymentStatus[index].statusCode == 3 ||
+                              order.subOrderPaymentStatus[index].statusCode == 4 ||
+                              order.subOrderPaymentStatus[index].statusCode == 6 ||
+                              order.subOrderPaymentStatus[index].statusCode == 10 ||
+                               order.subOrderPaymentStatus[index].statusCode == 17,
+                               'failed-msg':order.subOrderPaymentStatus[index].statusCode == 1 ||
+                              order.subOrderPaymentStatus[index].statusCode == 5 ||
+                              order.subOrderPaymentStatus[index].statusCode == 7 ||
+                              order.subOrderPaymentStatus[index].statusCode == 13  }">
+                            {{order.subOrderPaymentStatus[index].status}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+        <div class="created-order-msg" *ngIf="totalCreatedStatus"><b>Note:</b> Your order request has been received but couldn't be placed at Exchange for funds with status "Order Created". They will be placed as soon as Exchange starts accepting orders. Afterwards, we will send you the payment link in your mail to complete the process.</div>
+        <div class="disclaimer">Disclaimer: {{disclaimer}}</div>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+<section>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <div fxFlex="80" style="border:solid 1px #d6d6d6">
+            <!--portfolio part-->
+            <div *ngIf="!serverError['pf']" [hidden]="portfolioDataAvailable || !invested" class="loading">
+                <img src="../../assets/img/loading.gif">
+            </div>
+            <div *ngIf="serverError['pf']" class="error">
+                <span>Internal server error, apology! Please check your connection or try after some time.</span>
+            </div>
+            <div *ngIf="invested && portfolioDataAvailable" fxLayout="column" class="portfolio-box">
+                <div align="center" class="heading-32-dark-grey pad-tb-10">
+                    Portfolio Overview
+                </div>
+                <div fxLayout="row" align="center" class="portfolio-card-container">
+                    <div fxLayout="column" fxFlex="25" class="portfolio-card">
+                        <div class="card-title clickable" mdTooltip="As of {{pf.asOfDate | date}}"
+                             mdTooltipPosition="above">
+                            <i class="material-icons" style="font-size: 15px;margin: 5px 3px 15px;">info_outline</i>Current
+                            Value
+                        </div>
+                        <div class="card-value">{{pf.currentValue | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                    <div fxLayout="column" fxFlex="25" class="portfolio-card">
+                        <div class="card-title">Cost Value</div>
+                        <div class="card-value">{{pf.costValue | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                    <div (click)="goTo('dashboard/report/1')" fxLayout="column" fxFlex="25"
+                         class="portfolio-card clickable">
+                        <div class="card-title">Realised Gain</div>
+                        <div class="card-value">{{pf.realizedGain | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                    <div (click)="goTo('dashboard/report/1')" fxLayout="column" fxFlex="25"
+                         class="portfolio-card clickable">
+                        <div class="card-title">Unrealised Gain</div>
+                        <div class="card-value">{{pf.unrealizedGain | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div fxLayout="row" style="padding: 20px">
+                <div class="navigation-bar" fxFlex="20">
+                    <app-navigation-panel></app-navigation-panel>
+                </div>
+
+                <div fxLayout="column" style="margin:0 0 20px 10px" fxFlex="80">
+                    <!-- pending formality notification part -->
+                    <div *ngIf="!invested && pendingDataAvailable" fxLayout="row" fxLayoutAlign="center center"
+                         class="pending-action-container">
+                        <div fxLayout="column" fxFlex="100">
+                            <div fxFlex="100" class="status-card">
+                                <div class="card-title" align="center">Pending Actions</div>
+                                <table style="width: 100%">
+                                    <tr class="card-content" fxLayout="row" fxLayoutAlign="center center"
+                                        *ngFor="let pending of pendings">
+                                        <td fxFlex="50">
+                                            <span class="highlight">{{pending.title}}</span><br/>
+                                            <span class="details">
+                                                    <md-icon class="md-18 clickable">&#xE888;</md-icon>
+                                                    <span>{{pending.details}}</span>
+                                                </span>
+                                        </td>
+                                        <td align="end" class="action-button" fxFlex="40">
+                                            <button md-raised-button color="primary">Complete</button>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="row">
+                        <div *ngIf="invested" class="chart-container" fxFlex="100">
+                            <md-card fxFlex="100">
+                                <md-card-title>Asset Allocation</md-card-title>
+                                <md-card-content>
+                                    <div fxLayput="column" fxLayoutAlign="center">
+                                        <div fxFlex="40">
+                                            <app-top-performer></app-top-performer>
+                                        </div>
+                                        <div fxFlex="60" fxLayoutAlign="center">
+                                            <app-chart></app-chart>
+                                        </div>
+
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+                        </div>
+                    </div>
+                    <div class="prod-sol-cont">
+                        <div class="highlight">Invest in our Products</div>
+                        <app-products-solution></app-products-solution>
+                    </div>
+
+                    <div class="transaction-container mar-tb-15">
+                        <app-transaction></app-transaction>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

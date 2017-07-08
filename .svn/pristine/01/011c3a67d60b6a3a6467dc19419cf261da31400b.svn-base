@@ -1,0 +1,27 @@
+/***************************Card View*****************************/
+
+.card-fund-title {
+    background-color: #0081c9;
+    margin: -24px -24px 0 -24px;
+    padding: 24px;
+    color: #FFFFFF;
+    font-size: 14pt;
+    min-height: 120px;
+}
+
+.card-fund-body {
+    margin: 0 -24px -24px -24px;
+}
+
+.card-fund-detail-label {
+}
+
+.card-element {
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+}
+
+.card-fund-detail-value {
+    line-height: 25px;
+}

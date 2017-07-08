@@ -1,0 +1,97 @@
+import { animate, state, style, transition, trigger, Component, OnInit, OnDestroy, ElementRef, ViewChild} from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/timer';
+import { Subscription } from 'rxjs/Subscription';
+import { DemoService } from './demo.service';
+import { HeaderService } from '../../core/services/header.service';
+
+@Component({
+    selector: 'demo',
+    templateUrl: './demo.component.html',
+    styleUrls: ['./../cash.styles.scss'],
+    animations: [
+        trigger('toggleCollapse', [
+            state('collapse' , style({ height: '0px', overflow : 'hidden' }) ),
+            state('expand',  style({ height: '*' }) ),
+            transition('* => *', animate('1s ease-in-out'))
+        ])
+    ]
+})
+export class DemoComponent implements OnInit, OnDestroy {
+
+    @ViewChild('scrollToMe') myScrollContainer: ElementRef;
+
+    private finished: boolean;
+    private subjectSubs: Subscription;
+    elCount: number;
+    collapseDemo1:boolean;
+    collapseDemo2:boolean;
+
+    constructor(private demoService: DemoService, private headerService: HeaderService) {
+        this.demoService.resetAnimationNo();
+        this.headerService.autoHideHeader(true);
+        this.collapseDemo1 = false;
+        this.collapseDemo2 = false;
+    }
+
+    data1Timer: Subscription;
+    values: Array<any> = [];
+    demoData1: Array<any> = [
+        ['1 Jan', 'Salary', '₹ 70,000', '₹ 70,000'],
+        ['9 Jan', 'Expense 1', '₹ 20,000', '₹ 50,000'],
+        ['15 Jan', 'Expense 2', '₹ 10,000', '₹ 40,000'],
+        ['1 Feb', 'Salary', '₹ 70,000', '₹ 1,10,000'],
+        ['8 Feb', 'Expense 1', '₹ 7,000', '₹ 1,03,000'],
+        ['20 Feb', 'Expense 2', '₹ 15,000', '₹ 88,000'],
+        ['1 Mar', 'Salary', '₹ 70,000', '₹ 1,58,000'],
+        ['10 Mar', 'Expense 1', '₹ 10,000', '₹ 1,48,000'],
+        ['15 Mar', 'Expense 2', '₹ 15,000', '₹ 1,33,000']
+    ];
+
+    ngOnInit() {
+
+        this.data1Timer = Observable.timer(0, 300).subscribe(t => {
+            this.values = this.values.concat(this.demoData1[t]);
+            if (this.values.length == this.demoData1.length * this.demoData1[0].length) {
+
+                this.data1Timer.unsubscribe();
+                let tempSub = Observable.timer(1000).subscribe(tv => {
+                        this.finished = true;
+                        this.demoService.setAnimationNo(1);
+                        tempSub.unsubscribe();
+                    }
+                )
+            }
+        });
+
+        this.subjectSubs = this.demoService.animation.subscribe(value => {
+            this.elCount = value;
+            if (this.elCount === 2) {
+                this.scroll();
+            }
+            let device = this.headerService.deviceType();
+            if (device === 'xs' || device === 'sm') {
+                if (this.elCount === 1) {
+                    this.collapseDemo1 = true;
+                }
+                if (this.elCount === 2) {
+                    this.collapseDemo2 = true;
+                }
+            }
+
+        });
+    }
+
+    scroll() {
+        document.body.scrollTop = this.myScrollContainer.nativeElement.offsetTop + 70;
+    }
+
+    ngOnDestroy() {
+        this.demoService.resetAnimationNo();
+        this.subjectSubs.unsubscribe();
+        this.headerService.resetHeaderHiding();
+
+    }
+
+
+}

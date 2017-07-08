@@ -1,0 +1,138 @@
+import {Injectable, Inject} from "@angular/core";
+import {Router} from "@angular/router";
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+import {Logger} from "../logger/logger";
+import {HttpService} from "./http-service.service";
+import {JwtHelper} from "angular2-jwt";
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {isNullOrUndefined} from "util";
+import {LocalStorageService} from "angular-2-local-storage";
+import {CartService} from "./cart.service";
+
+@Injectable()
+export class LoginService {
+
+    private dafterLogin: string;
+    private dafterLogout: string;
+
+    private loginSubject: BehaviorSubject<boolean>;
+    private userSubject: BehaviorSubject<any>;
+
+    loginObservable: Observable<boolean>;
+    userObservable: Observable<any>;
+
+    private className: string;
+
+    constructor(public router: Router, @Inject(APP_CONFIG) private config: IAppConfig, private logger: Logger,
+                public httpSerivce: HttpService, private  localStorageService: LocalStorageService, public jwtHelper: JwtHelper) {
+
+        this.dafterLogin = config.defaultAfterLogin;
+        this.dafterLogout = config.defaultAfterLogout;
+        this.className = "LoginService";
+        this.loginSubject = new BehaviorSubject<boolean>(this.isUserLoggedIn());
+        this.userSubject = new BehaviorSubject<any>(this.getUserObject());
+        this.loginObservable = this.loginSubject.asObservable();
+        this.userObservable = this.userSubject.asObservable();
+
+    }
+
+    public checkNredirect() {
+        let isLoggedIn = this.isUserLoggedIn();
+        if (isLoggedIn) {
+            this.logger.debug(this.className, isLoggedIn);
+            this.router.navigate([this.config.defaultAfterLogin]);
+        }
+    }
+
+
+    public signUp(userData: any): Observable<any> {
+        let cartId = this.localStorageService.get(this.config.cartToken);
+        if (isNullOrUndefined(cartId)) {
+            cartId = '';
+        }
+        //let userObservables = this.getUserObservable.concat(this.userLoggedInObservable);
+        return this.httpSerivce.post('/user/login/signup', {
+            "username": userData.email.trim().toLowerCase(),
+            "email": userData.email,
+            "password": userData.password.confirm_password
+        }).map(response => {
+            this.setUserObject(response);
+            return response
+        }).catch(error => {
+            this.logger.debug(this.className, "Error Occured! :( " + error.error);
+            return Observable.throw(error);
+        });
+
+    }
+
+    public loginUser(userData: any): Observable<any> {
+        this.logger.debug(this.className, userData);
+        return this.httpSerivce.post('/user/login', {
+            "username": userData.email.trim().toLowerCase(),
+            "password": userData.password
+        }).map(response => {
+            this.setUserObject(response);
+            return response
+        }).catch(err => {
+            return Observable.throw(err);
+        });
+    }
+
+
+    public logOutUser() {
+        this.localStorageService.remove(this.config.authToken);
+        this.router.navigate([this.config.defaultAfterLogout]);
+        this.loginSubject.next(false);
+        this.userSubject.next(this.getUserObject());
+    }
+
+    public isUserLoggedIn(): boolean {
+        let token = this.localStorageService.get(this.config.authToken);
+        if (isNullOrUndefined(token) || token == 'undefined' || token == 'null') {
+            return false;
+        } else {
+            let user = this.jwtHelper.decodeToken(JSON.stringify(token));
+            this.logger.debug(this.className, user);
+            if (user && user.username && !user.username.includes("Anonymous")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public getUserObject(): any {
+        let token = this.localStorageService.get(this.config.authToken);
+        if (isNullOrUndefined(token) || token == 'undefined' || token == 'null') {
+            return ({username: 'Anonymous'});
+        } else {
+            let decoded = this.jwtHelper.decodeToken(JSON.stringify(token));
+            return decoded;
+        }
+    }
+
+
+    public setLoginSubjectState(value: boolean) {
+        this.loginSubject.next(value);
+    }
+
+    public setUserSubjectState(value: any) {
+        this.userSubject.next(value);
+    }
+
+    public setUserObject(response: any) {
+        this.logger.debug(this.className, "loginUser User logged in successfully");
+        this.logger.debug(this.className, response);
+
+        if (!isNullOrUndefined(response) && !isNullOrUndefined(response.id_token)) {
+            this.localStorageService.set(this.config.authToken, response.id_token);
+            let decoded = this.jwtHelper.decodeToken(response.id_token);
+            this.setUserSubjectState(decoded);
+            this.setLoginSubjectState(true);
+        } else if (!isNullOrUndefined(response) && !isNullOrUndefined(response.error)) {
+            this.setUserSubjectState(response);
+            this.setLoginSubjectState(false);
+        }
+    }
+}

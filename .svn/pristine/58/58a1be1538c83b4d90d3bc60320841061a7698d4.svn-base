@@ -1,0 +1,74 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {SearchService} from "../search.service";
+import {FilterData} from "./filter-data";
+import {Input} from "@angular/core/src/metadata/directives";
+
+@Component({
+    selector: 'app-amc-filter',
+    templateUrl: './amc-filter.component.html',
+    styleUrls: ['./filters.css']
+})
+export class AmcFilterComponent implements OnDestroy,OnInit {
+
+
+    @Input() set amcFilterData(list: FilterData[]) {
+        this._amcFilterData = [];
+
+        //removing those items which have been already checked
+        this._amcFilterData = list.filter(item => {
+            let add = true;
+            this.selectedArray.forEach(selectedItem => {
+                if (selectedItem.id === item.id) {
+                    add = false;
+                }
+            });
+            return add;
+        });
+    }
+
+    _amcFilterData: FilterData[] = [];
+    filterTitle: string;
+    selectedArray: FilterData[] = [];
+
+    constructor(private searchService: SearchService) {
+
+    }
+
+    filter(checked: any, item: FilterData) {
+        let fundSearchInput = this.searchService.getFundSearchInput();
+        if (checked) {
+            this.selectedArray.push(item);
+        } else {
+            //deselecting the item.
+            let newArray = [];
+            this.selectedArray.forEach(elm => {
+                if (elm.id != item.id) {
+                    newArray.push(elm)
+                }
+            });
+            this.selectedArray = newArray;
+        }
+
+        //preparing id array from selected elements
+        fundSearchInput.amcCode = [];
+        this.selectedArray.forEach(elm => {
+            fundSearchInput.amcCode.push(elm.id);
+        });
+//        fundSearchInput.rating = this.selectedArray;
+        this.searchService.searchFund(fundSearchInput);
+
+    }
+
+    clearFilter() {
+        this.selectedArray = [];
+        let fundSearchInput = this.searchService.getFundSearchInput();
+        fundSearchInput.amcCode = [];
+        this.searchService.searchFund(fundSearchInput);
+    }
+
+    ngOnInit() {
+        this.filterTitle = "Fund House";
+
+    }
+
+}

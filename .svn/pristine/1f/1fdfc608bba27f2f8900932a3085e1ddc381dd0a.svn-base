@@ -1,0 +1,63 @@
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Params} from "@angular/router";
+import {CheckoutService} from "../checkout.service";
+import {disclaimers} from "../../../properties/discalimers";
+import {OrderSummary} from "../models/order-summary";
+import {Logger} from "../../core/logger/logger";
+import {InvestmentModeEnum} from "../../enum/investment-mode-enum";
+import {PaymentStatus} from "../models/payment-status";
+import {CartService} from "../../core/services/cart.service";
+
+@Component({
+    selector: 'app-order',
+    templateUrl: 'order.component.html',
+    styleUrls: ['../checkout.styles.scss']
+})
+export class OrderComponent implements OnInit {
+
+    orderId: string;
+    orderSummary: OrderSummary;
+    disclaimer: string;
+    className: string;
+    subOrderPaymentStatus: PaymentStatus[];
+    investmentMode = InvestmentModeEnum;
+
+    constructor(private checkoutService: CheckoutService, private activatedRoute: ActivatedRoute,
+                private logger: Logger, private cartService: CartService) {
+        this.className = "OrderComponent";
+        this.subOrderPaymentStatus = [];
+    }
+
+    ngOnInit() {
+        this.activatedRoute.params.subscribe((params: Params) => {
+            this.orderId = params['orderId'];
+            this.checkoutService.getOrderStatus(this.orderId).subscribe(res => {
+                this.orderSummary = res as OrderSummary;
+
+                this.orderSummary.subOrderList.forEach((subOrder, index) => {
+                    let paymentStatus = new PaymentStatus(subOrder.subOrderId);
+                    this.subOrderPaymentStatus.push(paymentStatus);
+                    this.checkoutService.getSubOrderStatus(subOrder.subOrderId).subscribe(res => {
+                        let serverRes = res as PaymentStatus;
+                        this.logger.debug(this.className, serverRes);
+                        this.subOrderPaymentStatus[index].status = serverRes.status;
+                        this.subOrderPaymentStatus[index].statusCode = serverRes.statusCode;
+
+                        if (this.subOrderPaymentStatus[index].statusCode == 2 ||
+                            this.subOrderPaymentStatus[index].statusCode == 3 ||
+                            this.subOrderPaymentStatus[index].statusCode == 4 ||
+                            this.subOrderPaymentStatus[index].statusCode == 6) {
+                            this.cartService.removeFundById(subOrder.soptrfnum.toString());
+                        }
+                    });
+                })
+            });
+        });
+
+        this.disclaimer = `${disclaimers.order}`
+    }
+
+    print() {
+        window.print();
+    }
+}

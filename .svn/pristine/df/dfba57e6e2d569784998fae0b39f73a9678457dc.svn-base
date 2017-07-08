@@ -1,0 +1,81 @@
+import {Injectable} from '@angular/core';
+import {Http, Response} from '@angular/http';
+import {Observable} from "rxjs/Observable";
+
+import {JwtHelper} from "angular2-jwt";
+
+import {HttpService} from "../services/http-service.service";
+
+import {PortfolioAssetAllocation} from "./portfolio-asset";
+import {AssetAllocationDetails} from "./asset-allocation";
+import {AssetClassFund} from "./asset-funds";
+
+@Injectable()
+export class DashboardDataService {
+
+    constructor(private https:HttpService, private http:Http, private jwtHelper: JwtHelper) { };
+    options:any;
+    pf:Object;
+
+    nodeServer:String = "http://localhost:8080/api";
+
+    getPortfolio (): Observable<Object> {
+        return this.https.get('/report/summaryReport')
+            .map(res => res as PortfolioAssetAllocation)
+    }
+
+    getTransaction():Observable<Array<Object>> {
+        return this.http.get(this.nodeServer+'/transactions')
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getInvestmentDetails():Observable<AssetAllocationDetails>{
+        return this.https.get('/report/getAssetAllocationReport')
+            .map(res => res as AssetAllocationDetails)
+    }
+    getInvestedFundDetails():Observable<AssetClassFund>{
+        return this.https.get('/report/getAssetClassFundDetails')
+            .map(res => res as AssetClassFund)
+    }
+    getPendingDetails():Observable<Array<Object>>{
+        return this.http.get(this.nodeServer+'/pending-details')
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getTopPerformers():Observable<Array<Object>>{
+        return this.https.get('/report/getTopFunds')
+            .map( res=> res)
+    }
+
+    private extractData(res: Response) {
+        let body = res.json();
+        return body|| { };
+    }
+
+    private handleError (error: Response | any) {
+        // for production, use a remote logging infrastructure
+        let errMsg: string;
+        if (error instanceof Response) {
+            const body = error.json() || '';
+            const err = body.error || JSON.stringify(body);
+            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+        } else {
+            errMsg = error.message ? error.message : error.toString();
+        }
+        console.error(errMsg);
+        return Observable.throw(errMsg);
+    }
+    hasInvested():boolean{
+        let token = localStorage.getItem("id_token");
+        if (token === "null" || token === "undefined" || token == null)
+            return false;
+        else {
+            let decoded = this.jwtHelper.decodeToken(token);
+           //investment status
+            if(decoded.foliocount>0)
+                return true;
+            return false;
+        }
+    }
+}

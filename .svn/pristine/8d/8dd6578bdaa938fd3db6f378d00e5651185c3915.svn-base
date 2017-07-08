@@ -1,0 +1,150 @@
+@import "../../../styles/partials/web-partials";
+
+.calc-box {
+  border: solid 1px $medium-grey;
+
+  .calc-title {
+    line-height: 60px;
+    font-size: 26px;
+    font-weight: 400;
+    background-color: $brand-secondary;
+    color: $white;
+    text-align: center;
+  }
+
+  .calc-sub-title {
+    font-size: 20px;
+    color: $text-dark-grey;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+
+  .completeTherm {
+    background-color: #0ADAC2;
+    min-height: 10px;
+    border-radius: 2px;
+  }
+
+  .remainingTherm {
+    background-color: $light-grey;
+    min-height: 10px;
+    border-radius: 2px;
+  }
+
+  .completeThermText {
+    color: #0ADAC2;
+    text-align: right;
+  }
+
+  .remainingThermText {
+    color: $material-warn;
+    text-align: right;
+  }
+
+  .question-area {
+    background-color: $light-grey;
+    margin: 20px;
+    padding: 20px;
+
+    .card {
+      padding: 20px;
+
+      .head {
+        min-height: 70px;
+
+        .sub-title {
+          font-size: 12px;
+          font-weight: 400;
+          color: $text-medium-grey;
+          padding: 5px 0;
+        }
+
+        .calc-img {
+          border-radius: 50%;
+        }
+      }
+
+      .body {
+        min-height: 40px;
+      }
+
+      .foot {
+        min-height: 30px;
+      }
+
+    }
+
+    .highlight {
+      color: $text-dark-grey;
+    }
+
+    .salary {
+      background-color: $white;
+      border-radius: 2px;
+      border: solid 1px $brand-primary;
+    }
+
+    ul li {
+      margin: 5px;
+      color: $text-medium-grey;
+      font-size: 10px;
+    }
+
+    p {
+      margin: 15px 0;
+      color: $text-medium-grey;
+      font-size: 10px;
+    }
+
+    .salary-error {
+      color: $material-warn;
+      font-size: 12px;
+    }
+  }
+
+  .results-area {
+    border: solid 1px $dark-grey;
+    margin: 20px;
+    padding: 20px;
+
+    a {
+      color: $brand-secondary;
+    }
+
+    .highlight {
+      color: $text-dark-grey;
+      font-size: 18px;
+      letter-spacing: 2px;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .curr-inv {
+      background-color: #0adac2;
+      color: $white;
+      text-align: center;
+      padding: 20px;
+      margin: 5px;
+      font-weight: 700;
+    }
+
+    .amount-area {
+      text-align: center;
+      margin: 5px;
+      font-weight: 700;
+
+      .amount-title {
+        color: $white;
+        font-size: 14px;
+        background-color: $brand-secondary;
+        padding: 20px;
+      }
+
+      .amount {
+        color: $text-dark-grey;
+        background-color: $light-grey;
+        padding: 20px;
+      }
+    }
+  }
+}

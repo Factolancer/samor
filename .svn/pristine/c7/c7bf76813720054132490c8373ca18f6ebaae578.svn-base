@@ -1,0 +1,4 @@
+import {FundDeatils} from "../fund/models/fund";
+export class Cart {
+    funds: FundDeatils[];
+}

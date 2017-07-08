@@ -1,0 +1,60 @@
+@import "../../styles/partials/web-partials";
+
+
+
+.banner-div{
+  height:500px; width:100%;
+  background: url('../../assets/img/landingpage/banner_img4.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  position: relative;
+}
+.quote{
+  color: $white;
+  font-size: 40px; max-width: 50%;
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+}
+.colr-yellow {color:yellow;}
+.author{
+  font-size: 12px;
+  color:$white;
+}
+.calc-container{
+  background-color: $light-grey;
+  padding-bottom: 30px;
+  .age-slider{width:60%;}
+  .expense-slider{width: 90%;}
+  td{position: relative;}
+  .slider-val{position: absolute;top:0;right:0;}
+}
+
+
+.md-slider-track{
+  height:4px !important;
+  background-color: $dark-grey !important;
+  &-fill{background-color: $brand-secondary !important;
+    height:4px !important;
+  }
+}
+.md-slider-thumb{
+  background-color: $brand-secondary !important;
+  height:25px !important;
+  width:25px !important;
+  bottom: -12.5px !important;
+&-label{background-color: $brand-secondary}}
+
+
+
+
+.grey-border{border:1px solid $dark-grey;}
+
+.sub-heading{
+  color: $dark-grey;
+  font-size: 22px;
+  letter-spacing: 1.5px;
+}
+
+.colr-bs{color:$brand-secondary}
+

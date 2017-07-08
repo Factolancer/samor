@@ -1,0 +1,15 @@
+import { Injectable } from '@angular/core';
+import {HttpService} from "../services/http-service.service";
+
+@Injectable()
+export class OrderService {
+
+  constructor(private http:HttpService) { }
+
+  getOrderStatus(orderId){
+      return this.http.get('/bse/checkOrderDetails/'+orderId)
+          .map(res => {
+              console.log(res)
+          });
+  }
+}

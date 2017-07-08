@@ -1,0 +1,25 @@
+
+
+<div fxLayout="row" fxLayoutAlign="center center" >
+    <div fxFlex="60" class="grey-back pad-60">
+        <div fxLayout="column">
+            <basic-section></basic-section>
+
+            <kyc-section></kyc-section>
+
+            <bank-section></bank-section>
+
+            <other-section></other-section>
+
+            <upload-section></upload-section>
+        </div>
+
+    </div>
+    <br/>
+
+</div>
+
+<button (click)="indexBanks()">Index here</button>
+
+
+

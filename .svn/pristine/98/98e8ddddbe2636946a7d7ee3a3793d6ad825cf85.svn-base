@@ -1,0 +1,126 @@
+/**
+ * Created by Fincash on 17-02-2017.
+ */
+import {Component, ElementRef, HostListener, Input, OnInit, OnDestroy} from '@angular/core';
+
+import {Subscription, Observable} from "rxjs";
+
+@Component({
+    selector: '[carousel]',
+    template: `
+             <div class="carousel">
+                <div *ngIf="image" [ngClass]="{slide:strt}" fxFlex="row" fxLayoutAlign="center center">
+                
+                  <p *ngIf="image.quote" align="bottom" class="quote">
+                   {{image.quote[0]}}
+                   <span class="colr-yellow">{{image.quote[1]}}</span>
+                   <span>{{image.quote[2]}}</span>                    
+                   <br/>
+                   <span class="author">- {{image.quoteAuthor}}</span>
+                   </p>
+                   
+                  <img src="{{image.url}}" alt="">
+                </div>
+            
+            </div>
+  `,
+    styles: [`
+                .carousel{
+                    overflow:hidden;
+                    width:100%;
+                    height:530px;
+                    max-height:530px;
+                    text-align: center;
+                    position:relative;  
+                    background-color:rgba(0,0,0,0.15);
+                }
+                
+                /*.slide{
+                -moz-animation: 1s fade ease-in-out;
+                -webkit-animation: 1s fade ease-in-out;
+                }
+                  @keyframes fade {
+                    0% { !*transform: translateX(100%);*! opacity: 0.1;}  
+                    100% { !*transform: translateX(0%);*! opacity: 1;}
+                  }*/
+                
+                .carousel img{
+                    display:block;
+                    width:100%;
+                    max-width:100%;
+                    height:530px;
+                    max-height:530px;}
+                .quote{
+                  color:white;                  
+                  font-weight: 300 !important;
+                  font-style: normal; 
+                  margin: 5px !important;
+                  font-size: 40px; max-width: 50%;
+                  position: absolute;
+                  bottom: 10px;
+                  text-align: center;
+                  }
+                .colr-yellow {
+                    color:#e1b220;}
+                .author{
+                    font-size: 12px;
+                    color:white;}
+  `],
+})
+
+export class CarouselComponent implements OnInit, OnDestroy{
+    @Input('carousel') carouselContent: any;
+
+        /*make sure url passed do have absolute path*/
+
+    constructor(private el: ElementRef) { }
+
+    carouselTimer:Subscription;
+    image:any;
+
+    @HostListener('mouseenter') onMouseEnter() {
+        this.pause();
+    }
+    @HostListener('mouseleave') onMouseLeave() {
+        this.start();
+    }
+
+    strt:boolean = false;
+    i:number;
+    cImage:any;
+    length:number;
+
+    ngOnInit() {
+        this.i = 0;
+        this.cImage = this.carouselContent[this.i];
+        this.image = this.cImage;
+        this.length = this.carouselContent.length;
+        this.start();
+    };
+    start(){
+        this.carouselTimer = Observable.timer(5000, 5000).subscribe(t => {
+            this.strt = false;
+            this.i = (this.i+1)%this.length;
+            this.cImage = this.carouselContent[this.i];
+            this.image = this.cImage;
+            let tempTimer = Observable.timer(0).subscribe(t=>{
+                this.strt = true;
+            });
+            if(this.strt){
+                tempTimer.unsubscribe();
+            }
+        });
+    }
+
+    pause(){
+        if(this.carouselTimer)
+            this.carouselTimer.unsubscribe();
+    }
+
+   ngOnDestroy(){
+       if(this.carouselTimer)
+           this.carouselTimer.unsubscribe();
+   }
+}
+
+

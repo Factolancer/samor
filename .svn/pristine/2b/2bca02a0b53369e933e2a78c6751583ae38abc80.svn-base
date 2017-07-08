@@ -1,0 +1,61 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {Checkout} from "./checkout";
+import {Summary} from "./summary";
+import {SummaryFund} from "./summary-fund";
+import {ActivatedRoute, Router, NavigationEnd} from "@angular/router";
+import {PaymentObject} from "./payment-object";
+import {Logger} from "../shared/logger/logger";
+
+@Injectable()
+export class CheckoutService {
+
+    checkoutData: Checkout;
+    previousURL: string;
+    className:string;
+
+    constructor(private httpService: HttpService, private activatedRoute: ActivatedRoute, private router: Router,
+                private logger: Logger) {
+
+        this.className = "CheckoutService";
+        this.previousURL = "";
+        this.logger.debug(this.className, this.previousURL);
+        this.router.events
+            .filter(event => event instanceof NavigationEnd)
+            .subscribe(e => {
+                this.logger.debug(this.className, this.previousURL);
+                this.previousURL = e.url;
+                this.logger.debug(this.className, this.previousURL);
+            });
+
+    }
+
+    getCheckoutData() {
+        return this.httpService.get("/checkout/getCheckoutData");
+    }
+
+    getSummaryInfo() {
+        return this.httpService.get("/checkout/getSummaryInfo");
+    }
+
+    invest() {
+        return this.httpService.post("/checkout/invest", this.prepareSummary());
+    }
+
+    getPaymentLink(paymentObj: PaymentObject) {
+        return this.httpService.post("/checkout/generatePaymentUrl", paymentObj);
+    }
+
+    prepareSummary(): any {
+        let summaryFunds: SummaryFund[] = [];
+
+        this.checkoutData.fundsData.forEach(fund => {
+            summaryFunds.push(new SummaryFund(fund.selectedSoptRfnum, fund.fund.basicFactsheet.name, fund.selectedPlan,
+                fund.selectedOption, fund.selectedInvestmentMode, fund.selectedAIPFrequency, +fund.selectedDeductionDate,
+                +fund.noOfInstallment, +fund.amount));
+        })
+        return new Summary(summaryFunds, this.checkoutData.selectedBank.id,
+            this.checkoutData.totalInvestmentAmount);
+    }
+
+}

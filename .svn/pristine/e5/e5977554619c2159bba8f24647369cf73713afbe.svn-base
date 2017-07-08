@@ -1,0 +1,158 @@
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {SipReturnsQuestions} from "./questions";
+import {CheckReturns} from "./goals";
+import {SipCalcGoal} from "./sip-calc-goal";
+import {SipCalcQuestion} from "./sip-calc-question";
+import {Router, ActivatedRoute} from "@angular/router";
+import {Logger} from "../../core/logger/logger";
+import {disclaimers} from "../../../properties/discalimers";
+import {TitleService} from "../../core/services/title.service";
+import {DialogService} from "../../core/services/dialog.service";
+import {FormGroup, Validators, FormControl, FormBuilder} from "@angular/forms";
+import {SIPCalcService} from "./sip-calc.service";
+import {NumberValidator} from "../../validators/validator";
+import {SIPCalcValidationMessages} from "./sip-calc-validations";
+import {URLAccessGuard} from "../../core/guards/urlAccess.guard";
+
+@Component({
+    selector: 'app-returns-based',
+    templateUrl: './returns-based.component.html',
+    styleUrls: ['./sip-calc.styles.scss']
+})
+
+export class ReturnsBasedComponent implements OnInit, OnDestroy {
+    orientation: string;
+    selectedIndex: number;
+    questions: SipCalcQuestion[];
+    goal: SipCalcGoal;
+
+    calcFormGroup: FormGroup;
+    calcFormErrors: any;
+    className: string;
+
+
+    constructor(private router: Router, private route: ActivatedRoute, private logger: Logger,
+                private viewContainerRef: ViewContainerRef, private sipCalcService: SIPCalcService,
+                private titleService: TitleService, private dialogService: DialogService,
+                private fb: FormBuilder, private urlAccessGuard: URLAccessGuard) {
+    }
+
+    ngOnInit() {
+        this.className = "ReturnsBasedComponent";
+        this.questions = SipReturnsQuestions;
+        this.goal = CheckReturns;
+        this.titleService.setTitle("sip_calculator_goal", {goal: this.goal.name});
+        this.selectedIndex = 0;
+        this.initializeForm();
+
+
+    }
+
+    ngOnDestroy() {
+    }
+
+
+    initializeForm() {
+        this.logger.debug(this.className, "Initializing form!");
+
+        this.calcFormGroup = this.fb.group({
+            first: [this.questions[this.selectedIndex].answer,
+                Validators.compose([NumberValidator.minValue(this.questions[this.selectedIndex].min), NumberValidator.maxValue(this.questions[this.selectedIndex].max)])],
+            second: [this.questions[this.selectedIndex + 1].answer,
+                Validators.compose([NumberValidator.minValue(this.questions[this.selectedIndex + 1].min), NumberValidator.maxValue(this.questions[this.selectedIndex + 1].max)])]
+        });
+
+        this.calcFormErrors = {
+            first: '',
+            second: '',
+        };
+
+        this.calcFormGroup.valueChanges
+            .subscribe(data => {
+                if (!this.calcFormGroup) {
+                    return;
+                } else {
+                    this.logger.debug(data);
+                    this.updateErrorMessages();
+                }
+            });
+    }
+
+    updateErrorMessages() {
+
+        const form = this.calcFormGroup;
+        this.logger.debug(this.className, "updating message");
+
+        //First Validation
+        this.calcFormErrors.first = '';
+        let firstControl = form.get('first') as FormControl;
+        if (firstControl && firstControl.dirty && !firstControl.valid) {
+            const messages = SIPCalcValidationMessages.fields
+            for (const key in firstControl.errors) {
+                this.calcFormErrors.first += this.prepareErrorMessage(messages, firstControl, key)
+            }
+        }
+
+        this.questions[this.selectedIndex].answer = firstControl.value;
+
+        //Second Validation
+        this.calcFormErrors.second = '';
+        let secondControl = form.get('second') as FormControl;
+        if (secondControl && secondControl.dirty && !secondControl.valid) {
+            const messages = SIPCalcValidationMessages.fields
+            for (const key in secondControl.errors) {
+                this.calcFormErrors.second += this.prepareErrorMessage(messages, secondControl, key)
+            }
+        }
+        this.questions[this.selectedIndex + 1].answer = secondControl.value;
+
+    }
+
+
+    prepareErrorMessage(messages: any, control: FormControl, key: string) {
+        switch (key) {
+            case "minValue":
+                return messages[key] + control.errors[key].requiredValue + ' ';
+            case "maxValue":
+                return messages[key] + control.errors[key].requiredValue + ' ';
+            default:
+                return messages[key] + ' ';
+        }
+    }
+
+
+    next() {
+        if (this.selectedIndex == 0) {
+            if (this.calcFormGroup.valid) {
+                this.selectedIndex = 2;
+                this.initializeForm();
+                this.updateErrorMessages();
+            }
+        } else {
+            this.calculate();
+        }
+    }
+
+    prev() {
+        this.selectedIndex = 0;
+
+        if (this.calcFormGroup.valid) {
+            this.initializeForm();
+            this.updateErrorMessages();
+        }
+    }
+
+
+    calculate() {
+        this.urlAccessGuard.allow = true;
+        this.router.navigate(['results'], {relativeTo: this.route})
+    }
+
+
+    seeDisclaimers() {
+        let disclaimerText: string[] = [`${disclaimers.calculator_1}`, `${disclaimers.calculator_2}`,
+            `${disclaimers.calculator_3}`, `${disclaimers.calculator_4}`]
+        this.dialogService.showDisclaimers(disclaimerText, this.viewContainerRef);
+    }
+
+}

@@ -1,0 +1,19 @@
+import {Component, Input} from "@angular/core";
+import {FlexLayoutModule} from '@angular/flex-layout';
+
+
+@Component({
+    selector: 'text-overlay',
+    template: `
+        <div class="transparent-background center-align">
+            {{overlayText}}
+        </div>
+    `,
+    styleUrls: ['./shared.styles.scss']
+})
+
+export class TextOverlay {
+    @Input() overlayText: string;
+
+    constructor() {};
+}

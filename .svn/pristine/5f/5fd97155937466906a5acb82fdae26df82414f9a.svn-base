@@ -1,0 +1,22 @@
+<div [ngSwitch]="type" class="row">
+    <div *ngSwitchCase="'expert'">
+        <h2 style="text-align: center">Choose best performing funds across all categories</h2>
+        <section _ngcontent-pxi-10="">
+            <expert-sip></expert-sip>
+        </section>
+    </div>
+    <!-- <div *ngSwitchCase="'moderate'">
+         <moderate-sip></moderate-sip>
+     </div>
+     <div *ngSwitchCase="'quicksip'">
+         <quick-sip></quick-sip>
+     </div>-->
+    <div *ngSwitchDefault>Sumit its not working!</div>
+
+
+    <!-- <button _ngcontent-pxi-10="" color="primary" md-raised-button="" class="md-primary"
+             ng-reflect-color="primary"
+             (click)="proceed()">Proceed
+     </button>
+    -->
+</div>

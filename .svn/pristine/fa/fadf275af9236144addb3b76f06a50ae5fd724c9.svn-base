@@ -1,0 +1,20 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {CompareComponent} from "./compare.component";
+import {CompareGuard} from "./compare.guard";
+import {CompareDataResolveService} from "./compare-data-resolve-service";
+
+const compareRoutes: Routes = [
+    {
+        path: 'compare',
+        component: CompareComponent,
+        canActivate:[CompareGuard],
+        resolve: {
+            comparisonData: CompareDataResolveService,
+        }
+    }
+];
+
+export const compareRouting: ModuleWithProviders = RouterModule.forChild(compareRoutes);
+
+

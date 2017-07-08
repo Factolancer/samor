@@ -1,0 +1,13 @@
+<div class="row">
+    <div class="col-md-12"><span class="filter-title">Min Fund Age</span>
+        <button md-button="" (click)="clearFilter()" class="float-right filter-clear" *ngIf="searchInput.age!=0">Clear
+        </button>
+    </div>
+    <div class="col-md-12 filter-content">
+        <span *ngFor="let ageItem of ageList; let lastVal = last;">
+        <input type="radio" name="age" value="{{ageItem}}"
+               (click)="filter($event.target.value)">
+            <span>{{ageItem}}<span *ngIf="lastVal"> or more</span> years</span><br>
+        </span>
+    </div>
+</div>

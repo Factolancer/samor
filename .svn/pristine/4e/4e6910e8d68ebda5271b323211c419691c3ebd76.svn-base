@@ -1,0 +1,39 @@
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {SearchService} from "../search.service";
+import {SearchInput} from "../search-input";
+import {Subscription} from "rxjs";
+
+@Component({
+    selector: 'app-fund-age-filter',
+    templateUrl: './fund-age-filter.component.html',
+    styleUrls: ['./filters.css']
+})
+export class FundAgeFilterComponent implements OnDestroy {
+
+    searchInput: SearchInput;
+    searchInputSubscription: Subscription;
+    ageList = [1, 3, 5, 7, 10];
+
+    constructor(private searchService: SearchService) {
+        this.searchInputSubscription = this.searchService.searchInput.subscribe(
+            si => {
+                this.searchInput = si;
+            }
+        )
+    }
+
+    filter(value: any) {
+        this.searchInput.age = +value;
+        this.searchService.searchFund(this.searchInput)
+    }
+
+    clearFilter() {
+        this.searchInput.age = 0;
+        this.searchService.searchFund(this.searchInput)
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+    }
+
+}

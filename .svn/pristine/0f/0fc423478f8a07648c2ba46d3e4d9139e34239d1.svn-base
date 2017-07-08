@@ -1,0 +1,71 @@
+<select (change)="setRowsToDisplay($event.target.value)">
+    <option value="10">10</option>
+    <option value="15">15</option>
+</select>
+<table *ngIf="results">
+    <thead class="table-header">
+    <td class="table-element">Add to Compare</td>
+    <td class=" table-element" (click)="sort($event.target.title)" title="fund">Fund
+    </td>
+    <td class="table-element" (click)="sort($event.target.title)" title="rating">Fincash's Fund Rating</td>
+    <td class=" table-element" (click)="sort($event.target.title)" title="ret3">3 yr Return(%)
+    </td>
+    <td class="table-element" (click)="sort($event.target.title)" title="risk">Riskometer</td>
+    <td class="table-element" (click)="sort($event.target.title)" title="age">Fund Age</td>
+    <td class=" table-element" (click)="sort($event.target.title)" title="aum">AUM
+    </td>
+    <td class="table-element">Min Investment</td>
+    <td class=" table-element">Action
+    </td>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of results.funds;" class="table-row">
+
+        <td class="table-element">
+            <!-- <md-checkbox _ngcontent-vxs-12="" name="cb" ng-reflect-align="start" ng-reflect-disabled="false"
+                          ng-reflect-name="cb" ng-reflect-indeterminate="false" ng-reflect-model="false"
+                          class="ng-untouched ng-pristine ng-valid">
+             </md-checkbox>-->
+            <input type="checkbox">
+        </td>
+        <td class="table-element left-align">{{item.name}}</td>
+        <td class="table-element">{{item.rating | rating}}</td>
+        <td class="table-element">{{item.ret3}}</td>
+        <td class="table-element">{{item.risk}}</td>
+        <td class="table-element">{{item.age}} years</td>
+        <td class="table-element">{{item.aum | currency:'INR':true:'1.0-0' }}</td>
+        <td class="table-element">{{item.minInv | currency:'INR':true:'1.0-0'}}</td>
+
+        <td class="table-element">
+            <button _ngcontent-pxi-10="" md-raised-button="" class="green-button">Add to cart</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<div class="pagination" *ngIf="results?.numFound>0">
+
+    <!--previous funds-->
+    <span *ngIf="from + 1 > rows">
+      <button _ngcontent-qgq-10="" md-mini-fab="" (click)="prev()"><span
+              class="md-button-wrapper">&lt;</span></button>
+     </span>
+
+
+    <span>Showing <b>{{from + 1}}</b> to
+       <span *ngIf="from+rows >= results.numFound"><b>{{results.numFound}}</b></span>
+        <span *ngIf="from+rows < results.numFound"><b>{{from+rows}}</b></span>
+        of <b>{{results.numFound}}</b> </span>
+
+    <!--Next Funds-->
+    <span *ngIf="from < (results.numFound - rows)">
+       <button _ngcontent-qgq-10="" md-mini-fab="" (click)="next()"><span
+               class="md-button-wrapper">&gt;</span></button>
+    </span>
+
+</div>
+<!--&lt;!&ndash;<button _ngcontent-pxi-10="" color="primary" md-raised-button="" class="md-primary"
+            ng-reflect-color="primary"
+            (click)="compare()">Compare {{forCompareCount}}
+    </button>&ndash;&gt;-->

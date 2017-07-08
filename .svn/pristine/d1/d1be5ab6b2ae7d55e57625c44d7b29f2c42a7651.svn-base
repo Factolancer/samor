@@ -1,0 +1,36 @@
+export const CheckoutValidationMessages = {
+    investmentMode: {
+        required: 'Investment Mode is required',
+        sipNotAllowed: 'SIP is not allowed for this Option'
+    },
+    plan: {
+        required: 'Plan is required'
+    },
+    option: {
+        required: 'Option is required'
+    },
+    aipFrequency: {
+        required: 'SIP frequency is required'
+    },
+    aipDate: {
+        required: 'SIP Date is required'
+    },
+    installments: {
+        required: 'No. of Installments is required',
+        minValue: 'Minimum number of installments is ',
+        maxValue: 'Maximum number of installments is '
+    },
+    investmentAmount: {
+        required: 'Investment Amount is required',
+        minValue: 'Minimum Investment amount is ',
+        maxValue: 'Maximum Investment amount is ',
+        multiplier: 'Amount should be a multiple of '
+    },
+    bank: {
+        required: 'Bank is required'
+    },
+    nominee: {
+        required: 'Nominee is required'
+    },
+
+};

@@ -1,0 +1,22 @@
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {Checkout} from "./checkout";
+
+@Component({
+    selector: 'app-checkout',
+    templateUrl: './checkout.component.html',
+    styleUrls: ['./checkout.component.css']
+})
+export class CheckoutComponent implements OnInit {
+
+    checkoutData: Checkout;
+
+    constructor(private route: ActivatedRoute) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: { checkoutData: Checkout }) => {
+            this.checkoutData = data.checkoutData;
+        });
+    }
+}

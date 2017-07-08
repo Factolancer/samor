@@ -1,0 +1,16 @@
+export class Fund {
+    id: string;
+    name: string;
+    age: number;
+    rating: number;
+    aum: number;
+    amc: string;
+    amcCode: string;
+    category: string;
+    inceptionDate: any;
+    minInvestment: number;
+    return1yr: number;
+    return3yr: number;
+    return5yr: number;
+    risk: string;
+}

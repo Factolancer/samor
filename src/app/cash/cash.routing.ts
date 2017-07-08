@@ -1,0 +1,35 @@
+import {ModuleWithProviders}  from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+
+import {CashComponent} from './cash.component';
+import {DemoComponent} from "./demo/demo.component";
+import {DemoaComponent} from "./demo/demoa.component";
+import {DemoallComponent} from "./demo/demoall.component";
+import {CashfundsComponent} from "./cashfunds/cashfunds.component";
+import {SavingsPlusFundResolveService} from "./cashfunds/savings-plus-fund-resolve.service";
+import {KycGuard} from "../gaurds/kyc.guard";
+
+export const cashRoutes: Routes = [
+    {
+        path: 'cash',
+        children: [
+            {
+                path: 'demo',
+                component: DemoComponent,
+            },
+
+            {
+                path: 'funds',
+                component: CashfundsComponent,
+                resolve: {
+                    funds: SavingsPlusFundResolveService
+                }
+            }, {
+                path: '',
+                component: CashComponent
+            }
+        ]
+    }
+];
+
+export const cashrouting: ModuleWithProviders = RouterModule.forChild(cashRoutes);

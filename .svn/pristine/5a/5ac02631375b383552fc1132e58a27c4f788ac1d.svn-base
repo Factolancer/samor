@@ -1,0 +1,67 @@
+@import "../../public/styles/partials/web-partials";
+
+.fund-name {
+  font-weight: 700;
+  color: $brand-secondary;
+}
+
+.tax-product {
+  border: solid 1px $dark-grey;
+  background-color: $light-grey;
+
+  .tax-feature {
+    background-color: $brand-primary;
+    color: $white;
+    justify-content: center;
+    font-weight: 300;
+    height: 75px;
+  }
+
+  .tax-feature-icon {
+    border-radius: 50%;
+    border: solid 1px $brand-secondary;
+    background: $white;
+    margin-bottom: 75px;
+    text-align: center;
+
+    img {
+      max-width: 200px;
+      vertical-align: inherit;
+    }
+  }
+
+  .heading-32-tax {
+    @include heading(32px, 700);
+    color: $brand-primary;
+  }
+}
+
+.elss-explanation {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  border: solid 1px $dark-grey;
+
+  .title {
+    background-color: $brand-primary;
+    color: $white;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .feature-card {
+    text-align: center;
+    color: $dark-grey;
+    margin: 25px 0;
+
+    .elss-title {
+      background-color: $brand-secondary;
+      color: $white;
+      font-weight: 700;
+    }
+
+    .other-title {
+      background-color: $light-grey;
+      color: $brand-secondary;
+    }
+  }
+}

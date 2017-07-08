@@ -1,0 +1,42 @@
+@import "../../styles/partials/web-partials";
+
+
+.calc-container{
+  background-color: $light-grey;
+  padding-bottom: 30px;
+  .age-slider{width:80%;}
+  .expense-slider{width: 90%;}
+  .label{font-size: 1.5em; color: $dark-grey;}
+  .slider-val{position: absolute;top:5%;right:50%; font-size: 0.8em;}
+}
+.mat-slider-track-wrapper{
+  height:4px !important;
+}
+.mat-slider-track-background{
+  height:4px !important;
+  background-color: $dark-grey !important;
+}
+.mat-slider-track-fill{
+  background-color: $brand-secondary !important;
+  height:4px !important;
+}
+.mat-slider-thumb{
+  background-color: $brand-secondary !important;
+  border:none !important;
+  height:25px !important;
+  width:25px !important;
+  bottom: -12.5px !important;
+&-label{background-color: $brand-secondary}}
+
+
+
+
+.grey-border{border:1px solid $dark-grey;}
+
+.sub-heading{
+  color: $dark-grey;
+  font-size: 22px;
+  letter-spacing: 1.5px;
+}
+.colr-bs{color:$brand-secondary}
+

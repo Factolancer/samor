@@ -1,0 +1,52 @@
+<div class="row">
+    <!--<div class="col-md-6">
+        <h3 style="margin-top:0px">{{productEnum[schemes.schemes]}}</h3>
+    </div>-->
+    <div class="col-md-6" *ngIf="isFincashProduct">
+        <button md-raised-button="" (click)="removeProduct(schemes.product)">Remove {{productEnum[schemes.product]}}
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table>
+            <thead class="table-header">
+            <td class=" table-element">Fund</td>
+            <td class=" table-element">Category</td>
+            <td class=" table-element">Rating</td>
+            <td class=" table-element">1yr Returns</td>
+            <td class="table-element">Risk</td>
+            <td class=" table-element">AUM</td>
+            <td class=" table-element">Inception Date</td>
+            <td class="table-element">Exit Load / Lock-in</td>
+            <td class=" table-element" *ngIf="!isFincashProduct">Action</td>
+            </thead>
+            <tbody>
+            <tr *ngFor="let scheme of schemes" class="table-row" (click)="selectFund(scheme)"
+                [ngClass]="{'selected-row': isSelected(scheme)}" [class.active]="isSelected(scheme)">
+                <td class="table-element left-align clickable">
+                    <a routerLink="/factsheet/{{scheme.id}}">
+                        <md-icon class="material-icons factsheet-icon md-14">&#xE873;</md-icon>
+                        {{scheme.name}}
+                    </a>
+                </td>
+                <td class="table-element">{{scheme.category}}</td>
+                <td class="table-element">{{scheme.rating}}</td>
+                <td class="table-element">{{scheme.return1yr}}</td>
+                <td class="table-element">{{scheme.risk}}</td>
+                <td class="table-element">{{scheme.aum}}</td>
+                <td class="table-element">{{scheme.inceptionDate}}</td>
+                <td class="table-element"></td>
+                <td class="table-element" *ngIf="!isFincashProduct"
+                    (click)="removeFund(scheme.id)">
+                    <button md-icon-button=""><i class="material-icons">&#xE14C;</i></button><!--Clear icon-->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 pull-right" *ngIf="!isFincashProduct">
+        <button md-raised-button="" class="pull-right" routerLink="/explore/{{productEnum[schemes.product]}}">Add Funds
+        </button>
+    </div>
+</div>

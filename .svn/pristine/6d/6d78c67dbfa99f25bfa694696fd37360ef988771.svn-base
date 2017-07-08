@@ -1,0 +1,61 @@
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Subscription} from "rxjs";
+import {FundDisplay} from "./fund-display";
+import {Input} from "@angular/core/src/metadata/directives";
+import {ExploreFundsService} from "./explore-funds.service";
+
+@Component({
+    selector: 'app-fund-view-panel',
+    templateUrl: './fund-view-panel.component.html'
+})
+export class FundViewPanelComponent implements OnInit,OnDestroy {
+
+    //subscriptions
+    fundDisplaySubscription: Subscription;
+
+    //variables
+    fundDisplay: FundDisplay;
+    _allowTotals: boolean = true;
+    _allowRowChange: boolean = true;
+    _allowViewChange: boolean = true;
+
+
+    @Input() set allowTotals(allowed: boolean) {
+        this._allowTotals = allowed;
+    }
+
+    @Input() set allowRowChange(allowed: boolean) {
+        this._allowRowChange = allowed;
+    }
+
+    @Input() set allowViewChange(allowed: boolean) {
+        this._allowViewChange = allowed;
+    }
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+        this.fundDisplaySubscription = exploreFundsService.fundDisplay.subscribe(
+            fd => {
+                console.log("fund view panel just listened for fund display!");
+                this.fundDisplay = fd as FundDisplay;
+            });
+    }
+
+    setRowsToDisplay(selectedRows: string) {
+        this.fundDisplay.rows = +selectedRows;
+        this.exploreFundsService.setDisplayRows(this.fundDisplay.rows);
+    }
+
+
+    toggleView() {
+        this.fundDisplay.isListView = !this.fundDisplay.isListView;
+    }
+
+
+    ngOnInit() {
+    }
+
+    ngOnDestroy() {
+        this.fundDisplaySubscription.unsubscribe();
+    }
+
+}

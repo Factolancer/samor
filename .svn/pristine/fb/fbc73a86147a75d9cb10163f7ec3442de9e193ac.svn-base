@@ -1,0 +1,6 @@
+import {CheckoutFund} from "./checkout-fund";
+export interface Checkout {
+    fundsData: CheckoutFund[],
+    nomineeList: string[],
+    bankList: string[],
+}

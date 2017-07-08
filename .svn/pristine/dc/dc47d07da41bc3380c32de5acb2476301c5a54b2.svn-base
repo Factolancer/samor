@@ -1,0 +1,61 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {ExploreFundsService} from "../../core/services/explore-funds.service";
+import {Subscription} from "rxjs";
+import {FundSearchFacets} from "../fund-search-facet";
+import {FundSearchInput} from "../fund-search-input";
+import {ExploreFundConstants} from "../explore-funds.constants";
+import {Logger} from "../../core/logger/logger";
+
+@Component({
+    selector: 'app-filter-master',
+    templateUrl: './filter-master.component.html',
+    styleUrls: ['./filters.styles.scss']
+})
+export class FilterMasterComponent implements OnInit, OnDestroy {
+
+
+    fundSearchInputSubscription: Subscription;
+    searchInput: FundSearchInput;
+    facetData: FundSearchFacets;
+    isComponentInitialized: boolean;
+
+    constructor(private exploreFundsService: ExploreFundsService, private logger: Logger) {
+        this.isComponentInitialized = false;
+    }
+
+
+    ngOnInit() {
+
+
+        this.logger.debug("FilterMasterComponent", "This view has been initialised");
+
+        this.fundSearchInputSubscription = this.exploreFundsService.fundSearchInput.subscribe(
+            (searchInput: FundSearchInput) => {
+                this.logger.debug("FilterMasterComponent", searchInput);
+                if (searchInput.qt == ExploreFundConstants.SEARCH_QUERY || !this.isComponentInitialized) {
+                    this.logger.debug("FilterMasterComponent", searchInput);
+                    this.isComponentInitialized = true;
+                    this.exploreFundsService.getFacetData(searchInput).subscribe(
+                        (facetData: FundSearchFacets) => {
+                            this.logger.debug("FilterMasterComponent", facetData);
+                            this.exploreFundsService.setFundSearchFacet(facetData);
+                        })
+                }
+                this.searchInput = searchInput
+            }
+        )
+
+        /*this.exploreFundsService.getFacetData(this.exploreFundsService.initializedSearchInput).subscribe(
+            (facetData: FundSearchFacets) => {
+                this.facetData = facetData;
+                this.exploreFundsService.setFundSearchFacet(facetData);
+            }
+        )*/
+    }
+
+
+    ngOnDestroy() {
+        this.fundSearchInputSubscription.unsubscribe();
+    }
+
+}

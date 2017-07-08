@@ -1,0 +1,53 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {CheckoutComponent} from "./checkout.component";
+import {CheckoutResolveService} from "./checkout-data-resolve-service";
+import {SummaryComponent} from "./summary/summary.component";
+import {SummaryResolveService} from "./summary-data-resolve-service";
+import {AuthGuard} from "../core/guards/auth.guard";
+import {URLAccessGuard} from "../core/guards/urlAccess.guard";
+import {KycGuard} from "../core/guards/kyc.guard";
+import {OrderComponent} from "./order/order.component";
+import {OrderConfirmationComponent} from "./order/order-confirmation.component";
+import {BankStatusGuard} from "../core/guards/bankStatus.guard";
+import {FatcaStatusGuard} from "../core/guards/fatcaStatus.guard";
+import {AddressStatusGuard} from "../core/guards/addressStatus.guard";
+import {BasicDetailStatusGuard} from "../core/guards/basicDetailStatus.guard";
+
+const checkoutRoutes: Routes = [
+    {
+        path: 'checkout',
+        children: [
+            {
+                path: 'init',
+                component: CheckoutComponent,
+                resolve: {
+                    checkoutData: CheckoutResolveService
+                },
+                canActivate: [URLAccessGuard]
+            },
+            {
+                path: 'summary',
+                component: SummaryComponent,
+                resolve: {
+                    userInfo: SummaryResolveService
+                },
+                canActivate: [URLAccessGuard]
+            },
+            {
+                path: 'confirm/:orderId',
+                component: OrderConfirmationComponent,
+                canActivate: [URLAccessGuard]
+            },
+            {
+                path: 'order/:orderId',
+                component: OrderComponent,
+            }
+        ],
+        canActivate: [AuthGuard, BasicDetailStatusGuard, AddressStatusGuard, FatcaStatusGuard, KycGuard, BankStatusGuard]
+    }
+];
+
+export const checkoutRouting: ModuleWithProviders = RouterModule.forChild(checkoutRoutes);
+
+

@@ -1,0 +1,36 @@
+
+
+<div fxLayout="row" fxLayoutAlign="center center" >
+    <div fxFlex="60" class="grey-back pad-60">
+        <div fxLayout="column">
+            <basic-section></basic-section>
+
+            <kyc-section></kyc-section>
+
+            <bank-section></bank-section>
+
+            <other-section></other-section>
+
+            <upload-section></upload-section>
+        </div>
+
+    </div>
+    <br/>
+
+</div>
+
+<button (click)="indexBanks()">Index here</button>
+<button (click)="CheckKYC()">Check you KYC</button>
+<label>{{showKyc}}</label>
+
+<form ngNoForm action="https://eiscuat1.camsonline.com/ekycuat3/eKYCVal_Aadhar.aspx" METHOD="post" target="_blank">
+    <label>Aadhar no </label>
+    <input type="text" name="Aadhar" value="321463430696" /><br/>
+    <label>Return url </label>
+    <input type="text" name="url" value="http://122.179.128.202/" /><br/>
+    <label>KYC data </label>
+    <input type="text" name="kyc_data" value="ALDPN3048F|pareshnagore@gmail.com|7032909303|fincash|UECH_SHEP|HzK6$g3|B|MFKYC" size="100"/><br/>
+    <input type="submit" value="Go to EKYC"/>
+</form>
+
+

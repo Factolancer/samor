@@ -1,0 +1,42 @@
+import {NgModule} from "@angular/core";
+import {FormsModule} from "@angular/forms";
+import {ExpertComponent} from "./expert/expert.component";
+import {MdIconModule} from "@angular2-material/icon";
+import {MdCardModule} from "@angular2-material/card";
+import {MdButtonModule} from "@angular2-material/button";
+import {MdGridListModule} from "@angular2-material/grid-list";
+import {MdListModule} from "@angular2-material/list";
+import {CommonModule} from "@angular/common";
+import {MdInputModule} from "@angular2-material/input";
+import {MdCheckboxModule} from "@angular2-material/checkbox";
+import {SipComponent} from "./sip.component";
+import {HttpModule} from "@angular/http";
+import {FundSelectionComponent} from './fund-selection.component';
+import {RouterModule} from "@angular/router";
+import {FundModule} from "../fund/fund.module";
+import {CartModule} from "../cart/cart.module";
+import {SearchModule} from "../search/search.module";
+
+@NgModule({
+    imports: [
+        FormsModule,
+        CommonModule,
+        HttpModule,
+        RouterModule,
+        MdIconModule,
+        MdCardModule,
+        MdButtonModule,
+        MdGridListModule,
+        MdListModule,
+        MdInputModule,
+        MdListModule,
+        MdCheckboxModule,
+        FundModule,
+        CartModule,
+        SearchModule,
+    ],
+    declarations: [SipComponent, FundSelectionComponent, ExpertComponent],
+})
+
+export class SipModule {
+}

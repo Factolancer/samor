@@ -1,0 +1,82 @@
+import {Component, OnInit, Inject} from '@angular/core';
+import {Router} from "@angular/router";
+import {IAppConfig, APP_CONFIG} from "../../environments/environment";
+
+@Component({
+    selector: 'app-products-solution',
+    templateUrl: './product-solutions.component.html',
+    styleUrls: ['./product-solutions.component.scss']
+})
+export class ProductSolutionsComponent implements OnInit {
+
+    productSolutions: Array<Object>;
+
+    constructor(private router: Router, @Inject(APP_CONFIG) private config: IAppConfig) {
+    }
+
+    invest(index) {
+        this.router.navigateByUrl(this.productSolutions[index]['routerUrl']);
+
+    }
+
+    ngOnInit() {
+        this.productSolutions = [
+            {
+                title: 'SmartSIP',
+                content: [
+                    {
+                        image: this.config.staticImagePath + '/assets/img/dashboard/analysis.svg',
+                        text: 'Pre-selected Top 3 Mutual Funds'
+                    },
+                    {
+                        image: this.config.staticImagePath + '/assets/img/dashboard/badge.svg',
+                        text: 'In-house research for fund selection using Qualitative & Quantitative factors '
+                    },
+                    {
+                        image: this.config.staticImagePath + '/assets/img/dashboard/rupee-graph.svg',
+                        text: 'It takes 2 Minutes to start a Systematic Investment Plan (SIP)'
+                    }
+                ],
+                image: this.config.staticImagePath + '/assets/img/product/smart-sip.svg', routerUrl: 'sip/smartsip'
+            },
+            {
+                title: 'SavingsPlus',
+                content: [
+
+                    {
+                        image: this.config.staticImagePath + '/assets/img/dashboard/rupee-graph.svg',
+                        text: 'Earn more from the money in your bank account'
+                    },
+                    {
+                        image: this.config.staticImagePath + '/assets/img/dashboard/rupee-bulb-glow.svg',
+                        text: 'Way better returns than Savings Account (7-9%)'
+                    },
+                    {
+                        image: this.config.staticImagePath + '/assets/img/dashboard/instant-redemption.svg',
+                        text: 'Instant Redemption with no Lock-in & Exit Load'
+                    }
+                ],
+                image: this.config.staticImagePath + '/assets/img/product/saving-plus.svg', routerUrl: 'cash/funds'
+            },
+            {
+                title: 'TaxSaver',
+                content: [
+                    {
+                        image: this.config.staticImagePath + '/assets/img/dashboard/analysis.svg',
+                        text: 'Save Tax under Section 80C.'
+                    },
+                    {
+                        image: this.config.staticImagePath + '/assets/img/dashboard/badge.svg',
+                        text: 'Earn tax-free returns via ELSS'
+                    },
+                    {
+                        image: this.config.staticImagePath + '/assets/img/dashboard/rupee-graph.svg',
+                        text: 'Pre-selected top 2 ELSS Funds'
+                    }
+                ],
+                image: this.config.staticImagePath + '/assets/img/product/tax-saver.svg', routerUrl: 'tax/taxsaver'
+            }
+        ]
+    }
+
+}

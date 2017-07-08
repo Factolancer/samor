@@ -1,0 +1,5 @@
+.quick-sip-fund-name {
+  background-color: #0081c9;
+  color: #FFFFFF;
+  font-size: 14pt;
+}

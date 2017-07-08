@@ -1,0 +1,19 @@
+.sip-card {
+
+}
+
+.sip-list {
+    margin: 5%;
+}
+
+section[_ngcontent-pxi-10] {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #f7f7f7;
+    margin: 8px;
+    padding: 5px;
+}

@@ -1,0 +1,108 @@
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {LogoImdData} from "../constants";
+import {ReportService} from "../report.service";
+import {Subscription} from "rxjs";
+import {CapitalGainsReportService} from "./capital-gains-report.service";
+import {CapitalGains} from "./capital-gains";
+
+declare let jsPDF;
+
+@Component({
+    selector: 'app-capital-gains-report',
+    templateUrl: './capital-gains-report.component.html',
+    styleUrls: ['../report.styles.scss']
+})
+export class CapitalGainsReportComponent implements OnInit,OnDestroy {
+
+    capitalGainTabSubscription: Subscription;
+    funds: CapitalGains[];
+
+    constructor(private reportService: ReportService, private capitalGainsService: CapitalGainsReportService) {
+        this.capitalGainTabSubscription = this.reportService.capitalGainsTabResult.subscribe((loadTab: boolean)=> {
+            if (loadTab == true) {
+                this.capitalGainsService.getFundsCapitalGains()
+                    .subscribe(funds => {
+                        this.funds = funds as CapitalGains[];
+                    });
+            } else {
+                this.funds = [];
+            }
+        });
+    }
+
+    ngOnInit() {
+
+    }
+
+    ngOnDestroy() {
+        this.capitalGainTabSubscription.unsubscribe();
+    }
+
+    download() {
+        var pdf = new jsPDF('p', 'pt');
+        var totalPagesExp = "{total_pages_count_string}";
+        var pageContent = function (data) {
+            // HEADER
+            pdf.setFontSize(20);
+            pdf.setFontStyle('normal');
+            pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+            // FOOTER
+            var str = "Page " + data.pageCount;
+            // Total page number plugin only available in jspdf v1.0+
+            if (typeof pdf.putTotalPages === 'function') {
+                str = str + " of " + totalPagesExp;
+            }
+            pdf.setFontSize(10);
+            pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 30);
+        };
+        pdf.setFontSize(12);
+        pdf.myText("Investment Gain/Loss Statement", {align: "center"}, 0, 100);
+
+        pdf.autoTable([], [], {addPageContent: pageContent});
+
+        pdf.setFontSize(10);
+        pdf.text("AMC: Birla sun Life Mutual Fund", 40, 150);
+        pdf.text("Folio No: 1016976426", 40, 165);
+        pdf.text("Status : Individual", 40, 180);
+        pdf.text("PAN : AXOPV5011C", 40, 195);
+
+        var columns = [{title: "Description", dataKey: "desc"},
+            {title: "Date", dataKey: "redeemDate"},
+            {title: "Units", dataKey: "units"},
+            {title: "Price      (Rs.)", dataKey: "price"},
+            {title: "Amount (Rs.)", dataKey: "amount"},
+            {title: "Date", dataKey: "purchaseDate"},
+            {title: "Units", dataKey: "purchaseUnits"},
+            {title: "Unit Cost(Rs.)", dataKey: "purchasePrice"},
+            {title: "Short Term Gain", dataKey: "shortTermGain"},
+            {title: "Long Term Gain", dataKey: "longTermGain"}];
+
+        var row = this.funds[0].redemptionDetailsList;
+
+        pdf.setFillColor(41, 128, 185);
+        pdf.rect(40.25, 200, 275, 23, 'F');
+        pdf.rect(315, 200, 240.5, 23, 'F');
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontStyle('bold');
+        pdf.textInWindow("Redemption/Switch-out", 0, 210, 275);
+        var splitTitle = pdf.splitTextToSize("Corresponding units in Purchase/Switch-In/Div-Reinvestment", 241);
+        pdf.text(315, 210, splitTitle);
+        var tableStyle = {
+            styles: {overflow: 'linebreak'},
+            startY: 223,
+            drawRow: function (row, data) {
+                if (row.index === 0) {
+                    pdf.text("Birla Sun Life Manufacturing Equity Fund-Regular Growth (Equity (G))", 45, row.y + row.height / 2);
+                    data.cursor.y += 20;
+                }
+            }
+        };
+        pdf.autoTable(columns, row, tableStyle);
+        pdf.setFontStyle('normal');
+        pdf.text("Note: Short term (less than 1year) redemption of units/amount would incur a taxation of 1%", 40, pdf.autoTableEndPosY() + 20);
+        if (typeof pdf.putTotalPages === 'function') {
+            pdf.putTotalPages(totalPagesExp);
+        }
+        pdf.save('Capital Gains Report.pdf');
+    }
+}

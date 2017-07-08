@@ -1,0 +1,40 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {Fund} from "../models/fund";
+import {InvestmentModeEnum} from "../enum/investment-mode-enum";
+import {Router} from "@angular/router";
+
+@Injectable()
+export class CartService {
+
+    constructor(private httpService: HttpService, public  router: Router) {
+    }
+
+    addFundToCart(fundId: string, investmentMode: string) {
+        return this.httpService.post("/fund/addFundToCart", {"fundId": fundId, "investmentMode": investmentMode});
+    }
+
+    // addFundsToCart(fundIds: string[], investmentMode: string) {
+    //     return this.httpService.post("/fund/addFundsToCart", {"fundIdList": fundIds, "investmentMode": investmentMode});
+    // }
+
+    removeFundFromCart(fund: Fund) {
+        return this.httpService.post("/fund/removeFund", fund);
+    }
+
+    getCartData() {
+        return this.httpService.get("/fund/getCartData");
+    }
+
+    addFundsToCart(funds: Fund[]){
+        this.httpService.post("/fund/saveCart", {"funds": funds})
+            .subscribe(
+                response => {
+                    // var body = response.json();
+                    console.log(response);
+                    localStorage.setItem('cartId', response.cartId);
+                    this.router.navigate(['/cart']);
+                }
+            )
+    }
+}

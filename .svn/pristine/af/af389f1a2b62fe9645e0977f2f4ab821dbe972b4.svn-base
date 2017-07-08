@@ -1,0 +1,18 @@
+/**
+ * Created by Fincash on 18-02-2017.
+ */
+
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {TeamComponent} from "./team.component";
+import {WhyFincashComponent} from "./why-fincash.component";
+import {CareerComponent} from "./career.component";
+
+const aboutUsRoutes: Routes = [
+    {        path: 'team',
+             component: TeamComponent,
+    },
+
+];
+
+export const aboutUsRouting: ModuleWithProviders = RouterModule.forChild(aboutUsRoutes);

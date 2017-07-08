@@ -1,0 +1,39 @@
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {SearchService} from "../search.service";
+import {FundSearchInput} from "../search-input";
+import {Subscription} from "rxjs";
+
+@Component({
+    selector: 'app-rating-filter',
+    templateUrl: './rating-filter.component.html',
+    styleUrls: ['./filters.css']
+})
+export class RatingFilterComponent implements OnDestroy {
+
+    searchInput: FundSearchInput;
+    searchInputSubscription: Subscription;
+    starList = [1, 2, 3, 4, 5];
+
+    constructor(private searchService: SearchService) {
+        this.searchInputSubscription = this.searchService.searchInput.subscribe(
+            si => {
+                this.searchInput = si;
+            }
+        )
+    }
+
+    filter(value: any) {
+        this.searchInput.rating.push(value);
+        this.searchService.searchFund(this.searchInput);
+    }
+
+    clearFilter() {
+        this.searchInput.rating = [];
+        this.searchService.searchFund(this.searchInput);
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+    }
+
+}

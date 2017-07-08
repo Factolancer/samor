@@ -1,0 +1,6 @@
+<div class="wrapper"  >
+    <div><h1>Our Partners</h1></div>
+    <div><h3>Partner AMCs</h3></div>
+    <div (click)="navigateToAMC('SBI')" class="clickable"><h5>SBI</h5></div>
+
+</div>

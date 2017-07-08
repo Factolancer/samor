@@ -1,0 +1,33 @@
+import {NgModule} from "@angular/core";
+import {BasicSectionModule} from "./sections/basic-section/basic-section.module";
+import {RegistrationComponent} from "./registration.component";
+import {registrationrouting} from "./registration.routing";
+import {KycSectionModule} from "./sections/kyc-section/kyc-section.module";
+import {BankSectionModule} from "./sections/bank-section/bank-section.module";
+import {OtherSectionModule} from "./sections/other-section/other-section.module";
+import {UploadSectionModule} from "./sections/upload-section/upload-section.module";
+import {AuthGuard} from "../core/guards/auth.guard";
+import {JsonpModule} from "@angular/http";
+import {SharedModule} from "../shared/shared.module";
+import {UserService} from "./userdata.service";
+import {EKycComonent} from "./ekyc.component";
+import {NomineeSectionModule} from "./sections/nominee-section/nominee-section.module";
+import {RegistrationCompleteComponent} from "./registration-complete.component";
+
+@NgModule({
+    imports: [
+        registrationrouting,
+        JsonpModule,
+        SharedModule,
+        BasicSectionModule,
+        KycSectionModule,
+        BankSectionModule,
+        OtherSectionModule,
+        UploadSectionModule,
+        NomineeSectionModule
+    ],
+    providers: [UserService],
+    declarations: [RegistrationComponent, EKycComonent, RegistrationCompleteComponent],
+})
+export class RegistrationModule {
+}

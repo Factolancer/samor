@@ -1,0 +1,3 @@
+<div id="pie_chart" class="pieChartLayout" [chartData]="data" [chartOptions]="pieChartOptions"
+     chartType="PieChart" GoogleChart>
+</div>

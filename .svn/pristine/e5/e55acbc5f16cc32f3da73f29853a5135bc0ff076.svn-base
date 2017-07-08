@@ -1,0 +1,23 @@
+<!--Pagination-->
+<div class="row">
+    <div *ngIf="results?.numFound>0">
+        <!--previous funds-->
+        <span *ngIf="from + 1 > rows">
+              <button md-mini-fab="" (click)="prev()"><span
+                      class="md-button-wrapper">&lt;</span></button>
+            </span>
+
+
+        <span>Showing <b>{{from + 1}}</b> to
+                <span *ngIf="from+rows >= results.numFound"><b>{{results.numFound}}</b></span>
+                <span *ngIf="from+rows < results.numFound"><b>{{from+rows}}</b></span>
+                    of <b>{{results.numFound}}</b>
+            </span>
+
+        <!--Next Funds-->
+        <span *ngIf="from < (results.numFound - rows)">
+                <button md-mini-fab="" (click)="next()"><span
+                        class="md-button-wrapper">&gt;</span></button>
+            </span>
+    </div>
+</div>

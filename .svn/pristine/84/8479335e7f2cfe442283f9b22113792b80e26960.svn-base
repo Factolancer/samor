@@ -1,0 +1,27 @@
+import {BasicFactSheet} from "./basic-factsheet";
+import {FundVsBenchmark} from "./fund-vs-benchmark";
+import {FundDetails} from "../cart/fund-details";
+export class EquityAdvancedFactsheet {
+    constructor(public basicFactsheet: BasicFactSheet,
+                public sinceInceptionCmp: FundVsBenchmark,
+                public annualReturns: FundVsBenchmark,
+                public quarterlyReturns: FundVsBenchmark,
+                public peerComparison: FundDetails[],
+                public topHoldings:{
+                    asOfDate: string,
+                    dataMap: any
+                },
+                public topSectors:{
+                    asOfDate: string,
+                    dataMap: any
+                },
+                public assetAllocation:{
+                    asOfDate: string,
+                    dataMap: any
+                },
+                public sipPerformance: FundVsBenchmark,
+
+    ) {
+
+    }
+}

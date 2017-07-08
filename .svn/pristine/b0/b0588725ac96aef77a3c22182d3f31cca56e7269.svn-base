@@ -1,0 +1,32 @@
+import {ModuleWithProviders} from "@angular/core";
+import {RouterModule, Routes} from "@angular/router";
+import {PageNotFoundComponent} from "./shared/page-not-found.component";
+import {LandingpageComponent} from "./landingpage/landingpage.component";
+import {AuthGuard} from "./core/guards/auth.guard";
+import {UserGuard} from "./core/guards/user.guard";
+
+const appRoutes: Routes = [
+    {path: '', component: LandingpageComponent},
+    {path: 'registration', loadChildren: 'app/registration/registration.module#RegistrationModule'},
+    {path: 'calculator', loadChildren: 'app/calculators/calculator.module#CalculatorModule'},
+    {path: 'explore', loadChildren: 'app/explore-funds/explore-funds.module#ExploreFundsModule'},
+    {path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule'},
+    {path: 'static', loadChildren: 'app/static/static.module#StaticModule'},
+    {
+        path: 'checkout',
+        loadChildren: 'app/checkout/checkout.module#CheckoutModule',
+        canActivate: [AuthGuard, UserGuard]
+    },
+    {
+        path: 'redeem',
+        loadChildren: 'app/redemption/redemption.module#RedemptionModule',
+        canActivate: [AuthGuard, UserGuard]
+    },
+    {path: '**', component: PageNotFoundComponent}
+];
+
+export const routes: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+
+export const appRoutingProviders: any[] = [];
+
+export const routedComponents = [PageNotFoundComponent];

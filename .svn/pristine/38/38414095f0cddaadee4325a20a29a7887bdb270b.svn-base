@@ -1,0 +1,66 @@
+@import '../../public/styles/partials/web-partials';
+
+.portfolio-allocation-heading{
+    margin-top: 25px;
+    margin-bottom:15px ;
+}
+.md-tab-header{
+    background-color:$brand-primary;
+    color: $white;
+}
+.report-card{
+    width:99%;
+}
+.allocation-header{
+    color:$brand-primary;
+    font-weight: 700;
+}
+.summary-heading{
+    color:$medium-dark-grey;
+    font-weight: 700;
+    padding: 30px 0px 20px 0px;
+    text-align: center;
+}
+.allocation-heading{
+    padding: 30px 0px 20px 30px;
+    font-weight: 700;
+}
+.allocation-details{
+    padding: 30px 0px 20px 30px;
+
+}
+.summary-details{
+    color:$medium-dark-grey;
+}
+.asset-class{
+    color:$medium-dark-grey;
+    font-weight: 700;
+}
+.asset-class-details{
+    color:$medium-dark-grey;
+}
+.summary-card1{
+    background-color: $light-grey;
+    padding: 10px 0px;
+}
+.total-allocation{
+    background-color: $medium-grey;
+}
+.total-allocation-details{
+    color:$medium-dark-grey;
+    font-weight: 700;
+}
+.irrHeader{
+    background-color: $light-grey;
+}
+.pieChartLayout{
+    width: 600px;
+    height: 400px;
+}
+.red{
+    color: red;
+}
+.fundName{
+    color:$brand-secondary;
+    cursor: pointer;
+}

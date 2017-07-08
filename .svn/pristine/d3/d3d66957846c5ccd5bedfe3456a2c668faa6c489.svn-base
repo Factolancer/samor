@@ -1,0 +1,19 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {HomeComponent} from "./home";
+import {PageNotFoundComponent} from "./shared/page-not-found.component";
+import {LandingpageComponent} from "./landingpage/landingpage.component";
+
+const appRoutes: Routes = [
+    {path: '', component: LandingpageComponent},
+    {path: 'report', loadChildren: 'app/report/report.module#ReportModule'},
+    {path: 'registration', loadChildren: 'app/registration/registration.module#RegistrationModule'},
+    {path: 'kyc', loadChildren: 'app/kyc-status/kyc-status.module#KYCStatusdModule'},
+    {path: '**', component: PageNotFoundComponent}
+];
+
+export const routes: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+
+export const appRoutingProviders: any[] = [];
+
+export const routedComponents = [HomeComponent, PageNotFoundComponent];

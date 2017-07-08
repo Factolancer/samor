@@ -1,0 +1,55 @@
+@import '../../../styles/partials/web-partials';
+
+.filter-title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 36px;
+}
+
+.explore-fund-head {
+  background-color: $brand-secondary;
+  text-align: center;
+  color: $white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 20px;
+  margin-bottom: 2px;
+  border-radius: 0;
+}
+
+.filter-data {
+  font-size: 11px;
+  padding: 12px;
+  border-radius: 0;
+}
+
+.filter-clear {
+  font-size: 12px;
+  font-weight: 700;
+  color: $dark-grey;
+  padding: 3px;
+  margin: 0 0 5px 0;
+}
+
+.clear-icon {
+  background-color: $light-grey;
+}
+
+.fc-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  line-height: 14px;
+  background-color: $light-grey;
+  color: $dark-grey;
+  margin: 2px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:focus {
+    outline: none !important;
+  }
+}

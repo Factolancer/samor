@@ -1,0 +1,19 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80">
+        <app-user-journey></app-user-journey>
+        <div fxLayout="column" fxLayoutAlign="center center" class="pad-tb-15">
+            <div fxFlex class="heading-32-dark-grey">Invest in TaxSaver ELSS Schemes</div>
+        </div>
+        <div class="grey-back pad-30">
+            <app-tax-saver-card fxLayout="column" fxLayoutAlign="center center" #taxSaverFundsComp
+                                [funds]="taxSaverFunds"></app-tax-saver-card>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-20">
+            <div fxFlex="20">
+                <button color="primary" md-raised-button="" class="cta-50"
+                        (click)="proceed(taxSaverFundsComp.selectedFunds)">PROCEED
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

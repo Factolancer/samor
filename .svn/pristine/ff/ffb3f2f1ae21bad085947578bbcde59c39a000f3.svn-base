@@ -1,0 +1,47 @@
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
+import {RouterModule} from "@angular/router";
+import {MdIconModule} from "@angular2-material/icon";
+import {MdCardModule} from "@angular2-material/card";
+import {MdButtonModule} from "@angular2-material/button";
+import {MdGridListModule} from "@angular2-material/grid-list";
+import {MdListModule} from "@angular2-material/list";
+import {MdInputModule} from "@angular2-material/input";
+import {MdCheckboxModule} from "@angular2-material/checkbox";
+import {MdTabsModule} from "@angular2-material/tabs";
+import {MdRadioModule} from "@angular2-material/radio";
+import {MdToolbarModule} from "@angular2-material/toolbar";
+import {RatingPipe} from "./rating.pipe";
+import {MdTooltipModule} from "@angular2-material/tooltip";
+import {MdProgressCircleModule} from "@angular2-material/progress-circle";
+import {GoogleChart} from "./google-chart.directive";
+import {KeysPipe} from "./keys.pipe";
+
+@NgModule({
+    exports: [FormsModule,
+        CommonModule,
+        HttpModule,
+        RatingPipe,
+        KeysPipe,
+        RouterModule,
+        MdIconModule,
+        MdCardModule,
+        MdButtonModule,
+        MdGridListModule,
+        MdListModule,
+        MdInputModule,
+        MdListModule,
+        MdCheckboxModule,
+        MdTabsModule,
+        MdRadioModule,
+        MdToolbarModule,
+        MdTooltipModule,
+        MdProgressCircleModule,
+        GoogleChart,
+    ],
+    declarations: [RatingPipe, KeysPipe, GoogleChart],
+})
+export class SharedModule {
+}

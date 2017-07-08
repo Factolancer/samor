@@ -1,0 +1,203 @@
+import {Component, OnInit, style, state, animate, transition, trigger, Input, Output, EventEmitter} from '@angular/core';
+import {NgForm, FormGroup, Validators, FormControl, FormBuilder, Validator, FormControlName} from '@angular/forms';
+import {Subscription, Observable} from "rxjs";
+
+import {EmailValidator} from '../../../validators/validator';
+import {User} from "../../../models/user";
+import {UserService} from '../../userdata.service';
+import {Country} from '../../../countries';
+import {ValidationMessages} from "../../constants/validationmessages";
+import {Heading} from "../../constants/headings";
+import {ActivatedRoute} from "@angular/router";
+import {Logger} from "../../../shared/logger/logger";
+import {LookUpService} from "../../../services/lookup.service";
+
+@Component({
+    selector: 'nominee-section',
+    templateUrl: './nominee-section.component.html',
+    styleUrls: ['../../registration.styles.scss'],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({opacity: '1', height: '*', visibility: 'visible'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ])
+        ])
+    ]
+})
+
+export class NomineeSection implements OnInit {
+
+    nomineeForm: FormGroup;
+    user: User;
+    usersubscription: Subscription;
+    countries : any;
+    states: any;
+    addtypes: any
+    relations : any
+    nomineesaved = false;
+    @Input() nomineecollapsed: boolean = true;
+    @Output() makeVisible: EventEmitter<boolean>= new EventEmitter();
+    @Input() state: string = 'show';
+    public heading = Heading;
+
+    validationMessages = ValidationMessages;
+    className : string;
+    constructor(private fb: FormBuilder, public userService: UserService, public route: ActivatedRoute, private logger: Logger,
+                public lookupService: LookUpService) {
+        this.className = "NomineeSection";
+    }
+
+    ngOnInit() {
+        this.lookupService.getByGroup("COUNTRY").subscribe(response => {
+            this.countries = response
+        });
+        this.lookupService.getByGroup("STATE").subscribe(response => {
+            this.states = response
+        });
+        this.lookupService.getByGroup("ADDRESSTYPE").subscribe(response => {
+            this.addtypes = response
+        });
+        this.lookupService.getByGroup("RELATIONSHIP").subscribe(response => {
+            this.relations = response
+        })
+        this.userService.getUserNomineeData();
+        this.usersubscription =  this.userService.currentUser.subscribe(
+            result => {
+                this.logger.debug(this.className,result);
+                this.user = result;
+                this.buildform(this.user);
+                this.nomineesaved = this.user.userNominee.ndtid.length > 0
+                if (this.nomineesaved){
+                    this.nomineecollapsed = this.nomineesaved
+                    this.state = this.nomineecollapsed ? 'hide' : 'show'
+                }
+            }
+        )
+        this.buildform(this.user);
+    }
+
+    buildform(result): void{
+        this.nomineeForm = this.fb.group({
+            ndtid: [result.userNominee.ndtid || ''],
+            nomineeName: [result.userNominee.nomineeName || '', Validators.compose([])],
+            nomineeRelation: [result.userNominee.nomineeRelation || ''],
+            nomineeDob: [result.userNominee.nomineeDob || ''],
+            nomineeAddress: this.fb.group({
+                addressType: [result.userNominee.nomineeAddress.addressType || ''],
+                address1: [result.userNominee.nomineeAddress.address1 || '', Validators.compose([Validators.required, Validators.maxLength(50)])], // ['', Validators.compose([Validators.required])],
+                address2: [result.userNominee.nomineeAddress.address2 || ''], // ['', Validators.compose([])],
+                pin: [result.userNominee.nomineeAddress.pin || ''], // ['', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])],
+                city: [result.userNominee.nomineeAddress.city || ''],
+                district: [result.userNominee.nomineeAddress.district || ''], // ['', Validators.compose([Validators.required])],
+                state: [result.userNominee.nomineeAddress.state || ''], // ['', Validators.compose([Validators.required])],
+                country: [result.userNominee.nomineeAddress.country || ''],
+                landmark: [result.userNominee.nomineeAddress.landmark || ''],
+                amtid: [result.userNominee.nomineeAddress.amtid || '']
+            })
+        });
+
+        this.nomineeForm.statusChanges.subscribe(data => this.onValueChanged(data));
+        this.nomineeForm.controls['nomineeAddress'].valueChanges.subscribe(data => this.onAddressValueChanged(data));
+        this.onValueChanged();
+    }
+
+    onValueChanged(data?: any) {
+        if (!this.nomineeForm) {
+            return;
+        }
+        const nomineeform = this.nomineeForm;
+        const contactform = this.nomineeForm.controls['nomineeAddress']
+        if (nomineeform.pristine) {
+            return;
+        }
+        if (!nomineeform.dirty) {
+            return;
+        }
+        for (const field in this.formErrors) {
+            // clear previous error message (if any)
+            this.formErrors[field] = '';
+            const control = nomineeform.controls[field];
+            console.log(control + typeof control);
+            if (!control.valid && control.touched) {
+                console.log(control.errors);
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrors[field] += messages[key] + ' ';
+                }
+            }
+        }
+
+        for (const field in this.formErrorsAddress) {
+            // clear previous error message (if any)
+            this.formErrorsAddress[field] = '';
+            const control = contactform.get(field);
+            if (!control.valid && control.touched) {
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrorsAddress[field] += messages[key] + ' ';
+                }
+            }
+        }
+    }
+
+    onAddressValueChanged(data?: any) {
+        if (!this.nomineeForm.controls['nomineeAddress']) {
+            return;
+        }
+        const nomineeform = this.nomineeForm;
+        if (nomineeform.pristine) {
+            return;
+        }
+        if (!nomineeform.dirty) {
+            return;
+        }
+        for (const field in this.formErrors) {
+            // clear previous error message (if any)
+            this.formErrors[field] = '';
+            const control = nomineeform.controls[field];
+            console.log(control + typeof control);
+            if (!control.valid && control.touched) {
+                console.log(control.errors);
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrors[field] += messages[key] + ' ';
+                }
+            }
+        }
+    }
+
+    formErrors = {
+        'nomineeName': '',
+        'nomineeRelation': '',
+        'nomineeDob': ''
+    };
+    formErrorsAddress = {
+        'address1': '',
+        'address2': '',
+        'pin': '',
+        'city': '',
+        'district': '',
+        'state': '',
+        'country': '',
+        'landmark': ''
+    };
+
+    onNomineeSubmit() {
+        this.nomineesaved = true;
+        console.log(this.nomineeForm.value)
+        this.userService.updateNomineeData(this.nomineeForm.value);
+        // this.user.Nominee = this.nomineeForm.value;
+        // console.log(this.user);
+        this.toggleNominee();
+        this.makeVisible.emit();
+    }
+
+    toggleNominee() {
+        if (this.nomineecollapsed == true) this.nomineecollapsed = false;
+        else this.nomineecollapsed = true;
+
+        this.state = (this.state === 'hide' ? 'show' : 'hide')
+    }
+}

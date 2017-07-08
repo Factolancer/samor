@@ -1,0 +1,41 @@
+import {Component, OnDestroy, OnInit} from "@angular/core";
+import {SearchService} from "../search.service";
+import {FundSearchInput} from "../fund-search-input";
+import {Subscription} from "rxjs";
+import {Input} from "@angular/core/src/metadata/directives";
+import {FilterData} from "./filter-data";
+
+@Component({
+    selector: 'app-age-filter',
+    templateUrl: './age-filter.component.html',
+    styleUrls: ['./filters.css']
+})
+export class AgeFilterComponent implements OnInit {
+
+    @Input() ageFilterData: FilterData[];
+    filterTitle: string;
+    selectedAge: number;
+
+    constructor(private searchService: SearchService) {
+    }
+
+    filter() {
+        let fundSearchInput = this.searchService.getFundSearchInput();
+        fundSearchInput.age = +this.selectedAge;
+        this.searchService.searchFund(fundSearchInput);
+    }
+
+    clearFilter() {
+        this.selectedAge = 0;
+        let fundSearchInput = this.searchService.getFundSearchInput();
+        fundSearchInput.age = 0;
+        this.searchService.searchFund(fundSearchInput);
+    }
+
+    ngOnInit() {
+        this.filterTitle = "Fund Age";
+        this.selectedAge = 0;
+    }
+
+
+}

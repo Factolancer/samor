@@ -1,0 +1,24 @@
+import {NgModule} from "@angular/core";
+import {SharedModule} from "../shared/shared.module";
+import {FactsheetModule} from "../factsheet/factsheet.module";
+import {CartModule} from "../cart/cart.module";
+import {RedeemFundSearchBarComponent} from "./redeem-fund-search-bar.component";
+import {redemptionRouting} from "./redemption.routes";
+import {RedemptionComponent} from "./redemption.component";
+import {RedemptionService} from "../core/services/redemption.service";
+import {RedemptionSummaryComponent} from "./redemption-summary.component";
+import {RedSummaryResolveService} from "./red-summary-data-resolve-service";
+import {RedemptionOrderComponent} from "./redemption-order.component";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        redemptionRouting,
+        FactsheetModule,
+        CartModule
+    ],
+    providers: [RedSummaryResolveService],
+    declarations: [RedemptionComponent, RedeemFundSearchBarComponent, RedemptionSummaryComponent, RedemptionOrderComponent]
+})
+export class RedemptionModule {
+}

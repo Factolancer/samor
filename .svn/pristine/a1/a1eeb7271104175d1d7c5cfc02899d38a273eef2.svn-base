@@ -1,0 +1,17 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DemoComponent } from './demo.component';
+
+import {SharedModule} from "../../shared/shared.module";
+import { AvgbalComponent } from './avgbal.component';
+import { AccEarningComponent } from './accearning.component';
+import {CashEarningComponent} from "./cashearning.component";
+import {DemoaComponent} from "./demoa.component";
+
+@NgModule({
+  imports: [
+    CommonModule, SharedModule
+  ],
+  declarations: [DemoComponent, AvgbalComponent, AccEarningComponent, CashEarningComponent, DemoaComponent]
+})
+export class DemoModule { }

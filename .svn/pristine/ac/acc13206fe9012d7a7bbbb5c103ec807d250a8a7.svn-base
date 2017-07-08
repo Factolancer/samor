@@ -1,0 +1,107 @@
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import { Router } from '@angular/router';
+import { Http, Headers } from '@angular/http';
+import { SharedModule } from '../shared/shared.module';
+import { FormGroup} from '@angular/forms';
+import { ReCaptchaComponent } from '../components/angular2-recaptcha/angular2-recaptcha.component';
+
+import { contentHeaders } from '../headers';
+import {MdDialogRef, MdDialog, MdDialogConfig} from "@angular/material";
+import {HttpService} from "../services/http-service.service";
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit {
+
+    public newUser = false;
+
+  constructor(public router: Router, public http: Http, public dialogref: MdDialogRef<LoginComponent>,
+              private viewContainerRef: ViewContainerRef, public dialog: MdDialog) { }
+
+              public self = this;
+    login(event, username, password) {
+        event.preventDefault();
+        console.log(event);
+        let body = JSON.stringify({ 'username':username, 'password':password });
+        this.http.post('10.1.0.101:3000/users   ', { 'username':username, 'password':password }/*, { headers: contentHeaders }*/)
+            .subscribe(
+                response => {
+                    localStorage.setItem('id_token', response.json().id_token);
+                    // this.router.navigate(['/home']);
+                    console.log(localStorage);
+                    console.log(this.self);
+                    this.dialogref.close(true);
+                },
+                error => {
+                    alert(error.text());
+                    console.log(error.text());
+                }
+            );
+    }
+
+    signup(event, username, password) {
+        event.preventDefault();
+        let body = JSON.stringify({ username, password });
+        this.http.post('10.1.0.101:3000/sessions/create', {'email':username,'password':password, 'username':username,  }/*, { headers: contentHeaders }*/)
+            .subscribe(
+                response => {
+                    //debugger;
+                    localStorage.setItem('id_token', response.json().id_token);
+                    // this.router.navigate(['/home']);
+                    this.dialogref.close(true);
+                },
+                error => {
+                    alert(error.text());
+                    console.log(error.text());
+                }
+            );
+    }
+
+    logout(){
+        localStorage.removeItem('id_token');
+    }
+
+    loginUser(){
+      this.newUser = false;
+    }
+
+    signupUser(){
+      this.newUser = true
+
+        // let config = new MdDialogConfig();
+        // config.viewContainerRef = this.viewContainerRef;
+        // config.role = 'dialog';
+        // config.width = '40%';
+        // this.signUpDialogRef = this.dialog.open(SignupComponent, config);
+    }
+
+    checkmail(value: string){
+        console.log(value);
+        var authHeader = new Headers();
+        authHeader.append("Authorization","Basic"); //+btoa("api:pubkey-b492fb4e9e8ad8f2ce0c2ae87e12272c"));
+        authHeader.append('Content-Type', 'application/x-www-form-urlencoded');
+        authHeader.append('Allow-Control-Allow-Origin', '*');
+        var url = 'https://api.mailgun.net/v2/address/validate?address='+value;
+        url = url + '&api_key=pubkey-b492fb4e9e8ad8f2ce0c2ae87e12272c'
+        this.http.get(url)
+            .subscribe(response => {
+                    console.log(response.json().is_valid)
+                }
+            )
+
+        // this.http.post('http://localhost:9000/checkmail', {"email": value})
+        //     .subscribe(
+        //         response => {
+        //           console.log(response);
+        //
+        //         }
+        //     );
+    }
+
+  ngOnInit() {
+  }
+
+}

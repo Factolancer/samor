@@ -1,0 +1,78 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper mar-t-25">
+    <div fxFlex="85" class="center-align heading-32-dark-grey">
+        Portfolio Statements
+    </div>
+    <div fxFlex="5" class="right-align ">
+        <button md-mini-fab color="primary" *ngIf="selectedTab==0" (click)="summaryReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>
+        <button md-mini-fab color="primary" *ngIf="selectedTab==1" (click)="holdingReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>
+        <button md-mini-fab color="primary" *ngIf="selectedTab==2" (click)="transactionReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>
+        <button md-mini-fab color="primary" *ngIf="selectedTab==3" (click)="capitalGainReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>
+        <!--<button md-mini-fab color="primary" *ngIf="selectedTab==4" (click)="assetAllocationReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>-->
+        <button md-mini-fab color="primary" *ngIf="selectedTab==5" (click)="irrReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper mar-tb-30">
+    <div fxFlex="90">
+        <md-tab-group class="report-tab-header" [(selectedIndex)]="selectedTab" (selectChange)="loadTab()">
+            <md-tab label="Summary">
+                <app-summary-report #summaryReport></app-summary-report>
+            </md-tab>
+            <md-tab label="Holding">
+                <app-holding-report #holdingReport></app-holding-report>
+            </md-tab>
+            <md-tab label="Transaction">
+                <app-transaction-report #transactionReport></app-transaction-report>
+            </md-tab>
+            <md-tab label="Capital Gains">
+                <app-capital-gains-report #capitalGainReport></app-capital-gains-report>
+            </md-tab>
+            <md-tab label="Asset Allocation">
+                <app-asset-allocation #assetAllocationReport [currentTab]="selectedTab"></app-asset-allocation>
+            </md-tab>
+            <md-tab label="IRR">
+                <app-irr-report #irrReport></app-irr-report>
+            </md-tab>
+        </md-tab-group>
+    </div>
+
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper mar-t-25">
+    <div fxFlex="90">
+        <span (click)="seeDisclaimers()" class="disclaimer-text clickable">Disclaimers: This is a computer generated report and
+            does not require a signature.The information in this report includes information taken from the Registrar...<u>read more</u></span>
+    </div>
+</div>
+
+<div *ngIf="redData.fundsData.length>0">
+    <button md-raised-button="" color="accent" class="redeem-button"
+            (click)="goToRedeem()" (mouseover)="showRedemptinoList=true">Redeem
+        <!--{{redData.fundsData.length}}-->
+    </button>
+    <div *ngIf="showRedemptinoList" class="redeem-list"
+         (mouseleave)="showRedemptinoList=false">
+        <div *ngFor="let fund of redData.fundsData;let index = index; let last= last;">
+            <div fxLayout="row" fxLayoutAlign="start start" class="list-text">
+                <div fxFlex="95">{{fund.fund.name}}</div>
+                <div fxFlex="5" class="clickable" (click)="removeFundFromRedemption(index)">
+                    <md-icon class="md-14">&#xE888;</md-icon>
+                </div>
+            </div>
+            <md-divider *ngIf="!last"></md-divider>
+        </div>
+        <div class="top-bar">
+            <button md-button="" class="remove-button" (click)="removeAllFromRedemption()">Remove All</button>
+        </div>
+    </div>
+</div>

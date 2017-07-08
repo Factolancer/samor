@@ -1,0 +1,8 @@
+<button md-raised-button="" color="primary" [md-menu-trigger-for]="cartMenu" ngClass="{{cssClass}}">
+    {{btnText}}
+</button>
+
+<md-menu #cartMenu="mdMenu" y-position="below">
+    <button md-menu-item (click)="sip()">do a SIP</button>
+    <button md-menu-item (click)="lumpSum()">do a LUMPSUM</button>
+</md-menu>

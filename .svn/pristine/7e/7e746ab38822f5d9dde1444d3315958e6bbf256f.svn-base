@@ -1,0 +1,125 @@
+import {Component, OnInit} from '@angular/core';
+import {DashboardDataService} from '../dashboard-data.service';
+import {TransactionSummary} from "../models";
+
+@Component({
+    selector: 'app-transaction',
+    templateUrl: './transaction.component.html',
+    styleUrls: ['./transaction.component.scss'],
+})
+export class TransactionComponent implements OnInit {
+
+    transactionDataAvailable: boolean = false;
+
+    /*----pagiantion---**/
+    arr: Array<number>;
+
+    fillArray(start: number, end: number) {
+        this.arr = [];
+        for (var x = start; x <= end; x++)
+            this.arr.push(x);
+        return this.arr;
+    };
+
+    from = 0;
+    to = 5;  // set number of items per page
+    perPage = 5;   // set number of items per page
+    paginationSize = 3;  //set max number of pages to choose from in a screen
+    startIndex: number = 1;
+    endIndex: number = this.paginationSize;
+    pages: Array<number>;
+    totalLength: number;
+    totalPages: number;
+    currentPage: number;
+
+    goto(page) {
+        if (page <= this.totalPages && page > 0) {
+            this.from = (page - 1) * this.perPage;
+            this.to = this.from + this.perPage;
+            this.currentPage = page;
+
+            this.noNext = this.currentPage == this.totalPages ? true : false;
+            this.noPrev = this.currentPage == 1 ? true : false;
+        }
+
+    }
+
+    noNext: boolean = false;
+    noPrev: boolean = false;
+    noNextSeries: boolean = false;
+    noPrevSeries: boolean = false;
+
+    nextSeries() {
+        this.noPrevSeries = false;
+        this.startIndex = Math.min(this.totalPages, this.endIndex + 1);
+        this.endIndex = Math.min(this.totalPages, this.startIndex + this.paginationSize - 1);
+        this.pages = this.fillArray(this.startIndex, this.endIndex);
+        this.goto(this.startIndex);
+        if (this.endIndex == this.totalPages)
+            this.noNextSeries = true;
+
+    }
+
+    prevSeries() {
+        this.noNextSeries = false;
+        this.startIndex = Math.max(1, this.startIndex - this.paginationSize);
+        this.endIndex = Math.min(this.totalPages, this.startIndex + this.paginationSize - 1);
+        this.pages = this.fillArray(this.startIndex, this.endIndex);
+        this.goto(this.endIndex);
+        if (this.startIndex == 1)
+            this.noPrevSeries = true;
+    }
+
+    prev() {
+        if (this.startIndex == this.currentPage)
+            this.prevSeries();
+        else
+            this.goto(this.currentPage - 1);
+    }
+
+    next() {
+        if (this.endIndex == this.currentPage)
+            this.nextSeries();
+        else
+            this.goto(this.currentPage + 1);
+    }
+
+    /*----pagiantion---**/
+
+    constructor(private dataService: DashboardDataService) {
+    }
+
+    //options: Object;
+    transactions: TransactionSummary[];
+
+    ngOnInit() {
+        this.getTransactions();
+    }
+
+    getTransactions() {
+        this.dataService.getTransaction()
+            .subscribe(res => {
+                    this.transactions = res as TransactionSummary[];
+                    if (this.transactions.length > 0) {
+                        this.transactionDataAvailable = true;
+                    }
+
+                    /* --pagination */
+                    this.totalLength = this.transactions.length;
+                    this.totalPages = Math.ceil(this.totalLength / this.perPage);
+                    this.currentPage = 1;
+                    this.endIndex = Math.min(this.paginationSize, this.totalPages);
+                    this.pages = this.fillArray(1, this.endIndex);
+                    this.noNextSeries = this.totalPages <= this.paginationSize ? true : false;
+                    this.noPrevSeries = this.totalPages <= this.paginationSize ? true : false;
+
+                    /*---paginatio---*/
+                },
+                err => {
+                    console.log('an error occured')
+                }
+            )
+
+    }
+
+}

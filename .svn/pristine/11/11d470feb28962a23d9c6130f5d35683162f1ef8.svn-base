@@ -1,0 +1,24 @@
+<div [hidden]="performersDataAvailable" class="loading">
+  <img src="../../public/images/loading.gif">
+</div>
+<div class="top-performer-container" *ngIf="performersDataAvailable">
+  <div class="title" align="center" >Top Performers</div>
+  <div fxLayout="row">
+    <table>
+      <th>Name</th>    <th>Rating</th>     <th>Category</th>     <th>Return</th>
+      <tr *ngFor="let performer of performers, let i=index">
+        <template [ngIf]="i<topPerformerCount">
+          <td >{{performer.name}}</td>
+          <td >
+            <div fxLayout="row" fxLayoutAlign="center" mdTooltip="{{performer.rating}}/5" mdTooltipPosition="right">
+              <span [innerHTML]="performer.rating | rating"></span>
+            </div>
+          </td>
+          <td >{{performer.category}}</td>
+          <td >{{performer.return}}</td>
+       </template>
+
+      </tr>
+    </table>
+  </div>
+</div>

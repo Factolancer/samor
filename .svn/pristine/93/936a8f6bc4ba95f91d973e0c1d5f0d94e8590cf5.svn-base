@@ -1,0 +1,28 @@
+import {PortfolioReportComponent} from "./portfolio-report/portfolio-report.component";
+import {ModuleWithProviders} from "@angular/core";
+import {RouterModule} from "@angular/router";
+import {TransactionsComponent} from "./transactions/transactions.component";
+/**
+ * Created by fincash on 18-11-2016.
+ */
+
+const reportRoutes = [
+
+    {
+        path:'report',
+        children:[
+            {
+                path:'',
+                component:PortfolioReportComponent
+            },
+            {
+                path:'transaction/:id',
+                component:TransactionsComponent
+            }
+
+        ]
+
+    }
+]
+
+export const portfolioReportRouting:ModuleWithProviders= RouterModule.forChild(reportRoutes);

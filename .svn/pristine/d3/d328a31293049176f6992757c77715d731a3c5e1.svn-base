@@ -1,0 +1,99 @@
+//***********************IMPORTS********************************
+@import 'colors';
+
+//***********************VARIABLES********************************
+
+//font
+$font-stack: 'Roboto', sans-serif;
+
+//*********************************MIXINS*****************************
+
+@mixin cta($height) {
+  height: $height;
+  width: 100%;
+  cursor: pointer;
+  @if ($height == 60px) {
+    font-size: 18px !important;
+  } @else if ($height==50px) {
+    font-size: 16px !important;
+  } @else if ($height==36px) {
+    font-size: 14px !important;
+  }
+}
+
+@mixin hollow-cta($height) {
+  height: $height;
+  color: $brand-secondary !important;
+  border: 1px solid $brand-primary !important;
+  border-radius: 2px !important;
+  width: 100%;
+  @if ($height == 70px) {
+    font-size: 18px !important;
+  } @else if ($height==50px) {
+    font-size: 16px !important;
+  } @else if ($height==36px) {
+    font-size: 14px !important;
+  }
+}
+
+@mixin heading($size, $weight) {
+  font-size: $size;
+  font-weight: $weight;
+}
+
+@mixin circle($size, $color){
+  width: $size;
+  height: $size;
+  background-color: $color;
+  border-radius: 50%;
+  padding: 9px 9px;
+}
+
+@mixin dropElement($time, $time-function, $start, $iteration, $from, $to){
+  animation: $time $time-function $start $iteration dropPart;
+  @keyframes dropPart {
+    0% {
+      transform: translateY($from);
+    }
+    100% {
+      transform: translateY($to);
+    }
+  }
+}
+@mixin slideElement($time, $time-function, $start, $iteration, $from, $to){
+  animation: $time $time-function $start $iteration slide;
+  @keyframes slide {
+    0% {
+      transform: translateX($from);
+    }
+    100% {
+      transform: translateX($to);
+    }
+  }
+}
+@mixin fadeInElement($time) {
+  -webkit-animation: fadeIn $time; /* Safari 4.0 - 8.0 */
+  animation: fadeIn $time;
+
+    @-webkit-keyframes fadeIn {
+          from { opacity: 0; }
+          to {opacity: 1;}
+        }
+    @keyframes fadeIn {
+      from {  opacity: 0;  }
+      to {  opacity: 1;  }
+    }
+}
+@mixin fadeOutElement($time) {
+  -webkit-animation: fadeOut $time; /* Safari 4.0 - 8.0 */
+  animation: fadeOut $time;
+
+  @-webkit-keyframes fadeOut {
+    from { opacity: 1; }
+    to {opacity: 0;}
+  }
+  @keyframes fadeOut {
+    from {  opacity: 1;  }
+    to {  opacity: 0;  }
+  }
+}

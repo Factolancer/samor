@@ -1,0 +1,33 @@
+import {Injectable, Inject} from "@angular/core";
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from "@angular/router";
+import {Observable} from "rxjs";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {IsAddressUpdatedService} from "../services/isaddressupdated.service";
+import {LocalStorageService} from "angular-2-local-storage";
+import {Logger} from "../logger/logger";
+import {SnackBarService} from "../services/snack-bar.service";
+
+
+@Injectable()
+export class AddressStatusGuard implements CanActivate {
+    className: string;
+
+    constructor(public isAddressUpdatedService: IsAddressUpdatedService, @Inject(APP_CONFIG) private config: IAppConfig, public router: Router,
+                public logger: Logger,public localStorageService: LocalStorageService, private snackBarService: SnackBarService){
+        this.className = "AddressStatusGuard";
+    }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Observable<boolean> | boolean{
+
+        return this.isAddressUpdatedService.checkIfAddressUpdated().map( value =>{
+            if(!value){
+                this.localStorageService.set(this.config.addressGuard.storagekey,state.url);
+                this.snackBarService.setGuardMessage("Address issue");
+                this.router.navigate([this.config.addressGuard.naivgate]);
+                return false;
+            }else{
+                return true;
+            }
+        });
+    }
+}

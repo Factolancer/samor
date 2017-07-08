@@ -1,0 +1,2 @@
+export * from './sip.component';
+export * from './sip.module';

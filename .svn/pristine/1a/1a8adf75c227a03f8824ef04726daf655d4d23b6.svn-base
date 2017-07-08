@@ -1,0 +1,125 @@
+import {Component, OnDestroy} from "@angular/core";
+import {SearchResults} from "../search/search-results";
+import {SearchInput} from "../search/search-input";
+import {SearchService} from "../search/search.service";
+import {Subscription} from "rxjs";
+
+
+@Component({
+    selector: 'app-fund',
+    templateUrl: './fund.component.html',
+    styleUrls: ['./fund.component.css']
+})
+export class FundComponent implements OnDestroy {
+
+    results: SearchResults;
+    resultSubscription: Subscription;
+    searchInputSubscription: Subscription;
+
+    searchInput: SearchInput ;
+    defaultSortOrder: string = "desc";
+    currentSortElement: string = "";
+    currentSortOrder: string = "";
+    rows: number = 10;
+    from: number = 0;
+
+    constructor(private searchService: SearchService) {
+
+        this.resultSubscription = this.searchService.searchResults.subscribe(
+            rs => {
+                this.results = rs;
+            });
+
+        this.searchInputSubscription = this.searchService.searchInput.subscribe(
+            si => {
+                this.searchInput = si;
+                this.from = si.from;
+                this.rows = si.rows;
+            }
+        )
+
+        /*//setting for number of rows to be shown
+         this.searchInput = this.searchService.getSearchInput();
+         this.searchInput.rows = this.rows;
+         this.searchService.setSearchInput(this.searchInput);*/
+
+    }
+
+    sort(value: string) {
+
+        let sortString = this.getSortFieldName(value);
+        if (this.currentSortElement === value) {
+            this.toggleSortOrder()
+            sortString = sortString + " " + this.currentSortOrder;
+        } else {
+            sortString = sortString + " " + this.defaultSortOrder;
+            this.currentSortOrder = this.defaultSortOrder;
+            this.currentSortElement = value;
+        }
+
+        if (!(value === "fund")) {
+            sortString = sortString + ", " + "dname asc";
+        }
+
+        this.searchInput.sortString = sortString;
+        this.searchService.searchFund(this.searchInput)
+    }
+
+    getSortFieldName(value: string) {
+        let sortField = "dname";
+        switch (value) {
+            case "fund" :
+                sortField = "dname";
+                break;
+            case "risk" :
+                sortField = "drisk"
+                break;
+            case "rating" :
+                sortField = "drating"
+                break;
+            case 'ret3' :
+                sortField = "dret3"
+                break;
+            case 'age' :
+                sortField = "dage"
+                break;
+            case 'aum' :
+                sortField = "daum"
+                break;
+            default:
+                sortField = "dname"
+                break;
+        }
+        return sortField;
+    }
+
+    toggleSortOrder() {
+        if (this.currentSortOrder === "desc") {
+            this.currentSortOrder = "asc"
+        } else {
+            this.currentSortOrder = "desc"
+        }
+    }
+
+    next() {
+        this.searchInput.from = this.searchInput.from + this.searchInput.rows;
+        this.searchService.changePage(this.searchInput)
+    }
+
+    prev() {
+        this.searchInput.from = this.searchInput.from - this.searchInput.rows;
+        this.searchService.changePage(this.searchInput)
+    }
+
+    setRowsToDisplay(value: string) {
+        this.searchInput.rows = +value;
+        this.searchService.searchFund(this.searchInput);
+    }
+
+    ngOnDestroy() {
+        this.resultSubscription.unsubscribe();
+        this.searchInputSubscription.unsubscribe();
+    }
+
+
+}

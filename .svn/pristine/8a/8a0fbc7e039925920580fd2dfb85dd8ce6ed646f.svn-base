@@ -1,0 +1,38 @@
+import { NgModule, enableProdMode }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule }   from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { AUTH_PROVIDERS, AuthHttp} from 'angular2-jwt';
+
+import { routes, appRoutingProviders } from './app.routes';
+import { SipModule } from './sip';
+import { RiskModule } from './risk';
+import { RegistrationModule } from './registration/registration.module';
+
+import { AccordionComponent } from './shared/components/accordion.component';
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home';
+import { LoginComponent } from './login';
+import { SignupComponent } from './signup';
+import { AuthGuard } from './shared/auth.guard';
+import { ReCaptchaComponent } from './shared/components/angular2-recaptcha/angular2-recaptcha.component';
+
+@NgModule({
+    imports:      [ BrowserModule,
+        FormsModule,
+        HttpModule,
+        routes,
+        RiskModule,
+        RegistrationModule
+        //SipModule
+    ],
+    declarations: [ AppComponent, HomeComponent, LoginComponent, SignupComponent, ReCaptchaComponent, AccordionComponent ],
+    providers:[
+        HttpModule,
+        AUTH_PROVIDERS,
+        AuthGuard,
+        appRoutingProviders
+    ],
+    bootstrap:    [ AppComponent ]
+})
+export class AppModule { }

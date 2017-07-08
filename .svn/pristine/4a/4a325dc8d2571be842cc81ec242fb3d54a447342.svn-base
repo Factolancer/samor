@@ -1,0 +1,176 @@
+import {Component, OnInit, style, state, animate, transition, trigger} from '@angular/core';
+import {NgForm, FormGroup, Validators, FormControl, FormBuilder, Validator, FormControlName} from '@angular/forms';
+import {Subscription} from "rxjs";
+
+import {User} from "../../../models/user";
+import {UserService} from '../../userdata.service';
+import {HttpService} from "../../../services/http-service.service";
+import {Heading} from "../../constants/headings";
+import {Logger} from "../../../shared/logger/logger";
+import {UploadService} from "../../../services/upload.service";
+import {Tooltips} from "../../constants/tooltips";
+import {LookUpService} from "../../../services/lookup.service";
+import {CNDGroup} from "../../../constants/CNDGroup";
+import {LoginService} from "../../../services/login.service";
+import {isNullOrUndefined} from "util";
+import {ActivatedRoute, Params} from "@angular/router";
+
+@Component({
+    selector: 'upload-section',
+    templateUrl: './upload-section.component.html',
+    styleUrls: ['../../registration.styles.scss'],
+    providers: [UploadService],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({opacity: '1', height: '*', visibility: 'visible'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ])
+        ])
+    ]
+})
+export class UploadSectionComponent implements OnInit {
+
+    uploadForm: FormGroup;
+    uploadsaved = false;
+    uploadcollapsed = true;
+    state: string = 'hide';
+    public heading = Heading;
+    tooltips = Tooltips;
+    addressProofs: any;
+    bankProofs: any;
+    pan: string;
+    address: string;
+    bank: string;
+
+    public photoUploaded = false
+    public panUploaded   = false
+    public addressUploaded = false
+    public signatureUploded = false
+    public chequeUploade = false
+
+    user: User;
+    usersubscription: Subscription;
+    filesToUpload: Array<File>;
+    photoFile: File;
+    panFile: File;
+    addressFile: File;
+    signatureFile: File;
+    chequeFile: File;
+    formData:any;
+    userid: any;
+
+    className: string;
+    constructor(private fb: FormBuilder, public userService: UserService, public http: HttpService, public logger: Logger,
+                public uploadService: UploadService, public lookupService: LookUpService, public loginService: LoginService,
+                public route: ActivatedRoute) {
+        this.className = "UploadDoc"
+        this.userService.currentUser.subscribe(
+            result => {
+                this.user = result
+            }
+        )
+        this.filesToUpload = [];
+    }
+
+    ngOnInit() {
+        this.lookupService.getByGroup(CNDGroup.ADDRESS_PROOF).subscribe(response =>{
+            this.addressProofs = response
+        });
+        this.lookupService.getByGroup(CNDGroup.BANK_PROOF).subscribe(response =>{
+            this.bankProofs = response
+        });
+        let userObj = this.loginService.getUserObject();
+        this.logger.debug(this.className, userObj)
+
+        if (!isNullOrUndefined(userObj) && !isNullOrUndefined(userObj.id)){
+            this.userid = userObj.id;
+            this.logger.debug(this.className, this.userid)
+        }
+        this.route.params.subscribe((params: Params) => {
+            this.pan = params.pan;
+            this.address = params.address;
+            this.bank = params.bank;
+        });
+        this.uploadForm = this.fb.group({});
+        // this.uploadForm = this.fb.group({
+        //   passport_photo: ['', Validators.compose([Validators.required])],
+        //   pan_card: ['', Validators.compose([Validators.required])],
+        //   proof_of_address: ['', Validators.compose([Validators.required])],
+        //   signature: ['', Validators.compose([Validators.required])],
+        //   cancelled_cheque: ['', Validators.compose([Validators.required])]
+        // });
+    }
+
+    onUploadDocSaved() {
+        this.uploadsaved = true;
+        let formData = new FormData();
+        for (var i = 0; i < this.filesToUpload.length; i++) {
+            formData.append("attachment", this.filesToUpload[i], this.filesToUpload[i].name);
+        }
+
+        console.log(this.filesToUpload);
+        // this.http.post('http://localhost:9000/mailgun', formData)
+        //     .subscribe(maildata => {
+        //         alert("file has been saved to location: " + maildata.text());
+        //     });
+
+        this.toggleUploadDocs();
+    }
+
+    toggleUploadDocs() {
+        if (this.uploadcollapsed == true) this.uploadcollapsed = false;
+        else this.uploadcollapsed = true;
+
+        this.state = (this.state === 'hide' ? 'show' : 'hide')
+    }
+
+    fileChangeEvent(fileInput: any){
+        this.filesToUpload = <Array<File>> fileInput.target.files;
+    }
+    photoFileChangeEvent(event: any){
+        this.formData = new FormData();
+        this.photoFile = <File> event.srcElement.files[0];
+        this.formData.append("photo", this.photoFile, this.photoFile.name)
+        this.formData.append("userid",  this.userid);
+        this.logger.debug(this.className, this.photoFile)
+        this.logger.debug(this.className, this.formData)
+        this.uploadService.uploadDoc(this.formData)
+            .subscribe(result => {
+               this.logger.debug(this.className, result);
+               if (result.json().success)
+                this.photoUploaded = true
+            },
+                err => {
+                this.logger.debug(this.className, err);
+                this.photoUploaded = false
+                }
+            );
+
+        //this.photoFile[0].name = 'userid_photo_time';
+        // this.filesToUpload[0] = this.photoFile[0];
+    }
+    panFileChangeEvent(fileInput: any){
+        this.panFile = <File> fileInput.target.files;
+        //this.photoFile[0].name = 'userid_pan_time';
+        this.filesToUpload[1] = this.panFile[0];
+    }
+    addressFileChangeEvent(fileInput: any){
+        this.addressFile = <File> fileInput.target.files;
+        //this.photoFile[0].name = 'userid_addressproof_time';
+        this.filesToUpload[2] = this.addressFile[0];
+    }
+    signatureFileChangeEvent(fileInput: any){
+        this.signatureFile = <File> fileInput.target.files;
+        // console.log(this.signatureFile.size < 1024*1024 ? true : false);
+        //this.photoFile[0].name = 'userid_signature_time';
+        this.filesToUpload[3] = this.signatureFile[0];
+    }
+    chequeFileChangeEvent(fileInput: any){
+        this.chequeFile = <File> fileInput.target.files;
+        //this.photoFile[0].name = 'userid_cancelledcheque_time';
+        this.filesToUpload[4] = this.chequeFile[0];
+    }
+
+}

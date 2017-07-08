@@ -1,0 +1,13 @@
+export class SearchInput {
+    constructor(public amcCode: string[],
+                public keyword: string,
+                public from: number,
+                public rows: number,
+                public rating: number[],
+                public age: number,
+                public category: string,
+                public sortElement: string,
+                public sortOrder: string,
+                public aumRange: string) {
+    }
+}

@@ -1,0 +1,29 @@
+<div class="transaction-container"  fxLayout="column">
+  <div class="title" align="center">Transaction Status</div>
+  <div fxLayout="row">
+    <table style="width:100%">
+      <th>Fund</th>    <th>Date & Time</th>     <th>Type</th>     <th>Status</th>
+      <tr>
+        <td >ABCD 0</td>
+        <td >21-01-2016</td>
+        <td >NEFT</td>
+        <td >Failed</td>
+      </tr>
+      <tr>
+        <td >ABCD 1</td>
+        <td >22-01-2016</td>
+        <td >NEFT</td>
+        <td >Failed, refunded</td>
+      </tr>
+      <tr>
+        <td >ABCD 2</td>
+        <td >22-01-2017</td>
+        <td >RTGS</td>
+        <td >SUCCESS</td>
+      </tr>
+    </table>
+
+
+  </div>
+
+</div>

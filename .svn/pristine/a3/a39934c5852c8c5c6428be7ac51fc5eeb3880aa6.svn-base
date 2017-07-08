@@ -1,0 +1,141 @@
+{{id}}
+<div *ngIf="basicFactSheet" class="row">
+    <div class="col-md-12">
+        <h3>{{basicFactSheet.name}}</h3>
+        <p>Basic Description : {{basicFactSheet.description}}</p>
+    </div>
+    <div class="col-md-4">
+        <table>
+            <thead>
+            <tr>
+                <td>Basic Details ({{basicFactSheet.fundId}})</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Current NAV (Rs.)</td>
+                <td>{{basicFactSheet.nav}}</td>
+            </tr>
+            <tr>
+                <td>Inception Date</td>
+                <td>{{basicFactSheet.inceptionDate}}</td>
+            </tr>
+            <tr>
+                <td>Category</td>
+                <td>{{basicFactSheet.category}}</td>
+            </tr>
+            <tr>
+                <td>Sub Category</td>
+                <td>{{basicFactSheet.subCategory}}</td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td>{{basicFactSheet.schemeType}}</td>
+            </tr>
+            <tr>
+                <td>Net Assets (Cr.)</td>
+                <td>{{basicFactSheet.netAssets}}</td>
+            </tr>
+            <tr>
+                <td>Expense Ratio</td>
+                <td>{{basicFactSheet.expenseRatio}}</td>
+            </tr>
+            <tr>
+                <td>Fincash’s Risk Rating</td>
+                <td><span [outerHTML]="basicFactSheet.fincashRating | rating"></span></td>
+            </tr>
+            <tr *ngIf="basicFactSheet.category === 'Debt'">
+                <td>Yield</td>
+                <td>{{basicFactSheet.yield}}</td>
+            </tr>
+            <tr  *ngIf="basicFactSheet.category === 'Debt'">
+                <td>Maturity</td>
+                <td>{{basicFactSheet.maturity}}</td>
+            </tr>
+            <tr  *ngIf="basicFactSheet.category === 'Debt'">
+                <td>Duration</td>
+                <td>{{basicFactSheet.duration}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <table>
+            <thead>
+            <tr>
+                <td>Other Important Details</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Exit Load</td>
+                <td>{{basicFactSheet.exitLoad}}</td>
+            </tr>
+            <tr>
+                <td>Benchmark Name</td>
+                <td>{{basicFactSheet.benchmarkName}}</td>
+            </tr>
+            <tr>
+                <td>Min Investment Amount</td>
+                <td>{{basicFactSheet.minInvAmt}}</td>
+            </tr>
+            <tr>
+                <td>Min SIP Investment</td>
+                <td>{{basicFactSheet.minSIPAmt}}</td>
+            </tr>
+            <tr>
+                <td>Alpha</td>
+                <td>{{basicFactSheet.alpha}}</td>
+            </tr>
+            <tr>
+                <td>Sharpe Ratio</td>
+                <td>{{basicFactSheet.sharpeRatio}}</td>
+            </tr>
+            <tr>
+                <td>Information Ratio</td>
+                <td>{{basicFactSheet.infoRatio}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <table>
+            <thead>
+            <tr>
+                <td>Return(Compunded Annualised)</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td *ngIf="basicFactSheet.ret1mn">1 Month</td>
+                <td *ngIf="basicFactSheet.ret3mn">3 Month</td>
+                <td *ngIf="basicFactSheet.ret6mn">6 Month</td>
+                <td *ngIf="basicFactSheet.ret1yr">1 Year</td>
+                <td *ngIf="basicFactSheet.ret3yr">3 Year</td>
+                <td *ngIf="basicFactSheet.ret5yr">5 Year</td>
+                <td *ngIf="basicFactSheet.retSinceInception">Since Inception</td>
+            </tr>
+            <tr>
+                <td *ngIf="basicFactSheet.ret1mn">{{basicFactSheet.ret1mn}}</td>
+                <td *ngIf="basicFactSheet.ret3mn">{{basicFactSheet.ret3mn}}</td>
+                <td *ngIf="basicFactSheet.ret6mn">{{basicFactSheet.ret6mn}}</td>
+                <td *ngIf="basicFactSheet.ret1yr">{{basicFactSheet.ret1yr}}</td>
+                <td *ngIf="basicFactSheet.ret3yr">{{basicFactSheet.ret3yr}}</td>
+                <td *ngIf="basicFactSheet.ret5yr">{{basicFactSheet.ret5yr}}</td>
+                <td *ngIf="basicFactSheet.retSinceInception">{{basicFactSheet.retSinceInception}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <img src="public/images/fund/riskometer_2.jpg" width="200"/>
+        <p>Investors understand that their principal will be at {{basicFactSheet.riskometer}} risk</p>
+    </div>
+    <div class="col-md-12">
+        <button md-raised-button="" class="pull-right" routerLink={{advancedViewPath}}>Advanced View
+            <md-icon class="material-icons md-18">&#xE315;</md-icon><!--Right-arrow--></button>
+        <button md-raised-button="" class="pull-right" routerLink={{advancedViewPath}}>Add to cart
+            <md-icon class="material-icons md-18">&#xE315;</md-icon><!--Right-arrow--></button>
+        <button md-raised-button="" class="pull-right" routerLink={{advancedViewPath}}>Add to watchlist
+            <md-icon class="material-icons md-18">&#xE315;</md-icon><!--Right-arrow--></button>
+
+    </div>
+</div>

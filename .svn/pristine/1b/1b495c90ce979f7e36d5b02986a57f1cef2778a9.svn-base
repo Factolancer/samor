@@ -1,0 +1,34 @@
+<div class="wrapper" fxLayout="column" fxLayoutAlign="center center">
+    <div fxFlex="90">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex="80" class="center-align">
+                <div class="heading-32-dark-grey">Registration & KYC
+                </div>
+                <div class="sub-heading-16-medium-grey" style="padding-bottom: 15px;">
+                    <hr/>
+                    As per Indian regulations, KYC (Know Your Customer) is a one-time exercise required to transact in Mutual Funds
+                </div>
+            </div>
+        </div>
+        <div class="pad-lr-60">
+            <div fxLayout="column">
+                <basic-section (makeVisible)="makeKycVisible()"></basic-section>
+
+                <kyc-section [kyccollapsed]="kycCollapsed" [state]="kycState" (makeVisible)="makeBankVisible()"></kyc-section>
+
+                <bank-section [bankcollapsed]="bankCollapsed" [state]="bankState" (makeVisible)="makeOtherVisible()"></bank-section>
+
+                <other-section [othercollapsed]="otherCollapsed" [state]="otherState" (makeVisible)="makeNomineeVisible()"></other-section>
+
+                <nominee-section [nomineecollapsed]="nomineeCollapsed" [state]="nomineeState"></nominee-section>
+            </div>
+        </div>
+        <br/>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button md-raised-button color="primary" (click)="toToUpload()" >Proceed to Upload</button>
+        </div>
+    </div>
+</div>
+
+
+

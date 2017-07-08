@@ -1,0 +1,18 @@
+<div class="login jumbotron center-block">
+  <h1>Login</h1>
+  <form role="form" #loginform="ngForm" (submit)="login($event, username.value, password.value)" novalidate>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" #username class="form-control" id="username" placeholder="Username" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" #password class="form-control" id="password" placeholder="Password" required>
+    </div>
+    <div>
+      <re-captcha (captchaResponse)="captchaResponse = $event" site_key="<6Lf5ZigTAAAAAPOhSyDkbLv4JGbKLHCMgmlwQm5L>"></re-captcha>
+    </div>
+    <button [disabled]="!loginform.form.valid" type="submit" class="btn btn-default">Submit</button>
+    <a [routerLink]="['/signup']">Click here to Signup</a>
+  </form>
+</div>

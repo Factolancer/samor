@@ -1,0 +1,27 @@
+import {Component, OnInit, Input} from '@angular/core';
+import {BasicFactSheet} from "./basic-factsheet";
+import {FactsheetService} from "./factsheet.service";
+
+@Component({
+    selector: 'app-basic-factsheet',
+    templateUrl: './basic-factsheet.component.html',
+    styleUrls: ['./basic-factsheet.component.css']
+})
+export class BasicFactsheetComponent implements OnInit {
+
+    constructor(private factsheetService: FactsheetService) {
+    }
+
+    @Input() set id(value: any) {
+        this.advancedViewPath = "/factsheet/" + value;
+        this.factsheetService.getBasicFactsheet(value).subscribe(output =>
+            this.basicFactSheet = output as BasicFactSheet);
+    };
+
+    basicFactSheet: BasicFactSheet;
+    advancedViewPath: string;
+
+    ngOnInit() {
+    }
+
+}

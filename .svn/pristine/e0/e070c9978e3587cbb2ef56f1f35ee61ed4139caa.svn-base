@@ -1,0 +1,91 @@
+<section class="data-head">
+
+</section>
+<section class="data-body">
+    <div class="col-md-12 text-center"><label>Portfolio Summary</label></div>
+
+    <div class="col-md-12">
+        <div class="col-md-11 form-group port-value-div" >
+            <div  class="col-md-3">
+                <span>Invested Amount: Rs.</span>
+            </div>
+            <div class="col-md-3">
+                <span>Current Value: Rs.</span>
+            </div>
+            <div class="col-md-3">
+                <span>Unrealized Gain: Rs.</span>
+            </div>
+            <div class="col-md-3">
+                <span>Realized Gain: Rs.</span>
+            </div>
+        </div>
+        <div class="col-md-1 text-right">
+            <span (click)="download()" class="clickable"><i class="material-icons">&#xE2C4;</i></span>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th colspan="5" class="text-center">Portfolio Allocation by Asset Class</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Asset Class</td>
+                <td>Invested Amount</td>
+                <td>Share(%)</td>
+                <td>Current Value</td>
+                <td>Share(%)</td>
+            </tr>
+            <tr>
+                <td>Equity Funds</td>
+                <td>1000</td>
+                <td>10</td>
+                <td>5</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Debt Funds</td>
+                <td>1000</td>
+                <td>10</td>
+                <td>5</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Liquid Funds</td>
+                <td>1000</td>
+                <td>10</td>
+                <td>5</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Hybrid Funds</td>
+                <td>1000</td>
+                <td>10</td>
+                <td>5</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Gold</td>
+                <td>1000</td>
+                <td>10</td>
+                <td>5</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td>1000</td>
+                <td>10</td>
+                <td>5</td>
+                <td>20</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<section class="data-foot">
+    <!--<button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+            (click)="openDialog()">Print
+    </button>-->
+</section>

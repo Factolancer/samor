@@ -1,0 +1,29 @@
+import {Injectable, Inject} from "@angular/core";
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from "@angular/router";
+import {Observable} from "rxjs";
+import {IAppConfig, APP_CONFIG} from "../../environments/environment";
+import {Logger} from "../shared/logger/logger";
+import {IsBankUpdatedService} from "../services/isbankupdated.service";
+
+
+@Injectable()
+export class BankStatusGuard implements CanActivate {
+    className: string;
+
+    constructor(public isBankUpdatedService: IsBankUpdatedService, @Inject(APP_CONFIG) private config: IAppConfig, public router: Router,
+                public logger: Logger){
+        this.className = "BankStatusGuard";
+    }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Observable<boolean> | boolean{
+
+        return this.isBankUpdatedService.checkIfBankUpdated().map( value =>{
+            if(!value){
+                // this.router.navigate([this.config.checkkycUrl]);
+                return false;
+            }else{
+                return true;
+            }
+        });
+    }
+}

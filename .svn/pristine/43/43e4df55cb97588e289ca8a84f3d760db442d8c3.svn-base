@@ -1,0 +1,34 @@
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {EquityAdvancedFactsheet} from "./equity-advanced-factsheet";
+
+@Component({
+    selector: 'app-advanced-factsheet',
+    templateUrl: './advanced-factsheet.component.html',
+    styleUrls: ['./advanced-factsheet.component.css']
+})
+export class AdvancedFactsheetComponent implements OnInit {
+
+    advancedFactsheet: EquityAdvancedFactsheet;
+    id: number;
+
+    constructor(private route: ActivatedRoute) {
+    }
+
+    ngOnInit() {
+
+        this.route.data.forEach((data: any) => {
+            console.log(data.factsheetData);
+
+            // if (data.basicFactSheet.category === "Equity") {
+            this.advancedFactsheet = data.factsheetData as EquityAdvancedFactsheet
+
+            console.log( this.advancedFactsheet);
+            /*} else {
+             this.advancedFactsheet = data as EquityAdvancedFactsheet
+             }*/
+        });
+    }
+
+
+}

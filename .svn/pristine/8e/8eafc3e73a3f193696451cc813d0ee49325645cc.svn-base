@@ -1,0 +1,22 @@
+import {Injectable} from '@angular/core';
+import {IRR} from "./irr";
+import {HttpService} from "../../services/http-service.service";
+
+@Injectable()
+export class IRRService {
+
+    irrdata: any;
+    constructor(public http: HttpService) {
+    }
+
+    getIRRData(){
+        return this.http.get('/fund/getIrr')
+            .subscribe(output => {
+                    this.irrdata = output as IRR[]
+                console.log(this.irrdata);
+                return this.irrdata;
+                }
+            )
+
+    }
+}

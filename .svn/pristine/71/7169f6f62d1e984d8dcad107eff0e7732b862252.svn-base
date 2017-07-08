@@ -1,0 +1,60 @@
+<div class="col-md-10 col-md-offset-1 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Fund Comparison</h1>
+        </div>
+    </section>
+    <section class="data-body">
+        <div class="row">
+            <div class="col-md-12">
+                <table>
+                    <thead>
+                    <td>Parameters</td>
+                    <td>Fund 1</td>
+                    <td>Fund 2</td>
+                    <td>Fund 3</td>
+                    </thead>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button md-raised-button="" color="primary" (click)="addToCart(funds[0]['id'])">Add to
+                                Cart
+                            </button>
+                        </td>
+                        <td>
+                            <button md-raised-button="" color="primary" (click)="addToCart(funds[1]['id'])">Add to
+                                Cart
+                            </button>
+                        </td>
+                        <td>
+                            <button md-raised-button="" color="primary" (click)="addToCart(funds[2]['id'])">Add to
+                                Cart
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button md-raised-button="" (click)="addToWatchlist(funds[0]['id'])">Add to Watchlist
+                            </button>
+                        </td>
+                        <td>
+                            <button md-raised-button="" (click)="addToWatchlist(funds[1]['id'])">Add to Watchlist
+                            </button>
+                        </td>
+                        <td>
+                            <button md-raised-button="" (click)="addToWatchlist(funds[2]['id'])">Add to Watchlist
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let param of funds[0] | keys">
+                        <td>{{param.key}}</td>
+                        <td>{{param.value}}</td>
+                        <td>{{funds[1][param.key]}}</td>
+                        <td>{{funds[2][param.key]}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

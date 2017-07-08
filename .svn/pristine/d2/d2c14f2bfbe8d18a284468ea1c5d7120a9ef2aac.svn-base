@@ -1,0 +1,76 @@
+import {Component, OnInit} from "@angular/core";
+import {Holdings} from "../holding-report/holdings";
+import {LogoImdData} from "../constants";
+import {PdfReportService} from "../pdf-report.service";
+import {SummaryReportService} from "./summary-report.service";
+import {PortfolioAssetAllocation} from "./portfolio-asset-allocation";
+
+declare let jsPDF;
+
+@Component({
+    selector: 'app-summary-report',
+    templateUrl: './summary-report.component.html',
+    styleUrls: ['../report.styles.scss'],
+})
+export class SummaryReportComponent implements OnInit {
+    assetClassAllocation: PortfolioAssetAllocation;
+
+    constructor(private summaryReportService:SummaryReportService) {
+
+    }
+
+    ngOnInit() {
+         this.summaryReportService.getAssetAllocationDetails().subscribe(portfolioAllocation => {
+            this.assetClassAllocation = portfolioAllocation as PortfolioAssetAllocation;
+        });
+    }
+
+    download() {
+        var columns = [{title: "Asset Class", dataKey: "assetClass"},
+            {title: "Invested Amount", dataKey: "investedAmt"},
+            {title: "Share(%)", dataKey: "share"},
+            {title: "Current Value", dataKey: "currValue"},
+            {title: "Share(%)", dataKey: "currShare"}];
+
+        var rows = this.assetClassAllocation.assetClassDetailsList;
+
+        var pdf = new jsPDF('p', 'pt');
+        var totalPagesExp = "{total_pages_count_string}";
+        var pageContent = function (data) {
+            // HEADER
+            pdf.setFontSize(20);
+            pdf.setFontStyle('normal');
+            pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+            // FOOTER
+            var str = "Page " + data.pageCount;
+            // Total page number plugin only available in jspdf v1.0+
+            if (typeof pdf.putTotalPages === 'function') {
+                str = str + " of " + totalPagesExp;
+            }
+            pdf.setFontSize(10);
+            pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 30);
+        };
+
+
+        pdf.setFontSize(12);
+        pdf.myText("Portfolio Summary", {align: "center"}, 0, 100);
+        pdf.setFontStyle('normal');
+        pdf.setFontSize(10);
+        pdf.text("Current Amount: Rs."+this.assetClassAllocation.currentValue, 40, 125);
+        pdf.text("Cost Value: Rs."+this.assetClassAllocation.costValue, 40, 135);
+        pdf.text("Unrealized Gain: Rs."+this.assetClassAllocation.unrealizedGain, 40, 145);
+        pdf.text("Realized Gain: Rs."+this.assetClassAllocation.realizedGain, 40, 155);
+        pdf.setFontStyle('bold');
+        pdf.myText("Portfolio Allocation by Asset Class", {align: "center"}, 0, 175);
+
+
+        var tableStyle = {startY:190,addPageContent:pageContent};
+        pdf.autoTable(columns,rows,tableStyle);
+
+        if (typeof pdf.putTotalPages === 'function') {
+            pdf.putTotalPages(totalPagesExp);
+        }
+        pdf.save('Portfolio Summary Report.pdf');
+    }
+
+}

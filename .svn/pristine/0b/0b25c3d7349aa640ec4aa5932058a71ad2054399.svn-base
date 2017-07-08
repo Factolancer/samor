@@ -1,0 +1,8 @@
+import {ProductEnum} from "../enum/product-enum";
+import {InvestmentTypeEnum} from "../enum/investment-type-enum";
+import {SummaryFund} from "./summary-fund";
+export interface SummaryProduct {
+    productName: ProductEnum,
+    investmentType: InvestmentTypeEnum,
+    funds: SummaryFund[];
+}

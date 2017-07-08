@@ -1,0 +1,67 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+<<<<<<< .mine
+import {BehaviorSubject} from "rxjs";
+import {FundDisplay} from "./fund-display";
+import {SearchService} from "../registration/sections/bank-section/search.service";
+import {FundSearchInput} from "../search/fund-search-input";
+=======
+import {BehaviorSubject, Subject} from "rxjs";
+import {FundSearchInput} from "./fund-search-input";
+import {FundSearchResults} from "./fund-search-results";
+import {ExploreFundConstants} from "./explore-funds.constants";
+>>>>>>> .r666
+
+@Injectable()
+export class ExploreFundsService {
+    constructor(private httpService: HttpService) {
+    }
+
+    private fundSearchInputSource = new BehaviorSubject<FundSearchInput>(new FundSearchInput());
+    fundSearchInput = this.fundSearchInputSource.asObservable();
+
+    private fundSearchResultSource = new Subject<FundSearchResults>();
+    fundSearchResult = this.fundSearchResultSource.asObservable();
+
+    filterFunds(searchInput: FundSearchInput) {
+        searchInput.from = 0;
+        searchInput.queryType = ExploreFundConstants.FILTER_QUERY;
+        this.setFundSearchInput(searchInput);
+    }
+
+
+    /*sort(searchInput: FundSearchInput) {
+     searchInput.from = 0;
+     this.setFundSearchInput(searchInput);
+     }
+
+     changePage(searchInput: FundSearchInput) {
+     this.setFundSearchInput(searchInput);
+     }*/
+
+    search(searchInput: FundSearchInput) {
+        return this.httpService.post("/fund/searchFund", searchInput).map(output => output as FundSearchResults);
+    }
+
+    getFundAutoCompleteData(term: string) {
+        return this.httpService.post("/fund/autoComplete", {term: term});
+    }
+
+    setFundSearchInput(searchInput: FundSearchInput) {
+        console.log("ssi called!")
+        this.fundSearchInputSource.next(searchInput);
+    }
+
+    getFundSearchInput(): FundSearchInput {
+        return this.fundSearchInputSource.getValue();
+    }
+
+    getDefaultFundSearchInput(): FundSearchInput {
+        return new FundSearchInput();
+    }
+
+    setFundSearchResult(searchResult: FundSearchResults) {
+        this.fundSearchResultSource.next(searchResult);
+    }
+
+}

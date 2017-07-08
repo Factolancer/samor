@@ -1,0 +1,19 @@
+import {NgModule} from "@angular/core";
+import {CartComponent} from "./cart.component";
+import {CartService} from "./cart.service";
+import {cartRouting} from "./cart.routes";
+import {SharedModule} from "../shared/shared.module";
+import {CartResolveService} from "./CartResolveService";
+import {AddToCartButtonComponent} from "./add-to-cart-button.component";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        cartRouting,
+    ],
+    providers: [CartService, CartResolveService],
+    exports: [AddToCartButtonComponent],
+    declarations: [CartComponent, AddToCartButtonComponent]
+})
+export class CartModule {
+}

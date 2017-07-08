@@ -1,0 +1,32 @@
+import {Component, OnInit} from "@angular/core";
+import {Input} from "@angular/core/src/metadata/directives";
+import {CheckoutProduct} from "../checkout-product";
+import {ProductEnum} from "../../enum/product-enum";
+
+@Component({
+    selector: 'app-checkout-product-view',
+    templateUrl: './checkout-product-view.component.html',
+    styleUrls: ['./checkout-product-view.component.css']
+})
+export class CheckoutProductViewComponent implements OnInit {
+
+    @Input() set _product(value: CheckoutProduct) {
+        this.product = value;
+        if (value.product == this.productEnum.SIP || value.product == this.productEnum.LUMPSUM) {
+            this.isFincashProduct = false;
+        }
+    }
+
+    product: CheckoutProduct;
+    productEnum = ProductEnum;
+    isFincashProduct = true;
+
+    constructor() {
+
+    }
+
+    ngOnInit() {
+
+    }
+
+}

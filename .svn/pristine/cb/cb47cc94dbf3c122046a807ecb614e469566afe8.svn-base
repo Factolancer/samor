@@ -1,0 +1,31 @@
+import {Component, OnInit} from "@angular/core";
+import {CartService} from "../../cart/cart.service";
+import {ActivatedRoute} from "@angular/router";
+import {Fund} from "../../models/fund";
+
+@Component({
+    selector: 'app-tax-saver',
+    templateUrl: './tax-saver.component.html',
+    styleUrls: ['tax-saver.component.scss']
+})
+export class TaxSaverComponent implements OnInit {
+
+    taxSaverFunds: Fund[];
+
+    proceed(selectedFunds: any) {
+        this.cartService.addFundsToCart(selectedFunds).subscribe(output => {
+            alert(output.response);
+        });
+    }
+
+    constructor(private route: ActivatedRoute, private cartService: CartService) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: {funds: Fund[]}) => {
+            this.taxSaverFunds = data.funds;
+        });
+    }
+
+}
+

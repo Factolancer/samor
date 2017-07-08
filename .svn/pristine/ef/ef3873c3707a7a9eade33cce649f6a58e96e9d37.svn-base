@@ -1,0 +1,29 @@
+import {NgModule} from "@angular/core";
+import {SipComponent} from "./sip.component";
+import {sipModuleRoute} from "./sip.routes";
+import {FormsModule} from "@angular/forms";
+import {ExpertComponent} from "./expert/expert.component";
+import {MdIconModule} from "@angular2-material/icon";
+import {MdCardModule} from "@angular2-material/card";
+import {MdButtonModule} from "@angular2-material/button";
+import {MdGridListModule} from "@angular2-material/grid-list";
+import {MdListModule} from "@angular2-material/list";
+import {CommonModule} from "@angular/common";
+
+@NgModule({
+  imports: [
+    sipModuleRoute,
+    FormsModule,
+    CommonModule,
+    MdIconModule.forRoot(),
+    MdCardModule.forRoot(),
+    MdButtonModule.forRoot(),
+    MdGridListModule.forRoot(),
+    MdListModule.forRoot(),
+  ],
+  declarations: [SipComponent, ExpertComponent],
+  exports: [SipComponent]
+})
+
+export class SipModule {
+}

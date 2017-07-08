@@ -1,0 +1,18 @@
+'use strict';
+
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var cssmin = require('gulp-cssmin');
+
+gulp.task('default', function () {
+    return gulp.src('src/styles/styles.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(cssmin())
+        .pipe(gulp.dest('src/assets'));
+});
+
+gulp.task('dev', function () {
+    return gulp.src('src/styles/styles.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('src/assets'));
+});

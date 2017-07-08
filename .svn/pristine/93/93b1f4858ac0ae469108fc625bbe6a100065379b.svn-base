@@ -1,0 +1,671 @@
+/*
+'use strict';
+var _ = require('lodash');
+var User = require('./user.model');
+var Client = require('../client/client.model');
+var Address = require('../address/address.model');
+var Permissions = require('../permission/permission.model');
+var passport = require('passport');
+var config = require('../../config/environment');
+var jwt = require('jsonwebtoken');
+var crypto = require('crypto');
+var Email = require("../../components/email/email");
+var Errors = require('../../config/errors.json');
+var eventEmitter = require('events').EventEmitter();
+
+var validationError = function (res, err) {
+  return res.json(422, err);
+};
+
+function handleError(res, status, err, releaseId) {
+  if (typeof releaseId !== 'undefined') {
+    release(releaseId);
+  }
+  return res.status(status).json({msg: err || Errors.common});
+}
+
+function release(ID) {
+  User.emit('blockidRemove', ID);
+}
+
+function sortByKey(array, key, order) {
+  return array.sort(function (a, b) {
+    var x = a[key];
+    var y = b[key];
+    return ((x < y) ? -order : ((x > y) ? order : 0));
+  });
+}
+
+/!**
+ * Get list of users
+ * restriction: 'admin'
+ *!/
+exports.index = function (req, res) {
+  User.find({}, '-salt -hashedPassword', function (err, users) {
+    if (err) return handleError(res, 500, Errors.user.NOT_FOUND);
+    res.json(200, users);
+  });
+};
+
+/!**
+ * Get list of users by role
+ * restriction: 'admin'
+ *!/
+exports.getUsersByRole = function (req, res) {
+  User.find({'role.group': req.params.role}, '-salt -hashedPassword', function (err, users) {
+    if (err) return handleError(res, 500, Errors.user.NOT_FOUND);
+    res.json(200, users);
+  });
+};
+
+/!**
+ * get Mapped Users
+ * @param req
+ * @param res
+ * @returns {string}
+ *!/
+exports.getUserMappedUsers = function (req, res) {
+  User.findById(req.params.id).populate('mappedUsers').exec(function (err, users) {
+    if (err) {
+      return handleError(res, 500, Errors.user.NOT_FOUND);
+    }
+    if (!users.mappedUsers) {
+      return handleError(res, 500, Errors.user.NOT_FOUND);
+    }
+    return res.json(users.mappedUsers);
+  });
+};
+/!**
+ * Get list of users with paginition
+ * restriction: 'admin'
+ *!/
+exports.getPaginition = function (req, res) {
+  var page = req.params.page, limit = req.params.limit, sortBy = req.params.sortBy, order = req.params.order, query = req.params.query ? req.params.query : '';
+  order = ( order === 'asc' ? 1 : -1);
+  var sortObj = {};
+  sortObj[sortBy] = order;
+  if (req.user.role.group.indexOf('client') > -1 && req.user.role.group.indexOf('admin') < 0 && req.user.role.group.indexOf('marketing') < 0 && req.user.role.group.indexOf('accounts') < 0) {
+    //User is Client
+    Address.findOne({users: req.user._id})
+      .select('client users')
+      .populate('client users')
+      .exec(function (err, users) {
+        if (err) {
+          return handleError(res, 500, Errors.user.NOT_FOUND);
+        }
+        var patt = new RegExp(query, 'i');
+        users = (users.users).filter(function (doc) {
+          return patt.test(doc.firstName) || patt.test(doc.lastName) || patt.test(doc.email) || patt.test(doc.mobile_no);
+        });
+        var totalUsers = users.length;
+        users = sortByKey(users, sortBy, order);
+        users = users.slice(((page - 1) * limit), ((page - 1) * limit) + limit);
+        return res.json(200, {'status': true, 'data': users, length: totalUsers});
+      })
+  } else {
+    User.find({$or: [{'firstName': new RegExp(query, 'i')}, {'lastName': new RegExp(query, 'i')}, {'email': new RegExp(query, 'i')}, {'mobile_no': new RegExp(query, 'i')}]})
+      .select('-salt -hashedPassword')
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort(sortObj)
+      .exec(function (err, users) {
+        if (err) {
+          return handleError(res, 500, Errors.user.NOT_FOUND);
+        }
+        else {
+          User.find({}, function (err, data) {
+            if (err) {
+              return handleError(res, 500, Errors.user.NOT_FOUND);
+            }
+            else {
+              res.json(200, {'status': true, 'data': users, length: data.length});
+            }
+          });
+        }
+      });
+  }
+};
+/!**
+ * Creates a new user
+ *!/
+exports.create = function (req, res, next) {
+  var newUser = new User(req.body);
+  newUser.provider = 'local';
+  newUser.role = 'user';
+  newUser.save(function (err, user) {
+    if (err) return validationError(res, err);
+    var token = jwt.sign({_id: user._id}, config.secrets.session, {expiresInMinutes: 60 * 5});
+    res.json({token: token});
+  });
+};
+/!**
+ * Creates a new user
+ *!/
+function randomValueHex(len) {
+  return crypto.randomBytes(Math.ceil(len / 2))
+    .toString('hex') // convert to hexadecimal format
+    .slice(0, len);   // return required number of characters
+}
+exports.createUser = function (req, res, next) {
+  var user = req.body;
+  var group = {};
+  group.group = [];
+  group._permissions = [];
+  var roles = user.roles;
+  var subRole = '';
+  var permQuery = {_id: {$in: roles}};
+  var isAdmin = true;
+  if (req.user.role.group.length === 1 && req.user.role.group.indexOf('client') > -1 && req.user.role.group.indexOf('admin') < 0 && req.user.role.group.indexOf('marketing') < 0 && req.user.role.group.indexOf('accounts') < 0) {
+    isAdmin = false;
+    roles = ['client'];
+    subRole = 'branch_user';
+    permQuery = {role: {$in: roles}};
+  } else if (req.user.role.group.indexOf('admin') > -1 && req.body.branch) {
+    isAdmin = true;
+    subRole = 'branch_manager';
+  }
+  Permissions.find(permQuery, function (err, result) {
+    if (err) {
+      return handleError(res, 500, Errors.user.NOT_UPDATE);
+    }
+    if (!result) {
+      return handleError(res, 404, Errors.user.NOT_UPDATE);
+    }
+    for (var i = 0, iLen = result.length; i < iLen; i++) {
+      group.group.push(result[i].role);
+      group._permissions.push(result[i]._id);
+    }
+    user.role = group;
+    user.subRole = subRole;
+    user.created_by = req.user._id;
+    var generatedPassword = randomValueHex(8);
+    if (isAdmin) {
+      user.password = generatedPassword;
+    } else {
+      user.password = user.newPassword;
+    }
+    User.create(user, function (err, userObj) {
+      if (err) {
+        return validationError(res, err);
+      }
+      if (group.group.indexOf('client') > -1) {
+        var query = {};
+        if (subRole === 'branch_manager') {
+          query = {_id: user.branch};
+        } else if (user.subRole === 'branch_user') {
+          query = {users: req.user._id};
+        }
+        Address.findOne(query, function (err, address) {
+          if (err) {
+            return validationError(res, err);
+          }
+          else {
+            address.users.push(userObj._id);
+            address.save(function (err, r) {
+              if (err) {
+                return validationError(res, err);
+              } else {
+                if (!isAdmin) {
+                  return res.json(201, {user: userObj, msg: "Account has been created successfully."});
+                }
+                sendMailAndResponse(userObj, generatedPassword,
+                  function (err) {
+                    if (err) {
+                      return handleError(res, 500, Errors.user.mail.NOT_SENT);
+                    }
+                    else {
+                      return res.json(201, {
+                        user: userObj,
+                        msg: "Account has been created successfully. We have sent an email with the password to the user."
+                      });
+                    }
+                  });
+              }
+            })
+          }
+        });
+      }
+      else {
+        sendMailAndResponse(userObj, generatedPassword, function (err) {
+          if (err) {
+            return handleError(res, 500, Errors.user.mail.NOT_SENT);
+          }
+          else {
+            return res.json(201, {
+              user: userObj,
+              msg: "Account has been created successfully. We have sent an email with the password to the user."
+            });
+          }
+        });
+      }
+    });
+  });
+
+};
+function sendMailAndResponse(userObj, generatedPassword, next) {
+  var link = process.env.DOMAIN;
+  var data = {
+    name: userObj.firstName,
+    from: "admin@zibika.com",
+    to: userObj.email,
+    subject: "Account Created",
+    template: 'account-created',
+    data: {
+      'link': link,
+      'name': userObj.firstName,
+      'email': userObj.email,
+      'password': generatedPassword
+    }
+  };
+  var customMail = new Email.CustomMail(data);
+  customMail.send(next);
+}
+/!**
+ * Get a single user
+ *!/
+exports.show = function (req, res, next) {
+  var userId = req.params.id;
+  User.findById(userId).select('firstName lastName email mobile_no role').exec(function (err, user) {
+    if (err) return next(err);
+    if (!user) return res.send(401);
+    if (user.role.group.indexOf('client') > -1) {
+      Address.findOne({users: user._id}).populate('client').exec(function (err, address) {
+        if (err) {
+          return handleError(res, 500, Errors.user.NOT_FOUND);
+        }
+        if (!address) {
+          return handleError(res, 404, Errors.user.NOT_FOUND);
+        }
+        else {
+          var obj = removeProtectedKeys(user, ['profile', 'token']);
+          res.json({'address': address, 'user': obj});
+        }
+      });
+    }
+    else {
+      if (err) {
+        return handleError(res, 500, Errors.user.NOT_FOUND);
+      }
+      if (!user) {
+        return handleError(res, 404, Errors.user.NOT_FOUND);
+      }
+      else {
+        var obj = removeProtectedKeys(user, ['profile', 'token']);
+        res.json(obj);
+      }
+    }
+  });
+};
+exports.getUserPermissions = function (req, res) {
+  var userId = req.params.id;
+  User.findById(userId).select('role').exec(function (err, data) {
+    Permissions.find({_id: {$in: data.role._permissions}}, function (err, response) {
+      if (err) {
+        return res.json(500, Errors.permission.NOT_FOUND);
+      }
+      else {
+        return res.json(200, {data: response});
+      }
+    })
+  });
+};
+function removeProtectedKeys(object, keys) {
+  var obj = object.toObject();
+  for (var i = 0, len = keys.length; i < len; i++) {
+    delete obj[keys[i]];
+  }
+  return obj;
+}
+/!**
+ * Deletes a user
+ * restriction: 'admin'
+ *!/
+exports.destroy = function (req, res) {
+  User.findByIdAndRemove(req.params.id, function (err, user) {
+    if (err) return handleError(res, 500, Errors.user.NOT_DELETE);
+    return res.send(204);
+  });
+};
+/!**
+ * Change a users password
+ *!/
+exports.changePassword = function (req, res, next) {
+  var userId = req.user._id;
+  var oldPass = String(req.body.oldPassword);
+  var newPass = String(req.body.newPassword);
+  var newPasswordAgn = String(req.body.newPasswordAgn);
+  if (newPass !== newPasswordAgn) {
+    return handleError(res, 401, Errors.user.validation.PASSWORD_MISMATCH);
+  }
+  else {
+    User.findById(userId, function (err, user) {
+      if (user.authenticate(oldPass)) {
+        user.password = newPass;
+        user.updated_by = req.user._id;
+        user.updated_at = new Date(Date.now());
+        user.save(function (err) {
+          if (err) {
+            return handleError(res, 400, Errors.user.NOT_UPDATE);
+          }
+          else {
+            res.json({message: 'Password changed successfully!'});
+          }
+        });
+      } else {
+        return handleError(res, 401, Errors.user.NOT_UPDATE);
+      }
+    });
+  }
+};
+/!**
+ * Get my info
+ *!/
+exports.me = function (req, res, next) {
+  var userId = req.user._id;
+  User.findOne({
+    _id: userId
+  }).select('-salt -hashedPassword')
+    .populate('role._permissions')
+    .exec(function (err, user) { // don't ever give out the password or salt
+      if (err) return next(err);
+      if (!user) return res.json(401);
+      return res.json(user);
+    });
+};
+/!**
+ * Authentication callback
+ *!/
+exports.authCallback = function (req, res, next) {
+  res.redirect('/');
+};
+exports.resetPassword = function (req, res) {
+  var email = req.body.email;
+  User.findOne({
+    email: email
+  }, function (err, user) {
+    if (err) {
+      return handleError(res, 500, Errors.common);
+    }
+    else if (!user) {
+      return handleError(res, 404, Errors.user.NOT_FOUND);
+    }
+    else {
+      var expiryDate = new Date(Date.now() + 3600000);
+      var _token = crypto.randomBytes(16).toString('hex');
+      user.resetPasswordExpires = expiryDate;
+      user.resetPasswordToken = _token;
+      user.save(function (err, result) {
+        if (err) {
+          return handleError(res, 500, Errors.user.NOT_UPDATE);
+        }
+        else {
+          var link = process.env.DOMAIN + "/auth/reset-password/" + _token;
+          var data = {
+            name: result.name,
+            from: "admin@zibika.com",
+            to: result.email,
+            subject: "Password Reset",
+            template: 'reset-password',
+            data: {
+              'link': link
+            }
+          };
+          var customMail = new Email.CustomMail(data);
+          customMail.send(function (err) {
+            if (err) {
+              return handleError(res, 500, Errors.common);
+            }
+            else {
+              res.json("We have sent you an email with instructions about how to reset your password.");
+            }
+          });
+        }
+      });
+    }
+  })
+};
+exports.reset = function (req, res) {
+  var passwordDetails = req.body;
+  User.findOne({
+    resetPasswordToken: passwordDetails.token,
+    resetPasswordExpires: {$gt: Date.now()}
+  }, function (err, user) {
+    if (!err && user) {
+      if (passwordDetails.newPassword === passwordDetails.newPasswordAgn) {
+        user.password = passwordDetails.newPassword;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        user.updated_by = user._id;
+        user.updated_at = new Date(Date.now());
+        user.save(function (err) {
+          if (err) {
+            return handleError(res, 500, Errors.user.password);
+          } else {
+            return res.json({message: 'Password has been changes successfully! Please login.'});
+          }
+        });
+      } else {
+        return res.json(400, {
+          message: 'Passwords do not match'
+        });
+      }
+    } else {
+      return res.json(400, {
+        message: 'Password reset token is invalid or has expired.'
+      });
+    }
+  });
+};
+// Updates an existing USER in the DB.
+exports.update = function (req, res, socket) {
+  var releaseId = req.params.id;
+  User.emit('blockidSave', releaseId);
+  if (req.body._id) {
+    delete req.body._id;
+    delete req.body.email;
+  }
+  var user = req.body;
+  var group = {};
+  group.group = [];
+  group._permissions = [];
+  var roles = user.roles;
+  var permQuery = {_id: {$in: roles}};
+  var isAdmin = true;
+  if (req.user.role.group.length === 1 && req.user.role.group.indexOf('client') > -1 && req.user.role.group.indexOf('admin') < 0 && req.user.role.group.indexOf('marketing') < 0 && req.user.role.group.indexOf('accounts') < 0) {
+    isAdmin = false;
+    roles = ['client'];
+    permQuery = {role: {$in: roles}};
+  } else if (req.user.role.group.indexOf('admin') > -1 && user.roles.indexOf('client') > -1) {
+    isAdmin = false;
+  }
+  Permissions.find(permQuery, function (err, result) {
+    if (err) {
+      return handleError(res, 500, Errors.user.NOT_UPDATE, releaseId);
+    }
+    if (!result) {
+      return handleError(res, 404, Errors.user.NOT_UPDATE, releaseId);
+    }
+    User.findById(req.params.id, function (err, user) {
+      if (err) {
+        return handleError(res, 500, Errors.user.NOT_UPDATE, releaseId);
+      }
+      if (!user) {
+        return handleError(res, 404, Errors.user.NOT_UPDATE, releaseId);
+      }
+      for (var i = 0, iLen = result.length; i < iLen; i++) {
+        group.group.push(result[i].role);
+        group._permissions.push(result[i]._id);
+      }
+      user = _.merge(user, req.body);
+      user.role = group;
+      user.updated_by = req.user._id;
+      user.updated_at = new Date();
+      user.save(function (err) {
+        if (err) {
+          return handleError(res, 500, Errors.user.NOT_UPDATE, releaseId);
+        }
+        if (group.group.indexOf('client') > -1) {
+          /!*If new role is client*!/
+          Address.findOne({users: req.params.id}, function (err, address) {
+            if (err) {
+              return handleError(res, 500, Errors.user.NOT_UPDATE, releaseId);
+            }
+            if (address) {
+              address.users.splice(address.users.indexOf(req.params.id), 1);
+              address.save(function (err) {
+                if (err) {
+                  return handleError(res, 500, Errors.user.NOT_UPDATE, releaseId);
+                }
+                Address.findById(req.body.branch, function (err, addr) {
+                  addr.users.push(req.params.id);
+                  addr.save(function (err) {
+                    if (err) {
+                      return handleError(res, 500, Errors.user.NOT_UPDATE, releaseId);
+                    }
+                    release(releaseId);
+                    return res.json(200, {user: addr});
+                  });
+                });
+              });
+            }
+            else {
+              Address.findById(req.body.branch, function (err, addr) {
+                addr.users.push(req.params.id);
+                addr.save(function (err) {
+                  if (err) {
+                    return handleError(res, 500, Errors.user.NOT_UPDATE, releaseId);
+                  }
+                  release(releaseId);
+                  return res.json(200, {user: addr});
+                });
+              });
+            }
+          });
+        }
+        else {
+          /!*If new role is not client*!/
+          Address.findOne({users: req.params.id}, function (err, address) {
+            if (err) {
+              return handleError(res, 500, Errors.user.NOT_UPDATE, releaseId);
+            }
+            if (!address) {
+              release(releaseId);
+              return res.send(200);
+            }
+            address.users.splice(address.users.indexOf(req.params.id), 1);
+            address.save(function (err) {
+              if (err) {
+                return handleError(res, 500, Errors.user.NOT_UPDATE, releaseId);
+              }
+              release(releaseId);
+              return res.send(200);
+            });
+          });
+        }
+      });
+    });
+  });
+};
+exports.reassignUser = function (req, res) {
+  var goneUserRaw = req.body.goneUser;
+  var newUser = req.body.newUser;
+
+  User.findById(goneUserRaw._id, function (err, goneUser) {
+    goneUser.active = 0;
+    goneUser.save(function (err) {
+      if (err) {
+        return handleError(res, 500, Errors.user.NOT_UPDATE);
+      }
+
+      User.findById(newUser.value, function (err, user) {
+        if (err) {
+          return handleError(res, 500, Errors.user.NOT_UPDATE);
+        }
+        if (!user) {
+          return handleError(res, 500, Errors.user.NOT_UPDATE);
+        }
+        var anyPreviousRights = goneUser.mappedUsers || [];
+        var mappedUsersArr = user.mappedUsers.concat(anyPreviousRights, goneUser._id);
+        var myIndex = mappedUsersArr.indexOf(user._id);
+        if (myIndex !== -1) {
+          mappedUsersArr.splice(myIndex, 1);
+        }
+        mappedUsersArr = JSON.parse(JSON.stringify(mappedUsersArr));
+        mappedUsersArr = mappedUsersArr.filter(function (elem, pos) {
+          return mappedUsersArr.indexOf(elem) === pos;
+        });
+        user.mappedUsers = mappedUsersArr;
+        user.save(function (err) {
+          if (err) {
+            return handleError(res, 500, Errors.user.NOT_UPDATE);
+          }
+          res.json(200, user);
+        });
+      });
+
+    });
+  });
+};
+exports.activateInactivate = function (req, res) {
+  var _id = req.params.id;
+  var releaseId = _id;
+  User.emit('blockidSave', releaseId);
+  User.findOne({_id: _id}, function (err, user) {
+    if (err) {
+      return handleError(res, 500, Errors.user.NOT_UPDATE, releaseId);
+    }
+    else if (!user) {
+      return handleError(res, 404, Errors.user.NOT_UPDATE, releaseId);
+    }
+    else {
+      user.active = req.body.active;
+      user.updated_by = req.user._id;
+      user.updated_at = new Date();
+      user.save(function (err) {
+        if (err) {
+          return handleError(res, 500, Errors.user.NOT_UPDATE, releaseId);
+        }
+        else {
+          release(releaseId);
+          return res.json(200);
+        }
+      });
+    }
+  })
+};
+exports.deleteUserRight = function (req, res) {
+  var fromUser = req.body.fromUser;
+  var whichUser = req.body.whichUser;
+  User.findById(fromUser._id, function (err, user) {
+    if (err) {
+      return handleError(res, 500, Errors.user.NOT_UPDATED);
+    }
+    if (!user) {
+      return handleError(res, 500, Errors.user.NOT_UPDATED);
+    }
+    var index = user.mappedUsers.indexOf(whichUser._id);
+    if (index !== -1) {
+      user.mappedUsers.splice(index, 1);
+    }
+    user.save(function (err) {
+      if (err) {
+        return handleError(res, 500, Errors.user.NOT_UPDATED);
+      }
+      res.json(200, user);
+    });
+  });
+};
+exports.validateResetToken = function (req, res) {
+  User.findOne({
+    resetPasswordToken: req.params.token,
+    resetPasswordExpires: {
+      $gt: new Date(Date.now())
+    }
+  }, function (err, user) {
+    if (!user) {
+      return res.redirect('/invalid-password');
+    }
+    res.redirect('/change-password/' + req.params.token);
+  });
+};
+*/

@@ -1,0 +1,20 @@
+import { Component, OnInit } from '@angular/core';
+import { MdDialogRef } from '@angular/material';
+
+
+@Component({
+    selector: 'app-confirmation-dialog',
+    templateUrl: './confirmation-dialog.component.html',
+    styleUrls: ['./shared.styles.scss']
+})
+export class ConfirmationDialogComponent implements OnInit {
+
+    config: any;
+
+    constructor(public dialogRef: MdDialogRef<ConfirmationDialogComponent>) {
+    }
+
+    ngOnInit() {
+    }
+
+}

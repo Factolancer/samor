@@ -1,0 +1,136 @@
+<!--Header-->
+<md-toolbar class="header">
+    <div class="brand">
+        <a routerLink="/"><img src="public/images/logo.png"></a>
+    </div>
+    <span class="nav">
+         <button md-button="" class="nav-btn" [md-menu-trigger-for]="solutionsMenu">
+             SOLUTIONS <md-icon class="material-icons md-16">&#xE313;</md-icon>
+         </button>
+         <button md-button="" class="nav-btn" routerLink="/report">REPORT</button>
+         <button md-button="" class="nav-btn" routerLink="/cart">CART</button>
+         <button md-button="" class="nav-btn" routerLink="/checkout/init">CHECKOUT</button>
+         <button md-button="" class="nav-btn" routerLink="/checkout/summary">SUMMARY</button>
+    </span>
+
+    <span style="flex: 1 1 auto"></span>
+
+    <span *ngIf="!userLoggedIn()" role="button" (click)="logUserIn()" class="login-btn-area">
+        <span class="text">LOGIN</span>
+    </span>
+    <span *ngIf="!userLoggedIn()" role="button" class="signup-btn-area">
+        <span class="text">SIGNUP</span>
+    </span>
+    <span *ngIf="userLoggedIn()" role="button" (click)="logoutUser()" class="signup-btn-area">
+        <span class="text">LOGOUT</span>
+    </span>
+
+
+    <md-menu #solutionsMenu="mdMenu" y-position="below">
+        <button md-menu-item routerLink="/sip"> SIP</button>
+        <button md-menu-item routerLink="/cash">CASH</button>
+        <button md-menu-item routerLink="/tax">TAX</button>
+        <button md-menu-item routerLink="/explore/all"> Explore All</button>
+    </md-menu>
+
+
+    <!--<button md-button="" (click)="getSS()"> Get SS</button>
+    <button md-button="" routerLink="/registration">Reg</button>
+    <button md-button="" routerLink="/sip">Sip</button>
+    <button md-button="" routerLink="/cash">Cash</button>
+    <button md-button="" routerLink="/tax">Tax</button>
+    <button md-button="" routerLink="/report">Report</button>
+    <button md-button="" routerLink="/checkout/init">C_out</button>
+    <button md-button="" routerLink="/checkout/summary">Summary</button>-->
+    <!--<button md-icon-button="" color="accent" routerLink="/dashboard">
+        <md-icon class="md-36 material-icons">&#xE871;</md-icon>&lt;!&ndash;Dashboard icon&ndash;&gt;
+    </button>-->
+    <!-- <button md-icon-button="" color="accent" routerLink="/dashboard">
+         <md-icon class="md-36 material-icons">&#xE8F0;</md-icon>&lt;!&ndash;view module icon&ndash;&gt;
+     </button>-->
+    <!--<button md-icon-button="" color="primary">
+        <md-icon class="md-36 material-icons">&#xE7F4;</md-icon>&lt;!&ndash;notification bell icon&ndash;&gt;
+    </button>
+    <button md-icon-button="" color="accent" routerLink="/watchlist">
+        <md-icon class="md-36 material-icons">&#xE922;</md-icon>&lt;!&ndash;watchlist&ndash;&gt;
+    </button>
+    <button md-icon-button="" color="primary" routerLink="/cart">
+        <md-icon class="md-36 material-icons">&#xE8CC;</md-icon> &lt;!&ndash;cart-icon&ndash;&gt;
+    </button>-->
+</md-toolbar>
+
+<!--<nav class="navbar navbar-default navbar-fixed-top header">
+    <div class="container-fluid">
+        &lt;!&ndash; Brand and toggle get grouped for better mobile display &ndash;&gt;
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img src="public/images/logo.png"></a>
+        </div>
+
+        &lt;!&ndash; Collect the nav links, forms, and other content for toggling &ndash;&gt;
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li (click)="getSS()" class="clickable">Get SS</li>
+                <li><a class="header-link" routerLink="/sip">Sip</a></li>
+                <li><a class="header-link" routerLink="/registration">Reg</a></li>
+                <li><a class="header-link" routerLink="/explore/all">Explore</a></li>
+                <li><a class="header-link" routerLink="/sip">Sip</a></li>
+                <li><a class="header-link" routerLink="/cash">Cash</a></li>
+                <li><a class="header-link" routerLink="/tax">Tax</a></li>
+                <li><a class="header-link" routerLink="/report">PortFolio Report</a></li>
+                <li><a class="header-link" routerLink="/checkout/init">Checkout</a></li>
+                <li><a class="header-link" routerLink="/checkout/summary">Summary</a></li>
+                <li><a class="header-link" routerLink="/dashboard1">
+                    <md-icon class="md-24 material-icons">&#xE871;</md-icon>&lt;!&ndash;Dashboard icon&ndash;&gt;
+                </a></li>
+                <li><a class="header-link" routerLink="/dashboard">
+                    <md-icon class="md-24 material-icons">&#xE8F0;</md-icon>&lt;!&ndash;view module icon&ndash;&gt;
+                </a></li>
+                <li><a class="header-link" routerLink="#">
+                    <md-icon class="md-24 material-icons">&#xE7F4;</md-icon>&lt;!&ndash;notification bell icon&ndash;&gt;
+                </a></li>
+                <li><a class="header-link" routerLink="/watchlist">
+                    <md-icon class="md-24 material-icons">&#xE922;</md-icon>&lt;!&ndash;watchlist&ndash;&gt;
+                </a></li>
+                <li><a class="header-link" routerLink="/cart">
+                    <md-icon class="md-24 material-icons">&#xE8CC;</md-icon> &lt;!&ndash;cart-icon&ndash;&gt;
+                </a></li>
+
+                &lt;!&ndash;<li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Solutions <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a routerLink="/sip">Sip</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>&ndash;&gt;
+            </ul>
+        </div>
+    </div>
+</nav>
+-->
+
+<!--Body-->
+<div class="container-fluid">
+    <router-outlet></router-outlet>
+</div>
+<!--Footer-->
+<md-toolbar class="footer-top">
+    Question? Visit the <a href="#">Support Centre</a>
+    <span style="flex: 1 1 auto"></span>
+    <span><md-icon class="material-icons md-18">&#xE0BE;</md-icon><!--Email-icon-->
+        contact@fincash.com</span>
+</md-toolbar>
+<md-toolbar class="footer-bottom">
+    Site map, social links etc!
+</md-toolbar>
+

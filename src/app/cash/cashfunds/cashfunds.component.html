@@ -1,0 +1,62 @@
+<app-user-journey fxHide.lt-md="" [position]=1></app-user-journey>
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper" ngClass.gt-sm="pad-tb-25" ngClass.lt-md="pad-tb-10">
+    <div fxFlex="50"  fxFlex.lt-md="100" class="center-align">
+        <div ngClass.gt-sm="heading-32-dark-grey" ngClass.lt-md="heading-24-dark-grey">
+            Earn more by investing in SavingsPlus
+        </div>
+        <span fxHide.lt-md=""><hr/></span>
+        <div fxHide.lt-md="" class="sub-heading-16-medium-grey">Investing in SavingsPlus puts your money in the safest Money Market Mutual Funds</div>
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="86" fxFlex.lt-md="100" ngClass.gt-sm="grey-back pad-30" ngClass.lt-md="pad-10">
+        <app-savings-plus-card fxLayout="column" fxLayoutAlign="center center" #SavingsPlusFundsComp [funds]="savingsPlusFunds"></app-savings-plus-card>
+        <div fxHide.lt-md="true" fxLayout="column" fxLayoutAlign="center center">
+            <md-card class="fund-card">
+                <md-card-content>
+                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutAlign.gt-sm="space-around center" fxLayoutAlign.lt-md="start stretch">
+                        <div fxFlex="25" fxLayoutAlign="center center">
+                            <div fxFlex="42px" class="lightgray-circle">  <!--[@ShowHide]="iconOne"-->
+                                <md-icon class="md-24 md-brand-secondary">trending_up</md-icon>
+                            </div>
+                            <div fxFlexOffset="4" fxFlex >
+                                Higher returns as compared to Savings and Deposits
+                            </div>
+                        </div>
+                        <div fxFlex="23" fxLayoutAlign="center center">
+                            <div fxFlex="42px" class="lightgray-circle">
+                                <md-icon class="md-24 md-brand-secondary">update</md-icon>
+                            </div>
+                            <div fxFlexOffset="4" fxFlex >
+                                Same day redemption
+                            </div>
+                        </div>
+                        <div fxFlex="23" fxLayoutAlign="center center">
+                            <div fxFlex="42px" class="lightgray-circle">
+                                <md-icon class="md-24 md-brand-secondary">lock_open</md-icon>
+                            </div>
+                            <div fxFlexOffset="4" fxFlex >
+                                No lock-in or exit load
+                            </div>
+                        </div>
+                        <div fxFlex="25" fxLayoutAlign="center center">
+                            <div fxFlex="42px" class="lightgray-circle">
+                                <md-icon class="md-24 md-brand-secondary">&#xE876;</md-icon>
+                            </div>
+                            <div fxFlexOffset="4" fxFlex >
+                                Invest and redeem on a click!
+                            </div>
+                        </div>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class=" wrapper pad-tb-20">
+    <div fxFlex="20" fxFlex.lt-md="90">
+        <button class="cta-50" color="primary" md-raised-button (click)="addToCart(SavingsPlusFundsComp.selectedFunds)">PROCEED
+        </button>
+    </div>
+</div>

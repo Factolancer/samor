@@ -1,0 +1,114 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {FilterData} from "./filter-data";
+import {ExploreFundsService} from "../../core/services/explore-funds.service";
+import {Subscription} from "rxjs/Subscription";
+import {FundSearchInput} from "../fund-search-input";
+import {Logger} from "../../core/logger/logger";
+
+@Component({
+    selector: 'app-rating-filter',
+    templateUrl: './rating-filter.component.html',
+    styleUrls: ['./filters.styles.scss']
+})
+export class RatingFilterComponent implements OnInit, OnDestroy {
+
+    ratingFilterData: FilterData[] = [];
+    filterTitle: string;
+    searchInputSubscription: Subscription;
+    searchFacetSubscription: Subscription;
+    searchInput: FundSearchInput;
+    checkedCount = 0;
+
+    constructor(private exploreFundsService: ExploreFundsService, private logger: Logger) {
+
+    }
+
+    filter(checked: any, item: FilterData) {
+        if (checked) {
+            item.selected = true;
+        } else {
+            item.selected = false;
+        }
+        this.updateCheckedCount();
+        this.logger.debug("RatingFilterComponent", this.getSelectedRatingArray(), this.ratingFilterData);
+        this.searchInput.ra = this.getSelectedRatingArray();
+        this.exploreFundsService.filterFunds(this.searchInput);
+
+    }
+
+
+    clearFilter() {
+        this.checkedCount = 0;
+        this.searchInput.ra = [];
+        this.exploreFundsService.filterFunds(this.searchInput);
+        this.ratingFilterData.forEach(listItem => {
+            listItem.selected = false;
+        });
+    }
+
+    updateCheckedCount() {
+        this.checkedCount = 0;
+        this.ratingFilterData.forEach(filterData => {
+            if (filterData.selected) {
+                this.checkedCount += 1;
+            }
+        })
+    }
+
+    getSelectedRatingArray() {
+        let ratingList: number[] = [];
+        this.ratingFilterData.forEach(filterData => {
+            if (filterData.selected) {
+                ratingList.push(+filterData.id)
+            }
+        });
+        return ratingList;
+    }
+
+
+    ngOnInit() {
+        this.filterTitle = "Fund Rating";
+
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput
+            .subscribe(searchInput => {
+                this.searchInput = searchInput;
+
+                this.ratingFilterData.forEach(filterData => {
+                    if (this.searchInput.ra.indexOf(+filterData.id) > -1) {
+                        filterData.selected = true;
+                    } else {
+                        filterData.selected = false;
+                    }
+                })
+                this.updateCheckedCount();
+
+            });
+
+        this.searchFacetSubscription = this.exploreFundsService.fundSearchFacet.subscribe(facets => {
+            this.ratingFilterData = [];
+            //removing those searchSuggestions which have been already checked
+
+            if (facets.ratingFilterData) {
+                facets.ratingFilterData.forEach(listItem => {
+                    if (this.ratingFilterData.indexOf(listItem) > -1)
+                        listItem.selected = true
+                });
+                this.ratingFilterData = facets.ratingFilterData;
+
+                this.ratingFilterData.forEach(filterData => {
+                    if (this.searchInput.ra.indexOf(+filterData.id) > -1) {
+                        filterData.selected = true;
+                    }
+                });
+
+                this.updateCheckedCount();
+            }
+
+        })
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+        this.searchFacetSubscription.unsubscribe();
+    }
+}

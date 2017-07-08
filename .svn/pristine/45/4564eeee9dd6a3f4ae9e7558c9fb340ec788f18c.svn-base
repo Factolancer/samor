@@ -1,0 +1,70 @@
+/**
+ * Created by Fincash on 20-02-2017.
+ */
+
+export const TeamMembers = [
+    {
+        "name":"Deepak Vyas",
+        "image": "/assets/img/team/dummy-profile.jpg",
+        "role": "Senior Product Manager - Investment",
+        "bio" :"Worked with Verizon, RBS, and Career Point, IIT Bombay('07 Batch)"},
+    {
+        "name":"Deepak Vyas",
+        "image": "/assets/img/team/dummy-profile.jpg",
+        "role": "Senior Product Manager - Investment",
+        "bio" :"Worked with Verizon, RBS, and Career Point, IIT Bombay('07 Batch)"},
+    {
+        "name":"Deepak Vyas",
+        "image": "/assets/img/team/dummy-profile.jpg",
+        "role": "Senior Product Manager - Investment",
+        "bio" :"Worked with Verizon, RBS, and Career Point, IIT Bombay('07 Batch)"},
+    {
+        "name":"Deepak Vyas",
+        "image": "/assets/img/team/dummy-profile.jpg",
+        "role": "Senior Product Manager - Investment",
+        "bio" :"Worked with Verizon, RBS, and Career Point, IIT Bombay('07 Batch)"},
+    {
+        "name":"Deepak Vyas",
+        "image": "/assets/img/team/dummy-profile.jpg",
+        "role": "Senior Product Manager - Investment",
+        "bio" :"Worked with Verizon, RBS, and Career Point, IIT Bombay('07 Batch)"},
+    {
+        "name":"Deepak Vyas",
+        "image": "/assets/img/team/dummy-profile.jpg",
+        "role": "Senior Product Manager - Investment",
+        "bio" :"Worked with Verizon, RBS, and Career Point, IIT Bombay('07 Batch)"},
+    {
+        "name":"Deepak Vyas",
+        "image": "/assets/img/team/dummy-profile.jpg",
+        "role": "Senior Product Manager - Investment",
+        "bio" :"Worked with Verizon, RBS, and Career Point, IIT Bombay('07 Batch)"},
+    {
+        "name":"Deepak Vyas",
+        "image": "/assets/img/team/dummy-profile.jpg",
+        "role": "Senior Product Manager - Investment",
+        "bio" :"Worked with Verizon, RBS, and Career Point, IIT Bombay('07 Batch)"},
+    {
+        "name":"Deepak Vyas",
+        "image": "/assets/img/team/dummy-profile.jpg",
+        "role": "Senior Product Manager - Investment",
+        "bio" :"Worked with Verizon, RBS, and Career Point, IIT Bombay('07 Batch)"}
+
+];
+
+export const TeamFounders = [
+    {
+        "name":"Gaurav Perti",
+        "image": "/assets/img/team/dummy-profile.jpg",
+        "role": "Co-founder & CEO",
+        "bio" : "Gaurav has over 12 years experience across financial markets, wealth management, Insurance and distribution across Individual & non-individual segments. He has worked with Standard Chartered Bank(SCB) for over 10 years in roles such as Head - Business Banking and Head- Investments. He has done various roles in wealth management spanning product management, research, and sales & distribution.Additionally, he has won the Best Structured Products House(India) for Standard Chartered Bank in 2007, 2009, 2010 and 2011. He has also been part of the team that won the CNBC Best Financial Advisor Award for SCB in 2012,2013 & 2014. Gaurav has done management from the IIM Lucknow. He also holds a Bachelors of Technology in Chemical Engineering from IIT Bombay."},
+
+    {
+        "name":"Pawan Kumar",
+        "image": "/assets/img/team/dummy-profile.jpg",
+        "role": "Co-founder & CTO",
+        "bio" : "Pawan has over 11 years of experience in tehnology with over 7 years on technology based startups. His experience spans FinTech, payments and e-commerce having worked across platforms such as web, mobile and SMS. He has worked in various roles such as CTO at Zibika.com (Insurance Web Aggregator), Head - Technology at magicbricks.com, and Product Head at Naaptol.com.  He has played a key role in product research, end-to-end development and managing delivery of key products in the Indian Internet space handling heavy volumes of traffic. Pawan holds a Bachelors degree in Civil Engineering from IIT Bombay."}
+
+
+];
+
+

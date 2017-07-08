@@ -1,0 +1,62 @@
+import {Component, OnInit, OnDestroy, Inject, HostListener} from "@angular/core";
+import {Subscription} from "rxjs";
+import {APP_CONFIG, IAppConfig} from "../../environments/environment";
+import {Router, ActivatedRoute} from "@angular/router";
+import {LoginService} from "../services/login.service";
+import {Logger} from "../shared/logger/logger";
+
+@Component({
+    selector: 'fincash-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss']
+})
+export class HeaderComponent implements OnInit, OnDestroy {
+
+    private loginSubscription: Subscription;
+    isLoggedIn: boolean;
+    private className: string;
+    state:boolean;
+
+    constructor(private logger: Logger, private loginService: LoginService,
+                private router: Router, private route: ActivatedRoute, @Inject(APP_CONFIG) private config: IAppConfig) {
+        this.isLoggedIn = false;
+        this.className = 'HeaderComponent';
+    }
+
+    @HostListener("window:scroll", ['$event'])
+    onWindowScroll(evnt) {
+        if(document.body.scrollTop==0)
+            this.state = false;
+    }
+
+    onScroll () {
+        this.logger.debug(this.className,"scrolled!!");
+        this.state = true;
+    }
+    onScrollUp(){
+        this.state = false;
+    }
+
+    logUserIn() {
+        this.router.navigate([this.config.dloginUrl]);
+    }
+
+    userSignUp() {
+        this.router.navigate([this.config.signupUrl]);
+    }
+
+    logUserOut() {
+        this.loginService.logOutUser();
+    }
+
+
+    ngOnInit() {
+        this.loginSubscription = this.loginService.loginObservable.subscribe((isLoggedIn: boolean) => {
+            this.isLoggedIn = isLoggedIn;
+        });
+    }
+
+    ngOnDestroy() {
+        this.loginSubscription.unsubscribe();
+    }
+}

@@ -1,0 +1,27 @@
+import {ModuleWithProviders} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {AdvancedFactsheetComponent} from "./factsheet/advanced-factsheet.component";
+import {FundSelectionComponent} from "./fund-selection.component";
+
+
+const fundRoutes: Routes = [
+    {
+        path: 'funds',
+        children: [
+            {
+                path: 'factsheet/:id',
+                component: AdvancedFactsheetComponent,
+            },
+            {
+                path: 'selection/:investmentType',
+                component: FundSelectionComponent,
+            }
+        ]
+    }
+];
+
+export const fundRouting: ModuleWithProviders = RouterModule.forChild(fundRoutes);
+
+export const appRoutingProviders: any[] = [];
+
+export const routedComponents = [AdvancedFactsheetComponent];

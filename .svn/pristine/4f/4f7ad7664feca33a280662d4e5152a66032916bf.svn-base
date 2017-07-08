@@ -1,0 +1,23 @@
+import {ModuleWithProviders} from "@angular/core";
+import {RouterModule} from "@angular/router";
+import {ReportComponent} from "./report.component";
+/**
+ * Created by fincash on 18-11-2016.
+ */
+
+const reportRoutes = [
+
+    {
+        path: 'report',
+        children: [
+            {
+                path: '',
+                component: ReportComponent
+            }
+
+        ]
+
+    }
+];
+
+export const portfolioReportRouting: ModuleWithProviders = RouterModule.forChild(reportRoutes);

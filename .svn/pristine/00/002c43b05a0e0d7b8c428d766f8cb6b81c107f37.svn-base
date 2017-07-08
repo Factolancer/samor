@@ -1,0 +1,23 @@
+<div class="col-md-12">
+    <md-tab-group [(selectedIndex)]="selectedTab" (selectChange) = "loadTab()">
+        <md-tab label="Summary Report">
+            <app-summary-report></app-summary-report>
+        </md-tab>
+        <md-tab label="Holding Report">
+            <app-holding-report></app-holding-report>
+        </md-tab>
+        <md-tab label="Transaction Report">
+            <app-transaction-report></app-transaction-report>
+        </md-tab>
+        <md-tab label="Capital Gains Report">
+            <app-capital-gains-report></app-capital-gains-report>
+        </md-tab>
+        <md-tab label="Asset Allocation:Pie Chart">
+            <app-asset-allocation></app-asset-allocation>
+        </md-tab>
+        <md-tab label="IRR Report">
+            <app-irr-report></app-irr-report>
+        </md-tab>
+    </md-tab-group>
+    <app-asset-allocation></app-asset-allocation>
+</div>

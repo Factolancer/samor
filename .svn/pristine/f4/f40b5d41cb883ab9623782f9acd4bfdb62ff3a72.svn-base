@@ -1,0 +1,6 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="100">
+        <md-progress-spinner class="loading" color="primary" mode="indeterminate"></md-progress-spinner>
+        <div class="center-align">{{config.text}}</div>
+    </div>
+</div>

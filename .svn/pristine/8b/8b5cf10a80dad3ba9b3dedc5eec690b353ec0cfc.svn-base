@@ -1,0 +1,18 @@
+import {ModuleWithProviders} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {ExploreFundsComponent} from "./explore-funds.component";
+
+
+const exploreFundRoutes: Routes = [
+    {
+        path: 'explore',
+        children: [
+            {
+                path: ':searchType',
+                component: ExploreFundsComponent,
+            }
+        ]
+    }
+];
+
+export const exploreFundRouting: ModuleWithProviders = RouterModule.forChild(exploreFundRoutes);

@@ -1,0 +1,104 @@
+@import "../../styles/partials/web-partials";
+
+.checkout-product-item {
+  padding: 0;
+  margin: 0 0 20px 0;
+
+  .head {
+    background-color: $brand-secondary;
+    color: $white;
+    font-size: 16px;
+    padding: 15px;
+
+    .product-tag {
+      color: #BFBFBF;
+      font-size: 10px;
+      border: solid 1px #BFBFBF;
+      border-radius: 5px;
+      padding: 1px 5px;
+    }
+
+    .remove-btn {
+      color: $white;
+      border: none;
+      font-size: 16px;
+
+      &:hover {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .body {
+    color: $text-dark-grey;
+    padding: 15px;
+
+  }
+
+  .amount {
+    font-weight: 700;
+    background-color: $light-grey;
+    color: $text-dark-grey;
+
+    .disclaimer-text {
+      padding: 0 15px;
+      font-style: italic;
+      font-size: 12px;
+      font-weight: 300;
+      color: $text-medium-grey;
+    }
+  }
+
+}
+
+.checkout-footer {
+  padding: 0;
+  margin: 20px 0;
+  border: none;
+  color: $text-dark-grey;
+
+  .total-inv-checkout {
+    padding: 20px;
+    font-weight: 700;
+    background-color: $light-grey;
+    color: $brand-secondary;
+  }
+}
+
+.field {
+
+  .field-label {
+    line-height: 30px;
+  }
+
+}
+
+.add-funds {
+  padding-top: 5px;
+  color: $brand-secondary;
+  font-size: 12px;
+}
+
+.total-inv-summary {
+  padding: 20px 24px;
+  margin: 10px -24px -24px -24px;
+  font-weight: 700;
+  background-color: $light-grey;
+  color: $brand-secondary;
+}
+
+.ip-details {
+  font-size: 10px;
+  color: $dark-grey;
+  padding: 10px 0;
+}
+
+.disclaimer-text {
+  max-height: 100px;
+  font-size: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 10px 5px;
+}

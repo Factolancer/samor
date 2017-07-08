@@ -1,0 +1,32 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {BehaviorSubject} from "rxjs";
+import {FundDisplay} from "./models/fund-display";
+
+@Injectable()
+export class FundService {
+
+    private fundDisplaySource = new BehaviorSubject<FundDisplay>(new FundDisplay());
+    fundDisplay = this.fundDisplaySource.asObservable();
+
+    constructor(private httpService: HttpService) {
+    }
+
+
+    getBasicFactsheet(id: number) {
+        return this.httpService.post('/getBasicFactsheet', {"id": id});
+    }
+
+    getAdvancedFactsheet(id: number) {
+        return this.httpService.post('/getAdvancedFactsheet', {"id": id});
+    }
+
+    getFundDisplay() {
+        return this.fundDisplaySource.value;
+
+    }
+
+    setFundDisplay(fundDisplay: FundDisplay) {
+        this.fundDisplaySource.next(fundDisplay);
+    }
+}

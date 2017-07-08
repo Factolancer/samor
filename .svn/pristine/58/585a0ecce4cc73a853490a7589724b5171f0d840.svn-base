@@ -1,0 +1,4 @@
+export NODE_ENV=production
+export CDN=http://uat.fincash.com
+export HOST=10.1.0.2
+export PORT=81

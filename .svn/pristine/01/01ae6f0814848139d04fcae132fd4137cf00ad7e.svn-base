@@ -1,0 +1,95 @@
+<div class="col-sm-10 col-sm-offset-1">
+    <div class="row journey">
+        <div class="col-sm-2 col-sm-offset-2 no-padding">
+            <div class="journey-line">
+                <div class="blue-circle"></div>
+                <span class="text">SIP Type</span>
+            </div>
+        </div>
+        <div class="col-sm-2 no-padding">
+            <div class="journey-line">
+                <div class="grey-circle"></div>
+                <span class="text">Fund Selection</span>
+            </div>
+        </div>
+        <div class="col-sm-2 no-padding">
+            <div class="journey-line">
+                <div class="grey-circle"></div>
+                <span class="text">Investment Portfolio</span>
+            </div>
+        </div>
+        <div class="col-sm-2 no-padding">
+            <div class="journey-line">
+                <div class="grey-circle"></div>
+                <span class="text">Summary &amp; Checkout</span>
+                <div class="grey-circle" style="left:95%;"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 center-align heading-32 pad-tb-15">Set up Monthly Investment Plan(SIPs)</div>
+        </div>
+        <div class="row grey-back">
+            <div class="col-sm-2 col-sm-offset-5">
+                <div class="product-title-area">
+                    <span class="text">SmartSIP</span>
+                </div>
+            </div>
+        </div>
+        <div class="row grey-back">
+            <div class="col-sm-2 col-sm-offset-1">
+                <div class="product-des">
+                    <div class="icon">
+                        <img src="/public/images/sip/healthy_returns.svg" alt="hand of healthy returns icon">
+                    </div>
+                    <div class="text">Selected after analysis of 20000 schemes</div>
+                </div>
+
+            </div>
+            <div class="col-sm-2 col-sm-offset-2">
+                <div class="product-des">
+                    <div class="icon">
+                        <img src="/public/images/sip/champion.svg" alt="hand of healthy returns icon">
+                    </div>
+                    <div class="text">Top-3 best performing schemes</div>
+                </div>
+
+            </div>
+            <div class="col-sm-2 col-sm-offset-2">
+                <div class="product-des">
+                    <div class="icon">
+                        <img src="/public/images/sip/healthy_returns.svg" alt="hand of healthy returns icon">
+                    </div>
+                    <div class="text">Earn Healthy Returns</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row grey-back">
+            <div class="col-sm-2 col-sm-offset-5">
+                <div class="product-cta">
+                    <button class="cta-50" md-raised-button="" routerLink='smartsip' color="primary">
+                        Invest
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <div class="fc-divider">
+                    <span>OR</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 no-padding">
+                <button class="cta-70" md-raised-button="" color="primary" routerLink='/explore/all'>Choose from all
+                    schemes
+                </button>
+            </div>
+            <div class="col-sm-3 pull-right no-padding">
+                <button class="cta-70" md-raised-button="" color="primary" routerLink='calculator'>Use SIP Calculator
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

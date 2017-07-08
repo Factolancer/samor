@@ -1,0 +1,24 @@
+/**
+ * Created by Fincash on 28-02-2017.
+ */
+/**
+ * Created by Fincash on 18-02-2017.
+ */
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+
+import {TeamComponent} from "../about-us/team.component";
+import {StaticTextComponent} from "./static-txt.component";
+
+const staticRoutes: Routes = [
+    {
+        path: 'about-us',
+        component: TeamComponent,
+    },
+    {
+        path: ':path',
+        component: StaticTextComponent
+    },
+];
+
+export const staticRouting: ModuleWithProviders = RouterModule.forChild(staticRoutes);

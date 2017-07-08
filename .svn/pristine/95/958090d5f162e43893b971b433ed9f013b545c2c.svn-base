@@ -1,0 +1,127 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Router} from "@angular/router";
+import {Observable, Subscription} from 'rxjs';
+import {FormBuilder, FormGroup, Validators, AbstractControl} from "@angular/forms";
+import {PANValidator} from "../validator";
+import {HttpService} from "../services/http-service.service";
+
+import {OTPService} from "./otp-service";
+
+@Component({
+  selector: 'kyc-status',
+  templateUrl: './kyc-status.component.html',
+  styleUrls: ['./kyc-status.component.scss']
+})
+
+export class CheckKYCComponent implements OnInit, OnDestroy {
+
+
+  kycCompliant:boolean;
+  panGiven:boolean = false;
+  otptimer : Subscription;
+  pan: string;
+  KYCStatusForm: FormGroup;
+  PhoneValidationForm: FormGroup;
+  OTPValidationForm: FormGroup;
+  mobLength:number = 10;
+  PANLength:number = 10;
+
+  userData:any;
+  constructor(public router: Router, public http: HttpService, private fb: FormBuilder, private otpService:OTPService) { }
+
+
+
+  ticks:number;
+  otpNextGapDuration:number = 15;
+  ngOnInit() {
+
+    this.PhoneValidationForm = this.fb.group({
+      mob: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern('^[0-9]{10}$')])]
+    });
+    this.KYCStatusForm = this.fb.group({
+      pan: ['', Validators.compose([Validators.required, Validators.minLength(10),PANValidator.isValidPANFormat])]
+    });
+    this.OTPValidationForm = this.fb.group({
+      otp: ['', Validators.compose([Validators.required])]
+    })
+
+  }
+
+  goTo(link){
+    this.router.navigateByUrl(link);
+  }
+  result:any;
+
+  otpVerified:boolean = false;
+  otpSent:boolean = false;
+
+  onSendOTP(){
+    this.userData = this.PhoneValidationForm.value;
+    let phone = '+91'+this.userData.mob;
+    let body = "Yor OTP for Fincash verification is valid for 5 minute, please don't share.OTP:"
+
+    this.otpService.sendOTP(phone,body)
+        .subscribe(
+            res=>{
+              this.otpSent = true;
+              this.result = res;
+              localStorage.setItem('otpToken', this.result);
+            },
+            err=>{
+              console.log('an error occured');
+            }
+        )
+  }
+  resendBtnState:boolean = true;
+  resendBtndisableDuration = 15000;
+  resendOTP(){
+
+    this.otptimer =  Observable.timer(0, 1000).subscribe(t=>{
+      this.ticks = this.otpNextGapDuration-t;
+      if(this.ticks<=0){
+        this.otptimer.unsubscribe();
+      }
+    });
+    this.onSendOTP();
+    this.resendBtnState = false;
+    let timer = Observable.timer(this.resendBtndisableDuration);
+    timer.subscribe(t=>this.resendBtnState = !this.resendBtnState);
+  }
+
+   otpErrorMessage:string;
+   otpInvalid:boolean = false;
+
+  onValidateOTP(){
+    this.userData = this.OTPValidationForm.value;
+    let otp = this.userData.otp;
+    let otpStored = localStorage.getItem('otpToken');
+    if(otp==otpStored){
+      this.otpVerified = true;
+    } else{
+      this.otpInvalid = true;
+      this.otpErrorMessage = "Invalid OTP!"
+    }
+  }
+  checkPAN(){
+    console.log("Right PAN!");
+    this.pan = this.KYCStatusForm.controls['pan'].value;
+    this.http.post('/user/checkKYC', {"pan": this.pan})
+        .subscribe(
+            response => {
+              console.log(response);
+              this.kycCompliant = (response.statusCode=="KS100") ? true : false;
+              this.panGiven = true;
+            },
+            error => {
+              console.log("Error occurred in KYC status checking " + error.error);
+            }
+        )
+
+  }
+  proceed(){
+    this.router.navigateByUrl('registration');
+  }
+  ngOnDestroy (){
+    this.otptimer.unsubscribe();
+  }
+}

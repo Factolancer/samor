@@ -1,0 +1,200 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <br/>
+    <div class="heading-32-cash border-down">Increase your earnings by
+        <hr/>
+    </div>
+    <div class="heading-16-cash" style="padding-bottom: 15px;">Investing in
+        <span class="imp">SavingsPlus</span>
+    </div>
+    <div class="grey-back pad-20">
+        <app-savings-plus-card [funds]="savingsPlusFunds"></app-savings-plus-card>
+        <md-card class="fund-card">
+            <md-card-content>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="5" class="lightgray-circle" [@ShowHide]="iconOne">
+                        <md-icon class="md-24 md-brand-secondary">trending_up</md-icon>
+                    </div>
+                    <div fxFlexOffset="2" fxAlign="center" [@ShowHide]="iconOne">
+                        Higher returns as compared to Savings and Deposits
+                    </div>
+                    <div fxFlex="5" class="lightgray-circle">
+                        <md-icon class="md-24 md-brand-secondary">update</md-icon>
+                    </div>
+                    <div fxFlexOffset="2" fxAlign="center">
+                        Same day redemption
+                    </div>
+                    <div fxFlex="5" class="lightgray-circle">
+                        <md-icon class="md-24 md-brand-secondary">lock_open</md-icon>
+                    </div>
+                    <div fxFlexOffset="2" fxAlign="center">
+                        No lock-in or exit load
+                    </div>
+                    <div fxFlex="5" class="lightgray-circle">
+                        <md-icon class="md-24 md-brand-secondary">&#xE876;</md-icon>
+                    </div>
+                    <div fxFlexOffset="2" fxAlign="center">
+                        Invest and redeem on a click!
+                    </div>
+                    <!--<div fxFlex="30">-->
+                        <!--&lt;!&ndash;<div fxLayout="row" fxLayoutAlign="start center">&ndash;&gt;-->
+                            <!--<div fxFlex="15" class="lightgray-circle">-->
+                                <!--<i class="material-icons md-brand-secondary">trending_up</i>-->
+                            <!--</div>-->
+                            <!--<div fxFlex fxAlign="center">-->
+                                <!--Higher returns as compared to Savings and Deposits-->
+                            <!--</div>-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
+
+                    <!--<div fxFlex="22" >-->
+                        <!--<div fxLayout="row" fxLayoutAlign="center center">-->
+                            <!--<div fxFlex="15" class="lightgray-circle">-->
+                                <!--<i class="material-icons md-brand-secondary">update</i>-->
+                            <!--</div>-->
+
+                            <!--<div fxFlex fxAlign="center">-->
+                                <!--Same day redemption-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div flFlex="22">-->
+                        <!--<div fxLayout="row"  fxLayoutAlign="center center">-->
+                            <!--<div fxFlex="15" class="lightgray-circle">-->
+                                <!--<i class="material-icons md-brand-secondary">lock_open</i>-->
+                            <!--</div>-->
+                            <!--<div fxFlex fxAlign="center">-->
+                                <!--No lock-in or exit load-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div fxFlex="26">-->
+                        <!--<div fxLayout="row" fxLayoutAlign="center center">-->
+                            <!--<div fxFlex="15" class="lightgray-circle">-->
+                                <!--<i class="material-icons md-brand-secondary">check_box</i>-->
+                            <!--</div>-->
+                            <!--<div fxFlex fxAlign="center">-->
+                                <!--Invest and redeem on a click!-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="pad-20">
+        <div fxFlex="20">
+            <button class="cta-50" color="primary" md-raised-button (click)="addToCart()">Proceed
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!--<div class="col-sm-12">-->
+<!--<md-card class="cash-fund-card">-->
+<!--<md-card-content>-->
+<!--<table>-->
+<!--<tr>-->
+<!--<td>-->
+<!--<div class="white-circle">-->
+<!--<i class="material-icons">trending_up</i>-->
+<!--</div>-->
+<!--</td>-->
+<!--<td>-->
+<!--Higher returns as compared to Savings and Deposits &nbsp;-->
+<!--</td>-->
+<!--<td>-->
+<!--<div class="white-circle">-->
+<!--<i class="material-icons">update</i>-->
+<!--</div>-->
+<!--</td>-->
+<!--<td>-->
+<!--Same day Redemption &nbsp;-->
+<!--</td>-->
+<!--<td>-->
+<!--<div class="white-circle">-->
+<!--<i class="material-icons">lock_open</i>-->
+<!--</div>-->
+<!--</td>-->
+<!--<td>-->
+<!--No lock-in or exit load &nbsp;-->
+<!--</td>-->
+<!--<td>-->
+<!--<div class="white-circle">-->
+<!--<i class="material-icons">check_box</i>-->
+<!--</div>-->
+<!--</td>-->
+<!--<td>-->
+<!--Invest and redeem on a click!-->
+<!--</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--&lt;!&ndash;<div class="white-circle">&ndash;&gt;-->
+<!--&lt;!&ndash;<i class="material-icons">trending_up</i>&ndash;&gt;-->
+<!--&lt;!&ndash;Higher returns as compared to Savings and Deposits&ndash;&gt;-->
+<!--&lt;!&ndash;<i class="material-icons">update</i>&ndash;&gt;-->
+<!--&lt;!&ndash;<i class="material-icons">lock_open</i>&ndash;&gt;-->
+<!--&lt;!&ndash;<i class="material-icons">check_box</i>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div>&ndash;&gt;-->
+<!--&lt;!&ndash;Higher returns as compared to Savings and Deposits&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="white-circle">&ndash;&gt;-->
+<!--&lt;!&ndash;<i class="material-icons">update</i>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="white-circle">&ndash;&gt;-->
+<!--&lt;!&ndash;<i class="material-icons">lock_open</i>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="white-circle">&ndash;&gt;-->
+<!--&lt;!&ndash;<i class="material-icons">check_box</i>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--</md-card-content>-->
+<!--</md-card>-->
+<!--</div>-->
+<!--<div class="col-sm-12">-->
+<!--<md-card class="cash-fund-card">-->
+<!--<md-card-content>-->
+<!--<div class="col-sm-1">-->
+<!--<div class="white-circle">-->
+<!--<i class="material-icons">trending_up</i>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="col-sm-2">-->
+<!--Higher returns as compared to Savings and Deposits-->
+<!--</div>-->
+
+<!--<div class="col-sm-1">-->
+<!--<div class="white-circle">-->
+<!--<i class="material-icons">update</i>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="col-sm-2">-->
+<!--Same day redemption-->
+<!--</div>-->
+
+<!--<div class="col-sm-1">-->
+<!--<div class="white-circle">-->
+<!--<i class="material-icons">lock_open</i>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="col-sm-2">-->
+<!--No lock-in or exit load-->
+<!--</div>-->
+
+<!--<div class="col-sm-1">-->
+<!--<div class="white-circle">-->
+<!--<i class="material-icons">check_box</i>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="col-sm-2">-->
+<!--Invest and redeem on a click!-->
+<!--</div>-->
+<!--</md-card-content>-->
+<!--</md-card>-->
+<!--</div>-->

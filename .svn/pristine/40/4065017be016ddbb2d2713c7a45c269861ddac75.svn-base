@@ -1,0 +1,16 @@
+import {Fund} from "./fund";
+import {ProductInvestment} from "./product-investment";
+export class Cart {
+    id: string;
+    funds: Fund[];
+    investmentModeList: ProductInvestment[];
+
+    constructor(id?: string,
+                funds?: Fund[],
+                investmentModeList?: ProductInvestment[]) {
+
+        this.id = id || "";
+        this.funds = funds || [];
+        this.investmentModeList = investmentModeList || [];
+    }
+}

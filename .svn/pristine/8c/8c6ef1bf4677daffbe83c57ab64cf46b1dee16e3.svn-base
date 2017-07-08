@@ -1,0 +1,35 @@
+/**
+ * Created by Fincash on 28-02-2017.
+ */
+/**
+ * Created by Fincash on 18-02-2017.
+ */
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+
+import {TeamComponent} from "../about-us/team.component";
+import {WhyFincashComponent} from "../about-us/why-fincash.component";
+import {StaticTextComponent} from "./static-txt.component";
+import {PartnersComponent} from "../about-us/partners.component";
+
+const staticRoutes: Routes = [
+    {
+        path: 'about-us',
+        component: TeamComponent
+    },
+    {
+        path: 'why-fincash',
+        component: WhyFincashComponent
+    },
+    {
+        path: 'partners',
+        component: PartnersComponent
+    },
+    {
+        path: ':path',
+        component: StaticTextComponent
+    },
+
+];
+
+export const staticRouting: ModuleWithProviders = RouterModule.forChild(staticRoutes);

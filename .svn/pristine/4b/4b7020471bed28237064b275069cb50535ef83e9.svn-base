@@ -1,0 +1,16 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { UserComponent } from './user.component';
+import {SharedModule} from "../shared/shared.module";
+import {userRouting} from "./user.routes";
+import { PasswordComponent } from './password/password.component';
+
+@NgModule({
+  imports: [
+    CommonModule,
+      SharedModule,
+      userRouting
+  ],
+  declarations: [UserComponent, PasswordComponent]
+})
+export class UserModule { }

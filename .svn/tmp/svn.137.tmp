@@ -1,0 +1,13 @@
+import {OpaqueToken} from "@angular/core";
+export let CONFIG  = new OpaqueToken("environment");
+export interface IConfig {
+  playAPIUrl : string;
+  localStoragePrefix : string
+}
+
+export const EnvironmentConfig : IConfig = {
+  playAPIUrl: "http://localhost:9000",
+  localStoragePrefix : "fcash"
+};
+
+

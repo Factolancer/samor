@@ -1,0 +1,32 @@
+import { Observable } from 'rxjs/Rx';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { Injectable, ViewContainerRef } from '@angular/core';
+import {LoginComponent} from "./login.component";
+import {ForgotPasswordComponent} from "./forgot-password.component"; // brath added 12th jan 8pm 
+
+import {Router} from "@angular/router";
+
+@Injectable()
+export class ForgotPasswordService {
+
+    constructor(private dialog: MdDialog, public router: Router) { }
+
+    public forgotPassword(viewContainerRef: ViewContainerRef): Observable<any> {
+
+        let dialogRef: MdDialogRef<ForgotPasswordComponent>;
+        let config = new MdDialogConfig();
+        config.viewContainerRef = viewContainerRef;
+        config.role = 'dialog';
+        if(window.outerWidth<560){
+            config.width = '100vw';
+            config.height = '100vh';            
+        }
+        else{
+            config.width = '40%';
+            config.height = '50%';   
+        }
+        dialogRef = this.dialog.open(ForgotPasswordComponent, config);
+        return dialogRef.afterClosed();
+ 
+    }
+}

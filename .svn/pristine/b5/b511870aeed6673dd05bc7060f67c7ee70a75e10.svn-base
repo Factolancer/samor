@@ -1,0 +1,14 @@
+
+import {Injectable} from "@angular/core";
+import {HttpService} from "./http-service.service";
+
+@Injectable()
+export class LookUpService {
+
+    constructor(public httpService: HttpService) {    }
+
+    getByGroup(group: String){
+        return this.httpService.get('/lookup/byGroup/' + group)
+
+    }
+}

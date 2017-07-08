@@ -1,0 +1,27 @@
+export class CapitalGains {
+
+    private fundName:string;
+    private amc:string;
+    private folioNo:string;
+    private status:string;
+    private pan:string;
+    private transactionsList:RedemptionDetails;
+    private totalAmount:number;
+    private totalUnits:number;
+    private totalShortTermGain:number;
+    private totalLongTermGain:number;
+}
+
+class RedemptionDetails{
+
+    private desc:string;
+    private redeemDate:Date;
+    private units:number;
+    private price:number;
+    private amount:number;
+    private purchaseDate:Date;
+    private purchaseUnits:number;
+    private purchasePrice:number;
+    private shortTermGain:number;
+    private longTermGain:number;
+}

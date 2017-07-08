@@ -1,0 +1,61 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {CheckoutComponent} from "./checkout.component";
+import {CheckoutResolveService} from "./checkout-data-resolve-service";
+import {SummaryComponent} from "./summary/summary.component";
+import {SummaryResolveService} from "./summary-data-resolve-service";
+import {AuthGuard} from "../gaurds/auth.guard";
+import {URLAccessGuard} from "../gaurds/urlAccess.guard";
+<<<<<<< .mine
+import {KycGuard} from "../gaurds/kyc.guard";
+=======
+import {KycGuard} from "../gaurds/kyc.guard";
+import {OrderComponent} from "./order/order.component";
+import {OrderConfirmationComponent} from "./order/order-confirmation.component";
+>>>>>>> .r1988
+
+const checkoutRoutes: Routes = [
+    {
+        path: 'checkout',
+        children: [
+            {
+                path: 'init',
+                component: CheckoutComponent,
+                resolve: {
+                    checkoutData: CheckoutResolveService
+                },
+                canActivate: [URLAccessGuard]
+            },
+            {
+                path: 'summary',
+                component: SummaryComponent,
+                resolve: {
+                    userInfo: SummaryResolveService
+                },
+                canActivate: [URLAccessGuard]
+            },
+            {
+                path: 'confirm/:orderId',
+                component: OrderConfirmationComponent,
+                canActivate: [URLAccessGuard]
+            }
+        ],
+        canActivate: [AuthGuard, KycGuard]
+    },
+    {
+        path: 'order',
+        children: [
+            {
+                path: ':orderId',
+                component: OrderComponent,
+            },
+
+        ],
+        //canActivate: [AuthGuard, KycGuard]
+
+    }
+];
+
+export const checkoutRouting: ModuleWithProviders = RouterModule.forChild(checkoutRoutes);
+
+

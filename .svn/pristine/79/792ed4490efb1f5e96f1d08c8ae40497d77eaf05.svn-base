@@ -1,0 +1,57 @@
+@import "../../styles/partials/web-partials";
+
+.cart-product-head {
+  background-color: $brand-secondary;
+  color: $white;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  border-radius: 0;
+  padding: 15px;
+}
+
+.cart-product {
+  margin-bottom: 25px;
+}
+
+.cart-product-divider {
+  border-color: $dark-grey;
+  padding: 5px 0;
+}
+
+.cart-product-item {
+  background-color: $white;
+  border-radius: 0;
+  color: $black;
+  padding: 15px;
+
+  .fund {
+    padding: 10px 0;
+  }
+
+  .product-tag {
+    color: #BFBFBF;
+    font-size: 10px;
+    border: solid 1px #BFBFBF;
+    border-radius: 5px;
+    padding: 1px 5px;
+  }
+}
+
+.remove-btn {
+  color: $black;
+  background-color: $white;
+  border: none;
+  font-size: 16px;
+  outline-style: none;
+
+  &:hover {
+    color: $brand-secondary;
+  }
+}
+
+.add-funds {
+  color: $brand-secondary;
+  font-size: 12px;
+  padding: 0;
+}

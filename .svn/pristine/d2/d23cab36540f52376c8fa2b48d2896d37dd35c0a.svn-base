@@ -1,0 +1,173 @@
+import {Injectable, Inject} from "@angular/core";
+import {HttpService} from "./http-service.service";
+import {Fund} from "../models/fund";
+import {Router} from "@angular/router";
+import {IAppConfig, APP_CONFIG} from "../../environments/environment";
+import {LocalStorageService} from "angular-2-local-storage";
+import {LoginService} from "./login.service";
+import {Logger} from "../shared/logger/logger";
+import {isNullOrUndefined} from "util";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
+import {Cart} from "../models/cart";
+
+@Injectable()
+export class CartService {
+
+    cartSubject: BehaviorSubject<Cart>;
+    cartObservable: Observable<Cart>;
+    private cart: Cart;
+    className: string;
+
+    constructor(private httpService: HttpService, public  router: Router, private loginService: LoginService,
+                @Inject(APP_CONFIG) private config: IAppConfig, private localStorageService: LocalStorageService,
+                private logger: Logger) {
+
+        this.className = "CartService";
+        this.cart = new Cart();
+        this.cartSubject = new BehaviorSubject<Cart>(this.cart);
+        this.cartObservable = this.cartSubject.asObservable();
+
+    }
+
+    addFundToCart(funds: Fund[]): Observable<any> {
+
+        let cart = this.getCartSubjectState();
+        if (this.checkIfFundExists(funds)) {
+            return Observable.of({message: "Fund already exists in cart!"});
+        } else {
+            cart.funds.push(funds[0]);
+            return this.httpService.post("/checkout/saveCart", cart).map(
+                response => {
+                    cart.id = response.cartId;
+                    this.setCartSubjectState(cart);
+                    return {message: "Fund successfully added to cart!"}
+                    //return response;
+                })
+        }
+
+    }
+
+    updateCartData(funds: Fund[]) {
+        let cart = this.getCartSubjectState();
+        cart.funds = funds;
+        return this.httpService.post("/checkout/saveCart", cart).map(res => {
+            cart.id = res.cartId;
+            this.setCartSubjectState(cart);
+            return res;
+        });
+    }
+
+    // addFundsToCart(fundIds: string[], investmentMode: string) {
+    //     return this.httpService.post("/fund/addFundsToCart", {"fundIdList": fundIds, "investmentMode": investmentMode});
+    // }
+
+    removeFundFromCart(fundsList: Fund[]) {
+        let cart = this.getCartSubjectState();
+        cart.funds = fundsList;
+        return this.httpService.post("/checkout/saveCart", cart).map(res => {
+            cart.id = res.cartId;
+            this.setCartSubjectState(cart);
+            return res;
+        });
+    }
+
+    getCartData(cartId: any) {
+        return this.httpService.post("/checkout/getCartData", {"id": cartId});
+    }
+
+    addFundsToCart(funds: Fund[]) {
+        let cart = this.getCartSubjectState();
+        funds.forEach(fund => {
+            cart.funds = cart.funds.filter(existingFund => {
+                if (existingFund.id != fund.id) {
+                    this.logger.debug(this.className, "true", existingFund, fund);
+                    return true;
+                } else if (fund.investmentMode != existingFund.investmentMode) {
+                    this.logger.debug(this.className, "true", existingFund, fund);
+                    return true;
+                } else {
+                    this.logger.debug(this.className, "false", existingFund, fund);
+                    return false;
+                }
+            });
+        });
+
+        funds.forEach(fund => {
+            cart.funds.push(fund);
+        });
+
+        this.httpService.post("/checkout/saveCart", cart)
+            .subscribe(
+                response => {
+                    cart.id = response.cartId;
+                    this.setCartSubjectState(cart);
+                    this.router.navigate(['/cart']);
+                }
+            )
+    }
+
+    mergeCart() {
+        if (this.isCartPresent()) {
+            this.httpService.post("/checkout/mergeCart", {"cartId": this.getCartToken()}).subscribe(res => {
+                let cart = res as Cart;
+                this.setCartSubjectState(cart);
+            });
+        } else {
+            this.httpService.post("/checkout/mergeCart", {"cartId": ""}).subscribe(res => {
+                let cart = res as Cart;
+                this.setCartSubjectState(cart);
+            });
+        }
+    }
+
+    resetCart() {
+        this.setCartSubjectState(new Cart());
+        this.localStorageService.remove(this.config.cartToken);
+    }
+
+
+    isCartPresent() {
+        let cartId = this.getCartToken();
+        if (isNullOrUndefined(cartId)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    getCartToken() {
+        let token = this.localStorageService.get(this.config.cartToken);
+        return token ? token : null;
+    }
+
+    setCartToken(cartId: string) {
+        if (cartId) {
+            this.localStorageService.set(this.config.cartToken, cartId);
+        }
+    }
+
+    setCartSubjectState(cart: Cart) {
+        this.logger.debug("CartService", cart);
+        this.cart = cart;
+        this.setCartToken(cart.id);
+        this.cartSubject.next(cart);
+    }
+
+    getCartSubjectState() {
+        return this.cartSubject.getValue();
+    }
+
+    checkIfFundExists(funds: Fund[]): boolean {
+        let isFound = false;
+        funds.forEach(fund => {
+            this.cart.funds.forEach(existingFund => {
+                if (existingFund.id == fund.id && existingFund.investmentMode == fund.investmentMode) {
+                    isFound = true;
+                }
+            });
+        });
+        return isFound
+    }
+
+}

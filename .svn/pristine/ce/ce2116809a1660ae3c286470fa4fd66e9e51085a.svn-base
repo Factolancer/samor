@@ -1,0 +1,24 @@
+import {NgModule} from "@angular/core";
+import {DashboardComponent} from "./dashboard.component";
+import {SharedModule} from "../shared/shared.module";
+import {dashboardRouting} from "./dashboard.routes";
+import {Dashboard1Component} from "./dashboard1/dashboard1.component";
+
+// for google chart
+import {ChartComponent} from "./chart/chart.component";
+import {SubChartComponent} from "./chart/sub-chart.component";
+import {TransactionComponent} from "./transaction/transaction.component";
+
+
+
+
+@NgModule({
+    imports: [
+        SharedModule,
+        dashboardRouting,
+    ],
+    declarations: [DashboardComponent, Dashboard1Component, ChartComponent, SubChartComponent, TransactionComponent],
+    entryComponents:[ChartComponent, SubChartComponent, TransactionComponent],
+})
+export class DashboardModule {
+}

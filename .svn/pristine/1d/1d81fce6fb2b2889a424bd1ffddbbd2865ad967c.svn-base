@@ -1,0 +1,22 @@
+<div class="col-md-8 col-md-offset-2 ">
+  <md-tab-group [(selectedIndex)]="selectedTab">
+    <md-tab label="Change Password">
+      <app-password></app-password>
+    </md-tab>
+    <md-tab label="Update Details">
+
+    </md-tab>
+    <md-tab label="Bank Details">
+
+    </md-tab>
+    <md-tab label="My Nominee">
+
+    </md-tab>
+    <md-tab label="Change Broker">
+      <!--<app-asset-allocation></app-asset-allocation>-->
+    </md-tab>
+    <md-tab label="Folio Consolidation">
+
+    </md-tab>
+  </md-tab-group>
+</div>

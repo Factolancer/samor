@@ -1,0 +1,37 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="60" *ngIf="!showGoals">
+        <div fxLayout="column" fxLayoutAlign="center center" class="pad-tb-35">
+            <div fxFlex class="heading-32-blue">{{calculatorTitle}}</div>
+        </div>
+        <md-card class="card pad-25">
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+                <div fxFlex (click)="showGoalOptions()" class="icon-space clickable">
+                    <div class=""><img src="../../../assets/img/sip/calc/amount.svg" alt="Right amount of SIP icon"></div>
+                    <div class="title">Invest in a SIP to achieve your goal!</div>
+                </div>
+                <div fxFlex routerLink="returns" class="icon-space clickable">
+                    <div class=""><img src="../../../assets/img/sip/calc/returns_big.svg" alt="Return on SIP icon"></div>
+                    <div class="title">See how your SIP investment grows!</div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+
+    <div fxFlex="60" *ngIf="showGoals">
+        <div fxLayout="column" fxLayoutAlign="center center" class="pad-tb-35">
+            <div fxFlex class="heading-32-blue">{{calculatorTitle}}</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutWrap="wrap">
+            <div fxFlex="30" *ngFor="let goal of sipGoals; let i= index;"
+                 (click)="selectGoal(goal)" class="clickable">
+                <md-card class="goal-card">
+                    <img md-card-image src="{{goal.imagePath}}">
+                    <md-card-footer class="goal-title">{{goal.name}}</md-card-footer>
+                </md-card>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+

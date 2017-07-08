@@ -1,0 +1,43 @@
+import {Component, OnInit} from "@angular/core";
+import {Input} from "@angular/core/src/metadata/directives";
+import {SmartSipFunds} from "./smart-sip-funds";
+import {CartService} from "../../cart/cart.service";
+
+@Component({
+    selector: 'app-smart-sip-card',
+    templateUrl: './smart-sip-card.component.html',
+    styleUrls: ['./smart-sip-card.component.css']
+})
+export class SmartSipCardComponent implements OnInit {
+
+    //inputs
+    @Input() set funds(funds: SmartSipFunds[]) {
+        this._funds = funds || [];
+        this.selectedFunds = this._funds;
+    }
+
+    _funds: SmartSipFunds[];
+    selectedFunds: SmartSipFunds[];
+
+
+    constructor(private cartService: CartService) {
+    }
+
+    changeFundComposition(checked: boolean, fundItem: SmartSipFunds) {
+        if (checked) {
+            this.selectedFunds.push(fundItem);
+        } else {
+            this.selectedFunds = this.selectedFunds.filter(selectedFund => selectedFund.id != fundItem.id);
+        }
+
+        console.log(this.selectedFunds);
+    }
+
+    proceed() {
+
+    }
+
+    ngOnInit() {
+    }
+
+}

@@ -1,0 +1,27 @@
+import {Component, OnInit} from "@angular/core";
+import {Router} from "@angular/router";
+import {CustomerNameService} from "../core/services/customer-name.service";
+
+@Component({
+    selector: 'app-reg-complete',
+    templateUrl: './registration-wait.component.html',
+    styleUrls: ['./registration.styles.scss'],
+})
+
+export class RegistrationWaitComponent implements OnInit{
+    firstName: string;
+
+    constructor(public router: Router, public customerNameService: CustomerNameService){}
+
+    ngOnInit(){
+        this.firstName = this.customerNameService.getNameOfUser();
+    }
+
+    /*toProducts(){
+        this.router.navigate(['/products'])
+    }
+
+    toDashboard(){
+        this.router.navigate(['/dashboard'])
+    }*/
+}

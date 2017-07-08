@@ -1,0 +1,25 @@
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MaterialModule} from "@angular/material";
+import {BasicSectionModule} from "./sections/basic-section/basic-section.module";
+import {RegistrationComponent} from "./registration.component";
+import {registrationrouting} from "./registration.routing";
+import {KycSectionModule} from "./sections/kyc-section/kyc-section.module";
+import {BankSectionModule} from "./sections/bank-section/bank-section.module";
+import {OtherSectionModule} from "./sections/other-section/other-section.module";
+import {UploadSectionModule} from "./sections/upload-section/upload-section.module";
+import {AuthGuard} from "../auth.guard";
+import {LoginComponent} from "../login/login.component";
+
+@NgModule({
+  imports: [
+    CommonModule, FormsModule, registrationrouting, ReactiveFormsModule,
+      MaterialModule,
+    BasicSectionModule, KycSectionModule, BankSectionModule, OtherSectionModule, UploadSectionModule,
+
+  ],
+  declarations: [RegistrationComponent],
+  providers: [AuthGuard]
+})
+export class RegistrationModule { }

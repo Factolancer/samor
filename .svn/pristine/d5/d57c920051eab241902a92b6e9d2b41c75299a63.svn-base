@@ -1,0 +1,16 @@
+<md-card class="explore-fund-head">
+    Filters
+</md-card>
+<md-card class="filter-data">
+    <app-category-filter></app-category-filter>
+    <md-divider></md-divider>
+    <app-sub-category-filter></app-sub-category-filter>
+    <md-divider></md-divider>
+    <app-amc-filter></app-amc-filter>
+    <md-divider></md-divider>
+    <app-aum-filter></app-aum-filter>
+    <md-divider></md-divider>
+    <app-age-filter></app-age-filter>
+    <md-divider></md-divider>
+    <app-rating-filter></app-rating-filter>
+</md-card>

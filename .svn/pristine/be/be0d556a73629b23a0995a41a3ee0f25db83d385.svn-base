@@ -1,0 +1,26 @@
+import {Injectable} from "@angular/core";
+import {Logger} from "../shared/logger/logger";
+import {Observable} from "rxjs";
+import {HttpService} from "./http-service.service";
+import {KYCGroup} from "../constants/KYCGroup";
+
+@Injectable()
+export class IsBankUpdatedService {
+
+    isbankupdated: boolean;
+    className: string;
+    constructor(public logger: Logger, public httpService: HttpService) {
+        this.className = "IsBankUpdatedService"
+    }
+
+    public checkIfBankUpdated() : Observable<boolean>{
+        return this.httpService.get('/user/checkIfBankUpdated')
+            .map(response => {
+                this.logger.debug(this.className, response.isbankupdated)
+                this.isbankupdated = response.isbankupdated;
+
+                return this.isbankupdated;
+            });
+
+    }
+}

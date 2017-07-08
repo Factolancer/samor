@@ -1,0 +1,36 @@
+/**
+ * Created by Fincash on 23-01-2017.
+ */
+
+var config = require('../../config/environment'),
+    httpRequest = require('request');
+exports.verify = function (req, res) {
+    var  userId = req.param('userid');
+    var url = "http://"+config.playServer.ip + ':' + config.playServer.http_port + '/server/activateUser';
+    httpRequest({
+            url: url,
+            method: "POST",
+            /*json: true,*/
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({ "userid" : userId})
+        },
+        function (error, response, body) {
+            if (error && error!=null) {
+                console.log('upload failed: @  /server/activateUser ', error);
+                res.json({success: false, msg: error});
+            }
+            console.log('Upload successful! @  /server/activateUser Server responded with:', body);
+           if(body.success){
+               res.json({success: true, msg: "Hola!!!!"});
+           }else{
+               res.json({success: false, msg: "Gola!!!!"});
+           }
+
+        }
+    )
+};
+
+
+//module.exports = router;

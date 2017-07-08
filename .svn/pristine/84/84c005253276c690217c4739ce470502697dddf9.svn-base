@@ -1,0 +1,85 @@
+import {Component, OnInit} from '@angular/core';
+import {SipReturnsQuestions} from "./questions";
+import {CheckReturns} from "./goals";
+import {CalculationKeys} from "./calculation-keys";
+import {SipCalcGoal} from "./sip-calc-goal";
+import {SipCalcQuestion} from "./sip-calc-question";
+import {Router, ActivatedRoute} from "@angular/router";
+
+@Component({
+    selector: 'app-returns-based',
+    templateUrl: './returns-based.component.html',
+    styleUrls: ['./returns-based.component.css']
+})
+export class ReturnsBasedComponent implements OnInit {
+
+
+    selectedQuestion: SipCalcQuestion;
+    questions: SipCalcQuestion[];
+    goal: SipCalcGoal;
+    principal: number;
+    amount: number;
+    adjustedAmount: number;
+    gains: number;
+    investedAmount: number;
+    futureValue: number[] = [];
+    futureYears: number[] = [5, 10, 15];
+
+    constructor(private router: Router, private route: ActivatedRoute) {
+    }
+
+
+    calculate() {
+        let years = 0;
+        let principal = 0;
+        let inflation = 0;
+        let rate = 0;
+
+
+        this.questions.forEach(question => {
+            switch (question.calculationKey) {
+                case CalculationKeys.inflation:
+                    inflation = question.answer;
+                    break;
+                case CalculationKeys.principal:
+                    principal = question.answer;
+                    break;
+                case CalculationKeys.inflation:
+                    inflation = question.answer;
+                    break;
+                case CalculationKeys.rate:
+                    rate = question.answer;
+                    break;
+                case CalculationKeys.years:
+                    years = question.answer;
+                default:
+                    break;
+            }
+        });
+
+        let adjustedRate = (rate - inflation) / 1200;
+        let months = years * 12;
+        //adjustment of amount against inflation
+
+        //amount after years without infaltion adjustment
+        this.amount = +(((principal * (1 + rate / 1200) * ((1 + rate / 1200) ** months - 1)) / (rate / 1200)).toFixed(0));
+        //amount after year with inflation adjustment
+        this.adjustedAmount = +(((principal * (1 + adjustedRate) * ((1 + adjustedRate) ** months - 1)) / adjustedRate).toFixed(0));
+        //amount invested
+        this.investedAmount = (principal * months);
+        this.gains = this.amount - this.investedAmount;
+        this.principal = principal;
+
+        this.futureYears.forEach(year => {
+            let ftrVal = +(((principal * (1 + adjustedRate) * ((1 + adjustedRate) ** (year * 12) - 1)) / adjustedRate).toFixed(0));
+            this.futureValue.push(ftrVal);
+        });
+    }
+
+
+    ngOnInit() {
+        this.questions = SipReturnsQuestions
+        this.goal = CheckReturns;
+    }
+
+}

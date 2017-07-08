@@ -1,0 +1,40 @@
+<md-card class="fund-card" *ngFor="let fundItem of _funds">
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <div fxFlex="5">
+            <md-checkbox [(ngModel)]="fundItem.selected"
+                         (change)="changeFundComposition($event.checked, fundItem)">
+            </md-checkbox>
+        </div>
+        <div fxFlex="80">
+            <div>
+                <span (click)="viewFactSheet(fundItem.id)" class="fund-name clickable">
+                    <md-icon class="md-14">&#xE873;</md-icon>{{fundItem.name}}
+                </span>
+            </div>
+            <div>
+                <span>Fincash's Fund Rating - </span>
+                <span [outerHTML]="fundItem.rating | rating"></span>
+            </div>
+            <div>
+                <span>Riskometer - </span>
+                <span>{{fundItem.risk}}</span>
+            </div>
+        </div>
+        <div fxFlex="15" class="fund-card-item">
+            <span>Fund Age</span><br/>
+            <span>{{fundItem.age}} years</span>
+        </div>
+        <div fxFlex="15" class="fund-card-item">
+            <span>3 yr. Return</span><br/>
+            <span>{{fundItem.return3yr}} %</span>
+        </div>
+        <div fxFlex="15" class="fund-card-item">
+            <span>AUM</span><br/>
+            <span>{{fundItem.aum | currency:'INR':true:'1.0-0' }} Cr.</span>
+        </div>
+        <div fxFlex="15" class="fund-card-item">
+            <span>Min. Investment</span><br/>
+            <span>{{fundItem.minInvestment | currency:'INR':true:'1.0-0'}}</span>
+        </div>
+    </div>
+</md-card>

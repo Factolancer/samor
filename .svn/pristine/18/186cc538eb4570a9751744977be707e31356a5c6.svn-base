@@ -1,0 +1,30 @@
+import {NgModule} from "@angular/core";
+import {SharedModule} from "../shared/shared.module";
+import {FactsheetModule} from "../factsheet/factsheet.module";
+import {CartModule} from "../cart/cart.module";
+import {RedeemFundSearchBarComponent} from "./redeem-fund-search-bar.component";
+import {redemptionRouting} from "./redemption.routes";
+import {RedemptionComponent} from "./redemption.component";
+import {RedemptionService} from "../core/services/redemption.service";
+import {RedemptionSummaryComponent} from "./redemption-summary.component";
+import {RedSummaryResolveService} from "./red-summary-data-resolve-service";
+import {RedemptionOrderComponent} from "./redemption-order.component";
+import {OTPService} from "../kyc-status/otp-service";
+import {RedemptionConfirmationComponent} from "./redemption-confirmation.component";
+import {InstantRedemptionComponent} from "./instant-redemption.component";
+import {InstantRedemptionResolveService} from "./instant-redemption-data-resolve.service";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        redemptionRouting,
+        FactsheetModule,
+        CartModule
+    ],
+    entryComponents: [RedemptionConfirmationComponent],
+    providers: [RedSummaryResolveService,OTPService, InstantRedemptionResolveService],
+    declarations: [RedemptionComponent, RedemptionConfirmationComponent,RedeemFundSearchBarComponent, RedemptionSummaryComponent, RedemptionOrderComponent,
+    InstantRedemptionComponent]
+})
+export class RedemptionModule {
+}

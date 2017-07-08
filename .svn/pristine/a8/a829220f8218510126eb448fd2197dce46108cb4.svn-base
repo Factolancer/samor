@@ -1,0 +1,17 @@
+import { Injectable } from '@angular/core';
+import {FundSearchResults} from "../search/search-results";
+import {Subject} from "rxjs/Subject";
+
+@Injectable()
+export class CartService {
+
+  // private cartSource = new Subject<SearchResults>();
+  // searchResults = this.searchResultsSource.asObservable();
+  //
+  // constructor() { }
+  //
+  // addToCart(Fund: fund) {
+  //
+  // }
+
+}

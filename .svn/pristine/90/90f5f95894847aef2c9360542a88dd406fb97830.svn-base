@@ -1,0 +1,24 @@
+import {Component, Input} from "@angular/core/src/metadata/directives";
+
+@Component({
+    selector: 'app-filter-title',
+    styleUrls: ['filters.css'],
+    template: `<div class="col-md-12 clickable" (click)="showFilterContent= !showFilterContent">
+        <span class="filter-title">{{filterTitle}}</span>
+        <span class="float-right">
+            <i *ngIf="showFilterContent" class="material-icons md-24">&#xE316;</i><!--Up Arrow-->
+            <i *ngIf="!showFilterContent" class="material-icons md-24">&#xE313;</i><!--Down Arrow-->
+        </span>
+    </div>`,
+})
+export class FilterTitleComponent {
+
+    @Input() public showFilterContent: boolean = false;
+    @Input() filterTitle: string;
+
+    constructor() {
+
+    }
+
+
+}

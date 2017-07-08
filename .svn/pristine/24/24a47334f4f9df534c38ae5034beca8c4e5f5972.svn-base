@@ -1,0 +1,148 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Investment Summary</h1>
+            <h4 class="center-align">SIP type > Fund Selection > Investment Portfolio > Summary &amp; Checkout</h4>
+        </div>
+    </section>
+    <section class="data-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div *ngFor="let product of summaryData.products; let productIndex=index;">
+                   <!-- {{productEnum[product.productName]}}-->
+                    <table>
+                        <thead class="table-header">
+                        <td class=" table-element">Fund</td>
+                        <td class="table-element">Start Date</td>
+                        <td class="table-element">End Date</td>
+                        <td class="table-element">No Of Months</td>
+                        <td class="table-element">Investment Amount</td>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let fund of product.funds; let fundIndex=index;"
+                            class="table-row">
+                            <td class="table-element left-align">
+                                {{fund.name}} - {{fund.subOption}}
+                            </td>
+                            <td class="table-element">
+                                <md-icon class="material-icons md-14 clickable">&#xE88E;</md-icon>
+                                {{fund.startDate}}
+                            </td>
+                            <td class="table-element">
+                                {{fund.endDate}}
+                            </td>
+                            <td class="table-element">
+                                {{fund.months}}
+                            </td>
+                            <td class="table-element">
+                                {{fund.investmentAmount | currency:'INR':true:'1.0-0'}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="complete-area">
+                    <label>Name</label><br>
+                    <span>{{summaryData.name}}</span>
+                </div>
+                <div class="complete-area">
+                    <label>PAN</label><br>
+                    <span>{{summaryData.pan}}</span>
+                </div>
+                <div class="complete-area">
+                    <label>Total Investment</label><br>
+                    <span>{{summaryData.totalInvestment | currency:'INR':true:'1.0-0'}}</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="complete-area">
+                    <label>Nominee</label><br>
+                    <span>{{summaryData.nominee}}</span>
+                </div>
+                <div class="complete-area">
+                    <label>Bank</label><br>
+                    <span>{{summaryData.bank}}</span>
+                </div>
+                <div class="complete-area">
+                    <span *ngIf="summaryData.kyc"><i class="material-icons">&#xE86C;</i> KYC</span>
+                    <span *ngIf="summaryData.risk"><i class="material-icons">&#xE86C;</i> Risk Profiling</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"><label>Disclaimers</label></div>
+            <div class="col-md-12 disclaimer-text">
+                <p><b>Disclaimer 1:</b>Your risk appetit.....</p>
+                <p><b>Disclaimer 2:</b>Cutoff:</p>
+                <p><b>Disclaimer 3:</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet,
+                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                    enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                    nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                    mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem
+                    ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                    culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+                    est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet,
+                    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                    enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                    nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                    mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem
+                    ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                    culpa qui officia deserunt mollit anim id est laborum.</p>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <md-checkbox [(ngModel)]="summaryData.agreement"> I have read the disclaimers and I agree to the Terms &
+                    Conditions
+                </md-checkbox>
+            </div>
+            <div class="col-md-4 text-right">
+                <div>IP Address: {{summaryData.ipAddress}}</div>
+                <div>Time: {{summaryData.time}}</div>
+            </div>
+        </div>
+    </section>
+    <section class="data-foot">
+        <div class="row">
+            <div class="col-md-12">
+                <button color="primary" md-raised-button="" [disabled]="!summaryData.agreement"
+                        class="float-right" (click)="proceed()">
+                    Proceed to Invest
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

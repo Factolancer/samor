@@ -1,0 +1,68 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="10" class="pad-tb-25" *ngIf="!orderSummary">
+        <md-progress-spinner color="primary" mode="indeterminate"></md-progress-spinner>
+    </div>
+    <div fxFlex="65" class="heading-32-dark-grey center-align pad-tb-25" *ngIf="orderSummary">
+        Your order has been initiated!
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper" *ngIf="orderSummary">
+    <div fxFlex="50" class="order-ack">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxFlex="30" class="title">
+                Order Details
+            </div>
+            <div fxFlex="20" class="print clickable" (click)="print()">
+                <md-icon class="md-14">&#xE8AD;</md-icon>
+                Print
+            </div>
+        </div>
+        <md-card class="no-padding">
+            <div class="head" fxLayout="row" fxLayoutAlign="start center">
+                <div fxFlex="50">Order Id: {{orderId}}</div>
+                <div fxFlex="50" class="right-align">Order Time: {{orderSummary.orderTime}}</div>
+            </div>
+            <div class="body">
+                <div fxLayout="row" fxLayoutAlign="center center" class="table-head">
+                    <div fxFlex="50">Fund</div>
+                    <div fxFlex="25">Investment Mode</div>
+                    <div fxFlex="25">Status</div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center"
+                     *ngFor="let fund of orderSummary.subOrderList; let index = index"
+                     class="table-body">
+                    <div fxFlex="50">
+                        <div class="dark-grey-text bold">{{fund.schemeDisplayName}}</div>
+                        <div class="plan-option">Plan-<span>{{fund.schemePlan}}</span> Option-<span>{{fund.schemeOption}}</span>
+                        </div>
+                    </div>
+                    <div fxFlex="25" class="center-align">
+                        <div>{{fund.investmentMode}}<span
+                                *ngIf="fund.investmentMode == investmentMode[investmentMode.SIP]"> - {{fund.sipFrequency}}</span>
+                        </div>
+                        <div *ngIf="fund.investmentMode == investmentMode[investmentMode.SIP]">
+                            {{fund.sipNoOfInstallments}} Installments
+                        </div>
+                    </div>
+                    <div fxFlex="25" class="center-align">
+                        <div class="dark-grey-text bold">Amount: {{fund.amount}}</div>
+                        <div *ngIf="!subOrderPaymentStatus[index] || !subOrderPaymentStatus[index].statusCode"><img
+                                src="../../../assets/img/loading.gif" width="20">
+                        </div>
+                        <div *ngIf="subOrderPaymentStatus[index] && subOrderPaymentStatus[index].status"
+                             [ngClass]="{'success-msg': subOrderPaymentStatus[index].statusCode == 2 ||
+                              subOrderPaymentStatus[index].statusCode == 3 ||
+                              subOrderPaymentStatus[index].statusCode == 4 ||
+                              subOrderPaymentStatus[index].statusCode == 6 ,
+                               'failed-msg':subOrderPaymentStatus[index].statusCode == 1 ||
+                              subOrderPaymentStatus[index].statusCode == 5 ||
+                              subOrderPaymentStatus[index].statusCode == 7  }">
+                            {{subOrderPaymentStatus[index].status}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+        <div class="disclaimer">Disclaimer: {{disclaimer}}</div>
+    </div>
+</div>

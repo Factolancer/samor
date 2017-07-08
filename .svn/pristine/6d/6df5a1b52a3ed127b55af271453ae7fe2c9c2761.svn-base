@@ -1,0 +1,31 @@
+import { Component, OnInit } from '@angular/core';
+import {IRR} from "./irr";
+import {IRRService} from "./irr.service";
+import {HttpService} from "../../services/http-service.service";
+
+@Component({
+  selector: 'app-irr-report',
+  templateUrl: './irr-report.component.html',
+  styleUrls: ['./irr-report.component.css'],
+  providers: [IRRService]
+})
+export class IrrReportComponent implements OnInit {
+
+  irrData: IRR[];
+
+  constructor(public irrService: IRRService, public http: HttpService) { }
+
+  ngOnInit() {
+
+    // this.http.get('/fund/getIrr')
+    //     .subscribe(data => {
+    //       this.irrData = data as IRR[]
+    //     })
+    this.irrService.getIRRData()
+        .subscribe(irr => {
+          this.irrData = irr as IRR[]
+        })
+
+  }
+
+}

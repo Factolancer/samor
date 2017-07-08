@@ -1,0 +1,69 @@
+import {Component, OnDestroy, OnInit} from "@angular/core";
+import {MdDialogRef} from "@angular/material";
+import {Subscription} from "rxjs/Subscription";
+import {Logger} from "../core/logger/logger";
+import {UtilityService} from "../core/services/utility.service";
+
+@Component({
+    selector: 'app-payment-guideline-dialog',
+    templateUrl: './payment-guideline.component.html',
+    styleUrls: ['./checkout.styles.scss']
+})
+
+
+export class PaymentGuideLineDialogComponent implements OnInit, OnDestroy {
+
+    config: any;
+    closingSubscription: Subscription;
+    visibleImage: string;
+    visibleIndex: number;
+    isNetBanking: boolean;
+    rtgsArray: string[]= ["../../assets/img/guide/neft_rtgs.jpg"];
+    netBankingArray: string[] = ["../../assets/img/guide/net_banking_1.jpg", "../../assets/img/guide/net_banking_2.jpg"];
+    showProceed: boolean;
+    paymentLink: string;
+
+    constructor(public dialogRef: MdDialogRef<PaymentGuideLineDialogComponent>, private logger: Logger,
+                private utilityService: UtilityService) {
+        this.showProceed = false;
+    }
+
+    showRtgsImage() {
+        this.visibleImage = this.rtgsArray[0];
+    }
+
+    showNetBankingImage() {
+        this.isNetBanking = true;
+        this.visibleImage = this.netBankingArray[0];
+        this.visibleIndex = 0;
+    }
+
+    toggleNetBankingImg() {
+        if(this.visibleIndex == 0) {
+            this.visibleImage = this.netBankingArray[1];
+            this.visibleIndex = 1;
+        } else {
+            this.visibleImage = this.netBankingArray[0];
+            this.visibleIndex = 0;
+        }
+
+
+    }
+
+    proceed() {
+        this.closingSubscription = this.dialogRef.afterClosed().subscribe(value => {
+            this.utilityService.redirectionByWindow(this.paymentLink);
+        });
+        this.dialogRef.close();
+    }
+
+    ngOnInit() {
+
+    }
+
+    ngOnDestroy() {
+
+    }
+
+
+}

@@ -1,0 +1,118 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="">
+    <div fxFlex="55" class="center-align pad-tb-20">
+        <span class="heading-32-blue-tax">Save up to INR 46,350</span>
+        <span class="heading-32-black-tax">on your Taxes under Section 80c!</span>
+        <hr/>
+        <span class="heading-18-black">By Investing in ELSS Funds</span>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper mar-tb-35">
+    <div fxFlex="80">
+        <md-card class="tax-product">
+            <div fxLayout="row" fxLayoutAlign="center stretch">
+                <div fxFlex="70">
+                    <div class="heading-32-tax pad-tb-15">TaxSaver</div>
+                    <div fxLayout="row" fxLayoutAlign="center center" class="tax-feature-area">
+                        <div fxFlex class="tax-feature">
+                            <div class="tax-feature-icon">
+                                <img src="../../assets/img/tax/top-2.svg"
+                                     alt="Top 2 best performing ELSS schemes">
+                            </div>
+                            <div class="tax-feature-text">Top-2 Best Performing ELSS Funds</div>
+                        </div>
+                        <div fxFlex class="tax-feature">
+                            <div class="tax-feature-icon">
+                                <img src="../../assets/img/tax/save-tax.svg"
+                                     alt="Top 2 best performing ELSS schemes">
+                            </div>
+                            <div class="tax-feature-text">Top-2 Best Performing ELSS Funds</div>
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex="30" class="right-grey-area">
+                    <div fxFlex="row" fxLayoutAlign="center center">
+                        <div fxFlex="60">
+                            <div class="pad-tb-40 text">Start Saving Tax in <br><b><i>2 Minutes!</i></b></div>
+                            <button md-raised-button="" routerLink='taxsaver' color="primary" class="cta-50">
+                                Invest
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="start start" class="wrapper">
+    <div fxFlex="20" fxFlexOffset="10">
+        <button md-raised-button="" color="primary" class="cta-50" routerLink="/explore/elss">
+            Explore ELSS Funds
+        </button>
+    </div>
+    <div fxFlex="20" fxFlexOffset="40">
+        <button md-button="" routerLink="calculator" class="hollow-cta-50">
+            <img src="../../assets/img/tax/calc/calc.svg" alt="Tax Calc icon">
+            Tax Calculator
+        </button>
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class="grey-back mar-tb-40">
+    <div fxFlex="100">
+        <div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+            <div fxFlex="80" class="elss-explanation">
+                <div fxLayout="row" fxLayoutAlign="center center" class="title pad-tb-20">
+                    <div fxFlex>
+                        WHY ELSS OVER OTHER TAX-SAVING AVENUES?
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-15">
+                    <div fxFlex="25">
+                        <md-card class="no-padding feature-card">
+                            <div class="no-margin">
+                                <div class="elss-title pad-tb-25" mdTooltip="Equity Linked Savings Schemes">
+                                    ELSS
+                                </div>
+                            </div>
+                            <div class="no-margin">
+                                <div class="pad-tb-15">
+                                    <h5>3 Years Lock-in</h5>
+                                    <h3>Returns ~12-15%</h3>
+                                    <h5>Tax on Return: No</h5>
+                                </div>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div fxFlex=5 class="center-align">Vs</div>
+                    <div fxFlex="55">
+                        <md-card class="no-padding feature-card">
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <div fxFlex class="no-padding  pad-tb-25 other-title" mdTooltip="Public Provident Fund">
+                                    PPF
+                                </div>
+                                <div fxFlex class="no-padding  pad-tb-25 other-title" mdTooltip="Fixed Deposit">FD</div>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <div fxFlex class="pad-tb-15" style="border-right: solid 1px #BFBFBF;">
+                                    <h5>15 Years Lock-in</h5>
+                                    <h3>Returns ~7-8%</h3>
+                                    <h5>Tax on Return: No</h5>
+                                </div>
+                                <div fxFlex class="pad-tb-15">
+                                    <h5>5 Years Lock-in</h5>
+                                    <h3>Returns ~7.5-8.5%</h3>
+                                    <h5>Tax on Return: Yes</h5>
+                                </div>
+                            </div>
+                        </md-card>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-15">
+                    <div fxFlex="25">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

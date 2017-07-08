@@ -1,0 +1,12 @@
+export class TransactionDetails {
+
+    transDate:Date;
+    transDescription:string;
+    amount:number;
+    nav:number;
+    units:number;
+    value:string;
+    transType:number;
+
+    constructor(){}
+}

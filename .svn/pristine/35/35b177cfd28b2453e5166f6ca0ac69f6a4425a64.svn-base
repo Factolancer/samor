@@ -1,0 +1,107 @@
+import {Inject, Injectable} from "@angular/core";
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
+import {Observable} from "rxjs/Observable";
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+import {Logger} from "../logger/logger";
+import {IsBasicDetailsUpdatedService} from "../services/isbasicDetailUpdated.service";
+import {LocalStorageService} from "angular-2-local-storage";
+import {isNullOrUndefined} from "util";
+import {LoginService} from "../services/login.service";
+import {IsAddressUpdatedService} from "../services/isaddressupdated.service";
+import {IsFatcaUpdatedService} from "../services/isfatcaupdated.service";
+import {KycStatusService} from "../services/kycstatus.service";
+import {IsBankUpdatedService} from "../services/isbankupdated.service";
+import {BSEService} from "../services/bse.service";
+import {SnackBarService} from "../services/snack-bar.service";
+@Injectable()
+export class UserGuard implements CanActivate {
+    className: string;
+
+    constructor(public isBasicDetailUpdatedService: IsBasicDetailsUpdatedService, @Inject(APP_CONFIG) private config: IAppConfig, public router: Router,
+                public logger: Logger, public localStorageService: LocalStorageService, public loginService: LoginService,
+                public isAddressUpdatedService: IsAddressUpdatedService, public isFatcaUpdatedService: IsFatcaUpdatedService,
+                public kycstatusService: KycStatusService, public isBankUpdatedService: IsBankUpdatedService, public bseService: BSEService,
+                public snackBarService: SnackBarService) {
+        this.className = "UserGuard";
+    }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+
+        return this.isBasicDetailUpdatedService.checkIfBasicDetailsUpdated().flatMap(basicValue => {
+            if (!isNullOrUndefined(basicValue) && !basicValue) {
+                let userObj = this.loginService.getUserObject();
+                if (userObj.pan == "" && userObj.mob == "") {
+                    this.router.navigate([this.config.defaultAfterSignup]);
+                    return Observable.of(false);
+                }
+                this.localStorageService.set(this.config.userBasicGuard.storagekey, state.url);
+                this.router.navigate([this.config.userBasicGuard.navigate]);
+                return Observable.of(false);
+            } else {
+                return this.isAddressUpdatedService.checkIfAddressUpdated().flatMap(addressValue => {
+                    if (!isNullOrUndefined(addressValue) && !addressValue) {
+                        let userObj = this.loginService.getUserObject();
+                        if (userObj.pan == "" && userObj.mob == "") {
+                            this.router.navigate([this.config.defaultAfterSignup]);
+                            return Observable.of(false);
+                        }
+                        this.localStorageService.set(this.config.addressGuard.storagekey, state.url);
+                        this.router.navigate([this.config.addressGuard.navigate]);
+                        return Observable.of(false);
+                    } else {
+                        return this.isFatcaUpdatedService.checkIfFatcaUpdated().flatMap(fatcaValue => {
+                            if (!isNullOrUndefined(fatcaValue) && !fatcaValue) {
+                                let userObj = this.loginService.getUserObject();
+                                if (userObj.pan == "" && userObj.mob == "") {
+                                    this.router.navigate([this.config.defaultAfterSignup]);
+                                    return Observable.of(false);
+                                }
+                                this.localStorageService.set(this.config.FATCAGuard.storagekey, state.url);
+                                this.router.navigate([this.config.FATCAGuard.navigate]);
+                                return Observable.of(false);
+                            } else {
+                                return this.isBankUpdatedService.checkIfBankUpdated().flatMap(bankValue => {
+                                    if (!isNullOrUndefined(bankValue) && !bankValue) {
+                                        let userObj = this.loginService.getUserObject();
+                                        if (userObj.pan == "" && userObj.mob == "") {
+                                            this.router.navigate([this.config.defaultAfterSignup]);
+                                            return Observable.of(false);
+                                        }
+                                        this.localStorageService.set(this.config.bankGuard.storagekey, state.url);
+                                        this.router.navigate([this.config.bankGuard.navigate]);
+                                        return Observable.of(false);
+                                    } else {
+                                        return this.kycstatusService.checkKycStatusBoolean(route, state).flatMap(kycValue => {
+                                            if (!isNullOrUndefined(kycValue) && !kycValue) {
+                                                return Observable.of(false);
+                                            } else {
+                                                return this.kycstatusService.checkUserStatus().flatMap(status => {
+                                                    if (!isNullOrUndefined(status) && !status){
+                                                        this.localStorageService.set(this.config.kycGuard.storagekey, state.url);
+                                                        this.router.navigate([this.config.kycWaitUrl]);
+                                                        return Observable.of(false)
+                                                    }
+                                                    else {
+                                                        return this.bseService.IsBseAndFatcaDone().map(bseValue => {
+                                                            if (!isNullOrUndefined(bseValue) && !bseValue) {
+                                                                this.localStorageService.set(this.config.kycGuard.storagekey, state.url);
+                                                                this.router.navigate([this.config.kycGuard.navigate]);
+                                                                return false;
+                                                            } else {
+                                                                return true;
+                                                            }
+                                                        });
+                                                    }
+                                                })
+                                            }
+                                        })
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+}

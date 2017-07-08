@@ -1,0 +1,7 @@
+import {FundDeatils} from "../fund/models/fund";
+
+export class SearchResults {
+    constructor(public numFound: number,
+                public funds: FundDeatils[]) {
+    }
+}

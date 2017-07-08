@@ -1,0 +1,6 @@
+export class MinInvestment {
+    constructor(public id:number,
+                public minInvestment:number){
+
+    }
+}

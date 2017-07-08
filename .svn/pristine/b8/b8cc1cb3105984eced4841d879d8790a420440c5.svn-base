@@ -1,0 +1,20 @@
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {orderRouting} from "./order.routes";
+import {SharedModule} from "../shared/shared.module";
+import {HttpModule} from "@angular/http";
+import {OrderComponent} from "./order.component";
+import {OrderService} from "./order.service";
+
+@NgModule({
+    imports: [
+        CommonModule,
+        orderRouting,
+        SharedModule,
+        HttpModule
+    ],
+    declarations: [OrderComponent],
+    providers: [OrderService]
+})
+export class OrderModule {
+}

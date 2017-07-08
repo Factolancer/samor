@@ -1,0 +1,60 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {Subject} from "rxjs";
+
+import {User} from '../models/user';
+
+@Injectable()
+export class UserService {
+
+    user: User
+
+    private userSource = new Subject<User>();
+    currentUser = this.userSource.asObservable();
+
+    constructor(private httpService: HttpService) {
+        this.user = new User({pan: '', name: '', dob: '', gender: '', contact: {}},
+            {job: '', income: '', father_spouse: '', address_proof: '', current_address: {}, permanent_address: {}},
+            [{
+                holder_name: '', account_type: 'Savings Account', account_number: '',
+                bank: {bank_name: '', ifsc: '', city: '', state: ''}
+            }],
+            {
+                investor_type: 'Resident Indian',
+                birth_country: 'India',
+                nationality: 'India',
+                tax_country: 'India',
+                politically_exposed: 'No',
+                politically_related: 'No'
+            });
+    }
+
+    updateBasicData(userdata: any){
+        this.user.Basic = userdata;
+        console.log(this.user)
+    }
+    updateKYCData(userdata:any){
+        this.user.KYC = userdata;
+        console.log(this.user);
+    }
+    updateBankData(userdata: any){
+        this.user.BankDetails = userdata;
+        console.log(this.user);
+    }
+    updateOtherData(userdata: any){
+        this.user.Other = userdata;
+        if (userdata.controls['tax_country_india'].value == 'Yes') {
+            this.user.Other.tax_country = 'India';
+        }
+        else {
+            this.user.Other.tax_country = userdata.controls['tax_country'].value;
+        }
+        if (userdata.controls['investor_type'].value == 'Resident Indian') {
+            this.user.Other.nationality = 'India';
+        }
+        else {
+            this.user.Other.nationality = userdata.controls['country'].value;
+        }
+        console.log(this.user);
+    }
+}

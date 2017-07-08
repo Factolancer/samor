@@ -1,0 +1,67 @@
+<!--Header-->
+<header>
+    <md-toolbar class="header">
+        <span><a routerLink="/"><img src="public/images/logo.png"></a></span>
+        <span class="nav">
+         <button md-button="" class="nav-btn" [md-menu-trigger-for]="solutionsMenu">
+             SOLUTIONS <md-icon class="material-icons md-16">&#xE313;</md-icon>
+         </button>
+         <button md-button="" class="nav-btn" routerLink="/report">REPORT</button>
+         <button md-button="" class="nav-btn" routerLink="/cart">CART</button>
+         <button md-button="" class="nav-btn" routerLink="/checkout/init">CHECKOUT</button>
+         <button md-button="" class="nav-btn" routerLink="/checkout/summary">SUMMARY</button>
+    </span>
+
+        <span style="flex: 1 1 auto"></span>
+
+        <span *ngIf="!userLoggedIn()" role="button" (click)="logUserIn()" class="login-btn-area">
+        <span class="text">LOGIN</span>
+    </span>
+        <span *ngIf="!userLoggedIn()" role="button" class="signup-btn-area">
+        <span class="text">SIGNUP</span>
+    </span>
+        <span *ngIf="userLoggedIn()" role="button" (click)="logoutUser()" class="signup-btn-area">
+        <span class="text">LOGOUT</span>
+    </span>
+        <md-menu #solutionsMenu="mdMenu" y-position="below">
+            <button md-menu-item routerLink="/sip"> SIP</button>
+            <button md-menu-item routerLink="/cash">CASH</button>
+            <button md-menu-item routerLink="/tax">TAX</button>
+            <button md-menu-item routerLink="/explore/all"> Explore All</button>
+        </md-menu>
+    </md-toolbar>
+</header>
+
+<!--Body-->
+<div class="fc-body">
+    <router-outlet></router-outlet>
+</div>
+
+
+<!--Footer-->
+<footer class="footer">
+    <md-toolbar class="top">
+        <span>Questions? Get in touch!</span>
+        <span style="flex: 1 1 auto"></span>
+    </md-toolbar>
+    <div fxLayout="row" fxLayoutAlign="start start" class="bottom">
+        <div fxFlex>
+            <md-list>
+                <md-list-item><a routerLink="#">About Us</a></md-list-item>
+                <md-list-item><a routerLink="#">Solutions</a></md-list-item>
+                <md-list-item><a routerLink="#">Resource Center</a></md-list-item>
+                <md-list-item><a routerLink="#">Top Funds (White List)</a></md-list-item>
+                <md-list-item><a routerLink="#">Explore Funds</a></md-list-item>
+                <md-list-item><a routerLink="#">Calculators</a></md-list-item>
+            </md-list>
+        </div>
+        <div fxFlex>
+            <md-list>
+                <md-list-item><a routerLink="#">Careers</a></md-list-item>
+                <md-list-item><a routerLink="#">Privacy</a></md-list-item>
+                <md-list-item><a routerLink="#">Terms &amp; Conditions</a></md-list-item>
+            </md-list>
+        </div>
+    </div>
+</footer>
+

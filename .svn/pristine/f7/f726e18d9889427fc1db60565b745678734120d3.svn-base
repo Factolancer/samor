@@ -1,0 +1,17 @@
+
+
+<div>
+    <br/>
+    <basic-section></basic-section>
+
+    <kyc-section></kyc-section>
+
+    <bank-section></bank-section>
+
+    <other-section></other-section>
+
+    <upload-section></upload-section>
+</div>
+
+<button (click)="indexBanks()">Index here</button>
+

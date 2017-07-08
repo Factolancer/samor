@@ -1,0 +1,56 @@
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Checkout} from "./checkout";
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+
+@Component({
+    selector: 'app-checkout',
+    templateUrl: './checkout.component.html',
+    styleUrls: ['./checkout.component.css']
+})
+export class CheckoutComponent implements OnInit {
+
+    checkoutData: Checkout;
+    checkoutForm: FormGroup;
+
+    constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: { checkoutData: Checkout }) => {
+            this.checkoutData = data.checkoutData;
+        });
+
+        this.checkoutForm = this.formBuilder.group({
+            selectedNominee: ['', Validators.required],
+            selectedBank: ['', Validators.required],
+            products: this.formBuilder.group({
+                investmentAmount: ['', Validators.required],
+                investmentPeriod: ['', Validators.required],
+                funds: this.formBuilder.group({
+                    investmentAomunt: ['',Validators.required()],
+                    selectedDeductionDate: ['',Validators.required()],
+                    selectedSubOption: ['', Validators.required()]
+                })
+            })
+        });
+    }
+
+    removeProduct(value: any) {
+        this.checkoutData.products = this.checkoutData.products.filter(product => product.product != value);
+        this.doInvestmentAmountUpdate();
+        if (this.checkoutData.products.length == 0) {
+            this.router.navigateByUrl("/cart");
+        }
+    }
+
+    doInvestmentAmountUpdate() {
+        this.checkoutData.totalInvestmentAmount = 0;
+        this.checkoutData.products.forEach(product => this.checkoutData.totalInvestmentAmount += product.investmentAmount)
+    }
+
+    onCheckoutSubmit() {
+        console.log("checkout form submitted!");
+    }
+
+}

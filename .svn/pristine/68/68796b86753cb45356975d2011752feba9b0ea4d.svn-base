@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-md-2">
+        <img src="{{goal.imagePath}}">
+        {{goal.name}}
+
+    </div>
+    <div class="col-md-8">
+        <div *ngFor="let question of questions">
+
+            {{question.statement}}
+            <md-input [(ngModel)]="question.answer" placeholder="{{question.helperText}}"
+                      maxlength="{{question.inputLength}}"></md-input>
+
+        </div>
+        <!-- <button md-button (click)="prev()">Previous</button>
+         <button md-button (click)="next()">Next</button>-->
+        <button md-raised-button (click)="calculate()">Calculate</button>
+        <br/>
+        Amount invested by you: {{investedAmount | currency:'INR':true:'1.0-0'}}<br/>
+        Amount you will be having(without infaltion): {{amount | currency:'INR':true:'1.0-0'}}<br/>
+        Amount you will be having(inflation adjusted): {{adjustedAmount | currency:'INR':true:'1.0-0'}}<br/>
+        Amount you gained: {{gains | currency:'INR':true:'1.0-0'}}<br/>
+        <table>
+            <thead>
+            <td>Duration</td>
+            <td>SIP Amount</td>
+            <td>Future Value</td>
+            </thead>
+            <tbody>
+            <tr *ngFor="let value of futureValue; let i=index;">
+                <td>{{futureYears[i]}}</td>
+                <td>{{principal | currency:'INR':true:'1.0-0'}}</td>
+                <td>{{value | currency:'INR':true:'1.0-0'}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

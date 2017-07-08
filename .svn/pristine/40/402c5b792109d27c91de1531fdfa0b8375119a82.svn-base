@@ -1,0 +1,24 @@
+<div class="guideline-dialog">
+    <div fxLayout="row" fxLayoutAlign="center center" class="guideline-title" md-dialog-title>
+        <div fxFlex>Payment Guidelines</div>
+    </div>
+    <div md-dialog-content class="guideline-body">
+        <div fxLayout="column" fxLayoutAlign="start start">
+            <img src="{{visibleImage}}" width="100%"/>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center end" *ngIf="isNetBanking">
+            <div fxFlex="20">
+                <button md-button="" class="hollow-cta-30" (click)="toggleNetBankingImg()">
+                    <span *ngIf="visibleIndex == 0">Next</span><span *ngIf="visibleIndex == 1">Prev</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div md-dialog-actions fxLayout="row" fxLayoutAlign="center center">
+        <div fxFlex="30">
+            <button md-raised-button="" *ngIf="showProceed" class="cta-40" color="primary" (click)="proceed()">
+                Proceed
+            </button>
+        </div>
+    </div>
+</div>

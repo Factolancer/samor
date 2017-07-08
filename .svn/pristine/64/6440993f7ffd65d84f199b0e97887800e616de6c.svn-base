@@ -1,0 +1,99 @@
+<!--Footer-->
+<footer class="footer">
+  <div class="top" >
+    <div fxLayout="row" fxLayoutAlign="space-between start"  class="wrapper">
+      <div fxFlex="70">Questions? Get in touch!</div>
+      <div fxFlex="15">
+        <md-icon class="md-14">&#xE325;</md-icon>
+        {{contact}}
+      </div>
+      <div fxFlex="15" class="right-align">
+        <md-icon class="md-14">&#xE0BE;</md-icon>
+        {{supEmail}}
+      </div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" class="wrapper">
+      <div fxFlex="15">
+        <div class="section-title">ABOUT US</div>
+        <ul dense>
+          <li><a routerLink="sip">Why Fincash</a></li>
+          <li><a routerLink="team">Team</a></li>
+          <li><a routerLink="#">Careers</a></li>
+        </ul>
+      </div>
+      <div fxFlex="15" fxFlex.xs="50%">
+        <div class="section-title">PRODUCT SOLUTIONS</div>
+        <ul dense>
+          <li><a routerLink="#">SavingsPlus</a></li>
+          <li><a routerLink="#">SmartSIP</a></li>
+          <li><a routerLink="#">TaxSaver</a></li>
+          <li><a routerLink="#">Explore Funds</a></li>
+        </ul>
+      </div>
+      <div fxFlex="30" fxFlex.xs="100%">
+        <div class="section-title">RESOURCE CENTER</div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <div fxFlex>
+            <div class="sub-section-title">MUTUAL FUNDS</div>
+            <ul dense>
+              <li><a routerLink="#">Equity Large Cap</a></li>
+              <li><a routerLink="#">Equity Mid Cap</a></li>
+              <li><a routerLink="#">ELSS</a></li>
+              <li><a routerLink="#">Liquid Funds</a></li>
+              <li><a routerLink="#">Gold</a></li>
+            </ul>
+          </div>
+          <div fxFlex>
+            <div class="sub-section-title">INSURANCE</div>
+            <ul dense>
+              <li><a routerLink="#">Life Insurance</a></li>
+              <li><a routerLink="#">Health Insurance</a></li>
+              <li><a routerLink="#">Travel Insurance</a></li>
+              <li><a routerLink="#">Vehicle Insurance</a></li>
+              <li><a routerLink="#">House Insurance</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div fxFlex="15">
+        <div class="section-title">CALCULATORS</div>
+        <ul>
+          <li><a routerLink="#">SIP</a></li>
+          <li><a routerLink="#">Retirement Planning</a></li>
+          <li><a routerLink="#">Higher Education</a></li>
+          <li><a routerLink="#">Marriage</a></li>
+          <li><a routerLink="#">Buy House</a></li>
+          <li><a routerLink="#">Buy Vehicle</a></li>
+          <li><a routerLink="#">Growth of SIP Investment</a></li>
+          <li><a routerLink="#">Tax</a></li>
+        </ul>
+      </div>
+      <div fxFlex="15">
+        <div class="section-title">LEGAL</div>
+        <ul dense>
+          <li><a routerLink="#">Privacy Policy</a></li>
+          <li><a routerLink="#">Terms &amp; Conditions</a></li>
+          <li><a routerLink="#">Disclaimers</a></li>
+        </ul>
+      </div>
+      <div fxFlex="10">
+        <div class="section-title">CONTACT US</div>
+        <div>A -204, Technocity, Plot No X-4/1 & X-4/2,
+          TTC, MIDC, Mahape, Navi Mumbai - 400710
+        </div>
+        <div>
+          <md-icon class="md-14">&#xE90C;</md-icon>
+          {{copyYear}} Fincash.com
+        </div>
+        <div><a routerLink="#">Social Icons</a></div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+</footer>

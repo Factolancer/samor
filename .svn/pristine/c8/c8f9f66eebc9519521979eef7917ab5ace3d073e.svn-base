@@ -1,0 +1,239 @@
+<div>
+    <div fxFlex="100" [ngClass]="{'section-header-expanded': !kyccollapsed, 'section-header-collapsed': kyccollapsed}">
+        <div fxLayout="row" class="cursor-pointer" (click)="toggleKyc()">
+            <div fxFlex="8" fxFlexOffset="2">
+                <md-icon *ngIf="kycsaved"
+                         [ngClass]="{'material-icons.md-2': true, 'md-brand-secondary': true}">
+                    check_circle
+                </md-icon>
+            </div>
+            <div fxFlex="83">
+                <span>{{heading.kycSectionHeading}}</span>
+            </div>
+            <div fxFlex="7">
+                <md-icon *ngIf="kyccollapsed">expand_more</md-icon>
+                <md-icon *ngIf="!kyccollapsed">expand_less</md-icon>
+            </div>
+
+        </div>
+    </div>
+
+    <div fxFlex="100" class="section-content">
+        <form [formGroup]="kycForm" (ngSubmit)="onKYCSubmit()" [@ShowHide]="state" novalidate>
+            <br/>
+            <br/>
+            <div>
+                <div>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="permanentAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <label class="address-header">Permanent Address</label>
+                        </div>
+                        <input type="hidden" formControlName="amtid"/>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40" fxAlign="end">
+                            <md-select required formControlName="addressType" placeholder="Address Type">
+                                <md-option *ngFor="let add of addtypes" [value]="add.cndrfnum">
+                                    {{add.cndname}}
+                                </md-option>
+                            </md-select>
+                            <md-hint *ngIf="formErrorsPermanent.addressType" class="errorMessage">{{formErrorsPermanent.addressType}}</md-hint>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="permanentAddress">
+                        <div fxFlex="90" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput type="text" required maxlength="40" formControlName="address1" #curadd1
+                                       placeholder="Address line 1">
+                                <md-hint *ngIf="formErrorsPermanent.address1" class="errorMessage">{{formErrorsPermanent.address1}}</md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="permanentAddress">
+                        <div fxFlex="90" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput type="text" maxlength="70" formControlName="address2" #curadd2
+                                       placeholder="Address line 2">
+                                <md-hint *ngIf="formErrorsPermanent.address2" class="errorMessage">{{formErrorsPermanent.address2}}</md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="permanentAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput required formControlName="pin" placeholder="Pin Code">
+                                <md-hint *ngIf="formErrorsPermanent.pin" class="errorMessage">{{formErrorsPermanent.pin}}</md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input mdInput formControlName="landmark" placeholder="Near landmark">
+                                <md-hint *ngIf="formErrorsPermanent.landmark" class="errorMessage">{{formErrorsPermanent.landmark}}</md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="permanentAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput required type="text" formControlName="city" placeholder="City">
+                                <md-hint *ngIf="formErrorsPermanent.city" class="errorMessage">{{formErrorsPermanent.city}}</md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input mdInput required type="text" formControlName="district" placeholder="District">
+                                <md-hint *ngIf="formErrorsPermanent.district" class="errorMessage">{{formErrorsPermanent.district}}</md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="permanentAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <md-select required formControlName="state" placeholder="State">
+                                <md-option *ngFor="let state of states" [value]="state.cndrfnum">
+                                    {{state.cndname}}
+                                </md-option>
+                            </md-select>
+                            <md-hint *ngIf="formErrorsPermanent.state" class="errorMessage">{{formErrorsPermanent.state}}</md-hint>
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40">
+                            <md-select required formControlName="country" placeholder="Country">
+                                <md-option *ngFor="let country of countries" [value]="country.cndrfnum">
+                                    {{country.cndname}}
+                                </md-option>
+                            </md-select>
+                            <md-hint *ngIf="formErrorsPermanent.country" class="errorMessage">{{formErrorsPermanent.country}}</md-hint>
+                            <!--<md-select required formControlName="country" Placeholder="Country">
+                                <md-option *ngFor="let country of countries" [value]="country.cndrfnum">{{country.cndname}}
+                                </md-option>
+                            </md-select>-->
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="mar-lr-50">
+                    <md-checkbox [(ngModel)]="permanantEqualsPresent" [ngModelOptions]="{standalone: true}">
+                        My correspondence address is same as above
+                    </md-checkbox>
+                </div>
+                <br/>
+                <div *ngIf="!permanantEqualsPresent">
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="currentAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <label class="address-header">Correspondence Address</label>
+                        </div>
+                        <input type="hidden" formControlName="amtid"/>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40" fxAlign="end">
+                            <md-select required formControlName="addressType" placeholder="Address Type">
+                                <md-option *ngFor="let add of addtypes" [value]="add.cndrfnum">
+                                    {{add.cndname}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="currentAddress">
+                        <div fxFlex="90" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput type="text" required maxlength="40" formControlName="address1" #curadd1
+                                       placeholder="Address line 1">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['currentAddress'].get('address1').valid && (kycForm.controls['currentAddress'].get('address1').touched)"
+                                        class="errorMessage">
+                                    Please enter your correspondence address
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="currentAddress">
+                        <div fxFlex="90" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput type="text" maxlength="70" formControlName="address2" #curadd2
+                                       placeholder="Address line 2">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="currentAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput required formControlName="pin" placeholder="Pin Code">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['currentAddress'].get('pin').valid && (kycForm.controls['currentAddress'].get('pin').touched)"
+                                        class="errorMessage">
+                                    Please enter valid 6 digit Pin Code
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input mdInput formControlName="landmark" placeholder="Near landmark">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="currentAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput required type="text" formControlName="city" placeholder="City">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['currentAddress'].get('city').valid && (kycForm.controls['currentAddress'].get('city').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input mdInput required type="text" formControlName="district" placeholder="District">
+                                <md-hint
+                                        *ngIf="!kycForm.controls['currentAddress'].get('district').valid && (kycForm.controls['currentAddress'].get('district').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="currentAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <md-select required formControlName="state" placeholder="State">
+                                <md-option *ngFor="let state of states" [value]="state.cndrfnum">
+                                    {{state.cndname}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40">
+                            <md-select required formControlName="country" placeholder="Country">
+                                <md-option *ngFor="let country of countries" [value]="country.cndrfnum">
+                                    {{country.cndname}}
+                                </md-option>
+                            </md-select>
+                            <!--<md-select required formControlName="country" Placeholder="Country">
+                                <md-option *ngFor="let country of countries" [value]="country.cndrfnum">{{country.cndname}}
+                                </md-option>
+                            </md-select>-->
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <button md-raised-button color="primary" type="submit" [disabled]="!kycForm.valid">Save</button>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </form>
+    </div>
+</div>

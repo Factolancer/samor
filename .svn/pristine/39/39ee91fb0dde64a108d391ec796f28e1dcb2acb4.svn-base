@@ -1,0 +1,18 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80">
+        <app-user-journey></app-user-journey>
+        <div fxLayout="column" fxLayoutAlign="center center" class="pad-tb-15">
+            <div fxFlex class="heading-32-blue">Invest in SmartSIP equity schemes</div>
+        </div>
+        <div class="grey-back pad-20" fxFlex>
+            <app-smart-sip-card fxLayout="column" fxLayoutAlign="center center" #smartSipFunds
+                                [funds]="quickSipFunds"></app-smart-sip-card>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-20">
+            <div fxFlex="20">
+                <button class="cta-50" color="primary" md-raised-button (click)="addToCart()">Proceed
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

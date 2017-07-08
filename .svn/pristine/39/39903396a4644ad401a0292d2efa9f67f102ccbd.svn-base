@@ -1,0 +1,32 @@
+<section *ngIf="totalNumFound>searchInputRows">
+    <table>
+        <tr>
+            <td>
+                <button class="page-number-btn" [ngClass]="{grey: !(searchInputFrom + 1 > searchInputRows)}"
+                        (click)="prev()" [disabled]="!(searchInputFrom + 1 > searchInputRows)">
+                    Prev
+                </button>
+            </td>
+            <td *ngFor="let page of displayPageNumbers">
+                <span *ngIf="page == currentPosition">
+                    <button class="blue page-number-btn clickable" (click)="gotoPage(page)">
+                        {{page+1}}
+                    </button>
+                </span>
+                <span *ngIf="!(page == currentPosition)">
+                    <button class="page-number-btn clickable" (click)="gotoPage(page)">
+                        {{page+1}}
+                    </button>
+                </span>
+            </td>
+            <td>
+                <!--Next Funds-->
+                <button class="page-number-btn" [ngClass]="{grey: !(searchInputFrom< (totalNumFound- searchInputRows))}"
+                        (click)="next()"
+                        [disabled]="!(searchInputFrom< (totalNumFound- searchInputRows))">
+                    Next
+                </button>
+            </td>
+        </tr>
+    </table>
+</section>

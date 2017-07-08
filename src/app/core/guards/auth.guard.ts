@@ -1,0 +1,42 @@
+import {Injectable, Inject} from "@angular/core";
+import {Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
+import {LoginService} from "../services/login.service";
+import {Logger} from "../logger/logger";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {Observable} from "rxjs/Observable";
+import {isNullOrUndefined} from "util";
+
+
+@Injectable()
+export class AuthGuard implements CanActivate {
+
+    // logInDialogRef: MdDialogRef<LoginComponent>;
+    //viewContainerRef: ViewContainerRef;
+    // loginService: LoginService;
+
+    public result: any;
+    public returnurlParam: string;
+    className: string;
+
+    constructor(private loginService: LoginService, private router: Router, public logger: Logger,
+                @Inject(APP_CONFIG) private config: IAppConfig) {
+        this.returnurlParam = this.config.returnUrlParam;
+        this.className = "AuthGuard";
+    }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+
+        return this.loginService.loginObservable.map(value =>{
+            this.logger.debug(this.className+" state at authguard call",value);
+            if(!isNullOrUndefined(value) && value){
+                return true;
+            }else{
+                let retUrlObj = {};
+                retUrlObj[this.returnurlParam] = state.url;
+                this.router.navigate([this.config.dloginUrl, retUrlObj]);
+                this.logger.debug(this.className, retUrlObj);
+                return false;
+            }
+        })
+    }
+}

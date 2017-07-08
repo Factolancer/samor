@@ -1,0 +1,18 @@
+/**
+ * Created by Fincash on 23-01-2017.
+ */
+
+var jwtJson = require('jwt-simple');
+var httpClient = require('http');
+var config = require('../../config/environment');
+
+exports.index = function (req, res) {
+
+
+    //res.redirect(path);
+
+};
+
+
+
+//module.exports = router;

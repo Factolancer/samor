@@ -1,0 +1,55 @@
+<div class="wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="45">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex="80" class="center-align">
+                <div class="heading-32-dark-grey">Registration & KYC
+                </div>
+                <div class="sub-heading-16-medium-grey" style="padding-bottom: 15px;">
+                    <hr/>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="grey-border">
+            <div>
+                <!--<div fxFlex="100" fxFlexOffset="5" class="heading-24-blue pad-tb-15">
+                    Thank you!
+                </div>
+                <br/>
+                <div fxFlex="100" fxFlexOffset="5" class="heading-24-bold">
+                    Your Fincash registration is complete
+                </div>
+                <br/>
+                <br/>-->
+                <div fxFlex="100" [ngClass]="{'section-header-expanded': true}">
+                    <div fxLayout="row">
+                        <div fxFlex="100" class="center-align">
+                            <span>Account Activation Pending</span>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div fxFlex="100" fxFlexOffset="15" class="heading-18-blue pad-tb-10">
+                    Dear {{firstName}},<br/><br/>
+                    Your Fincash Account activation is currently pending and would be done within three days. <br/>
+                    You can start investing once your account is activated.<br/><br/>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-section">
+            <div>
+                <div fxFlexOffset="15" class="pad-tb-5 sub-heading-16-medium-grey">
+                    We will intimate you through Email and SMS shortly.
+                </div>
+            </div>
+
+        </div>
+        <br/>
+
+       <!-- <div fxLayout="row" fxLayoutAlign="start center" class="mar-tb-5">
+            <button fxFlex="30" class="cta-50" md-raised-button color="primary" (click)="toProducts()">Explore our Products</button>
+            <button fxFlex="30" fxFlexOffset="40" class="cta-50" md-raised-button color="primary" (click)="toDashboard()">Go to Dashboard</button>
+        </div>-->
+    </div>
+</div>

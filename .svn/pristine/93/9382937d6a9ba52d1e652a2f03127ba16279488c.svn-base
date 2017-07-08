@@ -1,0 +1,99 @@
+<div class="wrapper">
+
+    <div class="whyfincash-container" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="center center">
+
+        <div fxFlex="100" fxLayout="row" class="banner mar-b-20">
+            <img class="sharpen" src="../../assets/img/landingpage/investing-made-simple.jpg" alt="invest_banner">
+        </div>
+
+        <div  fxLayout="row" fxFlex="100" fxLayoutGap="5px" class="feature-box mar-b-40">
+            <div fxFlex="25" fxLayoutAlign="center center" class="icon">
+                <figure class="center-align">
+                    <img src="../../assets/img/features/easy-to-use-hollow.svg">
+                    <hr/>
+                    <figcaption> Easy to<br/> use</figcaption>
+                </figure>
+            </div>
+            <div fxFlex="75" fxLayoutAlign="center center"  class="details pad-lr-20">
+                <div fxFlex="80">
+                    <p><span class="colr-bs bold">Effortless</span>
+                    <span>Investing. Just a matter of few clicks.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div  fxLayout="row" fxFlex="100" fxLayoutGap="5px" class="feature-box mar-b-40">
+            <div fxFlex="75" fxLayoutAlign="center center"  class="details pad-lr-20">
+                <div fxFlex="80">
+                    <p><span class="colr-bs bold">Reliable</span>
+                   <!-- <span class="bold font-20"></span>-->
+                    <span>technique of fund selection involving extensive market study and </span><span class="colr-bs bold">deep Analysis</span>
+                </p>
+                </div>
+            </div>
+            <div fxFlex="25" fxLayoutAlign="center center" class="icon">
+                <figure class="center-align">
+                    <img src="../../assets/img/features/proven-methodology.svg">
+                    <hr/>
+                    <figcaption>Proven <br/> Methodology</figcaption>
+                </figure>
+            </div>
+        </div>
+
+        <div  fxLayout="row" fxFlex="100" fxLayoutGap="5px" class="feature-box mar-b-40">
+
+            <div fxFlex="25" fxLayoutAlign="center center" class="icon">
+                <figure class="center-align">
+                    <img src="../../assets/img/features/resource-center.svg">
+                    <hr/>
+                    <figcaption>Resource <br/> Center</figcaption>
+                </figure>
+            </div>
+            <div fxFlex="75" fxLayoutAlign="center center"  class="details pad-lr-20">
+                <div fxFlex="80">
+                    <p >Be abreast of industry updates.<span class="colr-bs bold">Get all the insights of the world of investments.</span>
+                </p></div>
+
+            </div>
+        </div>
+
+        <div  fxLayout="row" fxFlex="100" fxLayoutGap="5px" class="feature-box mar-b-40">
+            <div fxFlex="75" fxLayoutAlign="center center"  class="details pad-lr-20">
+                <div fxFlex="80">
+                    <p><span class="dddd">We use</span> <span class="colr-bs bold">authentic & secure channels for transactions.</span>
+                    So just sit back and leave it to Fincash
+                </p>
+                </div>
+            </div>
+            <div fxFlex="25" fxLayoutAlign="center center" class="icon">
+                <figure class="center-align">
+                    <img src="../../assets/img/features/secure.svg">
+                    <hr/>
+                    <figcaption>Safe & Secure <br/> Transaction</figcaption>
+                </figure>
+            </div>
+        </div>
+
+        <div  fxLayout="row" fxFlex="100" fxLayoutGap="5px" class="feature-box mar-b-40">
+
+            <div fxFlex="25" fxLayoutAlign="center center" class="icon">
+                <figure class="center-align">
+                    <img src="../../assets/img/features/top-service.svg">
+                    <hr/>
+                    <figcaption>Top-Notch<br/>Service</figcaption>
+                </figure>
+            </div>
+            <div fxFlex="75" fxLayoutAlign="center center"  class="details pad-lr-20">
+                <div fxFlex="80">
+                    <p><span class="colr-bs">We are always there for you.</span>  Reach us whenever you wish.
+                </p>
+                </div>
+            </div>
+        </div>
+
+        <div fxLayout="row" FxLayoutAlign="center center" class="mar-b-40">
+            <button  fxFlex md-raised-button color="primary" routerLink="/products" style="text-transform: uppercase">Invest</button>
+        </div>
+    </div>
+</div>

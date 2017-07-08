@@ -1,0 +1,201 @@
+<div *ngIf="_fund.basicFactsheet" class="basic-factsheet">
+    <div fxLayout="row" fxLayoutAlign="center center" class="basic-title-area" md-dialog-title>
+        <div fxFlex="88">{{_fund.basicFactsheet.name}}</div>
+        <div fxFlex="7">
+            <!--<button md-icon-button="" class="watchlist-icon-btn" mdTooltip="Add To Watchlist">
+                <md-icon class="md-24">&#xE8F4;</md-icon>&lt;!&ndash;EYE ICON&ndash;&gt;
+            </button>-->
+        </div>
+        <div fxFlex="5">
+            <md-icon class="md-18 clickable" (click)="dialogRef.close()">&#xE888;</md-icon>
+        </div>
+    </div>
+    <div md-dialog-content class="basic-body-area">
+        <div fxLayout="column" fxLayoutAlign="start start">
+            <div fxFlex class="param-key">Basic Description</div>
+            <div fxFlex class="param-value pad-tb-5">
+                {{_fund.basicFactsheet.description}}
+            </div>
+            <div fxFlex>
+                <hr/>
+            </div>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <md-card class="card">
+                <div fxLayout="row" fxLayoutAlign="center start">
+                    <div fxFlex="40">
+                        <table>
+                            <thead>
+                            <tr class="name">
+                                <td colspan="2">Basic Details</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="param-key">NAV
+                                    <md-icon class="md-12"
+                                             mdTooltip="NAV as on: {{_fund.basicFactsheet.navAsOfDate | date}}">
+                                        &#xE88E;</md-icon>
+                                </td>
+                                <td>
+                                    <app-nav [navValue]="_fund.basicFactsheet.nav"
+                                             [navValueChange]="_fund.basicFactsheet.navValueChange"
+                                             [navPercentChange]="_fund.basicFactsheet.navPercentChange"
+                                    ></app-nav>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Fincash Rating</td>
+                                <td><span [outerHTML]="_fund.basicFactsheet.fincashRating | rating"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Inception Date</td>
+                                <td>{{_fund.basicFactsheet.inceptionDate| date}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Category</td>
+                                <td>{{_fund.basicFactsheet.category}} {{_fund.basicFactsheet.subCategory}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Type</td>
+                                <td>{{_fund.basicFactsheet.fundType| structure}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Net Assets</td>
+                                <td>{{_fund.basicFactsheet.aum | currency:'INR':true:'1.0-0'}} Cr
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Benchmark Name</td>
+                                <td>{{_fund.basicFactsheet.benchmarkName}}</td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div fxFlex="40" fxFlexOffset="10">
+                        <table>
+                            <thead>
+                            <tr class="name">
+                                <td colspan="2">Other Important Details</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="param-key">Min Investment Amount</td>
+                                <td>{{_fund.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Min SIP Investment</td>
+                                <td>{{_fund.basicFactsheet.minSIPAmt | sipAmount}}</td>
+                            </tr>
+                            <tr *ngIf="_fund.cid==2">
+                                <td class="param-key">Yield To Maturity</td>
+                                <td>{{_fund.basicFactsheet.debtYield | returns}}%</td>
+                            </tr>
+                            <tr *ngIf="_fund.cid==2">
+                                <td class="param-key">Effective Maturity</td>
+                                <td>{{_fund.basicFactsheet.maturity | ratio}} Yrs</td>
+                            </tr>
+                            <tr *ngIf="_fund.cid==2">
+                                <td class="param-key">Modified Duration</td>
+                                <td>{{_fund.basicFactsheet.duration | ratio}} Yrs</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Alpha</td>
+                                <td>{{_fund.basicFactsheet.alphaRatio | ratio}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Expense Ratio</td>
+                                <td>{{_fund.basicFactsheet.expenseRatio | ratio }}%</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Sharpe Ratio</td>
+                                <td>{{_fund.basicFactsheet.sharpeRatio | ratio}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Information Ratio</td>
+                                <td>{{_fund.basicFactsheet.infoRatio | ratio}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Exit Load</td>
+                                <td>{{_fund.basicFactsheet.exitLoad}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </md-card>
+            <md-card class="card">
+                <div fxLayout="row" fxLayoutAlign="center start">
+                    <div fxFlex="40" *ngIf="_fund.cid == 1  || _fund.scid==21">
+                        <table>
+                            <thead>
+                            <tr class="name">
+                                <td colspan="4">Return (Compounded Annualised)</td>
+                            </tr>
+                            <tr class="cols">
+                                <td>1 Year</td>
+                                <td>3 Year</td>
+                                <td>5 Year</td>
+                                <td>Since Inception</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{_fund.basicFactsheet.ret1yr | returns:true}}</td>
+                                <td>{{_fund.basicFactsheet.ret3yr | returns:true}}</td>
+                                <td>{{_fund.basicFactsheet.ret5yr | returns:true}}</td>
+                                <td>{{_fund.basicFactsheet.retSinceInception | returns:true}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div fxFlex="40" *ngIf="_fund.cid == 2 || _fund.scid==20">
+                        <table>
+                            <thead>
+                            <tr class="name">
+                                <td colspan="4">Return (Compounded Annualised)</td>
+                            </tr>
+                            <tr class="cols">
+                                <td>1 Month</td>
+                                <td>3 Month</td>
+                                <td>6 Month</td>
+                                <td>Since Inception</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{_fund.basicFactsheet.ret1mn |returns:true}}</td>
+                                <td>{{_fund.basicFactsheet.ret3mn |returns:true}}</td>
+                                <td>{{_fund.basicFactsheet.ret6mn |returns:true}}</td>
+                                <td>{{_fund.basicFactsheet.retSinceInception | returns:true}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div fxFlex="40" fxFlexOffset="10" class="center-align">
+                        <app-riskometer-icon [riskVal]="_fund.basicFactsheet.riskometer"></app-riskometer-icon>
+
+                        <p style="font-size: 8px">Investors understand that their principal will be at
+                            {{_fund.basicFactsheet.riskometer | riskometer}} risk</p>
+                    </div>
+                </div>
+            </md-card>
+        </div>
+    </div>
+
+    <div md-dialog-actions fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
+        <div fxFlex="25">
+            <button md-raised-button="" color="primary" class="cta-36" (click)="showAdvancedView()"
+                    [disabled]="true">ADVANCED VIEW
+            </button>
+        </div>
+        <div fxFlex="25">
+            <app-add-to-cart-button [btnText]="'ADD TO CART'"
+                                    [fund]="_fund"
+                                    [_cssClass]="'cta-36'"></app-add-to-cart-button>
+        </div>
+    </div>
+</div>

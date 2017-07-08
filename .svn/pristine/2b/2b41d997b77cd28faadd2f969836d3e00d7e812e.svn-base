@@ -1,0 +1,358 @@
+import {
+    Component,
+    OnInit,
+    style,
+    state,
+    animate,
+    transition,
+    trigger,
+    Input,
+    Output,
+    EventEmitter
+} from "@angular/core";
+import {FormGroup, Validators, FormBuilder, FormControl} from "@angular/forms";
+import {Subscription} from "rxjs/Subscription";
+
+import {User} from "../../../models/user";
+import {Address} from "../../../models/address";
+import {UserService} from "../../userdata.service";
+import {HttpService} from "../../../core/services/http-service.service";
+import {Relation} from "../../constants/relation";
+import {Http} from "@angular/http";
+import {IPV} from "../../constants/ipvoptions";
+import {Heading} from "../../constants/headings";
+import {ActivatedRoute} from "@angular/router";
+import {LookUpService} from "../../../core/services/lookup.service";
+import {Logger} from "../../../core/logger/logger";
+import {ValidationMessages} from "../../constants/validationmessages";
+import {KYCConstants} from "../../../constants/KYCGroup";
+
+@Component({
+    selector: 'kyc-section',
+    templateUrl: './kyc-section.component.html',
+    styleUrls: ['../../registration.styles.scss'],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({opacity: '1', height: '*', display: 'block'})),
+            state('hide', style({opacity: '0', height: '0px', display: 'none'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ])
+        ])
+    ]
+})
+
+export class KycSectionComponent implements OnInit {
+
+    kycForm: FormGroup;
+    currentAddress: FormGroup;
+    permanentAddress: FormGroup;
+    public relations = Relation;
+    public countries: any;
+    public states: any;
+    public addtypes: any;
+    public ipvoptions = IPV;
+    public heading = Heading;
+
+    kycInProcess: boolean = false;
+    @Input() state: string = 'hide';
+    kycsaved = false;
+    @Input() kyccollapsed: boolean;
+    @Output() makeVisible: EventEmitter<boolean> = new EventEmitter();
+    nomineepresent = false;
+    permanantEqualsPresent: boolean;
+    ticked: boolean;
+    nominee_address_type = 1;
+
+    user: User
+    usersubscription: Subscription;
+    validationMessages = ValidationMessages;
+    className: string
+
+    constructor(private fb: FormBuilder, public userService: UserService, public httpservice: HttpService, public http: Http,
+                private route: ActivatedRoute, public lookupService: LookUpService, public logger: Logger) {
+        this.className = "AddressSection";
+
+    }
+
+    ngOnInit() {
+        this.permanantEqualsPresent = true;
+        this.lookupService.getByGroup("COUNTRY").subscribe(response => {
+            this.countries = response
+        });
+        this.lookupService.getByGroup("STATE").subscribe(response => {
+            this.states = response
+        });
+        this.lookupService.getByGroup("ADDRESSTYPE").subscribe(response => {
+            this.addtypes = response
+        });
+        this.userService.getUserAddressData();
+        this.usersubscription = this.userService.currentUser.subscribe(
+            result => {
+                this.logger.debug(this.className, result);
+                this.user = result;
+                // this.permanantEqualsPresent = result.userAddress.permanentEqualsCurrent
+                this.buildform(this.user);
+                this.kycsaved = (this.user.userAddress.permanentAddress.amtid.length > 0);
+                if (this.kycsaved) {
+                    this.kyccollapsed = this.kycsaved;
+                    this.state = this.kyccollapsed ? 'hide' : 'show';
+                    // this.permanantEqualsPresent = false
+                }
+                // this.permanantEqualsPresent = this.isPermanentEqualsPresent(result.userAddress.permanentAddress, result.userAddress.currentAddress)
+                /*if (this.user.userAddress.permanentAddress.amtid.length>0){
+                    this.permanantEqualsPresent = false
+                }*/
+                /*if (!this.permanantEqualsPresent)
+                    this.ticked = false;*/
+            }
+        );
+        this.buildform(this.user);
+    }
+
+    buildform(result): void {
+        this.kycForm = this.fb.group({
+            permanentAddress: this.fb.group({
+                addressType: [result.userAddress.permanentAddress.addressType || '', Validators.compose([Validators.required])],
+                address1: [result.userAddress.permanentAddress.address1 || '', Validators.compose([Validators.required, Validators.maxLength(40)])],
+                address2: [result.userAddress.permanentAddress.address2 || '', Validators.compose([Validators.maxLength(70)])],
+                pin: [result.userAddress.permanentAddress.pin || '', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])],
+                city: [result.userAddress.permanentAddress.city || '', Validators.compose([Validators.required])],
+                district: [result.userAddress.permanentAddress.district || '', Validators.compose([Validators.required])],
+                state: [result.userAddress.permanentAddress.state || '', Validators.compose([Validators.required])],
+                country: [result.userAddress.permanentAddress.country || KYCConstants.CND_COUNTRY_INDIA],
+                landmark: [result.userAddress.permanentAddress.landmark || ''],
+                amtid: [result.userAddress.permanentAddress.amtid || '']
+            }),
+            currentAddress: this.fb.group({
+                addressType: [result.userAddress.currentAddress.addressType || '', Validators.compose([Validators.required])],
+                address1: [result.userAddress.currentAddress.address1 || '', Validators.compose([Validators.required, Validators.maxLength(40)])],
+                address2: [result.userAddress.currentAddress.address2 || '', Validators.compose([Validators.maxLength(70)])],
+                pin: [result.userAddress.currentAddress.pin || '', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])],
+                city: [result.userAddress.currentAddress.city || '', Validators.compose([Validators.required])],
+                district: [result.userAddress.currentAddress.district || '', Validators.compose([Validators.required])],
+                state: [result.userAddress.currentAddress.state || '', Validators.compose([Validators.required])],
+                country: [result.userAddress.currentAddress.country || KYCConstants.CND_COUNTRY_INDIA],
+                landmark: [result.userAddress.currentAddress.landmark || ''],
+                amtid: [result.userAddress.currentAddress.amtid || '']
+            }),
+            permanentEqualsCurrent: [result.userAddress.permanentEqualsCurrent]
+        });
+        this.kycForm.valueChanges.subscribe(data => this.onValueChanged(data));
+        //this.kycForm.controls['currentAddress'].clearValidators();
+        this.kycForm.controls['currentAddress']['controls']['addressType'].clearValidators();
+        this.kycForm.controls['currentAddress']['controls']['address1'].clearValidators();
+        this.kycForm.controls['currentAddress']['controls']['address2'].clearValidators();
+        this.kycForm.controls['currentAddress']['controls']['pin'].clearValidators();
+        this.kycForm.controls['currentAddress']['controls']['city'].clearValidators();
+        this.kycForm.controls['currentAddress']['controls']['district'].clearValidators();
+        this.kycForm.controls['currentAddress']['controls']['state'].clearValidators();
+        this.kycForm.controls['permanentEqualsCurrent'].valueChanges.subscribe(data => this.onCheckboxChanged(data));
+
+        const permanentform = this.kycForm.controls['permanentAddress'];
+        for (const field in this.formErrorsPermanent) {
+            // clear previous error message (if any)
+            this.formErrorsPermanent[field] = '';
+            const control = permanentform.get(field);
+            if (!control.valid) {
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrorsPermanent[field] += messages[key] + ' ';
+                }
+            }
+        }
+    }
+
+    onCheckboxChanged(data?: any){
+        if (this.kycForm.controls['permanentEqualsCurrent'].value){
+            // this.logger.debug(this.className, "Clearing validations..");
+            // this.logger.debug(this.className, "BEFORE CLEARING" , this.kycForm.controls['currentAddress'].get('addressType'));
+            this.kycForm.controls['currentAddress']['controls']['addressType'].clearValidators();
+            this.kycForm.controls['currentAddress']['controls']['address1'].clearValidators();
+            this.kycForm.controls['currentAddress']['controls']['address2'].clearValidators();
+            this.kycForm.controls['currentAddress']['controls']['pin'].clearValidators();
+            this.kycForm.controls['currentAddress']['controls']['city'].clearValidators();
+            this.kycForm.controls['currentAddress']['controls']['district'].clearValidators();
+            this.kycForm.controls['currentAddress']['controls']['state'].clearValidators();
+            this.kycForm.controls['currentAddress']['controls']['addressType'].updateValueAndValidity();
+            this.kycForm.controls['currentAddress']['controls']['address1'].updateValueAndValidity();
+            this.kycForm.controls['currentAddress']['controls']['address2'].updateValueAndValidity();
+            this.kycForm.controls['currentAddress']['controls']['pin'].updateValueAndValidity();
+            this.kycForm.controls['currentAddress']['controls']['city'].updateValueAndValidity();
+            this.kycForm.controls['currentAddress']['controls']['district'].updateValueAndValidity();
+            this.kycForm.controls['currentAddress']['controls']['state'].updateValueAndValidity();
+            // this.logger.debug(this.className, "AFTER CLEARING" ,this.kycForm.controls['currentAddress'].get('addressType'));
+            //this.kycForm.controls['currentAddress'].clearValidators();
+            //this.kycForm.controls['currentAddress'].updateValueAndValidity();
+        }
+        else {
+            this.applyValidatorsToCurrentAddress();
+        }
+    }
+
+    onValueChanged(data?: any) {
+        if (!this.kycForm) {
+            return;
+        }
+        const kycform = this.kycForm;
+        const permanentform = this.kycForm.controls['permanentAddress']
+        const currentform = this.kycForm.controls['currentAddress']
+
+        if (kycform.pristine) {
+            return;
+        }
+        if (!kycform.dirty) {
+            return;
+        }
+
+        for (const field in this.formErrorsPermanent) {
+            // clear previous error message (if any)
+            this.formErrorsPermanent[field] = '';
+            const control = permanentform.get(field);
+            if (!control.valid && control.touched) {
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrorsPermanent[field] += messages[key] + ' ';
+                }
+            }
+        }
+        // this.logger.debug(this.className, this.kycForm)
+    }
+
+    formErrorsPermanent = {
+        'addressType': '',
+        'address1': '',
+        'address2': '',
+        'pin': '',
+        'city': '',
+        'district': '',
+        'state': '',
+        'country': '',
+        'landmark': ''
+    };
+
+    applyValidatorsToCurrentAddress(){
+        this.logger.debug(this.className, "APPlying validators");
+        let currentform = this.kycForm.controls['currentAddress'];
+        let addressType = currentform.get('addressType') as FormControl;
+        let address1 = currentform.get('address1') as FormControl;
+        let address2 = currentform.get('address2') as FormControl;
+        let pin = currentform.get('pin') as FormControl;
+        let city = currentform.get('city') as FormControl;
+        let district = currentform.get('district') as FormControl;
+        let state = currentform.get('state') as FormControl;
+        addressType.setValidators(Validators.compose([Validators.required]));
+        address1.setValidators(Validators.compose([Validators.required, Validators.maxLength(40)]));
+        address2.setValidators(Validators.compose([Validators.maxLength(70)]));
+        pin.setValidators(Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')]));
+        city.setValidators(Validators.compose([Validators.required]));
+        district.setValidators(Validators.compose([Validators.required]));
+        state.setValidators(Validators.compose([Validators.required]));
+    }
+
+    onKYCSubmit() {
+        this.kycInProcess = true
+        let currentamt = this.kycForm.controls['currentAddress'].get('amtid').value;
+
+        if (this.kycForm.controls['permanentEqualsCurrent'].value) {
+            this.kycForm.controls['currentAddress'].setValue(this.kycForm.controls['permanentAddress'].value);
+            // this.kycForm.controls['currentAddress'].get('amtid').setValue(currentamt);
+        }
+
+        this.userService.updateAddressData(this.kycForm.value)
+            .map(value => {
+                this.kycInProcess = false;
+                return value
+            })
+            .subscribe(result => {
+                    this.logger.debug(this.className, result);
+                    if (!result['amtP'].isEmpty) {
+                        this.kycForm.controls['permanentAddress'].get('amtid').setValue(result['amtP']);
+                        this.kycForm.controls['currentAddress'].get('amtid').setValue(result['amtC']);
+                        this.user.userAddress.permanentAddress.amtid = result['amtP'];
+                        this.user.userAddress.currentAddress.amtid = result['amtC'];
+                        this.kycsaved = true;
+                        this.toggleKyc();
+                        this.makeVisible.emit();
+                    }
+                },
+                err => {
+                    this.logger.debug(this.className, err);
+                    this.kycsaved = false;
+                }
+            )
+    }
+
+    toggleKyc() {
+        if (this.kyccollapsed) this.kyccollapsed = false;
+        else this.kyccollapsed = true;
+
+        this.state = (this.state === 'hide' ? 'show' : 'hide')
+    }
+
+    GetPinDetails() {
+        let pin_current = this.kycForm.controls['currentAddress'].get('pin').value;
+        let pin_permanent = this.kycForm.controls['permanentAddress'].get('pin').value;
+
+        var currentpinurl = 'https://data.gov.in/api/datastore/resource.json?resource_id=6176ee09-3d56-4a3b-8115-21841576b2f6&api-key=0441375b4ec291db5cde0e7bfd031195';
+        currentpinurl = currentpinurl + '&filters[pincode]=' + pin_current + '&fields=pincode,statename,Districtname'
+
+        var permanentpinurl = 'https://data.gov.in/api/datastore/resource.json?resource_id=6176ee09-3d56-4a3b-8115-21841576b2f6&api-key=0441375b4ec291db5cde0e7bfd031195';
+        permanentpinurl = permanentpinurl + '&filters[pincode]=' + pin_permanent + '&fields=pincode,statename,Districtname'
+
+        if (pin_current) {
+            this.http.get(currentpinurl)
+                .subscribe(
+                    response => {
+                        this.logger.debug(this.className,response.json().records);
+                        this.kycForm.controls['currentAddress'].get('state').setValue(response.json().records[0].statename);
+                        this.kycForm.controls['currentAddress'].get('district').setValue(response.json().records[0].Districtname);
+                    }
+                );
+            // this.httpservice.post('/pincode', {"pin": pin_current})
+            //     .subscribe(
+            //         response => {
+            //           console.log(response);
+            //           this.kycForm.controls['currentAddress'].get('state').setValue(response.state);
+            //           this.kycForm.controls['currentAddress'].get('district').setValue(response.district);
+            //         }
+            //     );
+        }
+
+        if (pin_permanent) {
+            this.http.get(permanentpinurl)
+                .subscribe(
+                    response => {
+                        this.logger.debug(this.className,response.json().records);
+                        this.kycForm.controls['permanentAddress'].get('state').setValue(response.json().records[0].statename);
+                        this.kycForm.controls['permanentAddress'].get('district').setValue(response.json().records[0].Districtname);
+                    }
+                );
+            // this.httpservice.post('/pincode', {"pin": pin_permanent})
+            //     .subscribe(
+            //         response => {
+            //           console.log(response.json().city);
+            //           this.kycForm.controls['permanentAddress'].get('state').setValue(response.json().state);
+            //           this.kycForm.controls['permanentAddress'].get('district').setValue(response.json().district);
+            //         }
+            //     );
+        }
+    }
+
+    isPermanentEqualsPresent(permanent: Address, current: Address) {
+        if (permanent.address1 == current.address1 &&
+            permanent.address2 == current.address2 &&
+            permanent.addressType == current.addressType &&
+            permanent.city == current.city &&
+            permanent.district == current.district &&
+            permanent.state == current.state &&
+            permanent.country == current.country &&
+            permanent.pin == current.pin &&
+            permanent.landmark == current.landmark &&
+            this.ticked){
+            return true
+        }
+        else
+            return false
+    }
+}

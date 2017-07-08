@@ -1,0 +1,40 @@
+import {Injectable, Inject} from "@angular/core";
+import {HttpService} from "./http-service.service";
+import {Logger} from "../logger/logger";
+import {Observable} from "rxjs";
+import {LocalStorageService} from "angular-2-local-storage";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {isNullOrUndefined} from "util";
+import {JwtHelper} from "angular2-jwt";
+
+@Injectable()
+export class CustomerNameService{
+    className: string;
+
+    constructor(public httpService: HttpService, public logger: Logger, private  localStorageService: LocalStorageService,
+                @Inject(APP_CONFIG) private config: IAppConfig, public jwtHelper: JwtHelper){
+        this.className = "CustomerNameService"
+    }
+
+    public getNameOfUser(): string{
+        let token = this.localStorageService.get(this.config.authToken);
+
+        if (isNullOrUndefined(token) || token == 'undefined' || token == 'null') {
+            return "";
+        } else {
+            let user = this.jwtHelper.decodeToken(JSON.stringify(token));
+            this.logger.debug(this.className, user);
+            if (user && !user.username.includes("Anonymous")){
+                if (user['firstname'].length>0){
+                    return "Hello " + user['firstname'] + "!"
+                }
+                else {
+                    return user.username
+                }
+            }
+            else
+                return ""
+
+        }
+    }
+}

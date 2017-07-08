@@ -1,0 +1,134 @@
+<section>
+    <!--<md-card _ngcontent-pxi-6>-->
+    <!--<md-card-title>-->
+    <md-toolbar color="lightgray" class="sectiontitle">
+        <div style="width: 100%">
+            <i [ngClass]="{'material-icons': true, 'md-dark': !basicsaved, 'md-inactive': !basicsaved, 'blue600': basicsaved}">check</i>
+            <a (click)="toggleBasic()" role="button">Basic Details</a>
+            <i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="basiccollapsed">expand_more</i>
+            <i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="!basiccollapsed">expand_less</i>
+        </div>
+        <md-toolbar-row *ngIf="basicsaved">
+            <div class="info-div">
+                <div>
+                    <span class="info-label">Name</span>
+                    <span>{{basicForm.controls['name'].value}} &nbsp;&nbsp;</span>
+                </div>
+                <div>
+                    <span class="info-label">PAN Card Number</span>
+                    <span>{{basicForm.controls['pan'].value}}</span>
+                </div>
+            </div>
+        </md-toolbar-row>
+
+    </md-toolbar>
+    <!--</md-card-title>-->
+    <!--<br/>-->
+    <!--<md-card-content>-->
+    <form [formGroup]="basicForm" (ngSubmit)="onBasicSubmit()" [hidden]="basiccollapsed" novalidate class="kycform">
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group">
+                <md-input required formControlName="name" placeholder="Name">
+                    <md-hint *ngIf="!basicForm.controls['name'].valid && (basicForm.controls['name'].touched)"
+                             class="errorMessage">
+                        Name is required
+                    </md-hint>
+                </md-input>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input required formControlName="pan" placeholder="PAN" #pan
+                          [value]="pan.value.toUpperCase()">
+                    <md-hint *ngIf="!basicForm.controls['pan'].valid && (basicForm.controls['pan'].touched)"
+                             class="errorMessage">
+                        Please enter valid PAN number
+                    </md-hint>
+                </md-input>
+            </md-grid-tile>
+        </md-grid-list>
+        <div formGroupName="contact">
+            <md-grid-list cols="2" rowHeight="100px">
+                <md-grid-tile style="display: block">
+                    <md-input required formControlName="mob" placeholder="Mobile no">
+                        <md-hint
+                                *ngIf="!basicForm.controls['contact'].get('mob').valid && (basicForm.controls['contact'].get('mob').touched)"
+                                class="errorMessage">
+                            Please enter valid Mobile number
+                        </md-hint>
+                    </md-input>
+                </md-grid-tile>
+                <md-grid-tile class="form-group">
+                    <md-input required formControlName="email" placeholder="Email Id">
+                        <md-hint
+                                *ngIf="!basicForm.controls['contact'].get('email').valid && (basicForm.controls['contact'].get('email').touched)"
+                                class="errorMessage">
+                            Please enter valid email id
+                        </md-hint>
+                    </md-input>
+                </md-grid-tile>
+            </md-grid-list>
+            <md-grid-list cols="2" rowHeight="100px">
+                <md-grid-tile style="display: block">
+                    <md-input formControlName="tel" placeholder="Telephone No.">
+                        <md-hint
+                                *ngIf="!basicForm.controls['contact'].get('tel').valid && (basicForm.controls['contact'].get('tel').touched)"
+                                class="errorMessage">
+                            Please enter valid Telephone number
+                        </md-hint>
+                    </md-input>
+                </md-grid-tile>
+                <md-grid-tile class="form-group">
+                    <md-input formControlName="fax" placeholder="Fax No.">
+                        <md-hint
+                                *ngIf="!basicForm.controls['contact'].get('fax').valid && (basicForm.controls['contact'].get('fax').touched)"
+                                class="errorMessage">
+                            Please enter valid Fax number
+                        </md-hint>
+                    </md-input>
+                </md-grid-tile>
+            </md-grid-list>
+        </div>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group">
+                <label class="field_label">Date of Birth </label>
+                <md-input required formControlName="dob" type="date" class="date_margin">
+                    <md-hint *ngIf="!basicForm.controls['dob'].valid && (basicForm.controls['dob'].touched)"
+                             class="errorMessage">
+                        Please enter date of birth
+                    </md-hint>
+                </md-input>
+            </md-grid-tile>
+            <md-grid-tile>
+                <label class="field_label">Nationality</label>
+                <select required>
+                    <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                </select>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group">
+                <label class="field_label">Gender</label>
+                <md-radio-group required formControlName="gender">
+                    <md-radio-button value="Male">Male</md-radio-button>
+                    <md-radio-button value="Female">Female</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+            <md-grid-tile class="form-group" style="display: block">
+                <label class="field_label">Marital Status</label>
+                <md-radio-group required formControlName="marital_status">
+                    <md-radio-button value="Single">Single</md-radio-button>
+                    <md-radio-button value="Married">Married</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+            <md-grid-tile>
+
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="1" rowHeight="50px" class="button-list-margins">
+            <md-grid-tile>
+                <button md-raised-button color="primary" [disabled]="!basicForm.valid">Save</button>
+            </md-grid-tile>
+        </md-grid-list>
+    </form>
+    <!--</md-card-content>-->
+    <!--</md-card>-->
+</section>

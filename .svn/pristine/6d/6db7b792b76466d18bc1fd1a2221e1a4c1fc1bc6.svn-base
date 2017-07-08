@@ -1,0 +1,1 @@
+export * from './components/angular2-recaptcha/angular2-recaptcha.component';

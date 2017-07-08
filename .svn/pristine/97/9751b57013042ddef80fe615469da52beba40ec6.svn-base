@@ -1,0 +1,48 @@
+import { Contact } from './contact';
+import { Address } from './address';
+import { Bank } from './bank';
+import { Nominee } from './nominee';
+import {UserBanks} from "./user-banks";
+
+export class User{
+
+    constructor(
+        public Basic: {
+            pan: string;
+            name: string;
+            father_name: string;
+            mother_name: string;
+            contact: Contact;
+            dob: string;
+            gender: string;
+            marital_status?: string;
+        },
+        public Address: {
+            current_address: Address;
+            permanent_address: Address;
+            nominee?: Nominee[];
+        },
+
+        public BankDetails: UserBanks[],
+
+        public FATCA:{
+            income: string;
+            occupation: string;
+            investor_type?: string;
+            nationality: string;
+            birth_country: string;
+            birth_city: string;
+            tax_country: string;
+            overseas_address?: Address;
+            politically_exposed: string;
+            politically_related: string;
+        },
+        public Docs?: {
+            passport_photo: File;
+            pan_card: File;
+            proof_of_address: File;
+            signature: File;
+            cancelled_cheque: File;
+        }
+    ){ }
+}

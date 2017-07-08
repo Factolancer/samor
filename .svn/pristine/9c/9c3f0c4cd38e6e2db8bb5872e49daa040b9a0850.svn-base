@@ -1,0 +1,33 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Logger} from "../core/logger/logger";
+import {ExploreFundsService} from "../core/services/explore-funds.service";
+import {TitleService} from "../core/services/title.service";
+import {HeaderService} from "../core/services/header.service";
+
+@Component({
+    selector: 'app-sip',
+    templateUrl: './sip.component.html',
+    styleUrls: ['./sip.styles.scss']
+})
+export class SipComponent implements OnInit, OnDestroy {
+
+    //  investmentMode: InvestmentType;
+
+    constructor(private logger: Logger, private exploreFundService: ExploreFundsService,
+                private titleService: TitleService, private headerService: HeaderService) {
+        //  this.investmentType = InvestmentType.sip;
+    }
+
+    ngOnInit() {
+        this.titleService.setTitle("sip");
+        this.titleService.setMetaTags("sip");
+    }
+
+    navigateToExplore() {
+        this.exploreFundService.navigateToSIPExplore();
+    }
+
+    ngOnDestroy(){
+        this.headerService.resetHeaderHiding();
+    }
+}

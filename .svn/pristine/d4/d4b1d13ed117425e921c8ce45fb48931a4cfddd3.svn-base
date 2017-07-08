@@ -1,0 +1,255 @@
+<div>
+    <div fxFlex="100" class="section-header">
+        <div fxLayout="row" class="cursor-pointer" (click)="toggleOther()">
+            <div fxFlex="8" fxFlexOffset="2">
+                <md-icon
+                        [ngClass]="{'material-icons': true, 'md-dark': !othersaved, 'md-inactive': !othersaved, 'blue600': othersaved}">
+                    check
+                </md-icon>
+            </div>
+            <div fxFlex="83">
+                <span>{{heading.otherSectionHeading}}</span>
+            </div>
+            <div fxFlex="7">
+                <md-icon *ngIf="othercollapsed">expand_more</md-icon>
+                <md-icon *ngIf="!othercollapsed">expand_less</md-icon>
+            </div>
+        </div>
+    </div>
+
+    <div fxFlex="100" class="section-content">
+        <form [formGroup]="otherForm" (ngSubmit)="onOtherSubmit()" [@ShowHide]="state" novalidate>
+            <br/>
+            <br/>
+            <div>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex="40">
+                        <md-select required formControlName="income" placeholder="Annual Income">
+                            <md-option *ngFor="let income of incomerange" value="income.value">{{income.value}}
+                            </md-option>
+                        </md-select>
+                        <!--<md-hint *ngIf="!otherForm.controls['income'].valid && (otherForm.controls['income'].touched)">
+                            Required field
+                        </md-hint>-->
+                    </div>
+                    <div fxFlex="40">
+                        <md-select required formControlName="occupation" placeholder="Select Occupation">
+                            <md-option *ngFor="let occupation of occupations" value="occupation.name">
+                                {{occupation.name}}
+                            </md-option>
+                        </md-select>
+                        <!--<md-hint
+                                *ngIf="!otherForm.controls['occupation'].valid && (otherForm.controls['occupation'].touched)">
+                            Required field
+                        </md-hint>-->
+                    </div>
+                </div>
+                <br/><br/>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex="40">
+                        <md-select required formControlName="nationality" placeholder="Nationality">
+                            <md-option *ngFor="let country of countries" [value]="country.name">{{country.name}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                    <div fxFlex="40">
+                        <md-select required formControlName="birth_country" placeholder="Birth Country">
+                            <md-option *ngFor="let country of countries" [value]="country.name">{{country.name}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex="40">
+                        <md-input-container>
+                            <input md-input required type="text" formControlName="birth_city"
+                                   placeholder="Birth City">
+                            <md-hint align="end" *ngIf="formErrors.birth_city" class="errorMessage">{{formErrors.name}}</md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="40">
+                        <label class="field_label">Tax Residency</label>
+                        <md-radio-group required formControlName="tax_country_india" [(ngModel)]="indiantaxpayer">
+                            <md-radio-button value="Yes">Tax Resident of India</md-radio-button>
+                            <md-radio-button value="No">Another Country</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex="40" *ngIf="indiantaxpayer==='No'">
+                        <md-select required formControlName="tax_country" placeholder="Tax Country">
+                            <md-option *ngFor="let country of countries" [value]="country.name">{{country.name}}
+                            </md-option>
+                        </md-select>
+                        <!--<div fxFlexLayout="row">
+                            <div fxFlex="50">
+                                <md-select required formControlName="tax_country" placeholder="Tax Country">
+                                    <md-option *ngFor="let country of countries" [value]="country.name">{{country.name}}
+                                    </md-option>
+                                </md-select>
+                            </div>
+                            <div fxFlex="50">
+                                <md-input-container>
+                                    <input md-input type="text" formControlName="tin" placeholder="TIN">
+                                </md-input-container>
+                            </div>
+                        </div>-->
+
+                    </div>
+                    <div fxFlex="40" *ngIf="indiantaxpayer=='Yes'"></div>
+                    <div fxFlex="20">
+                        <label class="field_label">Politically Exposed</label>
+                        <md-radio-group required formControlName="politically_exposed">
+                            <md-radio-button value="Yes">Yes</md-radio-button>
+                            <md-radio-button value="No">No</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                    <div fxFlex="20">
+                        <label class="field_label">Politically related</label>
+                        <md-radio-group required formControlName="politically_related">
+                            <md-radio-button value="yes">Yes</md-radio-button>
+                            <md-radio-button value="No">No</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button md-raised-button color="primary" type="submit" [disabled]="!otherForm.valid">Save</button>
+                </div>
+                <br/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--<div fxLayout="column" fxLayoutAlign="center center">
+
+    <md-toolbar color="lightgray" class="sectiontitle">
+        <div style="width: 100%">
+            <i [ngClass]="{'material-icons': true, 'md-dark': !othersaved, 'md-inactive': !othersaved, 'blue600': othersaved}">check</i>
+            <a (click)="toggleOther()" role="button">{{heading.otherSectionHeading}}</a>
+            <i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="othercollapsed">expand_more</i>
+            <i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="!othercollapsed">expand_less</i>
+        </div>
+        <md-toolbar-row *ngIf="othersaved">
+            <div class="info-div">
+                <div>
+                    <span class="info-label">Investor type</span>
+                    <span>{{otherForm.controls['investorType'].value}} &nbsp;&nbsp;</span>
+                </div>
+                <div>
+                    <span class="info-label">Account Number</span>
+                    <span>{{otherForm.controls['investorType'].value}}</span>
+                </div>
+            </div>
+        </md-toolbar-row>
+    </md-toolbar>
+
+    <form [formGroup]="otherForm" (ngSubmit)="onOtherSubmit()" [@ShowHide]="state" novalidate class="kycform">
+        <md-grid-list cols="2" rowHeight="75px">
+
+            <md-grid-tile>
+                <label class="field_label">Nationality</label>
+                <select required formControlName="nationality">
+                    <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                </select>
+            </md-grid-tile>
+            <md-grid-tile></md-grid-tile>
+
+            <md-grid-tile>
+                <label class="field_label">Birth Country</label>
+                <select required formControlName="birth_country">
+                    <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                </select>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input type="text" required="" formControlName="birth_city"
+                          placeholder="Birth City"></md-input>
+            </md-grid-tile>
+        </md-grid-list>
+        <div formGroupName="overseas_address" *ngIf="user.Other.investorType=='NRI'">
+            <md-grid-list cols="2" rowHeight="75px">
+                <md-grid-tile>
+                    <md-input type="text" required formControlName="address1" style="margin-left: -5%"
+                              placeholder="Address line 1"></md-input>
+                    <div *ngIf="!otherForm.controls['overseas_address'].get('address1').valid && (otherForm.controls['overseas_address'].get('address1').touched)"
+                         class="errorMessage">
+                        <span>Please enter your communication address</span>
+                    </div>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input type="text" formControlName="address2" style="margin-left: -5%"
+                              placeholder="Address line 2"></md-input>
+                    <div *ngIf="!otherForm.controls['overseas_address'].get('address2').valid && (otherForm.controls['overseas_address'].get('address1').touched)"
+                         class="errorMessage">
+                        <span>Please enter your communication address</span>
+                    </div>
+                </md-grid-tile>
+
+                <md-grid-tile>
+                    <md-input required formControlName="pin" placeholder="Pin Code" (blur)="GetPinDetails()"></md-input>
+                    <div *ngIf="!otherForm.controls['overseas_address'].get('pin').valid && (otherForm.controls['overseas_address'].get('pin').touched)"
+                         class="errorMessage">
+                        <span>Please enter valid 6 digit Pin Code</span>
+                    </div>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input type="text" required formControlName="district" placeholder="District"></md-input>
+                    <div *ngIf="!otherForm.controls['overseas_address'].get('district').valid && (otherForm.controls['overseas_address'].get('district').touched)"
+                         class="errorMessage">
+                        <span>Required</span>
+                    </div>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input type="text" required formControlName="state" placeholder="State"></md-input>
+                    <div *ngIf="!otherForm.controls['overseas_address'].get('state').valid && (otherForm.controls['overseas_address'].get('state').touched)"
+                         class="errorMessage">
+                        <span>Required</span>
+                    </div>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <label class="field_label">Country</label>
+                    <select formControlName="country">
+                        <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                    </select>
+                </md-grid-tile>
+            </md-grid-list>
+        </div>
+        <md-grid-list cols="2" rowHeight="75px">
+            <md-grid-tile class="form-group" style="display: block" [colspan]="2">
+                <label class="field_label">Tax resident of another country</label>
+                <md-radio-group required formControlName="tax_country_india" [(ngModel)]="indiantaxpayer">
+                    <md-radio-button value="Yes">Tax resident of India</md-radio-button>
+                    <md-radio-button value="No">Tax resident of another Country</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+            <md-grid-tile class="form-group" style="display: block" [colspan]="2" *ngIf="indiantaxpayer=='No'">
+                <label class="field_label">Tax Country</label>
+                <select formControlName="tax_country">
+                    <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                </select>
+            </md-grid-tile>
+            <md-grid-tile class="form-group" styles="display: block">
+                <label class="field_label">Politically exposed</label>
+                <md-radio-group required formControlName="politicallyExposed">
+                    <md-radio-button value="Yes">Yes</md-radio-button>
+                    <md-radio-button value="No">No</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+            <md-grid-tile class="form-group" styles="display: block">
+                <label class="field_label">Politically related</label>
+                <md-radio-group required formControlName="politicallyRelated">
+                    <md-radio-button value="yes">Yes</md-radio-button>
+                    <md-radio-button value="No">No</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+            <md-grid-tile [colspan]="2">
+                <button md-raised-button color="primary" [disabled]="!otherForm.valid">Save</button>
+            </md-grid-tile>
+        </md-grid-list>
+
+    </form>
+
+</div>-->

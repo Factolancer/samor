@@ -1,0 +1,56 @@
+import {Component, OnInit} from "@angular/core";
+import {HttpService} from "../../services/http-service.service";
+import {SearchService} from "../../services/search-service.service";
+@Component({
+  moduleId: module.id,
+  selector: 'app-expert',
+  templateUrl: 'expert.component.html',
+  styleUrls: ['expert.component.css'],
+  providers: [HttpService, SearchService],
+})
+export class ExpertComponent implements OnInit {
+
+  amcList: string[] = new Array;
+  searchObj: any
+  searchResults: any
+
+  constructor(private httpService: HttpService, private searchService: SearchService) {
+    this.searchObj = searchService.getSearch()
+  }
+
+  search() {
+    this.searchResults = []
+    this.searchService.searchFund("/searchFund", this.searchObj).subscribe(output => {
+      this.searchResults = output.json()
+    })
+  }
+
+  fetchByAMC(amc: any) {
+    if (amc.length > 0) {
+      this.searchObj.amc = amc
+      this.search()
+    } else {
+      this.searchObj.amc = ""
+    }
+  }
+
+  searchForKeyword(value: any) {
+    if (value.length > 3) {
+      this.searchObj.keyword = value+"*"
+      this.search()
+    } else {
+      this.searchObj.keyword = ""
+      this.search()
+    }
+  }
+
+  ngOnInit() {
+
+    this.httpService.get("/sip/getCategoryList").subscribe(
+      output => {
+        this.amcList = output.json().categories
+      });
+  }
+
+
+}

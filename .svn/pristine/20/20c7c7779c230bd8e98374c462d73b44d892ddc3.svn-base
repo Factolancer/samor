@@ -1,0 +1,45 @@
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
+import {RouterModule} from "@angular/router";
+import {MaterialModule} from "@angular/material";
+import {RatingPipe} from "./rating.pipe";
+import {GoogleChart} from "./google-chart.directive";
+import {KeysPipe} from "./keys.pipe";
+import {HeatMapDirective} from "./heat-map.directive";
+import {PageNotFoundComponent} from "./page-not-found.component";
+import {ConfirmationDialogComponent} from "./confirmation-dialog.component";
+import {UserJourneyComponent} from "./user-journey.component";
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {InfoDialogComponent} from "./info-dialog.component";
+import {RiskometerPipe} from "./riskometer.pipe";
+
+@NgModule({
+    imports: [CommonModule,
+        HttpModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MaterialModule,
+        RouterModule],
+    exports: [FormsModule,
+        ReactiveFormsModule,
+        CommonModule,
+        HttpModule,
+        RatingPipe,
+        RiskometerPipe,
+        KeysPipe,
+        RouterModule,
+        MaterialModule,
+        FlexLayoutModule,
+        GoogleChart,
+        HeatMapDirective,
+        UserJourneyComponent
+    ],
+    entryComponents: [ConfirmationDialogComponent, InfoDialogComponent],
+    declarations: [RatingPipe, RiskometerPipe, KeysPipe, GoogleChart, HeatMapDirective,
+        PageNotFoundComponent, ConfirmationDialogComponent, UserJourneyComponent,
+        InfoDialogComponent]
+})
+export class SharedModule {
+}

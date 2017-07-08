@@ -1,0 +1,68 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Tax Calculator</h1>
+        </div>
+    </section>
+    <section class="grey-back">
+        <div class="row" *ngIf="askAmounts">
+            <div class="col-md-12">
+                <label>Places where you invest:</label>
+                <table>
+                    <tr *ngFor="let question of taxCalcQuestions;">
+                        <td>{{question.statement}}</td>
+                        <md-input [(ngModel)]="question.answer" align="end">
+                            <span md-prefix [innerHTML]="question.prefix"></span>
+                        </md-input>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <label class="text-center">Your Annual Salary is </label>
+                <md-input [(ngModel)]="annualSalary" align="end">
+                    <span md-prefix>&#x20B9;</span>
+                </md-input>
+            </div>
+            <div class="col-md-12">
+                <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                        (click)="calculate()">Calculate
+                </button>
+            </div>
+        </div>
+        <div class="row" *ngIf="showResults">
+            <div class="col-md-12">
+                <h3 class="text-center">Here is our assessment</h3>
+                <p>Your Current Investments are: {{currentInvestment | currency:'INR':true:'1.0-0'}} </p>
+                <table>
+                    <tr>
+                        <td class="pad-10">Investment Opportunity</td>
+                        <td class="pad-10">{{investmentOpportunity | currency:'INR':true:'1.0-0'}}</td>
+                        <td class="pad-10">Tax saved through investment</td>
+                        <td class="pad-10">{{taxSaved | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                </table>
+                <p>
+                    <small><i>**Investment Limit Under 80C is {{150000 | currency:'INR':true:'1.0-0'}}</i></small>
+                </p>
+            </div>
+            <div class="col-md-12">
+                <button md-raised-button="" (click)="back()">Back
+                </button>
+                <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                        routerLink="/explore">Invest Now
+                </button>
+            </div>
+        </div>
+        <div class="row" *ngIf="showPromotions">
+            <div class="col-md-12">
+                <h3>Your have currently Invested {{currentInvestment | currency:'INR':true:'1.0-0'}}, and saved
+                    {{taxSaved | currency:'INR':true:'1.0-0'}} on your taxes!</h3>
+                <p>We can promote other products here</p>
+            </div>
+            <div class="col-md-12">
+                <button md-raised-button="" (click)="back()">Back
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

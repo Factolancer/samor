@@ -1,0 +1,122 @@
+import {Component, OnInit, style, state, animate, transition, trigger} from '@angular/core';
+import {NgForm, FormGroup, Validators, FormControl, FormBuilder, Validator, FormControlName} from '@angular/forms';
+import {Subscription} from "rxjs";
+
+import {User} from "../../../models/user";
+import {UserService} from '../../user.service';
+import {HttpService} from "../../../services/http-service.service";
+import {Country} from "../../../countries";
+import {Heading} from "../../constants/headings";
+import {Income} from "../../constants/incomerange";
+import {Occupation} from "../../constants/occupation";
+
+@Component({
+    selector: 'other-section',
+    templateUrl: './other-section.component.html',
+    styleUrls: ['../../registration.styles.scss'],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({opacity: '1', height: '*', visibility: 'visible'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ])
+        ])
+    ]
+})
+export class OtherSectionComponent implements OnInit {
+
+    otherForm: FormGroup;
+    public countries = Country;
+    public heading = Heading;
+    public incomerange = Income;
+    public occupations = Occupation;
+
+    state: string = 'hide';
+    othersaved = false;
+    othercollapsed = true;
+    isNRI = false;
+    indiantaxpayer = 'Yes';
+
+    user: User
+    usersubscription: Subscription;
+
+    constructor(private fb: FormBuilder, public userService: UserService, public http: HttpService) {
+
+        this.user = new User({pan: '', name: '', father_name: '', mother_name: '', contact: {}, dob: '', gender: '' },
+            {current_address: {}, permanent_address: {}},
+            [{
+                holder_name: '', account_type: '1',
+                bank: {bank_name: '', branch: '', city: '', ifsc: ''},
+                account_number: '',
+            }],
+            {
+                income: '',
+                occupation: '',
+                nationality: 'India',
+                birth_country: 'India',
+                birth_city: '',
+                tax_country: 'India',
+                politically_exposed: 'No',
+                politically_related: 'No'
+            });
+
+        this.usersubscription = this.userService.currentUser.subscribe(
+            result => {
+                this.user = result
+            }
+        )
+    }
+
+    ngOnInit() {
+        this.otherForm = this.fb.group({
+            income: ['', Validators.compose([Validators.required])],
+            occupation: ['', Validators.required],
+            nationality: ['India'],
+            birth_country: ['India', Validators.compose([])],
+            birth_city: ['', Validators.required],
+            tax_country_india: ['Yes'],
+            tax_country: [''],
+            politically_exposed: ['No'],
+            politically_related: ['No'],
+            overseas_address: this.fb.group({
+                address1: [''], // ['', Validators.compose([Validators.required])],
+                address2: [''], // ['', Validators.compose([])],
+                pin: [''], // ['', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])],
+                district: [''], // ['', Validators.compose([Validators.required])],
+                state: [''], // ['', Validators.compose([Validators.required])],
+                city: [''],
+                country: ['']
+            }),
+            investor_type: ['Resident Indian', Validators.compose([Validators.required])]
+        });
+    }
+
+    onOtherSubmit() {
+        console.log("we are in other section compoenent")
+        this.othersaved = true;
+        this.userService.updateOtherData(this.otherForm.value);
+        //this.user.Other = this.otherForm.value;
+        /*if (this.otherForm.controls['tax_country_india'].value == 'Yes') {
+         this.user.Other.tax_country = 'India';
+         }
+         else {
+         this.user.Other.tax_country = this.otherForm.controls['tax_country'].value;
+         }
+         if (this.otherForm.controls['investor_type'].value == 'Resident Indian') {
+         this.user.Other.country = 'India';
+         }
+         else {
+         this.user.Other.country = this.otherForm.controls['country'].value;
+         }*/
+        //console.log(this.user);
+        this.toggleOther();
+    }
+
+    toggleOther() {
+        if (this.othercollapsed == true) this.othercollapsed = false;
+        else this.othercollapsed = true;
+
+        this.state = (this.state === 'hide' ? 'show' : 'hide')
+    }
+}

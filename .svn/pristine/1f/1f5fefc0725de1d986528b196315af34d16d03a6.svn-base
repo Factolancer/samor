@@ -1,0 +1,80 @@
+import {Injectable, Inject} from "@angular/core";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {LocalStorageService} from "angular-2-local-storage";
+import {JwtHelper} from "angular2-jwt";
+import {Logger} from "../logger/logger";
+import {Response} from "@angular/http";
+import {isNullOrUndefined} from "util";
+
+@Injectable()
+export class UserDataProviderService{
+
+    private className: string;
+    public loginSubject: BehaviorSubject<boolean>;
+    public userSubject: BehaviorSubject<any>;
+    public customerName: BehaviorSubject<string>;
+    private tokenSubject : BehaviorSubject<any>;
+    constructor(@Inject(APP_CONFIG) private config: IAppConfig, private logger: Logger,
+                private  localStorageService: LocalStorageService, public jwtHelper: JwtHelper){
+        this.className = "UserDataProviderService";
+        this.loginSubject = new BehaviorSubject<boolean>(false);
+        this.userSubject = new BehaviorSubject<any>({ "username" : "Anonymous"});
+        this.customerName = new BehaviorSubject<string>("");
+        this.tokenSubject = new BehaviorSubject<any>("");
+        this.initToken()
+    }
+
+    public initToken(){
+        let getToken = this.localStorageService.get(this.config.authToken)
+        if(!isNullOrUndefined(getToken))
+            this.setToken(getToken)
+        else
+            this.setToken("")
+    }
+
+    public getToken(){
+        this.tokenSubject.getValue()
+    }
+
+    public setToken(value : any){
+        this.tokenSubject.next(value)
+    }
+
+    public setUserObject(res: Response) {
+        this.logger.debug(this.className, res);
+        if (!isNullOrUndefined(res)) {
+            let token: string = res.headers.get(this.config.authToken);
+            this.setToken(token)
+            this.localStorageService.set(this.config.authToken, token);
+            let decoded = this.jwtHelper.decodeToken(token);
+            this.userSubject.next(decoded);
+            if (decoded && decoded.username && !decoded.username.includes("Anonymous")) {
+                this.loginSubject.next(true);
+            }else{
+                this.loginSubject.next(false);
+            }
+        }
+    }
+
+    public setNameOfUser(token : any){
+        let username = "";
+        if (isNullOrUndefined(token) || token == 'undefined' || token == 'null') {
+            username = "";
+        } else {
+            let user = this.jwtHelper.decodeToken(JSON.stringify(token));
+            if (user && !user.username.includes("Anonymous")){
+                if (user['firstname'].length>0){
+                    username = "Hello " + user['firstname'] + "!"
+                }
+                else {
+                    username = user.username
+                }
+            }else{
+                username = "";
+            }
+        }
+
+        this.customerName.next(username);
+    }
+}

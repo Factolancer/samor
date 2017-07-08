@@ -1,0 +1,167 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {FilterData} from "./filter-data";
+import {ExploreFundsService} from "../../core/services/explore-funds.service";
+import {Subscription} from "rxjs";
+import {ExploreFundConstants} from "../explore-funds.constants";
+import {FundSearchInput} from "../fund-search-input";
+import {Logger} from "../../core/logger/logger";
+
+@Component({
+    selector: 'app-category-filter',
+    templateUrl: './category-filter.component.html',
+    styleUrls: ['./filters.styles.scss']
+})
+export class CategoryFilterComponent implements OnInit, OnDestroy {
+
+    categoryFilterData: FilterData[] = [];
+    filterTitle: string;
+    checkedCount = 0;
+    searchFacetSubscription: Subscription;
+    searchInputSubscription: Subscription;
+    searchInput: FundSearchInput;
+
+    constructor(private exploreFundsService: ExploreFundsService, private logger: Logger) {
+
+    }
+
+    filter(checked: any, item: FilterData) {
+        if (checked) {
+            item.selected = true;
+        } else {
+            item.selected = false;
+        }
+        this.updateCheckedCount();
+        this.logger.debug("CategoryFilterComponent", this.getSelectedCategoryArray(), this.categoryFilterData);
+        this.searchInput.c = this.getSelectedCategoryArray();
+        this.exploreFundsService.filterFunds(this.searchInput);
+    }
+
+    clearFilter() {
+        this.checkedCount = 0;
+        this.searchInput.c = [];
+        this.exploreFundsService.filterFunds(this.searchInput);
+        this.categoryFilterData.forEach(listItem => {
+            listItem.selected = false;
+        });
+    }
+
+    updateCheckedCount() {
+        this.checkedCount = 0;
+        this.categoryFilterData.forEach(filterData => {
+            if (filterData.selected) {
+                this.checkedCount += 1;
+            }
+        })
+    }
+
+    getSelectedCategoryArray() {
+        let categoryList: string[] = [];
+        this.categoryFilterData.forEach(filterData => {
+            if (filterData.selected) {
+                categoryList.push(filterData.id)
+            }
+        });
+        return categoryList;
+    }
+
+    ngOnInit() {
+        this.filterTitle = "Category";
+
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput
+            .subscribe(searchInput => {
+                this.searchInput = searchInput;
+
+                this.categoryFilterData.forEach(filterData => {
+                    if (this.searchInput.c.indexOf(filterData.id) > -1) {
+                        filterData.selected = true;
+                    } else {
+                        filterData.selected = false;
+                    }
+                })
+                this.updateCheckedCount();
+            });
+
+        this.searchFacetSubscription = this.exploreFundsService.fundSearchFacet.subscribe(facets => {
+            if (facets.categoryFilterData) {
+                facets.categoryFilterData.forEach(listItem => {
+                    if (this.categoryFilterData.indexOf(listItem) > -1)
+                        listItem.selected = true
+                });
+                this.categoryFilterData = facets.categoryFilterData;
+
+                this.categoryFilterData.forEach(filterData => {
+                    if (this.searchInput.c.indexOf(filterData.id) > -1) {
+                        filterData.selected = true;
+                    }
+                });
+
+                this.updateCheckedCount();
+            }
+        })
+
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+        this.searchFacetSubscription.unsubscribe();
+    }
+
+
+}
+
+/*filter(checked: any, item: FilterData) {
+
+
+ }
+
+ clearFilter() {
+ this.checkedCount = 0;
+ this.searchInput.sc = [];
+ this.exploreFundsService.filterFunds(this.searchInput);
+ this.subCategoryFilterData.forEach(listItem => {
+ listItem.selected = false;
+ });
+ }
+
+ updateCheckedCount() {
+ this.checkedCount = 0;
+ this.subCategoryFilterData.forEach(filterData => {
+ if (filterData.selected) {
+ this.checkedCount += 1;
+ }
+ })
+ }
+
+ getSelectedCategoryArray() {
+ let subCategoryList: string[] = [];
+ this.subCategoryFilterData.forEach(filterData => {
+ if (filterData.selected) {
+ subCategoryList.push(filterData.id)
+ }
+ });
+ return subCategoryList;
+ }
+
+
+ ngOnInit() {
+ this.filterTitle = "Sub Category";
+
+ this.searchInputSubscription = this.exploreFundsService.fundSearchInput
+ .subscribe(searchInput => {
+ this.searchInput = searchInput;
+
+
+ });
+
+ this.searchFacetSubscription = this.exploreFundsService.fundSearchFacet.subscribe(facets => {
+
+
+ }
+
+ ngOnDestroy() {
+ this.searchInputSubscription.unsubscribe();
+ this.searchFacetSubscription.unsubscribe();
+ }
+
+
+ }*/

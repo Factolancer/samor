@@ -1,0 +1,11 @@
+//colors
+$brand-primary: #4E7C98;
+$brand-secondary: #53ADD0;
+$material-primary: #00BCD4;
+$material-accent: #FFC107;
+$material-warn: #F44336;
+$light-grey: #F2F2F2;
+$dark-grey: #BFBFBF;
+$white: #FFFFFF;
+$black: #000000;
+$footer: #24465b;

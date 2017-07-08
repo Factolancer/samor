@@ -1,0 +1,169 @@
+<div fxLayout="row" fxLayoutAlign="center start" class="wrapper summary">
+    <div fxFlex="90">
+        <!--<app-user-journey></app-user-journey>-->
+        <div class="heading-32-dark-grey pad-tb-25 center-align">Investment Summary</div>
+        <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="10px" class="grey-back pad-20">
+            <div fxFlex="70">
+                <div *ngIf="sipFunds.length>0" class="section">
+                    <div fxFlex="row" fxLayoutAlign="start center">
+                        <div fxFlex="40" class="section-title">SIP Investment</div>
+                    </div>
+                    <md-card class="no-padding">
+                        <div fxLayout="row" fxLayoutAlign="center center" class="fund-list-title">
+                            <div fxFlex="40">
+                                Fund
+                            </div>
+                            <div fxFlex="10">
+                                SIP Date
+                            </div>
+                            <div fxFlex="15">
+                                Frequency
+                            </div>
+                            <div fxFlex="15">
+                                Installments
+                            </div>
+                            <div fxFlex="20">
+                                Investment Amount
+                            </div>
+                        </div>
+                        <div *ngFor="let fund of sipFunds" fxLayout="row"
+                             fxLayoutAlign="start center" class="fund-list-body">
+                            <div fxFlex="40" class="name bold">
+                                {{fund.fund.name}}<br/>
+                                <span class="plan-option">Plan-<span>{{fund.selectedPlan}}</span> Option-<span>{{fund.selectedOption}}</span></span>
+                            </div>
+                            <div fxFlex="10">
+                                {{fund.selectedDeductionDate}}
+                            </div>
+                            <div fxFlex="15">{{fund.selectedAIPFrequency}}</div>
+                            <div fxFlex="15">{{fund.noOfInstallment}}</div>
+                            <div fxFlex="20" class="bold">
+                                {{fund.amount | currency:'INR':true:'1.0-0'}}
+                            </div>
+
+                        </div>
+                    </md-card>
+                    <div class="sip-disclaimer-text">{{sipDisclaimerText}}</div>
+                </div>
+                <div *ngIf="lumpsumFunds.length>0" class="section">
+                    <div fxFlex="row" fxLayoutAlign="start center">
+                        <div fxFlex="40" class="section-title">Lumpsum Investment</div>
+                    </div>
+                    <md-card class="no-padding">
+                        <div fxLayout="row" fxLayoutAlign="center center" class="fund-list-title">
+                            <div fxFlex="40" class="name">
+                                Fund
+                            </div>
+                            <div fxFlex="20">
+                                Plan
+                            </div>
+                            <div fxFlex="20">
+                                Option
+                            </div>
+                            <div fxFlex="20">
+                                Investment Amount
+                            </div>
+                        </div>
+                        <div *ngFor="let fund of lumpsumFunds" fxLayout="row" fxLayoutAlign="start center"
+                             class="fund-list-body">
+                            <div fxFlex="40" class="name bold">
+                                {{fund.fund.name}}
+                            </div>
+                            <div fxFlex="20">
+                                {{fund.selectedPlan}}
+                            </div>
+                            <div fxFlex="20">
+                                {{fund.selectedOption}}
+                            </div>
+                            <div fxFlex="20" class="bold">
+                                {{fund.amount | currency:'INR':true:'1.0-0'}}
+                            </div>
+                        </div>
+                    </md-card>
+                </div>
+            </div>
+            <div fxFlex="30">
+                <md-card class="no-padding investor-details">
+                    <div class="head">INVESTOR DETAILS</div>
+                    <div class="body">
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40" class="key">Name</div>
+                            <div fxFlex="60" class="value">{{summaryUserInfo.name}}</div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40" class="key">PAN Card</div>
+                            <div fxFlex="60" class="value">{{summaryUserInfo.pan}}</div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40" class="key">Nominee</div>
+                            <div fxFlex="60" class="value">
+                                <div>{{checkoutData.selectedNominee.name}}</div>
+                                <div class="line-2">{{checkoutData.selectedNominee.relation}}</div>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40" class="key">Bank</div>
+                            <div fxFlex="60" class="value">
+                                <div>{{checkoutData.selectedBank.bankName}}</div>
+                                <div class="line-2">{{checkoutData.selectedBank.branchName}}</div>
+                                <div class="line-2">{{checkoutData.selectedBank.accNumber}}</div>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40" class="key">KYC &amp; Risk Profiling</div>
+                            <div fxFlex="60" class="value">
+                                <md-icon class="md-20">&#xE86C;</md-icon>
+                            </div>
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="no-padding mar-tb-10">
+                    <div fxLayout="row" fxLayoutAlign="center center" class="investment-amount">
+                        <div fxFlex="50" class="left">Total Investment</div>
+                        <div fxFlex="50" class="right">{{checkoutData.totalInvestmentAmount |
+                            currency:'INR':true:'1.0-0'}}
+                        </div>
+                    </div>
+                </md-card>
+
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="grey-back mar-tb-10">
+            <div fxFlex class="grey-back pad-20 mar-tb-10">
+                <md-card class="no-padding" class="disclaimer">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="title">
+                        <div fxFlex>Disclaimers</div>
+                    </div>
+                    <div class="body-text">
+                        <p *ngFor="let item of disclaimerList">{{item}}</p>
+                    </div>
+                </md-card>
+                <div fxLayout="row" fxLayoutAlign="center center" class="mar-tb-10">
+                    <div fxFlex="80" class="agreement">
+                        <md-checkbox [(ngModel)]="agreementSelected">
+                            I have read the disclaimers and I agree to the Terms & Conditions
+                        </md-checkbox>
+                    </div>
+                    <div fxFlex="20" class="ip-time">IP Address: {{summaryUserInfo.ip}}<br/>Time:
+                        {{summaryUserInfo.time}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <div fxFlex="25">
+                <button color="primary" md-raised-button="" [disabled]="!agreementSelected"
+                        class="cta-50" (click)="proceed()">
+                    PROCEED TO PAY
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

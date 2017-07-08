@@ -1,0 +1,153 @@
+import {Injectable, Inject} from "@angular/core";
+import {Router} from "@angular/router";
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+import {Logger} from "../logger/logger";
+import {JwtHelper} from "angular2-jwt";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/catch";
+import {isNullOrUndefined} from "util";
+import {LocalStorageService} from "angular-2-local-storage";
+import {UserDataProviderService} from "./userdata-provider.service";
+import {Http, Headers, RequestOptions} from "@angular/http";
+
+@Injectable()
+export class LoginService {
+
+    private dafterLogin: string;
+    private dafterLogout: string;
+
+    loginObservable: Observable<boolean>;
+    userObservable: Observable<any>;
+    private className: string;
+
+    constructor(public router: Router, @Inject(APP_CONFIG) private config: IAppConfig, private logger: Logger,
+                public defaultHttp: Http, private  localStorageService: LocalStorageService, public jwtHelper: JwtHelper,
+                private userDataProviderService : UserDataProviderService) {
+
+        this.dafterLogin = config.defaultAfterLogin;
+        this.dafterLogout = config.defaultAfterLogout;
+        this.className = "LoginService";
+        this.loginObservable = this.userDataProviderService.loginSubject.asObservable();
+        this.userObservable = this.userDataProviderService.userSubject.asObservable();
+        this.initUserFromStorage();
+
+    }
+
+    public checkNredirect() {
+        let isLoggedIn = this.getLoginState();
+        if (isLoggedIn) {
+            this.logger.debug(this.className, isLoggedIn);
+            this.router.navigate([this.config.defaultAfterLogin]);
+        }
+    }
+
+    private setHeader() {
+        let getToken = this.userDataProviderService.getToken()
+        let token = getToken ? getToken : "";
+        this.logger.debug(this.className, " setHeader Token " + token);
+        let headers = new Headers({'Authorization': `Bearer ${token}`});
+        return headers;
+    }
+
+    public signUp(userData: any): Observable<any> {
+        let cartId = this.localStorageService.get(this.config.cartToken);
+        if (isNullOrUndefined(cartId)) {
+            cartId = '';
+        }
+        let headers = this.setHeader();
+        let options = new RequestOptions({headers: headers});
+
+        //let userObservables = this.getUserObservable.concat(this.userLoggedInObservable);
+        return this.defaultHttp.post(this.config.playAPIUrl+'/secure/user/login/signup', {
+            "username": userData.email.trim().toLowerCase(),
+            "email": userData.email,
+            "password": userData.password.confirm_password
+        },options).map(response => {
+            this.userDataProviderService.setUserObject(response,true);
+            return response
+        }).catch(error => {
+            this.logger.debug(this.className, "Error Occured! :( " + error.error);
+            return Observable.throw(error);
+        });
+
+    }
+
+    public loginUser(userData: any): Observable<any> {
+        this.logger.debug(this.className, userData);
+        let headers = this.setHeader();
+        let options = new RequestOptions({headers: headers});
+
+        return this.defaultHttp.post(this.config.playAPIUrl+'/secure/user/login', {
+            "username": userData.email.trim().toLowerCase(),
+            "password": userData.password
+        },options).map(response => {
+            this.userDataProviderService.setUserObject(response,true);
+            return response
+        }).catch(err => {
+            return Observable.throw(err);
+        });
+    }
+
+    public doesUserExists(username: string): Observable<any> {
+        this.logger.debug(this.className, username);
+        return this.defaultHttp.post(this.config.playAPIUrl+'/secure/user/checkUsernameInDB', {
+            "username": username
+        }).map(response => {
+            return response['doesUserExists']
+        }).catch(error => {
+            this.logger.debug(this.className, "Error Occured! :( " + error.error);
+            return Observable.throw(error);
+        });
+    }
+
+
+    public logOutUser() {
+        this.localStorageService.remove(this.config.authToken)
+        this.clearDataProviders()
+        this.router.navigate([this.config.defaultAfterLogout]);
+    }
+
+    public clearDataProviders(){
+        this.userDataProviderService.initToken()
+        this.initUserFromStorage()
+    }
+
+    public isUserLoggedIn() : Observable<boolean>{
+        return this.loginObservable
+    }
+
+    public initUserFromStorage() {
+        let token = this.localStorageService.get(this.config.authToken);
+        this.logger.debug(this.className,"initUserFromStorage()",token);
+        if (!isNullOrUndefined(token) && token!='null' && token!='undefined') {
+            let user = this.jwtHelper.decodeToken(JSON.stringify(token));
+            this.logger.debug(this.className, user);
+            this.setUserSubjectState(user);
+            if (user && user.username && !user.username.includes("Anonymous")) {
+                this.setLoginSubjectState(true);
+            }else{
+                this.setLoginSubjectState(false);
+            }
+        }else{
+            this.setLoginSubjectState(false);
+            this.setUserSubjectState({"username" : "Anonymous"});
+        }
+    }
+
+    public getUserObject(): any {
+        return this.userDataProviderService.userSubject.getValue();
+    }
+
+    public getLoginState(): boolean {
+        return this.userDataProviderService.loginSubject.getValue();
+    }
+
+
+    public setLoginSubjectState(value: boolean) {
+        this.userDataProviderService.loginSubject.next(value);
+    }
+
+    public setUserSubjectState(value: any) {
+        this.userDataProviderService.userSubject.next(value);
+    }
+}

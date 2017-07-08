@@ -1,0 +1,33 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {WatchlistProduct} from "./watchlist-product";
+import {ProductEnum} from "../enum/product-enum";
+import {InvestmentTypeEnum} from "../enum/investment-type-enum";
+import {Scheme} from "./scheme";
+
+@Injectable()
+export class WatchlistService {
+
+
+    constructor(private httpService: HttpService) {
+    }
+
+    addToCart(watchlistItems: Scheme[]) {
+        return this.httpService.post("/fund/addToWishlist", watchlistItems);
+    }
+
+    removeProductFromWatchlist(productEnumId: number) {
+        return this.httpService.post("/fund/removeProduct", {productName: ProductEnum[productEnumId]});
+    }
+
+    removeFundFromWatchlist(fundId: number) {
+        return this.httpService.post("/fund/removeFromWishlist", fundId /*{
+            fundId: fundId,*/
+            // investmentType: InvestmentTypeEnum[investmentTypeEnumId]
+        );
+    }
+
+    getWatchlistData() {
+        return this.httpService.get("/fund/getWishlistData");
+    }
+}

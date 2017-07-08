@@ -1,0 +1,159 @@
+import {Injectable, Inject} from "@angular/core";
+import {Router} from "@angular/router";
+import {APP_CONFIG, IAppConfig} from "../../environments/environment";
+import {Logger} from "../shared/logger/logger";
+import {HttpService} from "../services/http-service.service";
+import {JwtHelper} from "angular2-jwt";
+import {Observable, BehaviorSubject} from "rxjs";
+import {isNullOrUndefined} from "util";
+import {LocalStorageService} from "angular-2-local-storage";
+
+@Injectable()
+export class LoginService {
+
+    private dafterLogin: string;
+    private dafterLogout: string;
+    getUserObservable: Observable<any>;
+    logOutObservable: Observable<any>;
+    userLoggedInObservable: Observable<any>;
+    className : string;
+    constructor(public router: Router, @Inject(APP_CONFIG) private config: IAppConfig, private logger: Logger, public http: HttpService, private  localStorageService: LocalStorageService, public jwtHelper: JwtHelper) {
+        this.dafterLogin = config.defaultAfterLogin;
+        this.dafterLogout = config.defaultAfterLogout;
+        this.className = "LoginService";
+        this.getUserObservable = new Observable(observer => {
+            let token = this.localStorageService.get(this.config.authToken);
+            if (isNullOrUndefined(token) || token == 'undefined' || token == 'null') {
+                observer.next({username: 'Anonymous'});
+            } else {
+                let decoded = this.jwtHelper.decodeToken(JSON.stringify(token));
+                observer.next(decoded);
+            }
+        });
+
+        this.logOutObservable = new Observable(observer => {
+            this.clearLocalStorage();
+            observer.next(true);
+        }).concat(this.getUserObservable).concat(this.userLoggedInObservable);
+
+        this.userLoggedInObservable = new Observable(observer => {
+            let token = this.localStorageService.get(this.config.authToken);
+            if (isNullOrUndefined(token) || token == 'undefined' || token == 'null') {
+                observer.next(false);
+            } else {
+                let user = this.jwtHelper.decodeToken(JSON.stringify(token));
+                if (user && user.username && !user.username.includes("Anonymous")) {
+                    observer.next(true);
+                } else {
+                    observer.next(false);
+                }
+            }
+        });
+
+    }
+
+    public checkNredirect() : Observable<any> {
+        return this.userLoggedIn().map((value) => {
+                if (value){
+                    this.logger.debug(this.className,value);
+                    this.router.navigate([this.config.defaultAfterLogin]);
+                }
+            }
+        );
+    }
+
+    public getUser(): Observable<any> {
+        return this.getUserObservable;
+    }
+
+    public signUp(userData: any): Observable<any> {
+        let cartId = this.localStorageService.get(this.config.cartToken);
+        if (isNullOrUndefined(cartId)) {
+            cartId  = '';
+        }
+        let userObservables = this.getUserObservable.concat(this.userLoggedInObservable);
+        let combinedObservables = this.http.post('/user/login/signup', {
+            "username": userData.email.trim().toLowerCase(),
+            "email": userData.email,
+            "password": userData.password.confirm_password,
+            "cartId": cartId
+        }).concat(userObservables);
+
+        return new Observable(observer => {
+            let subscription = combinedObservables.subscribe(
+                response => {
+                    this.logger.debug(this.className,"signUp User created succesfully");
+                    this.logger.debug(this.className,response);
+                    if (!isNullOrUndefined(response) && !isNullOrUndefined(response.id_token)) {
+                        this.localStorageService.set(this.config.authToken, response.id_token);
+                        observer.next(true);
+                    } else {
+                        observer.next(false);
+                    }
+                },
+                error => {
+                    this.logger.debug(this.className,"Error Occured! :( " + error.error);
+                    observer.next(false);
+                }
+            )
+            return () => {
+                this.logger.debug(this.className," signUp via unsubcribe hook ");
+                subscription.unsubscribe();
+            }
+        });
+    }
+
+    public loginUser(userData: any): Observable<any> {
+        this.logger.debug(this.className,userData);
+        let cartId = this.localStorageService.get(this.config.cartToken);
+        if (isNullOrUndefined(cartId)) {
+            cartId  = '';
+        }
+        let userObservables = this.getUserObservable.concat(this.userLoggedInObservable);
+        let combinedObservables = this.http.post('/user/login', {
+            "username": userData.email.trim().toLowerCase(),
+            "password": userData.password,
+            "cartId": cartId
+        }).concat(userObservables);
+
+        return new Observable(observer => {
+            let subscription = combinedObservables.subscribe(
+                response => {
+                    this.logger.debug(this.className,"loginUser User logged in successfully");
+                    this.logger.debug(this.className,response);
+                    if (!isNullOrUndefined(response) && !isNullOrUndefined(response.id_token)) {
+                        this.localStorageService.set(this.config.authToken, response.id_token);
+                        let decoded = this.jwtHelper.decodeToken(response.id_token);
+                        observer.next(decoded);
+                    }
+                    if(!isNullOrUndefined(response) && !isNullOrUndefined(response.error)){
+                        observer.next(response);
+                    }
+                },
+                error => {
+                    this.logger.error(this.className,error);
+                    this.logger.error(this.className,"Error Occured! :( " + error.error);
+                }
+            )
+            return () => {
+                this.logger.debug(this.className," loginUser via unsubcribe hook ");
+                subscription.unsubscribe();
+            }
+        });
+
+    }
+
+    public logOutUser(): Observable<any> {
+        return this.logOutObservable;
+    }
+
+    private clearLocalStorage() {
+       // commented not to delete cart on logout
+        // this.localStorageService.remove(this.config.authToken,this.config.cartToken);
+        this.localStorageService.remove(this.config.authToken);
+    }
+
+    public userLoggedIn(): Observable<any> {
+        return this.userLoggedInObservable;
+    }
+}

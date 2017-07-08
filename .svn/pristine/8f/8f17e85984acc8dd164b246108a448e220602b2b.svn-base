@@ -1,0 +1,42 @@
+import {ModuleWithProviders} from "@angular/core";
+import {RouterModule, Routes} from "@angular/router";
+import {CheckoutComponent} from "./checkout.component";
+import {SummaryComponent} from "./summary/summary.component";
+import {SummaryResolveService} from "./summary-data-resolve-service";
+import {URLAccessGuard} from "../core/guards/urlAccess.guard";
+import {OrderComponent} from "./order/order.component";
+import {OrderConfirmationComponent} from "./order/order-confirmation.component";
+import {RedemptionComponent} from "./redemption.component";
+
+const redemptionRoutes: Routes = [
+        {
+            path: 'init',
+            component: RedemptionComponent,
+           /* resolve: {
+                checkoutData: CheckoutResolveService
+            },*/
+            //canActivate: [URLAccessGuard]
+        },
+        /*{
+            path: 'summary',
+            component: SummaryComponent,
+            resolve: {
+                userInfo: SummaryResolveService
+            },
+            canActivate: [URLAccessGuard]
+        },
+        {
+            path: 'confirm/:orderId',
+            component: OrderConfirmationComponent,
+            canActivate: [URLAccessGuard]
+        },
+        {
+            path: 'order/:orderId',
+            component: OrderComponent,
+        }*/
+    ]
+;
+
+export const redemptionRouting: ModuleWithProviders = RouterModule.forChild(redemptionRoutes);
+
+

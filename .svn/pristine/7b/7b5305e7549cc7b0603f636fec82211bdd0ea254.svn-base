@@ -1,0 +1,26 @@
+import {Injectable} from "@angular/core";
+import {Logger} from "../shared/logger/logger";
+import {Observable} from "rxjs";
+import {HttpService} from "./http-service.service";
+import {KYCGroup} from "../constants/KYCGroup";
+
+@Injectable()
+export class IsFatcaUpdatedService {
+
+    isfatcaupdated: boolean;
+    className: string;
+    constructor(public logger: Logger, public httpService: HttpService) {
+        this.className = "IsFatcaUpdatedService"
+    }
+
+    public checkIfFatcaUpdated() : Observable<boolean>{
+        return this.httpService.get('/user/checkIfFatcaUpdated')
+            .map(response => {
+                this.logger.debug(this.className, response.isfatcaupdated)
+                this.isfatcaupdated = response.isfatcaupdated;
+
+                return this.isfatcaupdated;
+            });
+
+    }
+}

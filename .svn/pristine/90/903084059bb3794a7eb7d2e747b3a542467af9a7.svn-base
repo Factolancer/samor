@@ -1,0 +1,126 @@
+<!--Footer-->
+<footer *ngIf="hideFooter | async" class="footer">
+  <div class="top" >
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between start"   fxLayoutWrap class="wrapper">
+      <div fxFlex="70" fxFlex.xs="100">Questions? Get in touch!</div>
+      <div fxFlex="15" fxFlex.xs="100" class="right-align">
+        <a href="tel:{{contact}}"> <md-icon class="md-14">&#xE325;</md-icon>{{contact}} </a>
+      </div>
+      <div fxFlex="15" fxFlex.xs="100" class="right-align">
+        <a href="mailto:{{supEmail}}"> <md-icon class="md-14">&#xE0BE;</md-icon>{{supEmail}} </a>
+      </div>
+    </div>
+  </div>
+  <div class="middle">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" class="wrapper">
+      <div fxFlex fxFlex.xs="50%">
+        <div class="section-title">PRODUCT SOLUTIONS</div>
+        <ul dense>
+          <li><a routerLink="cash">SavingsPlus</a></li>
+          <li><a routerLink="sip">SmartSIP</a></li>
+          <li><a routerLink="tax">TaxSaver</a></li>
+          <li><a routerLink="explore">Explore Funds</a></li>
+        </ul>
+      </div>
+      <div fxFlex>
+        <div class="section-title">MUTUAL FUNDS</div>
+          <ul>
+            <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-basics">Mutual Fund Basics</a></li>
+            <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-financial-planning">Financial Planning</a></li>
+            <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-sip">SIP</a></li>
+            <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-taxation">Taxation</a></li>
+            <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-retirement">Retirement</a></li>
+            <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-gold">Gold</a>
+            <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-asset-management-companies">Mutual Fund Companies</a></li>
+          </ul>
+      </div>
+
+      <div fxFlex>
+        <div class="section-title">INSURANCE</div>
+        <ul >
+          <li><a href="https://www.fincash.com/b/insurance/life-insurance">Life Insurance</a></li>
+          <li><a href="https://www.fincash.com/b/insurance/general-insurance">General Insurance</a></li>
+          <li><a href="https://www.fincash.com/b/insurance/health-insurance">Health Insurance</a></li>
+          <li><a href="https://www.fincash.com/b/insurance/insurance-companies">Insurance Companies</a></li>
+        </ul>
+      </div>
+      <div fxFlex>
+        <div class="section-title">CALCULATORS</div>
+        <ul>
+          <li><a routerLink="calculator/tax">Tax Calculator</a></li>
+          <!--    <li><a routerLink="sip/calculator">SIP</a></li>-->
+          <li><a routerLink="calculator/sip/goals/questions/1">Retirement Planning</a></li>
+          <li><a routerLink="calculator/sip/goals/questions/2">Higher Education</a></li>
+          <li><a routerLink="calculator/sip/goals/questions/3">Marriage Expense</a></li>
+          <li><a routerLink="calculator/sip/goals/questions/4">Buy House</a></li>
+          <li><a routerLink="calculator/sip/goals/questions/5">Buy Vehicle</a></li>
+          <li><a routerLink="calculator/sip/returns">Growth of SIP</a></li>
+        </ul>
+      </div>
+      <div fxFlex>
+        <div class="section-title">ABOUT US</div>
+        <ul dense>
+          <li><a routerLink="static/why-fincash">Why Fincash</a></li>
+          <li><a routerLink="static/about-us">Team</a></li>
+        </ul>
+      </div>
+      <div fxFlex>
+        <div class="section-title">CONNECT WITH US</div>
+        <div class="social-icons">
+          <a *ngFor="let socialLink of socialLinks, let socInd = index" href={{socialLink.link}} target="_blank">
+            <img src={{socialLink.image}} alt={{socialLink.alt}}>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom mar-t-20">
+    <div fxLayout="row" fxFlex fxLayoutWrap="wrap" class="mar-t-10">
+
+      <div fxFlex="100" class="address">
+
+        <a href={{addressMapLink}} target="_blank">
+          <span class="prefix">Shepard Technologies Pvt. Ltd : </span> A -204, Technocity, Plot No X-4/1 & X-4/2, TTC, MIDC, Mahape, Navi Mumbai - 400710
+        </a>
+        <br/>
+        <p>
+          <span class="prefix">AMFI Registration No. </span><span> 112358</span>
+          <span class="bor-lr-1-white mar-lr-10"></span>
+          <span class="prefix">CIN: </span><span> U74999MH2016PTC282153</span>
+      </div>
+
+      <hr width="25%" class="mar-auto bor-colr-gray"/>
+
+      <ul fxFlex="100">
+
+        <li><a routerLink="static/privacy-policy">Privacy Policy</a></li>
+        <li><a routerLink="static/terms-conditions" class="bor-lr-1-white">Terms &amp; Conditions</a></li>
+        <li><a routerLink="static/disclaimers">Disclaimers</a></li>
+      </ul>
+
+      <div fxLayout="row" fxLayoutAlign="center" class="justify-content mar-b-10 disclaimer">
+        <div fxFlex="60" fxFlex.xs="90">
+          <i>Mutual fund investments are subject to market risks. Please read the scheme information and other related documents carefully before investing. Past performance is not indicative of future returns. Please consider your specific investment requirements before choosing a fund, or designing a portfolio that suits your needs.
+
+<br><br>Shepard Technologies Pvt. Ltd. (with ARN code 112358) makes no warranties or representations, express or implied, on products offered through the platform. It accepts no liability for any damages or losses, however caused, in connection with the use of, or on the reliance of its product or related services. Terms and conditions of the website are applicable.</i>
+      </div>
+      </div>
+
+
+
+      <div fxFlex="100" fxLayoutAlign="center" class="copyright">
+        <span class="symbol">&#169;</span>
+        <span class="pad-lr-5 left-align">{{copyYear}} Shepard Technologies Private Limited. All Rights Reserved</span>
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+
+
+
+</footer>

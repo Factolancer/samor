@@ -1,0 +1,66 @@
+import {Component, ViewContainerRef} from "@angular/core";
+import {Http} from "@angular/http";
+import {tokenNotExpired, JwtHelper} from "angular2-jwt";
+import {MdDialog} from "@angular/material";
+import {LoginService} from "./login/login.service";
+import {isNullOrUndefined} from "util";
+
+@Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    providers: [JwtHelper]
+})
+export class AppComponent {
+
+    // logInDialogRef: MdDialogRef<LoginComponent>;
+    result: any
+
+    public constructor(public http: Http, private viewContainerRef: ViewContainerRef, public dialog: MdDialog,
+                       public loginService: LoginService, public jwtHelper: JwtHelper) {
+    }
+
+    logUserIn(){
+        this.loginService
+            .loginUser(this.viewContainerRef)
+            .subscribe(res => {this.result = res;},
+                error => {console.log(error)});
+    }
+
+    signUserUp() {
+        this.loginService
+            .signUpUser(this.viewContainerRef)
+            .subscribe(res => {this.result = res;},
+                error => {console.log(error);})
+    }
+
+    logUserOut(){
+        this.loginService
+            .logOutUser()
+    }
+
+    userLoggedIn(){
+        // console.log("Checking status");
+        let token = localStorage.getItem("id_token");
+        if (isNullOrUndefined(token))
+            return false;
+        else {
+            let decoded = this.jwtHelper.decodeToken(token);
+            if (!decoded.username.includes("BSONObjectID")){
+                return true;
+            }
+            else
+                return false;
+        }
+
+    }
+
+    checkKYC(){
+        this.loginService
+            .checkKYC(this.viewContainerRef)
+            .subscribe(res => {this.result = res;},
+                error => {console.log(error)});
+    }
+
+
+}

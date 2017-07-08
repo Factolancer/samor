@@ -1,0 +1,23 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {HomeComponent} from "./home";
+import {LoginComponent} from "./login";
+import {SignupComponent} from "./login/signup.component";
+import {AuthGuard} from "./auth.guard";
+import {PageNotFoundComponent} from "./shared/page-not-found.component";
+
+const appRoutes: Routes = [
+    {path: '', redirectTo: '/home', pathMatch: 'full'},
+    {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+    {
+        path: 'registration',
+        loadChildren: './registration/registration.module#RegistrationModule'
+    },
+    {path: '**', component: PageNotFoundComponent},
+];
+
+export const routes: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+
+export const appRoutingProviders: any[] = [];
+
+export const routedComponents = [LoginComponent, SignupComponent, HomeComponent, PageNotFoundComponent];

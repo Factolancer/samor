@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": false,
+    "lib": ["es2015", "dom"],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "mapRoot": "./",
+    "outDir": "../dist/out-tsc",
+    "typeRoots": [
+      "../node_modules/@types"
+    ]
+  },
+  "files": [
+    "app/app.module.ts",
+    "main.ts"
+  ],
+  "angularCompilerOptions": {
+    "genDir": "aot",
+    "skipMetadataEmit" : true
+  },
+  "types": [
+    "jasmine",
+    "hammerjs"
+  ]
+}

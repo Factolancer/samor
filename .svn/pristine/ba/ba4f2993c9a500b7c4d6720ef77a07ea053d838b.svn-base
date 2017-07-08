@@ -1,0 +1,112 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {FilterData} from "./filter-data";
+import {ExploreFundsService} from "../../core/services/explore-funds.service";
+import {Subscription} from "rxjs/Subscription";
+import {FundSearchInput} from "../fund-search-input";
+import {Logger} from "../../core/logger/logger";
+
+@Component({
+    selector: 'app-amc-filter',
+    templateUrl: './amc-filter.component.html',
+    styleUrls: ['./filters.styles.scss']
+})
+export class AmcFilterComponent implements OnInit, OnDestroy {
+
+    amcFilterData: FilterData[] = [];
+    filterTitle: string;
+    checkedCount = 0;
+    searchFacetSubscription: Subscription;
+    searchInputSubscription: Subscription;
+    searchInput: FundSearchInput;
+
+    constructor(private exploreFundsService: ExploreFundsService, private logger: Logger) {
+    }
+
+    filter(checked: any, item: FilterData) {
+        if (checked) {
+            item.selected = true;
+        } else {
+            item.selected = false;
+        }
+        this.updateCheckedCount();
+        this.logger.debug("AmcFilterComponent", this.getSelectedAmcArray(), this.amcFilterData);
+        this.searchInput.am = this.getSelectedAmcArray();
+        this.exploreFundsService.filterFunds(this.searchInput);
+
+    }
+
+    clearFilter() {
+        this.checkedCount = 0;
+        this.searchInput.am = [];
+        this.exploreFundsService.filterFunds(this.searchInput);
+
+        this.amcFilterData.forEach(listItem => {
+            listItem.selected = false;
+        });
+    }
+
+    updateCheckedCount() {
+        this.checkedCount = 0;
+        this.amcFilterData.forEach(filterData => {
+            if (filterData.selected) {
+                this.checkedCount += 1;
+            }
+        })
+    }
+
+    getSelectedAmcArray() {
+
+        let amcNameList: string[] = [];
+
+        this.amcFilterData.forEach(filterData => {
+            if (filterData.selected) {
+                amcNameList.push(filterData.id)
+            }
+        });
+
+        return amcNameList;
+    }
+
+
+    ngOnInit() {
+        this.filterTitle = "Fund House";
+
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput
+            .subscribe(searchInput => {
+                this.searchInput = searchInput;
+                this.amcFilterData.forEach(filterData => {
+                    if (this.searchInput.am.indexOf(filterData.id) > -1) {
+                        filterData.selected = true;
+                    } else {
+                        filterData.selected = false;
+                    }
+                })
+
+                this.updateCheckedCount();
+
+            });
+
+        this.searchFacetSubscription = this.exploreFundsService.fundSearchFacet.subscribe(facets => {
+            if (facets.amcFilterData) {
+                facets.amcFilterData.forEach(listItem => {
+                    if (this.amcFilterData.indexOf(listItem) > -1)
+                        listItem.selected = true
+                });
+                this.amcFilterData = facets.amcFilterData;
+
+                this.amcFilterData.forEach(filterData => {
+                    if (this.searchInput.am.indexOf(filterData.id) > -1) {
+                        filterData.selected = true;
+                    }
+                });
+                this.updateCheckedCount();
+            }
+        })
+
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+        this.searchFacetSubscription.unsubscribe();
+    }
+}

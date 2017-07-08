@@ -1,0 +1,20 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Invest in TaxSaver</h1>
+            <h4 class="center-align">SIP type > Fund Selection > Investment Portfolio > Summary &amp; Checkout</h4>
+        </div>
+    </section>
+    <section class="grey-back">
+        <app-tax-saver-card #taxSaverFundsComp [funds]="taxSaverFunds"></app-tax-saver-card>
+    </section>
+    <section class="data-foot">
+        <div class="row">
+            <div class="col-md-12">
+                <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                        (click)="proceed(taxSaverFundsComp.selectedFunds)">Proceed to Invest
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

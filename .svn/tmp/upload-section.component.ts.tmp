@@ -1,0 +1,212 @@
+import {Component, OnInit, style, state, animate, transition, trigger, Inject} from "@angular/core";
+import {FormGroup, FormBuilder} from "@angular/forms";
+import {Subscription} from "rxjs";
+import {User} from "../../../models/user";
+import {UserService} from "../../userdata.service";
+import {HttpService} from "../../../core/services/http-service.service";
+import {Heading} from "../../constants/headings";
+import {Logger} from "../../../core/logger/logger";
+import {Tooltips} from "../../constants/tooltips";
+import {CNDGroup} from "../../../constants/CNDGroup";
+import {isNullOrUndefined} from "util";
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import {KYCConstants} from "../../../constants/KYCGroup";
+import {APP_CONFIG, IAppConfig} from "../../../../environments/environment";
+import {UploadService} from "../../../core/services/upload.service";
+import {LookUpService} from "../../../core/services/lookup.service";
+import {LoginService} from "../../../core/services/login.service";
+
+@Component({
+    selector: 'upload-section',
+    templateUrl: './upload-section.component.html',
+    styleUrls: ['../../registration.styles.scss'],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({opacity: '1', height: '*', visibility: 'visible'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ])
+        ])
+    ]
+})
+export class UploadSectionComponent implements OnInit {
+
+    uploadForm: FormGroup;
+    uploadsaved = false;
+    uploadcollapsed = true;
+    state: string = 'hide';
+    public heading = Heading;
+    tooltips = Tooltips;
+    addressProofs: any;
+    bankProofs: any;
+    pan: string;
+    address: string;
+    bank: string;
+
+    public photoUploaded = false
+    public signatureUplaoded = false
+    public chequeUploaded = false
+
+    photodmtid: string = "";
+    pandmtid: string = "";
+    addressdmtid: string = "";
+    bankdmtid: string = "";
+    signaturedmtid: string = "";
+    addresscndrfnum: string;
+    bankcndrfnum: string;
+
+    user: User;
+    usersubscription: Subscription;
+    filesToUpload: Array<File>;
+    photoFile: File;
+    panFile: File;
+    addressFile: File;
+    signatureFile: File;
+    chequeFile: File;
+    formData: any;
+    userid: any;
+    uploadPath: any;
+    filePath: string;
+
+    className: string;
+
+    constructor(private fb: FormBuilder, public userService: UserService, public http: HttpService, public logger: Logger, public router: Router,
+                public uploadService: UploadService, public lookupService: LookUpService, public loginService: LoginService,
+                public route: ActivatedRoute, @Inject(APP_CONFIG) private config: IAppConfig) {
+        this.className = "UploadDoc";
+        this.uploadPath = this.config.uploadPath;
+        this.userService.currentUser.subscribe(
+            result => {
+                this.user = result
+            }
+        )
+        this.filesToUpload = [];
+    }
+
+    ngOnInit() {
+        this.lookupService.getByGroup(CNDGroup.ADDRESS_PROOF).subscribe(response => {
+            this.addressProofs = response
+        });
+        this.lookupService.getByGroup(CNDGroup.BANK_PROOF).subscribe(response => {
+            this.bankProofs = response
+        });
+        this.http.get('/user/getDmtIds')
+            .subscribe(response => {
+                this.pandmtid = response.pandmtid;
+                this.addressdmtid = response.addressdmtid;
+                this.logger.debug(this.className, this.pandmtid);
+                this.logger.debug(this.className, this.addressdmtid);
+            });
+        let userObj = this.loginService.getUserObject();
+        this.logger.debug(this.className, userObj)
+
+        if (!isNullOrUndefined(userObj) && !isNullOrUndefined(userObj.id)) {
+            this.userid = userObj.id;
+            this.logger.debug(this.className, this.userid)
+        }
+        this.route.params.subscribe((params: Params) => {
+            this.pan = params.pan;
+            this.address = params.address;
+            this.bank = params.bank;
+        });
+        this.uploadForm = this.fb.group({});
+    }
+
+    photoFileChangeEvent(event: any) {
+        this.formData = new FormData();
+        let photoFile = <File> event.srcElement.files[0];
+        // Userid is being appended with fieldName in order to read userid at server side
+        this.formData.append("photo-" + this.userid, photoFile, photoFile.name);
+        this.logger.debug(this.className, this.photoFile);
+        this.logger.debug(this.className, this.formData);
+        this.uploadService.uploadDoc(this.formData)
+            .subscribe(result => {
+                    this.logger.debug(this.className, result);
+                    let filePath = this.uploadPath + result.json().uploadfile;
+                    let dmtObj = {
+                        "dmtid": this.photodmtid,
+                        "path": filePath,
+                        "cndtype": KYCConstants.CND_DOCTYPE_PHOTOGRAPH
+                    }
+                    if (result.json().success)
+                        this.photoUploaded = true
+                },
+                err => {
+                    this.logger.debug(this.className, err);
+                    this.photoUploaded = false
+                }
+            );
+    }
+
+    panFileChangeEvent(event: any) {
+        this.formData = new FormData();
+        let panFile = <File> event.srcElement.files[0];
+        this.formData.append("idProof-" + this.userid, panFile, panFile.name);
+        this.logger.debug(this.className, panFile);
+        this.logger.debug(this.className, this.formData);
+        this.uploadService.uploadDoc(this.formData)
+            .subscribe(result => {
+                    this.logger.debug(this.className, result);
+                    let filePath = result.json().uploadfile;
+                    if (result.json().success) {
+                        // this.photoUploaded = true
+                    }
+                    let dmtObj = {"dmtid": this.pandmtid, "path": filePath, "cndtype": KYCConstants.CND_DOCTYPE_PANCARD}
+                    this.uploadService.saveFilePath(dmtObj)
+                        .subscribe(res => {
+                            this.logger.debug(this.className, res);
+                            this.pandmtid = res['dmtid'];
+                        })
+                },
+                err => {
+                    this.logger.debug(this.className, err);
+                }
+            );
+    }
+
+    addressFileChangeEvent(event: any) {
+        this.formData = new FormData();
+        this.addressFile = <File> event.srcElement.files[0];
+        this.formData.append("addressproof-"+this.userid, this.addressFile, this.addressFile.name);
+        this.logger.debug(this.className, this.addressFile);
+        this.logger.debug(this.className, this.formData);
+        this.uploadService.uploadDoc(this.formData)
+            .subscribe(result => {
+                    this.logger.debug(this.className, result);
+                    let filePath = result.json().uploadfile;
+                    if (result.json().success) {
+                        // this.photoUploaded = true
+                    }
+                    this.logger.debug(this.className, this.addresscndrfnum);
+                    let dmtObj = {"dmtid": this.addressdmtid, "path": filePath, "cndtype": this.addresscndrfnum}
+                    this.uploadService.saveFilePath(dmtObj)
+                        .subscribe(res => {
+                            this.logger.debug(this.className, res);
+                            this.addressdmtid = res['dmtid'];
+                        })
+                },
+                err => {
+                    this.logger.debug(this.className, err);
+                }
+            );
+    }
+
+    signatureFileChangeEvent(fileInput: any) {
+        this.signatureFile = <File> fileInput.target.files;
+        // console.log(this.signatureFile.size < 1024*1024 ? true : false);
+        //this.photoFile[0].name = 'userid_signature_time';
+        this.filesToUpload[3] = this.signatureFile[0];
+    }
+
+    chequeFileChangeEvent(fileInput: any) {
+        this.chequeFile = <File> fileInput.target.files;
+        //this.photoFile[0].name = 'userid_cancelledcheque_time';
+        this.filesToUpload[4] = this.chequeFile[0];
+    }
+
+    completeRegistration() {
+        this.router.navigate(['/registration/complete']);
+    }
+
+}

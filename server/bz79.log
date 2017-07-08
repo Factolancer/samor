@@ -1,0 +1,12 @@
+Express server listening on 3000, in development mode
+request @ default controller
+D:\workspace\migration-project\dist
+127.0.0.1 - - [17/Mar/2017:11:28:49 +0000] "GET / HTTP/1.1" 404 257 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
+Error: ENOENT: no such file or directory, stat 'D:\workspace\migration-project\dist\index.html'
+    at Error (native)
+request @ default controller
+D:\workspace\migration-project\dist
+127.0.0.1 - - [17/Mar/2017:11:28:49 +0000] "GET /favicon.ico HTTP/1.1" 404 257 "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
+Error: ENOENT: no such file or directory, stat 'D:\workspace\migration-project\dist\index.html'
+    at Error (native)
+error: Forever detected script exited with code: 1

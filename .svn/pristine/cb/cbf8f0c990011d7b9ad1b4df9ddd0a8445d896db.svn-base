@@ -1,0 +1,17 @@
+<div fxLayout="row" fxLayoutAlign="center" class="prod-sol-container pad-tb-20">
+  <div fxFlex="60" fxFlex.sm="90" fxFlex.xs="90">
+    <div align="center" class="sub-heading pad-tb-10">OUR PRODUCTS</div>
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center">
+      <md-card fxFlex class="clickable mar-20" align="center" *ngFor="let product of productSolutions, let i=index" (click)="goTo(product.routerUrl)">
+        <md-card-title>
+          <img src={{product.image}}>
+          <p><span>{{product.title}}</span></p>
+        </md-card-title>
+        <md-card-content>
+          {{product.content}}
+        </md-card-content>
+      </md-card>
+    </div>
+  </div>
+</div>

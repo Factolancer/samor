@@ -1,0 +1,45 @@
+import {Component, OnInit, EventEmitter} from "@angular/core";
+import {PortfolioReportService} from "./portfolio-report.service";
+import {Holdings} from "../holding-report/holdings";
+import {PrintReportComponent} from "../print-report/print-report.component";
+import {MdDialogRef, MdDialogConfig, MdDialog} from "@angular/material";
+import {Output} from "@angular/core/src/metadata/directives";
+
+@Component({
+    selector: 'app-portfolio-report',
+    templateUrl: './portfolio-report.component.html',
+    styleUrls: ['./portfolio-report.component.css'],
+    providers:[PortfolioReportService]
+})
+export class PortfolioReportComponent implements OnInit {
+    dialogRef: MdDialogRef<PrintReportComponent>;
+
+    funds:Holdings[];
+
+    constructor(public dialog: MdDialog,private portfolioService:PortfolioReportService) {
+
+    }
+
+    ngOnInit() {
+    }
+    openDialog(dialog: MdDialog){
+        let config = new MdDialogConfig();
+
+        this.dialogRef = dialog.open(PrintReportComponent, config);
+
+        this.dialogRef.afterClosed().subscribe(result => {
+            this.dialogRef = null;
+        });
+    }
+
+    printReport(){
+
+        this.closeDialog();
+    }
+
+    closeDialog(){
+        this.dialogRef.close();
+    }
+
+
+}

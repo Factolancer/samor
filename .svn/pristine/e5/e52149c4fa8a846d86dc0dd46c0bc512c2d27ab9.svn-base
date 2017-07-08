@@ -1,0 +1,52 @@
+import {Component, OnInit, trigger, transition, state, animate, style} from '@angular/core';
+import {Router} from "@angular/router";
+
+@Component({
+    selector: 'demo',
+    templateUrl: './demo.component.html',
+    styleUrls: ['./demo.component.css'],
+    animations: [
+        trigger('showhide', [
+            state('invisible', style({opacity: 0, height: '0px', transform: 'translateY(-200)'})),
+            state('visible', style({opacity: 1, height: '*', transform: 'translateY(0)'})),
+            transition('invisible <=> visible', animate('200ms ease-in'))
+        ])
+    ]
+})
+export class DemoComponent implements OnInit {
+
+    private balanceVisible = false;
+    private savningsEarningVisible = false;
+    private cashMagEarningVisible = false;
+
+    balance: string = 'invisible';
+    saving: string = 'invisible';
+    cash: string = 'invisible';
+
+    constructor(private router: Router) {
+    }
+
+    ngOnInit() {
+    }
+
+    showBalance() {
+        //debugger;
+        this.balanceVisible = true;
+        //this.balance = 'visible';
+    }
+
+    showSavingAcc() {
+        this.savningsEarningVisible = true;
+        this.saving = 'visible';
+    }
+
+    showCashMag() {
+        this.cashMagEarningVisible = true;
+        this.cash = 'visible'
+    }
+
+    toFunds() {
+        this.router.navigate(['/cash/funds']);
+    }
+
+}

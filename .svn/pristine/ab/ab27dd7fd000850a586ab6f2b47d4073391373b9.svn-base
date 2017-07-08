@@ -1,0 +1,9 @@
+import {BasicFactSheet} from "./basic-factsheet";
+export class AdvancedFactsheet {
+    constructor(public basicFactsheet: BasicFactSheet,
+                public tab1: {
+                    data: any
+                }) {
+
+    }
+}

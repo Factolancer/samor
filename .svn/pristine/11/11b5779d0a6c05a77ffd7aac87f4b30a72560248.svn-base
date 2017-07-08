@@ -1,0 +1,74 @@
+import { Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {DashboardDataService} from "./dashboard-data.service";
+import {ChartOptions} from "./chart/chart-options";
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  providers: [DashboardDataService, ChartOptions]
+})
+
+export class DashboardComponent implements OnInit {
+  public invested:Boolean;
+  private pf:Object;
+  portfolioDataAvailable: boolean = false;
+  pendingDataAvailable: boolean = false;
+
+  serverError = {
+      pf:false,
+      assetAllocation: false
+  }
+
+  private pendings:Array<Object> = [];X
+  constructor(public dataService: DashboardDataService) { };
+
+  ngOnInit() {
+    this.getPortfolio();
+    this.getPendingDetails();
+    this.ifInvested();
+  }
+  ifInvested(){
+      /*.subscribe(
+              res=>{
+                  this.invested  = true;
+              },
+              err=>{console.log('an error occured')}
+          )*/
+      this.invested  = this.dataService.hasInvested();
+  }
+
+  getPortfolio(){
+    console.log('portfolio');
+    this.dataService.getPortfolio()
+        .subscribe(
+            res=>{
+                console.log("get portfolio part");
+                console.log(res);
+              this.pf = res;
+              this.portfolioDataAvailable = true;
+            },
+            err=>{
+                console.log('an error occured');
+                this.serverError['pf'] = true;
+            }
+        )
+  }
+  getPendingDetails(){
+    console.log('registration status called');
+    this.dataService.getPendingDetails()
+        .subscribe(
+            res=>{
+              console.log(res);
+              this.pendings = res;
+              this.pendingDataAvailable = true;
+            },
+            err=>{console.log('an error occured')}
+        )
+  }
+
+
+}
+
+

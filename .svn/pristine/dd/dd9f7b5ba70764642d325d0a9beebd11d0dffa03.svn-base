@@ -1,0 +1,291 @@
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Checkout} from "./checkout";
+import {FormGroup, FormBuilder, Validators, FormArray} from "@angular/forms";
+import {InvestmentTypeEnum} from "../enum/investment-type-enum";
+import {NumberValidator} from "../validator";
+import {CheckoutService} from "./checkout.service";
+import {MdSnackBar} from "@angular/material";
+
+@Component({
+    selector: 'app-checkout',
+    templateUrl: './checkout.component.html',
+    styleUrls: ['./checkout.component.css']
+})
+export class CheckoutComponent implements OnInit {
+
+    checkoutData: Checkout;
+    checkoutFormGroup: FormGroup;
+    totalInvestmentAmount: number;
+    checkoutFormErrors = {};
+
+
+    constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder,
+                private checkoutService: CheckoutService, private mdSnackBar: MdSnackBar) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: { checkoutData: Checkout }) => {
+            //console.log(data);
+            this.checkoutData = data.checkoutData;
+        });
+        this.checkOutInitialisation();
+        //this.checkoutFormGroup.valueChanges.subscribe(value => console.log(value));
+
+        /*.map((value) => {
+         console.log(value);
+         })*/
+
+
+        this.checkoutFormGroup.valueChanges
+            .subscribe(data => {
+                //console.log(data);
+                this.onValueChanged(data);
+                console.log(this.checkoutFormGroup);
+            });
+
+        this.onValueChanged(); // (re)set validation messages now
+    }
+
+    checkOutInitialisation() {
+        let productFormGroupArray = this.fb.array([]);
+        let productFormErrorsArray = [];
+        let minInvForCart = 0;
+
+        this.checkoutData.products.forEach(product => {
+
+            let fundFormGroupArray = this.fb.array([]);
+            let fundFormErrorsArray = [];
+            let minInv = 0;
+
+            product.funds.forEach(fund => {
+                minInv += fund.minInvestment;
+                if (product.investmentType == InvestmentTypeEnum.SIP) {
+                    fundFormGroupArray.push(this.fb.group({
+                        investmentAmount: [fund.minInvestment, Validators.compose([Validators.required, NumberValidator.minValue(fund.minInvestment), NumberValidator.isHundredMultiple()])],
+                        selectedSubOption: ['', [Validators.required]],
+                        selectedDeductionDate: ['', [Validators.required]],
+                        investmentDuration: ['', [Validators.required]],
+                    }));
+                    fundFormErrorsArray.push({
+                        'investmentAmount': '',
+                        'selectedSubOption': '',
+                        'selectedDeductionDate': '',
+                        'investmentDuration': ''
+                    });
+                } else {
+                    fundFormGroupArray.push(this.fb.group({
+                        investmentAmount: [fund.minInvestment, [Validators.required]],
+                        selectedSubOption: ['', [Validators.required]],
+                    }));
+                    fundFormErrorsArray.push({
+                        'investmentAmount': '',
+                        'selectedSubOption': ''
+                    });
+                }
+            });
+
+            product.investmentAmount = minInv;
+            minInvForCart += minInv;
+
+            if (product.investmentType == InvestmentTypeEnum.SIP) {
+                productFormGroupArray.push(this.fb.group({
+                    investmentAmount: [product.investmentAmount, Validators.compose([Validators.required, NumberValidator.minValue(product.investmentAmount), NumberValidator.isHundredMultiple()])],
+                    startPaymentToday: [false, [Validators.required]],
+                    investmentType: [product.investmentType, [Validators.required]],
+                    funds: fundFormGroupArray
+                }));
+
+            } else {
+                productFormGroupArray.push(this.fb.group({
+                    investmentAmount: [product.investmentAmount, Validators.compose([Validators.required, NumberValidator.isHundredMultiple(), NumberValidator.minValue(product.investmentAmount)])],
+                    investmentType: [product.investmentType, [Validators.required]],
+                    funds: fundFormGroupArray
+                }))
+            }
+
+            productFormErrorsArray.push({
+                'investmentAmount': '',
+                'funds': fundFormErrorsArray
+            });
+        });
+
+        this.totalInvestmentAmount = minInvForCart;
+
+        this.checkoutFormGroup = this.fb.group({
+            selectedNominee: ['', [Validators.required]],
+            selectedBank: ['', [Validators.required]],
+            products: productFormGroupArray
+        });
+
+        this.checkoutFormErrors = {
+            'selectedNominee': '',
+            'selectedBank': '',
+            products: productFormErrorsArray
+        };
+
+    }
+
+    onValueChanged(data?: any) {
+        if (!this.checkoutFormGroup) {
+            return;
+        }
+        const form = this.checkoutFormGroup;
+
+        //selected Bank Validation
+        this.checkoutFormErrors['selectedBank'] = '';
+        let selectedBankControl = form.get('selectedBank');
+        if (selectedBankControl && selectedBankControl.dirty && !selectedBankControl.valid) {
+            const messages = this.validationMessages['selectedBank'];
+            for (const key in selectedBankControl.errors) {
+                this.checkoutFormErrors['selectedBank'] += messages[key] + ' ';
+            }
+        }
+
+        //selected Nominee Validation
+        this.checkoutFormErrors['selectedNominee'] = '';
+        let selectedNomineeControl = form.get('selectedNominee');
+        if (selectedNomineeControl && selectedNomineeControl.dirty && !selectedNomineeControl.valid) {
+            const messages = this.validationMessages['selectedNominee'];
+            for (const key in selectedNomineeControl.errors) {
+                this.checkoutFormErrors['selectedNominee'] += messages[key] + ' ';
+            }
+        }
+
+        //products validation
+        let formProductArray = form.get('products') as FormArray;
+        this.checkoutFormErrors['products'].forEach((product, index) => {
+
+            //product investmentAmount validation
+            product.investmentAmount = '';
+            let productInvestmentAmountControl = formProductArray.at(index).get('investmentAmount');
+            if (productInvestmentAmountControl && productInvestmentAmountControl.dirty && !productInvestmentAmountControl.valid) {
+                const messages = this.validationMessages['investmentAmount'];
+                console.log(productInvestmentAmountControl.errors);
+                for (const key in productInvestmentAmountControl.errors) {
+                    if (key === 'minValue') {
+                        product.investmentAmount += messages[key] + ' ' + productInvestmentAmountControl.errors[key].requiredValue;
+                    } else {
+                        product.investmentAmount += messages[key] + ' ';
+                    }
+                }
+            }
+
+            //funds validation
+            let formFundsArray = formProductArray.at(index).get('funds') as FormArray;
+            product['funds'].forEach((fund, index) => {
+
+                //SubOption
+                fund.selectedSubOption = '';
+                let subOptionControl = formFundsArray.at(index).get('selectedSubOption');
+                if (subOptionControl && subOptionControl.dirty && !subOptionControl.valid) {
+                    const messages = this.validationMessages['selectedSubOption'];
+                    console.log(subOptionControl.errors);
+                    for (const key in subOptionControl.errors) {
+                        fund.selectedSubOption += messages[key] + ' ';
+                    }
+                }
+
+                //Deduction Date
+                fund.selectedDeductionDate = '';
+                let deductionDateControl = formFundsArray.at(index).get('selectedDeductionDate');
+                if (deductionDateControl && deductionDateControl.dirty && !deductionDateControl.valid) {
+                    const messages = this.validationMessages['selectedDeductionDate'];
+                    console.log(deductionDateControl.errors);
+                    for (const key in deductionDateControl.errors) {
+                        fund.selectedDeductionDate += messages[key] + ' ';
+                    }
+                }
+
+                //investmentDuration
+                fund.investmentDuration = '';
+                let investmentDurationControl = formFundsArray.at(index).get('investmentDuration');
+                if (investmentDurationControl && investmentDurationControl.dirty && !investmentDurationControl.valid) {
+                    const messages = this.validationMessages['investmentDuration'];
+                    console.log(investmentDurationControl.errors);
+                    for (const key in investmentDurationControl.errors) {
+                        fund.investmentDuration += messages[key] + ' ';
+                    }
+                }
+
+                //investmentAmount
+                fund.investmentAmount = '';
+                let investmentAmountControl = formFundsArray.at(index).get('investmentAmount');
+                if (investmentAmountControl && investmentAmountControl.dirty && !investmentAmountControl.valid) {
+                    const messages = this.validationMessages['investmentAmount'];
+                    console.log(investmentAmountControl.errors);
+                    for (const key in investmentAmountControl.errors) {
+                        if (key === 'minValue') {
+                            fund.investmentAmount += messages[key] + ' ' + investmentAmountControl.errors[key].requiredValue;
+                        } else {
+                            fund.investmentAmount += messages[key] + ' ';
+                        }
+                    }
+                }
+            });
+        });
+
+    }
+
+
+    validationMessages = {
+        'investmentAmount': {
+            'required': 'Investment Amount is required.',
+            'minValue': 'Minimum Investment amount is ',
+            'hundredMultiple': 'Amount should be a multiple of 100'
+        },
+        'selectedSubOption': {
+            'required': 'SubOption is required.'
+        },
+        'selectedDeductionDate': {
+            'required': 'Deduction Date is required.',
+        },
+        'investmentDuration': {
+            'required': 'Investment Duration is required.',
+            'minValue': 'Minimum Investment Duration is 10 months.',
+        },
+        'selectedBank': {
+            'required': 'Bank is required.'
+        },
+        'selectedNominee': {
+            'required': 'Nominee is required.'
+        },
+
+    };
+
+    update() {
+        let totalInvestment = 0;
+        let productArray = this.checkoutFormGroup.get('products') as FormArray;
+        productArray.value.forEach(product => totalInvestment += +product.investmentAmount);
+        this.totalInvestmentAmount = totalInvestment;
+    }
+
+    remove(productIndex: number) {
+        let removalProduct = this.checkoutData.products[productIndex];
+        this.checkoutData.products = this.checkoutData.products.filter((product, index) => index != productIndex);
+        this.checkoutFormErrors['products'] = this.checkoutFormErrors['products'].filter((product, index) => index != productIndex);
+        let productArray = this.checkoutFormGroup.get('products') as FormArray;
+        productArray.removeAt(productIndex);
+
+        if (productArray.length > 0) {
+            this.update();
+        } else {
+            this.router.navigateByUrl('/cart');
+        }
+
+        this.checkoutService.removeProductFromCheckout(removalProduct.productName, removalProduct.investmentType)
+            .subscribe(response => {
+                alert(response);
+            });
+    }
+
+    onCheckoutSubmit() {
+        if (this.checkoutFormGroup.valid) {
+            console.log("checkout form submitted!");
+        } else {
+            this.mdSnackBar.open("Please complete the checkout form before submitting!");
+        }
+    }
+
+
+}

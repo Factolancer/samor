@@ -1,0 +1,45 @@
+<div class="otp-kyc-content pad-tb-20" ngClass.gt-sm="pad-lr-40" ngClass.lt-md="pad-lr-20">
+    <div class="otp-container">
+        <div class="heading">
+            <span>One Time Password Required</span>
+        </div>
+        <div>
+            <div *ngIf="!otpVerified" fxLayout="row" fxLayoutAlign="center center"
+                 class="otp-validateOTP-content">
+                <form [formGroup]="OTPValidationForm" (ngSubmit)="onValidateOTP()" fxFlex="80" align="center"
+                      novalidate>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="center">
+                        <span>{{otpAlertMessage}}</span>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="center">
+                        <md-input-container fxFlex="60" fxFlex.xs="100">
+                            <input mdInput required formControlName="otp" [maxLength]="otpLength"
+                                   placeholder="Enter OTP">
+                            <md-hint align="start" class="error">{{otpErrorMessage}}</md-hint>
+                            <span align="start" class="msgDeliveryStatus"
+                                  [ngClass]="{'sent': messageStatus=='sent', 'delivered': messageStatus=='delivered'}"
+                                  *ngIf="messageStatus">
+                                     <span>{{messageStatus}}</span>
+                                   </span>
+                        </md-input-container>
+                    </div>
+                    <span *ngIf="otpSent  && !otpVerified">
+                        <span *ngIf="ticks>0" class="otp-timer"> 0:{{ticks}}</span>
+                        <button type="button" (click)="resendOTP()" class="resendOTP"
+                                [ngClass]="{disabled:!resendBtnState}"
+                                [disabled]="!resendBtnState">Re-send OTP</button>
+                        <br/>
+                    </span>
+                    <div fxLayout="row" fxLayoutAlign="center">
+                        <button type="submit" fxFlex="30" fxFlex.xs="60" fxAlign="center" md-raised-button
+                                color="primary" [disabled]="otpVerified" [ngClass]="{'vis-hidden':otpVerified}"
+                                class="submit-otp-button">Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

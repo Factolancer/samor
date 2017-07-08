@@ -1,0 +1,8 @@
+<h4>Fund House</h4>
+<input list="amc" name="browser" (select)="searchByAMC($event.target.value)">
+<datalist id="amc">
+    <option *ngFor="let amc of amcList" value={{amc.code}}>{{amc.name}}</option>
+</datalist>
+<div style="max-height: 150px; overflow-y: scroll">
+    <span *ngFor="let amc of amcList"><input type="checkbox" name="amcName" value={{amc.code}}> {{amc.name}}<br></span>
+</div>

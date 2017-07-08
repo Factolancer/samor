@@ -1,0 +1,21 @@
+<div class="col-md-12">
+    <md-checkbox [(ngModel)]="completeReport">Complete Report</md-checkbox>
+</div>
+
+<div class="col-md-12 margin-layout">
+    <md-checkbox [checked]="completeReport" [(ngModel)]="ledgerReport">Ledger Report</md-checkbox>
+</div>
+<div class="col-md-12 margin-layout">
+    <md-checkbox [checked]="completeReport" [(ngModel)]="transactionReport">Transaction Report</md-checkbox>
+</div>
+<div class="col-md-12 margin-layout">
+    <md-checkbox [checked]="completeReport" [(ngModel)]="capitalGainsReport">Capital Gains Report</md-checkbox>
+</div>
+<div class="col-md-12 margin-layout">
+    <md-checkbox [checked]="completeReport" [(ngModel)]="assetAllocationReport">Asset Allocation Report</md-checkbox>
+</div>
+<div class="col-md-12 margin-layout">
+    <md-checkbox [checked]="completeReport" [(ngModel)]="irrReport">IRR Report</md-checkbox>
+</div>
+<button type="button" md-raised-button color="accent" class="float-right" (click)="dialog.close()">No</button>
+<button type="button" md-raised-button color="primary" class="float-right" (click)="generateReport(dialog)">Yes</button>

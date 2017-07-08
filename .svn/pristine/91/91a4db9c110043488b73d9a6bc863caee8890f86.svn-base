@@ -1,0 +1,25 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {LoginToInvestComponent} from "./logintoinvest.component";
+import {ForgotPasswordComponent} from "./forgot-password.component";
+
+
+const loginRoutes: Routes = [
+    {
+        path: 'auth',
+        children: [
+            {
+                path: 'forgot',
+                component: ForgotPasswordComponent
+            },
+            {
+                path: ':path',
+                component: LoginToInvestComponent
+            }
+
+        ]
+
+    }
+];
+
+export const loginRouting: ModuleWithProviders = RouterModule.forChild(loginRoutes);

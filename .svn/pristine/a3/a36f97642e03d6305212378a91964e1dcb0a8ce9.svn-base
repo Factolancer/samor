@@ -1,0 +1,46 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {InvestmentModeEnum} from "../enum/investment-mode-enum";
+import {ProductEnum} from "../enum/product-enum";
+import {Summary} from "./summary";
+
+@Injectable()
+export class CheckoutService {
+
+    constructor(private httpService: HttpService) {
+    }
+
+
+    getCheckoutData() {
+        return this.httpService.get("/checkout/getCheckoutData");
+    }
+
+    getSummaryData() {
+        return this.httpService.get("/checkout/getSummaryData");
+    }
+
+    removeProductFromCheckout(productEnumId: number, investmentTypeEnumId: number) {
+        return this.httpService.post("/checkout/removeFund", {
+            productName: ProductEnum[productEnumId],
+            investmentTypeEnumId: InvestmentModeEnum[investmentTypeEnumId]
+        });
+    }
+
+    removeFundFromCheckout(productEnumId: number, investmentType: number, fundId: number,) {
+        return this.httpService.post("/checkout/removeFund", {
+            fundId: fundId,
+            productEnumId: productEnumId,
+            investmentType: investmentType
+        });
+    }
+
+    submitCheckoutData(data: any) {
+        return this.httpService.post("/checkout/saveCheckout", {
+            data: data
+        });
+    }
+
+    invest() {
+        return this.httpService.post("/checkout/invest", "");
+    }
+}

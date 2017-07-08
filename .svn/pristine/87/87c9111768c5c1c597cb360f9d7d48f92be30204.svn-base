@@ -1,0 +1,28 @@
+    import {NgModule} from "@angular/core";
+
+import {SharedModule} from "../shared/shared.module";
+import { ChartModule } from 'angular2-highcharts';
+
+import {dashboardRouting} from "./dashboard.routes";
+
+import {DashboardComponent} from "./dashboard.component";
+import {ChartComponent} from "./chart/chart.component";
+import {TransactionComponent} from "./transaction/transaction.component";
+import {ProductSolutionComponent} from "./product-solution/product-solution.component";
+import {NavigationPanelComponent} from "./navigation-panel/navigation-panel.component";
+import {TopPerformerComponent} from "./top-performer/top-performer.component";
+
+import {DashboardDataService} from './dashboard-data.service';
+
+@NgModule({
+    imports: [
+        SharedModule,
+        dashboardRouting,
+        ChartModule
+    ],
+    declarations: [DashboardComponent, ChartComponent, TransactionComponent, TopPerformerComponent, ProductSolutionComponent, NavigationPanelComponent],
+    entryComponents:[ChartComponent, TransactionComponent, ProductSolutionComponent, NavigationPanelComponent],
+    providers:[DashboardDataService]
+})
+export class DashboardModule {
+}

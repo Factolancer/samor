@@ -1,0 +1,26 @@
+import {NgModule} from "@angular/core";
+import {DashboardComponent} from "./dashboard.component";
+import {SharedModule} from "../shared/shared.module";
+import {dashboardRouting} from "./dashboard.routes";
+
+import {ChartComponent} from "./chart/chart.component";
+import {TransactionComponent} from "./transaction/transaction.component";
+import {ProductSolutionComponent} from "./product-solution/product-solution.component";
+import {NavigationPanelComponent} from "./navigation-panel/navigation-panel.component";
+
+import { ChartModule } from '../shared/highcharts';
+
+import {DashboardDataService} from './dashboard-data.service';
+
+@NgModule({
+    imports: [
+        SharedModule,
+        dashboardRouting,
+        ChartModule
+    ],
+    declarations: [DashboardComponent, ChartComponent, TransactionComponent, ProductSolutionComponent, NavigationPanelComponent],
+    entryComponents:[ChartComponent, TransactionComponent, ProductSolutionComponent, NavigationPanelComponent],
+    providers:[DashboardDataService]
+})
+export class DashboardModule {
+}

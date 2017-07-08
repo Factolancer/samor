@@ -1,0 +1,8 @@
+export class ProductInvestment {
+
+    constructor(public investmentMode:string,
+                public schemeOptionId:number,
+                public productName:string){
+
+    }
+}

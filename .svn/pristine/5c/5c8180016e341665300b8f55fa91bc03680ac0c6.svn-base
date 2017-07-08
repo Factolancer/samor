@@ -1,0 +1,52 @@
+@import "../../../styles/partials/web-partials";
+
+.container {
+  @include fadeInElement(1.5s);
+  margin: 50px auto;
+}
+.aadhar-kyc-container{border: solid 0.5px $medium-grey;}
+.aadhar-kyc-header{
+  background-color: $brand-secondary;
+  color: $white;
+  @include heading(24px, 400);
+  line-height: 60px;
+  text-align: center;
+  margin-bottom: 0;
+    letter-spacing: 1.8px;
+  .disclaimer {
+    font-size: 11px;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    margin-bottom: 5px;
+  }
+
+}
+ .aadhar-form {
+  border: solid 0.5px $medium-grey;
+  margin-bottom: 20px;
+  .heading{
+    background-color: $light-grey;
+    border-bottom: solid 0.5px $medium-grey;
+    text-align: center;
+    padding: 10px 0;
+  }
+}
+
+.aadhar-kyc-content{
+  padding:20px 40px;
+}
+.aadhar-form form{
+  padding-bottom: 20px;
+}
+button{
+  background-color: $brand-secondary;
+  color: $white;
+}
+.resLoading{
+  background: url('../../../assets/img/loading.gif')  no-repeat 50% 50%;
+  background-size: 25px 25px;
+}
+.shake{
+  @include shake();
+}
+

@@ -1,0 +1,22 @@
+import {NgModule} from "@angular/core";
+import {CartComponent} from "./cart.component";
+import {CartService} from "../services/cart.service";
+import {cartRouting} from "./cart.routes";
+import {SharedModule} from "../shared/shared.module";
+import {AddToCartButtonComponent} from "./add-to-cart-button.component";
+import {AddToCartIconButtonComponent} from "./add-to-cart-icon-button.component";
+import {LoginService} from "../services/login.service";
+import {CartNavigationIconComponent} from "./cart-navigation-icon.component";
+import {URLAccessGuard} from "../gaurds/urlAccess.guard";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        cartRouting,
+    ],
+    providers: [CartService, LoginService, URLAccessGuard],
+    exports: [AddToCartButtonComponent, AddToCartIconButtonComponent, CartNavigationIconComponent],
+    declarations: [CartComponent, AddToCartButtonComponent, AddToCartIconButtonComponent, CartNavigationIconComponent]
+})
+export class CartModule {
+}

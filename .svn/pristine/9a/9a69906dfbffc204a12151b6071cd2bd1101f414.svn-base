@@ -1,0 +1,26 @@
+/**
+ * Created by fincash on 25-11-2016.
+ */
+
+export class Holdings{
+
+    public id: number;
+    public name: string;
+    public modeOfHolding: string;
+    public plan:string;
+    public divFreq:string;
+    public divOption:string;
+    public folioNo :string;
+    public costValue:number;
+    public units:number;
+    public currNav:number;
+    public navDate:Date;
+    public currValue:number;
+    public realizedGain:number;
+    public unrealizedGain:number;
+    public absoluteReturn:number;
+}
+
+export class HoldingFilter{
+    public emptyHolding:boolean;
+}

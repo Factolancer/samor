@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4e39c367-82ef-4ad9-9c40-be94deee2401" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/e2e" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/home" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/home/shared" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/login" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/login/shared" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/risk" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/shared" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/shared/components" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/shared/components/angular2-recaptcha" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/shared/services" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/signup" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/signup/shared" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/environments" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/favicon.ico" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/migration-project.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/angular-cli.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/e2e/app.e2e-spec.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/e2e/app.po.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/e2e/tsconfig.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/karma.conf.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/protractor.conf.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/app.component.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/app.component.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/app.component.spec.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/app.component.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/app.module.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/app.routes.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/environment.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/home/home.component.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/home/home.component.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/home/home.component.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/home/index.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/home/shared/index.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/index.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/login/index.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/login/login.component.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/login/login.component.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/login/login.component.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/login/shared/index.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/risk/index.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/risk/risk.component.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/risk/risk.component.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/risk/risk.component.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/risk/risk.module.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/shared/auth.guard.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/shared/components/angular2-recaptcha/angular2-recaptcha.component.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/shared/headers.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/shared/index.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/shared/services/interpolation.sevice.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/signup/index.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/signup/shared/index.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/signup/signup.component.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/signup/signup.component.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/app/signup/signup.component.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/environments/environment.prod.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/environments/environment.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/index.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/polyfills.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/styles.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/tsconfig.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/typings.d.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tslint.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/boom/images/boom.png" afterPath="$PROJECT_DIR$/node_modules/boom/images/boom.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/boom/images/boom.png" afterPath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/boom/images/boom.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/cli-width/coverage/lcov-report/sort-arrow-sprite.png" afterPath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/cli-width/coverage/lcov-report/sort-arrow-sprite.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/hawk/images/hawk.png" afterPath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/hawk/images/hawk.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/hawk/images/logo.png" afterPath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/hawk/images/logo.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/hoek/images/hoek.png" afterPath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/hoek/images/hoek.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/retry/equation.gif" afterPath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/retry/equation.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/semver/semver.browser.js.gz" afterPath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/semver/semver.browser.js.gz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/semver/semver.min.js.gz" afterPath="$PROJECT_DIR$/node_modules/bower/lib/node_modules/semver/semver.min.js.gz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/cpr/cpr.jpg" afterPath="$PROJECT_DIR$/node_modules/cpr/cpr.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/diff/images/node_example.png" afterPath="$PROJECT_DIR$/node_modules/diff/images/node_example.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/diff/images/web_example.png" afterPath="$PROJECT_DIR$/node_modules/diff/images/web_example.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/gulp/node_modules/semver/semver.browser.js.gz" afterPath="$PROJECT_DIR$/node_modules/gulp/node_modules/semver/semver.browser.js.gz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/gulp/node_modules/semver/semver.min.js.gz" afterPath="$PROJECT_DIR$/node_modules/gulp/node_modules/semver/semver.min.js.gz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/hawk/images/hawk.png" afterPath="$PROJECT_DIR$/node_modules/hawk/images/hawk.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/hawk/images/logo.png" afterPath="$PROJECT_DIR$/node_modules/hawk/images/logo.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/hoek/images/hoek.png" afterPath="$PROJECT_DIR$/node_modules/hoek/images/hoek.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/less/test/data/data-uri-fail.png" afterPath="$PROJECT_DIR$/node_modules/less/test/data/data-uri-fail.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/less/test/data/image.jpg" afterPath="$PROJECT_DIR$/node_modules/less/test/data/image.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/html/favicon.ico" afterPath="$PROJECT_DIR$/node_modules/npm/html/favicon.ico" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/node_modules/npm-registry-client/node_modules/retry/equation.gif" afterPath="$PROJECT_DIR$/node_modules/npm/node_modules/npm-registry-client/node_modules/retry/equation.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/node_modules/npmlog/node_modules/gauge/example.png" afterPath="$PROJECT_DIR$/node_modules/npm/node_modules/npmlog/node_modules/gauge/example.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/node_modules/request/node_modules/hawk/images/hawk.png" afterPath="$PROJECT_DIR$/node_modules/npm/node_modules/request/node_modules/hawk/images/hawk.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/node_modules/request/node_modules/hawk/images/logo.png" afterPath="$PROJECT_DIR$/node_modules/npm/node_modules/request/node_modules/hawk/images/logo.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/node_modules/request/node_modules/hawk/node_modules/boom/images/boom.png" afterPath="$PROJECT_DIR$/node_modules/npm/node_modules/request/node_modules/hawk/node_modules/boom/images/boom.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/node_modules/request/node_modules/hawk/node_modules/hoek/images/hoek.png" afterPath="$PROJECT_DIR$/node_modules/npm/node_modules/request/node_modules/hawk/node_modules/hoek/images/hoek.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/node_modules/retry/equation.gif" afterPath="$PROJECT_DIR$/node_modules/npm/node_modules/retry/equation.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/node_modules/tar/test/cb-never-called-1.0.1.tgz" afterPath="$PROJECT_DIR$/node_modules/npm/node_modules/tar/test/cb-never-called-1.0.1.tgz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/node_modules/tar/test/dir-normalization.tar" afterPath="$PROJECT_DIR$/node_modules/npm/node_modules/tar/test/dir-normalization.tar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/node_modules/tar/test/fixtures.tgz" afterPath="$PROJECT_DIR$/node_modules/npm/node_modules/tar/test/fixtures.tgz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/test/fixtures/forked-underscore-1.5.1.tgz" afterPath="$PROJECT_DIR$/node_modules/npm/test/fixtures/forked-underscore-1.5.1.tgz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/test/fixtures/github-com-BryanDonovan-dummy-npm-bar.git.tar.gz" afterPath="$PROJECT_DIR$/node_modules/npm/test/fixtures/github-com-BryanDonovan-dummy-npm-bar.git.tar.gz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/test/fixtures/github-com-BryanDonovan-dummy-npm-buzz.git.tar.gz" afterPath="$PROJECT_DIR$/node_modules/npm/test/fixtures/github-com-BryanDonovan-dummy-npm-buzz.git.tar.gz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/test/fixtures/github-com-BryanDonovan-dummy-npm-foo.git.tar.gz" afterPath="$PROJECT_DIR$/node_modules/npm/test/fixtures/github-com-BryanDonovan-dummy-npm-foo.git.tar.gz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/test/fixtures/github-com-BryanDonovan-npm-git-test.git.tar.gz" afterPath="$PROJECT_DIR$/node_modules/npm/test/fixtures/github-com-BryanDonovan-npm-git-test.git.tar.gz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/test/fixtures/gitignore-and-npmignore-2.tar" afterPath="$PROJECT_DIR$/node_modules/npm/test/fixtures/gitignore-and-npmignore-2.tar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/test/fixtures/gitignore-and-npmignore.tar" afterPath="$PROJECT_DIR$/node_modules/npm/test/fixtures/gitignore-and-npmignore.tar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/test/fixtures/gitignore-and-npmignore.tgz" afterPath="$PROJECT_DIR$/node_modules/npm/test/fixtures/gitignore-and-npmignore.tgz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/test/fixtures/gitignore.tgz" afterPath="$PROJECT_DIR$/node_modules/npm/test/fixtures/gitignore.tgz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/test/fixtures/npmignore.tgz" afterPath="$PROJECT_DIR$/node_modules/npm/test/fixtures/npmignore.tgz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/npm/test/fixtures/scoped-underscore-1.3.1.tgz" afterPath="$PROJECT_DIR$/node_modules/npm/test/fixtures/scoped-underscore-1.3.1.tgz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/tar/test/cb-never-called-1.0.1.tgz" afterPath="$PROJECT_DIR$/node_modules/tar/test/cb-never-called-1.0.1.tgz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/tar/test/dir-normalization.tar" afterPath="$PROJECT_DIR$/node_modules/tar/test/dir-normalization.tar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/tar/test/fixtures.tgz" afterPath="$PROJECT_DIR$/node_modules/tar/test/fixtures.tgz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/temp/temp-0.5.1.tgz" afterPath="$PROJECT_DIR$/node_modules/temp/temp-0.5.1.tgz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/xhr2/test/fixtures/xhr2.png" afterPath="$PROJECT_DIR$/node_modules/xhr2/test/fixtures/xhr2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/less/test/less-bom/empty.less" afterPath="$PROJECT_DIR$/node_modules/less/test/less-bom/empty.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/less/test/less-bom/sourcemaps-empty/empty.less" afterPath="$PROJECT_DIR$/node_modules/less/test/less-bom/sourcemaps-empty/empty.less" />
+    </list>
+    <ignored path="migration-project.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/dist/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="migration-project" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1100">
+              <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tslint.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tslint.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="angular-cli.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/angular-cli.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="typings.d.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/typings.d.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tsconfig.json" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/tsconfig.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="125">
+              <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="67">
+              <caret line="9" column="54" selection-start-line="9" selection-start-column="54" selection-end-line="9" selection-end-column="54" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="app.module.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/app.module.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-175">
+              <caret line="5" column="55" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="signup.component.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/signup/signup.component.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-46">
+              <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+              <folding>
+                <element signature="e#0#50#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="home.component.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/home/home.component.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="125">
+              <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
+              <folding>
+                <element signature="e#0#50#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/main.ts" />
+        <option value="$PROJECT_DIR$/src/app/index.ts" />
+        <option value="$PROJECT_DIR$/src/app/app.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/home/home.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/login/login.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/risk/risk.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/signup/signup.component.ts" />
+        <option value="$PROJECT_DIR$/src/tsconfig.json" />
+        <option value="$PROJECT_DIR$/dist/index.html" />
+        <option value="$PROJECT_DIR$/src/app/app.module.ts" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/index.html" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
+    <package-json value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-11" />
+    <option name="y" value="-11" />
+    <option name="width" value="1932" />
+    <option name="height" value="1042" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource ProjectPane="true" />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
+    <property name="typescript-compiler-editor-notification" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workspace\migration-project\src\environments" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="cucumber.js" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" value="" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run-script" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration" myUseAcceleration="nothing" cleanupOnStartRun="true">
+    <configuration>C:\Users\Fincash\AppData\Roaming\Subversion</configuration>
+    <option name="sshConnectionType" value="PASSWORD" />
+    <option name="sshUserName" value="paresh" />
+    <option name="FORCE_UPDATE" value="true" />
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\workspace\migration-project" />
+          <option name="myCopyRoot" value="D:\workspace\migration-project" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\workspace\migration-project\.idea" />
+          <option name="myCopyRoot" value="D:\workspace\migration-project\.idea" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\workspace\migration-project" />
+          <option name="myCopyRoot" value="D:\workspace\migration-project" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4e39c367-82ef-4ad9-9c40-be94deee2401" name="Default" comment="" />
+      <created>1473922728344</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1473922728344</updated>
+      <workItem from="1473922729841" duration="7898000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="7898000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-11" y="-11" width="1932" height="1042" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="SVN Repositories" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32938388" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32938388" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32938388" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src.wepacktemplate/app/app.module.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src.wepacktemplate/app/index.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src.wepacktemplate/main.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="4" column="57" selection-start-line="3" selection-start-column="0" selection-end-line="4" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/index.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="1" column="32" selection-start-line="1" selection-start-column="32" selection-end-line="1" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="650">
+          <caret line="32" column="33" selection-start-line="32" selection-start-column="33" selection-end-line="32" selection-end-column="33" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/environments/environment.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/app.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="3" column="12" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/login/login.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="8" column="12" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/risk/risk.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="151">
+          <caret line="13" column="12" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src.wepacktemplate/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/main.bundle.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/inline.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3000">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/app.module.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-175">
+          <caret line="5" column="55" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/signup/signup.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-46">
+          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/home/home.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-108">
+          <caret line="14" column="13" selection-start-line="12" selection-start-column="2" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="67">
+          <caret line="9" column="54" selection-start-line="9" selection-start-column="54" selection-end-line="9" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1100">
+          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tslint.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/angular-cli.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/typings.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tsconfig.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

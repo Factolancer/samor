@@ -1,0 +1,72 @@
+import {Component, OnInit, EventEmitter} from '@angular/core';
+import {Input, Output} from "@angular/core/src/metadata/directives";
+import {ProductEnum} from "../../enum/product-enum";
+import {WatchlistProduct} from "../watchlist-product";
+import {WatchlistService} from "../watchlist.service";
+import {FundDetails} from "../../cart/fund-details";
+import {Scheme} from '../scheme';
+
+@Component({
+    selector: 'app-watchlist-view',
+    templateUrl: 'watchlist-view.component.html',
+    styleUrls: ['watchlist-view.component.css']
+})
+export class WatchlistViewComponent implements OnInit {
+
+    @Input() set _product(value: Scheme) {
+       /* this.schemes = value;
+        if (value.schemes == this.productEnum.SIP || value.schemes == this.productEnum.LUMPSUM) {
+            this.isFincashProduct = false;
+        }*/
+    }
+
+    @Output() remove = new EventEmitter();
+    @Output() onFundSelected = new EventEmitter();
+
+    currentFund: Scheme;
+    schemes: Scheme[];
+    isFincashProduct: boolean = true;
+    productEnum = ProductEnum;
+
+    constructor(private watchlistService: WatchlistService) {
+        // this.onFundSelected = new EventEmitter<Scheme>();
+    }
+
+    selectFund(fund: Scheme) {
+        this.currentFund = fund;
+        this.onFundSelected.emit(fund);
+        console.log(fund);
+    }
+
+    isSelected(fund: Scheme): boolean {
+        if (!this.currentFund) {
+            return false;
+        }
+        return this.currentFund.name === fund.name ? true : false;
+    }
+
+    removeProduct(productEnumId: number) {
+        this.watchlistService.removeProductFromWatchlist(productEnumId).subscribe(
+            output => alert(output.response)
+        )
+
+        this.remove.emit(productEnumId);
+    }
+
+    removeFund(fundId: number) {
+        this.watchlistService.removeFundFromWatchlist(fundId).subscribe(
+            output => alert(output.response)
+        )
+
+        /*if (this.schemes.funds.length > 1) {
+            this.schemes.funds = this.schemes.funds.filter(fund => +fund.id != fundId);
+        } else {
+            this.remove.emit(this.schemes.schemes);
+        }*/
+    }
+
+    ngOnInit() {
+
+    }
+
+}

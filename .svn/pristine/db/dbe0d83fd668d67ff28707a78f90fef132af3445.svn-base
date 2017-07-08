@@ -1,0 +1,162 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper" *ngIf="!amount">
+    <div fxFlex="60">
+        <div fxLayout="column" fxLayoutAlign="center center" class="pad-tb-35">
+            <div fxFlex class="heading-32-blue">Please answer the questions below</div>
+        </div>
+        <md-card class="card">
+            <div fxLayout="row" fxLayoutAlign="center stretch">
+                <div fxFlex="30" class="left-pane">
+                    <div class="icon"><img src="{{goal.imagePath}}"></div>
+                    <div class="title">{{goal.name}}</div>
+                </div>
+                <div fxFlex="70" class="right-pane">
+                    <div class="question">
+                        <div>
+                            {{questions[selectedIndex].statement}}<br/>
+                            <span *ngIf="questions[selectedIndex].helperText" class="helper">{{questions[selectedIndex].helperText}}</span>
+                        </div>
+                        <div>
+                            <md-input-container align="end">
+                                <input md-input [(ngModel)]="questions[selectedIndex].answer"
+                                       type="number"
+                                       maxlength="{{questions[selectedIndex].maxLength}}"
+                                       min="{{questions[selectedIndex].min}}" max="{{questions[selectedIndex].max}}"
+                                       required/>
+                                <span md-prefix [innerHTML]="questions[selectedIndex].prefix"></span>
+                                <span md-suffix [innerHTML]="questions[selectedIndex].suffix"></span>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div>
+                            {{questions[selectedIndex+1].statement}}<br/>
+                            <span *ngIf="questions[selectedIndex+1].helperText" class="helper">{{questions[selectedIndex+1].helperText}}</span>
+                        </div>
+                        <div>
+                            <md-input-container align="end">
+                                <input md-input [(ngModel)]="questions[selectedIndex+1].answer"
+                                       type="number"
+                                       maxlength="{{questions[selectedIndex+1].maxLength}}"
+                                       min="{{questions[selectedIndex+1].min}}" max="{{questions[selectedIndex+1].max}}"
+                                       required/>
+                                <span md-prefix [innerHTML]="questions[selectedIndex+1].prefix"></span>
+                                <span md-suffix [innerHTML]="questions[selectedIndex+1].suffix"></span>
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="space-around center" class="">
+                        <div fxFlex>
+                            <button md-button (click)="prev()" *ngIf="selectedIndex!=0">Previous</button>
+                        </div>
+                        <div fxFlex class="right-align">
+                            <button md-button (click)="next()">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+</div>
+
+
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper" *ngIf="amount">
+    <div fxFlex="80">
+        <md-card class="card mar-tb-35">
+            <div fxLayout="row" fxLayoutAlign="center stretch">
+                <div fxFlex="25" class="left-pane">
+                    <div class="icon"><img src="{{goal.imagePath}}" alt="{{goal.name}}"></div>
+                    <div class="title">{{goal.name}}</div>
+                </div>
+                <div fxFlex="75" class="right-pane">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="title" fxLayoutGap="10px">
+                        <div fxFlex="50" class="result-text">Our Assessment</div>
+                        <div fxFlex="15" class="right-align">Years to go</div>
+                        <div fxFlex="5">
+                            <md-input-container align="end">
+                                <input md-input type="number" [(ngModel)]="questions[0].answer"
+                                       (change)="recalculate(questions[0].answer)"/>
+                            </md-input-container>
+                        </div>
+
+                        <div fxFlex="15" class="right-align">SIP Amount</div>
+                        <div fxFlex="15">
+                            <md-input-container align="end">
+                                <input md-input type="number" [(ngModel)]="questions[1].answer"
+                                       (change)="recalculate(questions[1].answer)">
+                                <span md-prefix>&#x20B9;</span>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="pad-tb-35">
+                        <div class="">
+                            <md-icon class="md-14" mdTooltip="{{questions[selectedIndex].helperText}}"
+                                     *ngIf="questions[selectedIndex].helperText">
+                                &#xE88E;</md-icon>
+                            {{questions[selectedIndex].statement}}
+                            <md-input-container align="end">
+                                <input md-input [(ngModel)]="questions[selectedIndex].answer"
+                                       type="number"
+                                       (change)="recalculate(questions[selectedIndex].answer)"
+                                       maxlength="{{questions[selectedIndex].maxLength}}"
+                                       min="{{questions[selectedIndex].min}}" max="{{questions[selectedIndex].max}}"
+                                       required/>
+                                <span md-prefix [innerHTML]="questions[selectedIndex].prefix"></span>
+                                <span md-suffix [innerHTML]="questions[selectedIndex].suffix"></span>
+                            </md-input-container>
+                        </div>
+
+                        <div class="">
+                            <md-icon class="md-14" *ngIf="questions[selectedIndex+1].helperText"
+                                     mdTooltip="{{questions[selectedIndex+1].helperText}}">
+                                &#xE88E;</md-icon>
+                            {{questions[selectedIndex+1].statement}}
+                            <md-input-container align="end">
+                                <input md-input [(ngModel)]="questions[selectedIndex+1].answer"
+                                       (change)="recalculate(questions[selectedIndex+1].answer)"
+                                       type="number"
+                                       maxlength="{{questions[selectedIndex+1].maxLength}}"
+                                       min="{{questions[selectedIndex+1].min}}" max="{{questions[selectedIndex+1].max}}"
+                                       required/>
+                                <span md-prefix [innerHTML]="questions[selectedIndex+1].prefix"></span>
+                                <span md-suffix [innerHTML]="questions[selectedIndex+1].suffix"></span>
+                            </md-input-container>
+                        </div>
+                        <div class="pad-tb-5">
+                            <md-checkbox [checked]="true" (change)="inflationAdjustment($event.checked)">Adjust for
+                                inflation
+                            </md-checkbox>
+                        </div>
+                    </div>
+                    <div class="pad-tb-5 heading-14">Your SIP Performance</div>
+                    <md-divider></md-divider>
+                    <div fxLayout="row" fxLayoutAlign="center center" style="height: 250px">
+
+                        <chart [options]="options" (load)="saveChartInstance($event.context)"></chart>
+
+                        <div fxFlex class="result-text pad-25">
+                            Your total investment amount is {{investedAmount | currency:'INR':true:'1.0-0'}} and
+                            Expected amount after {{years}} Years is {{amount | currency:'INR':true:'1.0-0'}}.
+                            <span class="focus-text"> Net Profit of {{amount-investedAmount | currency:'INR':true:'1.0-0'}}</span>
+                        </div>
+                    </div>
+                    <md-divider class="pad-tb-5"></md-divider>
+                    <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="10px">
+                        <!--<div fxFlex>
+                            <button *ngIf="showReCalculateButton" (click)="calculate(true)">Recalculate</button>
+                        </div>-->
+                        <div fxFlex="15">
+                            <button md-raised-button="" routerLink="/sip/calculator" class="hollow-cta-36">Start Again
+                            </button>
+                        </div>
+                        <div fxFlex="15">
+                            <button md-raised-button="" routerLink="/sip/smartsip" class="cta-36" color="primary">Invest
+                                Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+<div fxLayout="column" fxLayoutAlign="start start">
+    <div fxFlex class="summary-heading report-card">Investment Gain/Loss Statement</div>
+    <!--<div class="col-md-1">
+        <span (click)="download()" class="clickable"><i class="material-icons">&#xE2C4;</i></span>
+    </div>-->
+    <div fxFlex class="report-card">
+        <md-card class="mar-tb-5 no-padding">
+            <div fxLayout="column" fxLayoutAlign="start center" class="allocation-heading">
+                <div fxFlex>
+                    AMC:Birla sun Life Mutual Fund
+                </div>
+                <div fxFlex>
+                    Folio No:1016976426
+                </div>
+                <div fxFlex>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <div fxFlex>Status : Individual</div>
+                        <div fxFlex>PAN:AXOPV5011C</div>
+                    </div>
+                </div>
+
+            </div>
+        </md-card>
+    </div>
+    <div fxFlex *ngFor="let fund of funds">
+
+        <div fxLayout="column" fxLayoutAlign="start center">
+            <div fxFlex>
+                {{fund.fundName}}
+            </div>
+
+            <md-card class="mar-tb-5 report-card no-padding">
+                <div fxLayout="row" fxLayoutAlign="center center" class="allocation-header allocation-heading">
+                    <div fxFlex>Redemption/Switch-out</div>
+                    <div fxFlex>Corresponding units in Purchase/Switch-In/Div-Reinvestment</div>
+                    <div fxFlex>Capital Gains/Losses</div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" class="allocation-header allocation-heading">
+                    <div fxFlex>Description</div>
+                    <div fxFlex>Date</div>
+                    <div fxFlex>Units</div>
+                    <div fxFlex>Price(Rs.)</div>
+                    <div fxFlex>Amount(Rs.)</div>
+                    <div fxFlex>Date</div>
+                    <div fxFlex>Units</div>
+                    <div fxFlex>Unit Cost(Rs.)</div>
+                    <div fxFlex>Short Term</div>
+                    <div fxFlex>Long Term</div>
+                </div>
+                <div *ngFor="let trans of fund.transactionsList" fxLayout="column" fxLayoutAlign="start center"
+                     class="allocation-details">
+                    <div fxFlex>{{trans.desc}}</div>
+                    <div fxFlex>{{trans.redeemDate | date:'dd-MM-yy'}}</div>
+                    <div fxFlex>{{trans.units | number : '1.2-3'}}</div>
+                    <div fxFlex>{{trans.price | number : '1.2-2'}}</div>
+                    <div fxFlex>{{trans.amount | number : '1.2-2'}}</div>
+                    <div fxFlex>{{trans.purchaseDate | date:'dd-MM-yy'}}</div>
+                    <div fxFlex>{{trans.purchaseUnits}}</div>
+                    <div fxFlex>{{trans.purchasePrice}}</div>
+                    <div fxFlex>{{trans.gain | number : '1.2-2'}}</div>
+                    <div fxFlex></div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" class="allocation-details total-allocation">
+                    <div fxFlex><b>Total</b></div>
+                    <div fxFlex></div>
+                    <div fxFlex><b>{{fund.totalUnits| number : '1.2-3'}}</b></div>
+                    <div fxFlex></div>
+                    <div fxFlex><b>{{fund.totalAmount| number : '1.2-2'}}</b></div>
+                    <div fxFlex></div>
+                    <div fxFlex></div>
+                    <div fxFlex></div>
+                    <div fxFlex><b>{{fund.totalCapitalGain | number : '1.2-2'}}</b></div>
+                    <div fxFlex></div>
+                </div>
+            </md-card>
+        </div>
+
+    </div>
+    <div fxFlex>
+        <span>Note: Short term (less than 1year) redemption of units/amount would incur a taxation of 1%</span>
+    </div>
+</div>

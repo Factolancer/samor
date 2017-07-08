@@ -1,0 +1,56 @@
+// Set default node environment to production
+process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+
+var config = require('./config/environment');
+var mongoose = require('mongoose');
+// Connect to database
+//mongoose.connect(config.mongo.uri, config.mongo.options);
+var cluster = require('cluster');
+
+if(cluster.isMaster) {
+    var numWorkers = require('os').cpus().length;
+    console.log('Master cluster setting up ' + numWorkers + ' workers...');
+    for(var i = 0; i < numWorkers; i++) {
+        cluster.fork();
+    }
+    cluster.on('online', function(worker) {
+        console.log('Worker ' + worker.process.pid + ' is online');
+    });
+    cluster.on('exit', function(worker, code, signal) {
+        console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
+        console.log('Starting a new worker');
+        cluster.fork();
+    });
+} else {
+    // Setup server
+    var app = require('express')();
+    var server = require('http').createServer(app);
+    /*var socketio = require('socket.io')(server, {
+     serveClient: (config.env === 'production') ? false : true,
+     path: '/socket.io-client'
+     });
+     require('./config/socketio')(socketio);
+     */
+    require('./config/express')(app);
+    require('./routes')(app);
+    // Start server
+    server.listen(config.port, config.ip, function () {
+        console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+    });
+
+    process.on('message', function(message) {
+        if(message.type === 'shutdown') {
+            console.log("message from cluster to shutdown worker");
+            process.exit(0);
+        }
+    });
+
+    process.on('uncaughtException', function(err){
+        console.error("uncaughtException");
+        console.error(err);
+        process.exit(1);
+    });
+
+    // Expose app
+    exports = module.exports = app;
+}

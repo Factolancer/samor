@@ -1,0 +1,101 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Subject} from "rxjs/Subject";
+import {Observable} from "rxjs/Observable";
+import {Subscription} from "rxjs/Subscription";
+import "rxjs/add/observable/timer";
+import "rxjs/add/operator/take";
+import "rxjs/add/operator/distinctUntilChanged";
+import "rxjs/add/operator/debounceTime";
+import "rxjs/add/operator/switchMap";
+
+import {Fund} from "../models/fund";
+import {ExploreFundsService} from "../core/services/explore-funds.service";
+import {Logger} from "../core/logger/logger";
+import {FundSearchInput} from "../explore-funds/fund-search-input";
+import {ExploreFundConstants} from "../explore-funds/explore-funds.constants";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {RedemptionService} from "./redemption.service";
+import {FormControl} from "@angular/forms";
+
+@Component({
+    selector: 'app-redeem-fund-search-bar',
+    templateUrl: './redeem-fund-search-bar.component.html',
+    styleUrls: ['./redemption.styles.scss']
+})
+export class RedeemFundSearchBarComponent implements OnInit, OnDestroy {
+
+    redeemSuggestionSubject: BehaviorSubject<any[]>;
+    redeemSuggestions: Observable<any[]>;
+    private searchTermStream = new Subject<string>();
+    queryString: string = "";
+    searchInputSubscription: Subscription;
+    fundControl: FormControl;
+    className: string;
+
+    searchInput: FundSearchInput;
+
+    constructor(private redemptionService: RedemptionService, private logger: Logger) {
+        this.className = "RedeemFundSearchBarComponent";
+        this.fundControl = new FormControl();
+    }
+
+    searchBarInput() {
+        this.searchTermStream.next(this.queryString);
+    }
+
+
+    /*searchForKeyword(event: any) {
+        let keywordObservable = Observable.timer(300).take(1).subscribe(_ => {
+            this.logger.debug("got new value!", event, event.target);
+            let defaultSearchInput = this.exploreFundsService.getDefaultFundSearchInput();
+            defaultSearchInput.q = this.queryString;
+            defaultSearchInput.r = this.searchInput.r;
+            defaultSearchInput.qt = ExploreFundConstants.SEARCH_QUERY;
+            this.exploreFundsService.navigateToExplore(defaultSearchInput);
+            keywordObservable.unsubscribe();
+        });
+
+
+        /!*if (event.keyCode == 13 || event.type == "click" || event.type == "select") {
+
+         }*!/
+    }*/
+
+    ngOnInit() {
+        this.redeemSuggestions = this.searchTermStream
+            .debounceTime(300)
+            .distinctUntilChanged()
+            .switchMap((term: string) => this.redemptionService.getRedemptionAutoCompleteData(term).map(res => {
+                this.logger.debug(this.className, res);
+                // this.logger.debug(this.className, this.queryString)
+                return res; //this.setAutoSuggestion(res);
+            }));
+
+        /*this.searchInputSubscription = this.exploreFundsService.fundSearchInput.subscribe(
+            (searchInput: FundSearchInput) => {
+                this.queryString = searchInput.q;
+                this.searchInput = searchInput;
+            }
+        )*/
+        this.fundControl.valueChanges.subscribe(controlVal => {
+            this.logger.debug("THIS IS VALUE of FUNDCONTROL ", controlVal);
+            if (typeof controlVal === "object") {
+                this.logger.debug("Hoo la la..");
+                let rededmptionData = this.redemptionService.redemptionData.getValue();
+                rededmptionData.fundsData.push(controlVal);
+                this.redemptionService.redemptionData.next(rededmptionData);
+                this.fundControl.setValue('');
+            }
+        })
+    }
+
+    addToRedemptionList(event: any) {
+        this.logger.debug("got new value!", this.fundControl.value);
+    }
+
+    ngOnDestroy() {
+        this.searchTermStream.unsubscribe();
+        this.searchInputSubscription.unsubscribe();
+    }
+
+}

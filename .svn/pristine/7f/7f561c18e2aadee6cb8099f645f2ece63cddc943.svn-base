@@ -1,0 +1,54 @@
+@import "../../../styles/styles";
+
+.product-container{
+  border: solid 1px #d6d6d6;
+  margin-bottom: 20px;
+  .highlight{
+    background-color: $light-grey;
+    height: 40px !important;
+    line-height: 40px !important;
+    text-align: center;font-size: 18px;
+    border-bottom: solid 1px #d6d6d6;
+  }
+  img{
+    background-color: white;
+    border-radius: 50%;
+    padding: 2px;
+  }
+  md-card{
+    padding:0 0 5px;margin:20px; border: solid 0.5px #d6d6d6;
+    md-card-title{
+      text-align: center;
+      margin-bottom: 5px !important;
+      background-color: $brand-secondary;
+      color:$white;
+      font-weight: 500;
+      padding: 10px;
+      font-size: 18px;
+    };
+    md-card-content{
+      padding:5px 10px; font-size: 12px;
+      margin-bottom: 5px;
+      min-height: 125px;max-height: 170px;
+      img{height:50px; width:50px;}
+      p{padding-left:10px;text-align:left;font-weight: 600; color:$dark-grey;}
+    }
+    .btn-box{text-align: center}
+    button.invest-button{
+      margin: 10px 0 20px;
+      background-color: $white;
+      border: 1px solid #979797;
+      padding: 5px 30px;
+      text-transform: capitalize;
+      cursor: pointer;
+      color: $brand-secondary;
+      text-transform: capitalize;
+      outline: none;
+      &:hover{
+        color:$white;
+        background-color: $brand-secondary;
+      }
+    };
+  }
+  i{margin-bottom: 10px;}
+}

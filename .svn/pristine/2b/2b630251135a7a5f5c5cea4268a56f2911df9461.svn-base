@@ -1,0 +1,19 @@
+export class PortfolioAssetAllocation {
+
+    public costValue:string;
+    public currentValue:string;
+    public unrealizedGain:string;
+    public realizedGain:string;
+    public assetClassDetailsList:AssetClassDetails[];
+
+}
+
+export class AssetClassDetails{
+
+    public assetClass:string;
+    public investedAmt:string;
+    public share:number;
+    public currValue:string;
+    public currShare:number;
+    public currentCostRatio:number;
+}

@@ -1,0 +1,131 @@
+/**
+ * Created by Fincash on 10-02-2017.
+ */
+import {Component, OnInit, OnDestroy, Inject, ViewChild, ElementRef} from "@angular/core";
+import {Router, Params, ActivatedRoute} from "@angular/router";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {HttpService} from "../../core/services/http-service.service";
+import {OTPService} from "../otp-service";
+
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+
+import {PANValidator, AadharValidator, EmailValidator} from "../../validators/validator";
+import {Observable} from "rxjs";
+import {LoginService} from "../../core/services/login.service";
+
+import {ValidationMessages} from '../constants/validation-message';
+import {Logger} from "../../core/logger/logger";
+
+@Component({
+    selector: 'aadhar-kyc',
+    templateUrl: './aadhar-kyc.component.html',
+    styleUrls: ['./aadhar-kyc.component.scss']
+})
+
+export class AadharKYCComponent implements OnInit,OnDestroy {
+
+    @ViewChild('finalform') finalform: ElementRef;
+    aadharResloading: boolean = false;
+    userData: any;
+    className: any;
+    constructor(private route: ActivatedRoute, public router: Router, private http: HttpService, private _fb: FormBuilder, public logger: Logger,
+                private userService: OTPService, @Inject(APP_CONFIG) private config: IAppConfig, private loginservice: LoginService) {
+        this.className = "AadharKYCComponent"
+        this.route.params.subscribe((params: Params) => {
+            this.userData = params;
+        });
+    }
+
+    validationMessages = ValidationMessages;
+
+    AadharKYCStatusForm: FormGroup;
+    userDetails: any;
+    aadharLength: number = AadharValidator.maxLength;
+    panLength: number = PANValidator.maxLength;
+    mobLength: number = 10;
+
+    eKYCUrl: string;
+    kycReturnBaseUrl: string;
+    eKYCAuthToken: string;
+
+    ekyc_data: string;
+    aadhaar: any;
+    ekycReturnUrl: string;
+    submitted: boolean;
+
+    formErrors = {
+        'aadhar': '',
+        'mob': '',
+        'email': '',
+        'pan': ''
+    };
+
+    ngOnInit() {
+        //this.userDetails = this.userService.getUserDetails();
+        this.userDetails = this.userData;
+
+        this.AadharKYCStatusForm = this._fb.group({
+            aadhar: [this.userDetails.aadhar || '', Validators.compose([Validators.required, AadharValidator.isValidAadhaarFormat])],
+            mob: [this.userDetails.mob || '', Validators.compose([Validators.required, Validators.pattern('^[0-9]{10}$')])],
+            email: [this.userDetails.email || '', Validators.compose([Validators.required, EmailValidator.isValidMailFormat])],
+            pan: [this.userDetails.pan || '', Validators.compose([Validators.required, Validators.minLength(10), PANValidator.isValidPANFormat])],
+
+        });
+
+        this.AadharKYCStatusForm.valueChanges.subscribe(data => this.onValueChanged(data));
+
+        this.eKYCUrl = this.config.eKYCUrl;
+        this.kycReturnBaseUrl = this.config.kycReturnBaseUrl;
+        this.eKYCAuthToken = this.config.eKYCAuthToken + this.config.eKYCAMCS[Math.floor(Math.random()*9)] + this.config.eKYCAuthTokenCode;
+        this.logger.debug(this.className, this.eKYCAuthToken)
+    }
+
+    onValueChanged(data?: any, nullSubmit: boolean = false) {
+        if (!nullSubmit) {
+            if (!this.AadharKYCStatusForm || this.AadharKYCStatusForm.pristine || !this.AadharKYCStatusForm.dirty) {
+                return;
+            }
+        }
+        const form = this.AadharKYCStatusForm;
+
+        for (const field in this.formErrors) {
+            this.formErrors[field] = '';
+            const control = form.get(field);
+
+            if ((control) && (control.touched || nullSubmit) && (!control.valid)) {
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrors[field] = messages[key] + ' ';
+                }
+            }
+        }
+    }
+
+    validateKYC(isValid) {
+        if (!isValid) {
+            this.onValueChanged("", true);
+        }
+        return isValid;
+    }
+
+    checkKYC() {
+        this.submitted = true;
+        this.aadharResloading = true;
+        let userData = this.AadharKYCStatusForm.value;
+        this.aadhaar = userData.aadhar;
+        this.ekycReturnUrl = this.kycReturnBaseUrl + '/';
+        this.ekyc_data = userData.pan.toUpperCase() + '|' + userData.email + '|' + userData.mob + '|' + this.eKYCAuthToken;
+        let userObject = this.loginservice.getUserObject();
+        this.ekycReturnUrl = this.ekycReturnUrl + userObject['id'] + '/registration/kyc/response';
+        Observable.timer(3000).subscribe(t => {
+            this.finalform.nativeElement.submit();
+        });
+
+    }
+
+    ngOnDestroy() {
+
+    }
+
+}
+

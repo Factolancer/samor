@@ -1,0 +1,32 @@
+import {TransactionDetails} from "./transaction-details";
+
+export class TransactionReport{
+    mobileNo:string;
+    emailId:string;
+    transactionTypeList: TransactionType[];
+    transactionReportList:FundTransactions[];
+}
+
+export class TransactionType{
+
+    typeKey:string;
+    typeValue:string;
+}
+export class FundTransactions {
+
+    folioNo:string;
+    fundName:string;
+    plan:string;
+    divFreq:string;
+    divOption:string;
+    modeOfHolding:string;
+    fundType:string;
+    fundId:number;
+    openingUnits:number;
+    openingValue:number;
+    transactionList:TransactionDetails[];
+    closingUnits:number;
+    closingValue:number;
+
+    constructor(){}
+}

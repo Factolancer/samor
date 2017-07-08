@@ -1,0 +1,29 @@
+import {ModuleWithProviders} from "@angular/core";
+import {RouterModule} from "@angular/router";
+import {ReportComponent} from "./report.component";
+import {AuthGuard} from "../gaurds/auth.guard";
+/**
+ * Created by fincash on 18-11-2016.
+ */
+
+const reportRoutes = [
+
+    {
+        path: 'report',
+        children: [
+            {
+                path: ':id',
+                component: ReportComponent,
+                canActivate: [AuthGuard]
+            },
+            {
+                path: '',
+                component: ReportComponent,
+                canActivate: [AuthGuard]
+            }
+        ]
+
+    }
+];
+
+export const portfolioReportRouting: ModuleWithProviders = RouterModule.forChild(reportRoutes);

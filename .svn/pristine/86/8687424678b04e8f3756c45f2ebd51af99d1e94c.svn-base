@@ -1,0 +1,58 @@
+@import "../../../styles/partials/web-partials";
+
+.floating-header{
+  position: fixed;
+  z-index: 999;/*make sure it's z-index is more than it's children and more than body*/
+  width:100%;
+  top:0;
+  max-height: 70px;
+  transition: 0.45s all;
+}
+
+.hide{
+  transform: translateY(-100%);
+}
+
+
+.mobile-header-container {
+  width: 100%;
+  height: auto;
+  position: fixed;
+  background-color: transparent;
+  top:0;
+  margin-top: 20px;
+}
+
+.mobile-header-sidenav-content {
+  display: flex;
+  height: auto;
+  align-items: left;
+  justify-content: flex-start;
+}
+.extendheight{ height: 100vh;
+}
+
+.mobile-header-sidenav {
+  max-width: 200px;
+  color:white;
+  background-color:rgba(78,124,152, 0.7);
+}
+
+.menu {
+  opacity:0;
+  &.expand{
+    max-height:100%;
+    opacity:1;
+    transition: all 0.35s ease-in-out;
+  }
+  &.collapse{
+    max-height:0;
+    opacity:0;
+    transition: all 0.25s ease-in;
+  }
+  margin-left:5px;
+  a{ color:white !important; padding-left: 30px;opacity: 0.8;}
+}
+.accountMenu{
+  a{color: white; font-weight: 200;}
+}

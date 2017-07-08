@@ -1,0 +1,4 @@
+export const environment = {
+  playAPIUrl: "http://localhost:9000",
+  localStoragePrefix : 'fcash'
+};

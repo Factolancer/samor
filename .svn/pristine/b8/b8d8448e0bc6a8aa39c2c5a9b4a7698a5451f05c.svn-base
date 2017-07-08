@@ -1,0 +1,15 @@
+<div class="wrapper" >
+    <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="center center">
+
+        <h1 class="center-align" ngClass.gt-sm="heading-32-dark-grey" ngClass.lt-md="heading-24-dark-grey">Fincash - Investing made simple</h1>
+        <div fxFlex="80" fxFlex.xs="100"  fxLayoutAlign="center" class="bg-lgray" >
+            <app-products-solution></app-products-solution>
+        </div>
+        <div fxFlex="100"  fxLayout="column" fxLayoutAlign="center center" class="mar-t-20">
+           <div class="dark-grey-text bold heading-16">Or</div> <br>
+            <a routerLink="/explore"><button md-raised-button color="primary"  class="pad-tb-5 pad-lr-30"> Explore Funds and Start Investing</button></a>
+        </div>
+
+    </div>
+</div>
+

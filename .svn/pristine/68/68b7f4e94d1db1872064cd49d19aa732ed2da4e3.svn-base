@@ -1,0 +1,56 @@
+<div class="wrapper"  >
+  <div class="sal-box" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="center center">
+    <div fxFlex="50">
+      <h1 class="center-align mainTxt" >"{{salutationTxt}}"</h1>
+    </div>
+    <div fxFlex="100" fxLayoutAlign="center center"><div fxFlex="20" class="h-line-white"></div></div>
+
+    <div fxLayoutWrap="wrap" fxLayoutAlign="center center">
+      <div fxFlex="100" class="h-line-white"></div>
+      <div fxFlex="60">
+        <p class="center-align secTxt">{{footerSalutationTxt}}</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div fxFlex class="about-us-container pad-lr-10 pad-tb-30 wrapper">
+  <div fxLayout="row">
+    <div fxFlex="40" class="pad-20" ><img src="../../assets/img/team/dummy.jpg"></div>
+    <div fxFlex="60" fxFlexOffset="20px">
+      <h2 class="title"><span class="bb-1">ABOUT US</span></h2>
+      <p class="text">{{aboutUsTxt}}</p><br/>
+      <p class="text" >{{ourGoal}}</p>
+    </div>
+  </div>
+</div>
+
+<div fxLayoutWrap="wrap" fxLayout="row" class="wrapper center-align pad-30 founder-container">
+  <h1 fxFlex="100" class="title"><span class="bb-1">Founders</span></h1>
+  <div fxFlex="50" class="pad-20" *ngFor="let founder of founders">
+    <img src={{founder.team.image}}>
+    <p>{{founder.team.name}}</p>
+    <p>{{founder.team.role}}</p>
+    <p class="text justify-content">{{founder.team.bio}}</p>
+  </div>
+</div>
+
+<div fxLayoutWrap="wrap" fxLayout="row" class="wrapper center-align pad-tb-20 pad-lr-70 team-container">
+  <h1 fxFlex="100" class="title"><span class="bb-1">Team</span></h1>
+  <div fxFlex="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around" class="mar-tb-20">
+    <div fxLayout="row" class="member mar-b-60"  fxFlex="21" *ngFor="let member of team, let i=index" [ngStyle]="{'background':'url('+member.image+')','background-size':'cover'}"
+          >
+      <!--[ngClass]="{'vis-hidden':'fa-->
+
+      <div fxFlexAlign="end" class="details pad-lr-10 pad-tb-5" fxFlex="100">
+        <p class="name left-align">{{member.name}}</p>
+        <p class="role left-align">{{member.role}}</p>
+        <p class="bio left-align">{{member.bio}}</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+

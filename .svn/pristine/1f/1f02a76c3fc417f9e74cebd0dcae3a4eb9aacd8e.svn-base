@@ -1,0 +1,43 @@
+<div class="banner-div" fxLayout="column" fxLayoutAlign="center center">
+    <p align="bottom" class="quote">"I made My First Investment <span class="colr-yellow">At the Age of Eleven. </span> I was wasting my life untill then."
+       <span class="author">-Warren Buffet</span></p>
+  a <hr>
+</div>
+
+
+<app-product-solution></app-product-solution>
+<app-investment-step></app-investment-step>
+
+
+<div class="calc-container" fxLayoutWrap="wrap" fxLayout="row" (scroll)="al($event)">
+
+     <div fxFlex="100" align="center" class="sub-heading pad-25">START AN INVESTMENT PLAN</div>
+
+    <div fxFlex="60" fxLayoutWrap="wrap" fxLayout="row">
+            <div class="mar-b-10" fxFlex="100" fxLayoutAlign="end center">
+                <td>My Age</td>
+                <td class="pad-10 grey-border mar-lr-20" fxFlex="250px">
+                    <md-slider class="age-slider clickable" thumbLabel [min]=minAge [max]=maxAge #age></md-slider>
+                    <span class="slider-val">{{age.value}} yrs.</span>
+                </td>
+            </div>
+            <div class="mar-b-10" fxFlex="100" fxLayoutAlign="end center">
+                <td>Monthly Expenditure</td>
+                <td class="pad-10 grey-border mar-lr-20" fxFlex="250px">
+                    <md-slider  class="expense-slider clickable" thumbLabel [min]=minSal [max]=maxSal #expense ></md-slider>
+                    <span class="slider-val">{{expense.value |  currency:'INR':true:'1.0-0'}}</span>
+                </td>
+            </div>
+    </div>
+
+    <div fxFlex="100"  align="center"class="mar-tb-10">
+        <button md-raised-button color="primary" (click)="calculate(age.value,expense.value)">Get Started</button>
+    </div>
+
+
+</div>
+
+<app-product-branding></app-product-branding>
+
+<app-product-feature></app-product-feature>
+

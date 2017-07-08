@@ -1,0 +1,176 @@
+import {Component, OnInit, ViewContainerRef, Inject} from "@angular/core";
+import {Location} from "@angular/common";
+import {Router} from "@angular/router";
+import {Headers} from "@angular/http";
+import {FormGroup, FormBuilder, Validators, AbstractControl} from "@angular/forms";
+import {MdDialogRef, MdDialog} from '@angular/material';
+import {HttpService} from "../core/services/http-service.service";
+import {EmailValidator} from "../validators/validator";
+import {APP_CONFIG, IAppConfig} from "../../environments/environment";
+import {LocalStorageService} from "angular-2-local-storage";
+import {isNullOrUndefined} from "util";
+import {ForgotPasswordService} from "./forgot-password.service";
+import {Logger} from "../core/logger/logger";
+import {DataStorageService} from "../core/services/data-storage.service";
+
+
+function passwordValidator(c: AbstractControl) {
+    return c.get('confirm_password').value === c.get('enter_password').value
+        ? null : {'mismatch': true};
+}
+
+@Component({
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+})
+export class LoginComponent implements OnInit {
+    result: any;
+    public newUser = false;
+    LoginForm: FormGroup;
+    signUpForm: FormGroup;
+    userData: any;
+    name: String;
+    email: String;
+    errormessage: String = "";
+    errormessage2: String = "";
+    className: string;
+
+    constructor(private viewContainerRef: ViewContainerRef,
+                public router: Router, public http: HttpService, public dialogref: MdDialogRef<LoginComponent>, public fb: FormBuilder,
+                public dialog: MdDialog, private _location: Location, @Inject(APP_CONFIG) private config: IAppConfig,
+                private  dataStorageService: DataStorageService, private logger: Logger) {
+        this.className = "LoginComponent";
+    }
+
+    onLogIn() {
+        this.userData = this.LoginForm.value;
+        this.logger.debug(this.className, this.userData);
+        let cartId = this.dataStorageService.get(this.config.cartToken);
+        if (isNullOrUndefined(cartId)) {
+            cartId = '';
+        }
+
+        this.http.post('/user/login', {
+            "username": this.userData.email,
+            "password": this.userData.password,
+            "cartId": cartId
+        }).subscribe(
+            response => {
+                this.logger.debug(this.className, "User logged in successfully");
+                this.logger.debug(this.className, response);
+                //localStorage.set(this.config.authToken, response.id_token);
+                this.dialogref.close();
+                this.router.navigate(['/dashboard'])
+            },
+            error => {
+                this.errormessage = "Username and Password don't match";
+                this.logger.debug(this.className, "Error Occured! :( " + error.error);
+            }
+        )
+    }
+
+    onSignUp() {
+        this.userData = this.signUpForm.value
+        let cartId = this.dataStorageService.get(this.config.cartToken);
+        if (isNullOrUndefined(cartId)) {
+            cartId = '';
+        }
+
+        this.http.post('/user/login/signup', {
+            "username": this.userData.email,
+            "email": this.userData.email,
+            "password": this.userData.password.confirm_password,
+            "cartId": cartId
+        })
+            .subscribe(
+                response => {
+                    this.logger.debug(this.className, "User created succesfully");
+                    this.logger.debug(this.className, response);
+                    //localStorage.set(this.config.authToken, response.id_token);
+                    this.dialogref.close();
+                    this.router.navigate(['/dashboard'])
+                },
+                error => {
+                    this.errormessage2 = "User already exists";
+                    this.logger.debug(this.className, "Error Occured! :( " + error.error);
+                }
+            )
+    }
+
+    forgotPassword() {
+        /* this.forgotPasswordService
+         .forgotPassword(this.viewContainerRef)
+         .subscribe(res => {
+         this.result = res;
+         },
+         error => {
+         this.logger.debug(this.className,error)
+         });*/
+    }
+
+    closeClicked() {
+        this.dialogref.close();
+    }
+
+    /*signup(event, username, password) {
+     event.preventDefault();
+     let body = JSON.stringify({ username, password });
+     this.http.post('10.1.0.101:3000/sessions/create', {'email':username,'password':password, 'username':username,  }/!*, { headers: contentHeaders }*!/)
+     .subscribe(
+     response => {
+     //debugger;
+     dataStorageService.setItem('id_token', response.json().id_token);
+     // this.router.navigate(['/home']);
+     this.dialogref.close(true);
+     },
+     error => {
+     alert(error.text());
+     this.logger.debug(this.className,error.text());
+     }
+     );
+     }*/
+
+    loginUser() {
+        this.newUser = false;
+    }
+
+    checkmail(value: string) {
+        this.logger.debug(this.className, value);
+        var authHeader = new Headers();
+        authHeader.append("Authorization", "Basic"); //+btoa("api:pubkey-b492fb4e9e8ad8f2ce0c2ae87e12272c"));
+        authHeader.append('Content-Type', 'application/x-www-form-urlencoded');
+        authHeader.append('Allow-Control-Allow-Origin', '*');
+        var url = 'https://api.mailgun.net/v2/address/validate?address=' + value;
+        url = url + '&api_key=pubkey-b492fb4e9e8ad8f2ce0c2ae87e12272c'
+        this.http.get(url)
+            .subscribe(response => {
+                    this.logger.debug(this.className, response.json().is_valid)
+                }
+            )
+
+        // this.http.post('http://localhost:9000/checkmail', {"email": value})
+        //     .subscribe(
+        //         response => {
+        //           this.logger.debug(this.className,response);
+        //
+        //         }
+        //     );
+    }
+
+    ngOnInit() {
+        this.LoginForm = this.fb.group({
+            email: ['', Validators.compose([Validators.required, EmailValidator.isValidMailFormat])],
+            password: ['', Validators.compose([Validators.required])]
+        });
+
+        this.signUpForm = this.fb.group({
+            email: ['', Validators.compose([Validators.required, EmailValidator.isValidMailFormat])],
+            /*mob: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern('^[0-9]{10}$')])],*/
+            password: this.fb.group({
+                enter_password: ['', Validators.compose([Validators.required])],
+                confirm_password: ['', Validators.compose([])]
+            }, {validator: Validators.compose([passwordValidator])})
+        })
+    }
+}

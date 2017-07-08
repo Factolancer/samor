@@ -1,0 +1,137 @@
+<section>
+    <!--<md-card _ngcontent-pxi-6>-->
+    <md-toolbar color="lightgray" class="sectiontitle">
+        <div style="width: 100%">
+            <i [ngClass]="{'material-icons': true, 'md-dark': !othersaved, 'md-inactive': !othersaved, 'blue600': othersaved}">check</i>
+            <a (click)="toggleOther()" role="button">Other Details</a>
+            <i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="othercollapsed">expand_more</i>
+            <i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="!othercollapsed">expand_less</i>
+        </div>
+        <md-toolbar-row *ngIf="othersaved">
+            <div class="info-div">
+                <div>
+                    <span class="info-label">Investor type</span>
+                    <span>{{otherForm.controls['investor_type'].value}} &nbsp;&nbsp;</span>
+                </div>
+                <div>
+                    <span class="info-label">Account Number</span>
+                    <span>{{otherForm.controls['investor_type'].value}}</span>
+                </div>
+            </div>
+        </md-toolbar-row>
+    </md-toolbar>
+    <!--<br/>-->
+    <!--<md-card-content>-->
+    <form [formGroup]="otherForm" (ngSubmit)="onOtherSubmit()" [hidden]="othercollapsed" novalidate class="kycform">
+        <md-grid-list cols="2" rowHeight="75px">
+            <md-grid-tile class="form-group" style="display: block">
+                <label class="field_label">Investor Type</label>
+                <md-radio-group required formControlName="investor_type" [(ngModel)]="user.Other.investor_type">
+                    <md-radio-button value="Resident Indian">Resident Indian</md-radio-button>
+                    <md-radio-button value="NRI">NRI</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+            <md-grid-tile></md-grid-tile>
+
+            <md-grid-tile>
+                <label class="field_label">Birth Country</label>
+                <select required formControlName="birth_country">
+                    <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                </select>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input type="text" required="" formControlName="birth_city"
+                          placeholder="Birth City"></md-input>
+            </md-grid-tile>
+        </md-grid-list>
+        <div formGroupName="overseas_address" *ngIf="user.Other.investor_type=='NRI'">
+            <md-grid-list cols="2" rowHeight="75px">
+                <md-grid-tile>
+                    <md-input type="text" required formControlName="address1" style="margin-left: -5%"
+                              placeholder="Address line 1"></md-input>
+                    <div *ngIf="!otherForm.controls['overseas_address'].get('address1').valid && (otherForm.controls['overseas_address'].get('address1').touched)"
+                         class="errorMessage">
+                        <span>Please enter your communication address</span>
+                    </div>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input type="text" formControlName="address2" style="margin-left: -5%"
+                              placeholder="Address line 2"></md-input>
+                    <div *ngIf="!otherForm.controls['overseas_address'].get('address2').valid && (otherForm.controls['overseas_address'].get('address1').touched)"
+                         class="errorMessage">
+                        <span>Please enter your communication address</span>
+                    </div>
+                </md-grid-tile>
+
+                <md-grid-tile>
+                    <md-input required formControlName="pin" placeholder="Pin Code" (blur)="GetPinDetails()"></md-input>
+                    <div *ngIf="!otherForm.controls['overseas_address'].get('pin').valid && (otherForm.controls['overseas_address'].get('pin').touched)"
+                         class="errorMessage">
+                        <span>Please enter valid 6 digit Pin Code</span>
+                    </div>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input type="text" required formControlName="district" placeholder="District"></md-input>
+                    <div *ngIf="!otherForm.controls['overseas_address'].get('district').valid && (otherForm.controls['overseas_address'].get('district').touched)"
+                         class="errorMessage">
+                        <span>Required</span>
+                    </div>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input type="text" required formControlName="state" placeholder="State"></md-input>
+                    <div *ngIf="!otherForm.controls['overseas_address'].get('state').valid && (otherForm.controls['overseas_address'].get('state').touched)"
+                         class="errorMessage">
+                        <span>Required</span>
+                    </div>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <label class="field_label">Country</label>
+                    <select formControlName="country">
+                        <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                    </select>
+                </md-grid-tile>
+            </md-grid-list>
+        </div>
+        <md-grid-list cols="2" rowHeight="75px">
+            <md-grid-tile class="form-group" style="display: block" [colspan]="2">
+                <label class="field_label">Tax resident of another country</label>
+                <md-radio-group required formControlName="tax_country_india" [(ngModel)]="indiantaxpayer">
+                    <md-radio-button value="Yes">Tax resident of India</md-radio-button>
+                    <md-radio-button value="No">Tax resident of another Country</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+            <md-grid-tile class="form-group" style="display: block" [colspan]="2">
+                <label class="field_label">Tax Country</label>
+                <select formControlName="tax_country">
+                    <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                </select>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="1" rowHeight="100px" *ngIf="indiantaxpayer=='No'">
+
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group" style="display: block">
+                <label class="field_label">Politically exposed</label>
+                <md-radio-group required formControlName="politically_exposed">
+                    <md-radio-button value="Yes">Yes</md-radio-button>
+                    <md-radio-button value="No">No</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+            <md-grid-tile class="form-group" style="display: block">
+                <label class="field_label">Politically related</label>
+                <md-radio-group required formControlName="politically_related">
+                    <md-radio-button value="yes">Yes</md-radio-button>
+                    <md-radio-button value="No">No</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="1" rowHeight="50px" class="button-list-margins">
+            <md-grid-tile>
+                <button md-raised-button color="primary" [disabled]="!otherForm.valid">Save</button>
+            </md-grid-tile>
+        </md-grid-list>
+    </form>
+    <!--</md-card-content>-->
+    <!--</md-card>-->
+</section>

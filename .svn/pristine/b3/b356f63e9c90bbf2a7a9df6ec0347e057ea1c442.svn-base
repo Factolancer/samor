@@ -1,0 +1,3 @@
+<h4>Fund Rating</h4><button (click)="clearFilter()">Clear</button>
+<span *ngFor="let starItem of starList;"><input type="checkbox" name="rating" value="{{starItem}}"
+                                                (click)="filter($event.target.value)">{{starItem}} star<br></span>

@@ -1,0 +1,7 @@
+<h1 md-dialog-title>{{config.confirmationTitle}}</h1>
+<div md-dialog-content>{{config.confirmationText}}</div>
+<div md-dialog-actions>
+    <span *ngFor="let action of config.confirmationActions;">
+        <button md-button (click)="dialogRef.close(action)">{{action[1]}}</button>
+    </span>
+</div>

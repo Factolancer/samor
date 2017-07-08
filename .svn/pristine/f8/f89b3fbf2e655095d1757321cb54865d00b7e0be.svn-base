@@ -1,0 +1,79 @@
+import {Component, OnInit, ViewEncapsulation, OnDestroy, HostListener, Inject} from '@angular/core';
+import {Logger} from "../shared/logger/logger";
+import {Router} from "@angular/router";
+import {IAppConfig, APP_CONFIG} from "../../environments/environment";
+
+
+
+@Component({
+  selector: 'app-landingpage',
+  templateUrl: 'landingpage.component.html',
+  styleUrls: ['./landingpage.component.scss'],
+  encapsulation: ViewEncapsulation.None
+})
+export class LandingpageComponent implements OnInit, OnDestroy {
+
+  constructor(private logger:Logger, private router:Router,  @Inject(APP_CONFIG) private config: IAppConfig ) { }
+  minAge:number = 18;
+  maxAge:number = 80;
+  minExpns:number = 1000;
+  maxExpns:number = 1000000;
+
+  ngOnInit() {
+  }
+  lastPos:number;
+  lastPause:number;
+
+  onScroll () {
+    console.log('scrolled!!')
+  }
+
+  /*@HostListener("window:scroll", ['$event', '$window'])
+  onWindowScroll(evnt) {
+
+    this.lastPause = evnt.timeStamp;
+    this.logger.debug("Scroll Event", document.body.scrollTop);
+
+    if(document.body.scrollTop > this.lastPos)
+      this.logger.info('Down');
+    else
+      this.logger.info('Up');
+
+    this.lastPos = document.body.scrollTop;
+
+    console.debug("ScrollHeight:", document.body.scrollHeight);
+  }
+*/
+
+  carouselContent = [
+    {
+       "quote": ["I made my first investment", " at the age of eleven.", "I was wasting my life untill then.", 'author'],
+       "quoteAuthor":"Warren Buffet",
+       "url": this.config.staticImagePath+"/assets/img/landingpage/banner_img4.jpg" },
+    {
+      "quote": ["I want a sea-facing bungalow", " at the age of 28.", "It would be an embarassment If i don't.", 'author'],
+      "quoteAuthor":"Brat Gazni",
+      "url": this.config.staticImagePath+"/assets/img/landingpage/bali-bratan-temple.jpg" },
+    {
+      "quote": ["I made my first investment", " at the age of eleven.", "I was wasting my life untill then.", 'author'],
+      "quoteAuthor":"Warren Buffet",
+      "url": this.config.staticImagePath+"/assets/img/landingpage/bali-bratan-temple2.jpg" },
+    {
+      "quote": ["I made my first investment", " at the age of eleven.", "I was wasting my life untill then.", 'author'],
+      "quoteAuthor":"Warren Buffet",
+      "url": this.config.staticImagePath+"/assets/img/landingpage/banner_img4.jpg" },
+    {
+      "quote": ["I made my first investment", " at the age of eleven.", "I was wasting my life untill then.", 'author'],
+      "quoteAuthor":"Warren Buffet",
+      "url": this.config.staticImagePath+"/assets/img/landingpage/bali-bratan-temple.jpg" }
+  ];
+
+  calculate(age, expense){
+    this.logger.info('age', age, 'expense', expense);
+    this.router.navigate(['/sip/calculator']);
+  }
+
+  ngOnDestroy(){
+
+  }
+}

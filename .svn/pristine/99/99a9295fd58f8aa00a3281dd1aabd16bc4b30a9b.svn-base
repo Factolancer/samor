@@ -1,0 +1,14 @@
+import {AddressStatusGuard} from "./addressStatus.guard";
+import {AuthGuard} from "./auth.guard";
+import {BankStatusGuard} from "./bankStatus.guard";
+import {FatcaStatusGuard} from "./fatcaStatus.guard";
+import {KycGuard} from "./kyc.guard";
+import {URLAccessGuard} from "./urlAccess.guard";
+
+
+export const FC_GUARDS = [AddressStatusGuard,
+    AuthGuard,
+    BankStatusGuard,
+    FatcaStatusGuard,
+    KycGuard,
+    URLAccessGuard];

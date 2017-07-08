@@ -1,0 +1,6 @@
+
+
+export const Tooltips = {
+    uploadSectionCheque: "In case personalized cheque is not available, upload Latest Bank Statement or Passbook having A/C No. & IFSC",
+    uploadSectionAddress: "Please select & upload one of the address proofs from the list"
+};

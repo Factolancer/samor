@@ -1,0 +1,35 @@
+// import { bootstrap } from '@angular/platform-browser-dynamic';
+// import { enableProdMode } from '@angular/core';
+// import { provideRouter } from '@angular/router';
+// import { FORM_PROVIDERS } from '@angular/common';
+// import { HTTP_PROVIDERS } from '@angular/http';
+// import { AUTH_PROVIDERS, AuthHttp} from 'angular2-jwt';
+// import { AuthGuard } from './app/shared/auth.guard';
+// import { prebootComplete } from 'angular2-universal';
+//
+// import { routes } from './app/app.routes';
+// import { AppComponent, environment } from './app/';
+//
+// if (environment.production) {
+//   enableProdMode();
+// }
+//
+// bootstrap(
+//     AppComponent,
+//     [
+//       provideRouter(routes),
+//       FORM_PROVIDERS,
+//       HTTP_PROVIDERS,
+//       AUTH_PROVIDERS,
+//       AuthGuard
+//     ]
+// );
+
+import './polyfills.ts';
+import { enableProdMode } from '@angular/core';
+import { environment } from './environments/environment';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { AppModule } from './app/';
+
+platformBrowserDynamic().bootstrapModule(AppModule);

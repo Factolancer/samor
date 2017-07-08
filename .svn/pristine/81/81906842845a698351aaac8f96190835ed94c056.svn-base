@@ -1,0 +1,70 @@
+import {Component, OnInit, trigger, state, style, transition, animate} from '@angular/core';
+import {CashFunds} from "./cashfunds-list";
+import {Fund} from "../../models/fund";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Observable} from "rxjs";
+import {CartService} from "../../services/cart.service";
+import {InvestmentModeEnum} from "../../enum/investment-mode-enum";
+import {WrapperCartService} from "../../services/wrapper.service";
+
+@Component({
+    selector: 'app-cashfunds',
+    templateUrl: './cashfunds.component.html',
+    styleUrls: ['../cash.styles.scss'],
+    providers: [CartService],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({transform: 'translateY(0)'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ]),
+            transition('void => show', [
+                style({transform: 'translateY(100%)'}),
+                animate(1000)
+            ])
+        ])
+    ]
+})
+export class CashfundsComponent implements OnInit {
+    fund: CashFunds
+    fundlist: CashFunds[];
+
+    iconOne: string = 'hide';
+    iconTwo: string = 'hide';
+    iconThree: string = 'hide';
+    iconFour: string = 'hide';
+
+    savingsPlusFunds: Fund[]
+    cartService: CartService;
+
+    constructor(public route: ActivatedRoute, private wrapper: WrapperCartService, public router: Router) {
+         this.cartService = this.wrapper.getCartService();
+
+        // Observable.interval(2000)
+        //     .subscribe(x => {
+        //       //console.log(x);
+        //       // this.headingvisible = !this.headingvisible;
+        //       this.heading = (this.heading == 'visible') ? 'invisible' : 'visible';
+        //       if (x % 2 == 0){
+        //         this.index = (x / 2) % 3
+        //       }
+        //     })
+    }
+
+    ngOnInit() {
+        this.iconOne = 'show';
+
+        this.route.data.forEach((data: {funds: Fund[]}) => {
+            this.savingsPlusFunds = data.funds;
+        });
+
+        this.fundlist = []
+    }
+
+    addToCart() {
+        this.savingsPlusFunds.forEach(fund => fund.investmentMode = InvestmentModeEnum[InvestmentModeEnum.LUMPSUM]);
+        this.cartService.addFundsToCart(this.savingsPlusFunds);
+    }
+
+}

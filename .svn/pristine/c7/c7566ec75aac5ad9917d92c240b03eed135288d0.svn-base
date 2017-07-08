@@ -1,0 +1,7 @@
+@import "../../public/styles/partials/web-partials";
+
+
+.fund-name {
+  font-weight: 700;
+  color: $brand-secondary;
+}

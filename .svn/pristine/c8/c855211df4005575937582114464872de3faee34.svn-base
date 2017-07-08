@@ -1,0 +1,70 @@
+import {
+    Component,
+    ViewContainerRef,
+    OnInit,
+    OnDestroy,
+    Inject,
+    OnChanges,
+    DoCheck,
+    AfterContentInit,
+    AfterContentChecked,
+    AfterViewInit,
+    AfterViewChecked
+} from "@angular/core";
+import {JwtHelper} from "angular2-jwt";
+import {MdDialog} from "@angular/material";
+import {LoginService} from "./login/login.service";
+import {Router, NavigationEnd} from "@angular/router";
+import {IAppConfig, APP_CONFIG} from "../environments/environment";
+import {Logger} from "./shared/logger/logger";
+import {Subscription} from "rxjs";
+
+@Component({
+    selector: 'fincash-app',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    providers: [JwtHelper]
+})
+export class AppComponent implements OnInit, OnDestroy, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked {
+
+    // logInDialogRef: MdDialogRef<LoginComponent>;
+    routerChangeSubscription: Subscription;
+    className :  string;
+
+    public constructor(public logger: Logger, private viewContainerRef: ViewContainerRef, public dialog: MdDialog, private loginService: LoginService, private router: Router, @Inject(APP_CONFIG) private config: IAppConfig) {
+            // initialize userObject from token;
+        this.className = 'AppComponent';
+    }
+
+    ngOnChanges() {
+    }
+
+    ngOnInit() {
+        this.routerChangeSubscription = this.router.events.subscribe((evt) => {
+            if (!(evt instanceof NavigationEnd)) {
+                return;
+            }
+            document.body.scrollTop = 0;
+        });
+
+    }
+
+    ngDoCheck(){
+    }
+
+    ngAfterContentInit(){
+    }
+
+    ngAfterContentChecked(){
+    }
+
+    ngAfterViewInit(){
+    }
+
+    ngAfterViewChecked(){
+    }
+
+    ngOnDestroy() {
+        this.routerChangeSubscription.unsubscribe();
+    }
+}

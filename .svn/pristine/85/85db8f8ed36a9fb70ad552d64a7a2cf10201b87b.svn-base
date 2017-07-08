@@ -1,0 +1,18 @@
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+
+import {Holdings} from "./holdings";
+import {HttpService} from "../../core/services/http-service.service";
+
+@Injectable()
+export class HoldingReportService {
+    funds: Holdings[];
+
+    constructor( private http:HttpService) {
+    }
+
+    getHoldings(): Observable<Holdings[]> {
+        return this.http.secureGet('/report/getHoldingReport')
+            .map(res => res as Holdings[]);
+    }
+}

@@ -1,0 +1,402 @@
+<div id="sinceInceptionColumnChart" [chartData]="sinceInceptionColumnGraphData"
+     [chartOptions]="sinceInceptionColumnChartOptions"
+     chartType="ColumnChart" GoogleChart ></div>
+<md-tab-group [selectedIndex]="0">
+    <md-tab label="Basic Details">
+        <div class="col-md-12">
+            <p>Basic Description : {{advancedFactsheet.basicFactsheet.description}}</p>
+        </div>
+        <div class="col-md-4">
+            <table>
+                <thead>
+                <tr>
+                    <td>Basic Details ({{advancedFactsheet.basicFactsheet.fundId}})</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Current NAV (Rs.)</td>
+                    <td>{{advancedFactsheet.basicFactsheet.nav}}</td>
+                </tr>
+                <tr>
+                    <td>Inception Date</td>
+                    <td>{{advancedFactsheet.basicFactsheet.inceptionDate}}</td>
+                </tr>
+                <tr>
+                    <td>Category</td>
+                    <td>{{advancedFactsheet.basicFactsheet.category}}</td>
+                </tr>
+                <tr>
+                    <td>Sub Category</td>
+                    <td>{{advancedFactsheet.basicFactsheet.subCategory}}</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>{{advancedFactsheet.basicFactsheet.schemeType}}</td>
+                </tr>
+                <tr>
+                    <td>Net Assets (Cr.)</td>
+                    <td>{{advancedFactsheet.basicFactsheet.netAssets}}</td>
+                </tr>
+                <tr>
+                    <td>Expense Ratio</td>
+                    <td>{{advancedFactsheet.basicFactsheet.expenseRatio}}</td>
+                </tr>
+                <tr>
+                    <td>Fincash’s Risk Rating</td>
+                    <td><span [outerHTML]="advancedFactsheet.basicFactsheet.fincashRating | rating"></span></td>
+                </tr>
+                <tr *ngIf="advancedFactsheet.basicFactsheet.category === 'Debt'">
+                    <td>Yield</td>
+                    <td>{{advancedFactsheet.basicFactsheet.yield}}</td>
+                </tr>
+                <tr *ngIf="advancedFactsheet.basicFactsheet.category === 'Debt'">
+                    <td>Maturity</td>
+                    <td>{{advancedFactsheet.basicFactsheet.maturity}}</td>
+                </tr>
+                <tr *ngIf="advancedFactsheet.basicFactsheet.category === 'Debt'">
+                    <td>Duration</td>
+                    <td>{{advancedFactsheet.basicFactsheet.duration}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table>
+                <thead>
+                <tr>
+                    <td>Other Important Details</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Exit Load</td>
+                    <td>{{advancedFactsheet.basicFactsheet.exitLoad}}</td>
+                </tr>
+                <tr>
+                    <td>Benchmark Name</td>
+                    <td>{{advancedFactsheet.basicFactsheet.benchmarkName}}</td>
+                </tr>
+                <tr>
+                    <td>Min Investment Amount</td>
+                    <td>{{advancedFactsheet.basicFactsheet.minInvAmt}}</td>
+                </tr>
+                <tr>
+                    <td>Min SIP Investment</td>
+                    <td>{{advancedFactsheet.basicFactsheet.minSIPAmt}}</td>
+                </tr>
+                <tr>
+                    <td>Alpha</td>
+                    <td>{{advancedFactsheet.basicFactsheet.alpha}}</td>
+                </tr>
+                <tr>
+                    <td>Sharpe Ratio</td>
+                    <td>{{advancedFactsheet.basicFactsheet.sharpeRatio}}</td>
+                </tr>
+                <tr>
+                    <td>Information Ratio</td>
+                    <td>{{advancedFactsheet.basicFactsheet.infoRatio}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table border="1" class="text-center">
+                <thead>
+                <tr>
+                    <td>Return</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret1mn">1 Month</td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret3mn">3 Month</td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret6mn">6 Month</td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret1yr">1 Year</td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret3yr">3 Year</td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret5yr">5 Year</td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.retSinceInception">Since Inception</td>
+                </tr>
+                <tr>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret1mn">
+                        {{advancedFactsheet.basicFactsheet.ret1mn}}
+                    </td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret3mn">
+                        {{advancedFactsheet.basicFactsheet.ret3mn}}
+                    </td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret6mn">
+                        {{advancedFactsheet.basicFactsheet.ret6mn}}
+                    </td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret1yr">
+                        {{advancedFactsheet.basicFactsheet.ret1yr}}
+                    </td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret3yr">
+                        {{advancedFactsheet.basicFactsheet.ret3yr}}
+                    </td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.ret5yr">
+                        {{advancedFactsheet.basicFactsheet.ret5yr}}
+                    </td>
+                    <td *ngIf="advancedFactsheet.basicFactsheet.retSinceInception">
+                        {{advancedFactsheet.basicFactsheet.retSinceInception}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <img src="public/images/fund/riskometer_2.jpg" width="200"/>
+            <p>Investors understand that their principal will be at
+                {{advancedFactsheet.basicFactsheet.riskometer}} risk</p>
+        </div>
+    </md-tab>
+    <md-tab label="Return &amp; Comparison">
+        <div class="col-md-6">
+            <h4>Performance Comparison with benchmark</h4>
+            <table border="1" class="text-center">
+                <tr>
+                    <td class="pad-10"></td>
+                    <td class="pad-10" *ngFor="let dataPoint of advancedFactsheet.sinceInceptionCmp.dataPoints">
+                        {{dataPoint}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pad-10">Fund</td>
+                    <td class="pad-10" *ngFor="let fundPerf of advancedFactsheet.sinceInceptionCmp.fundPerformance">
+                        {{fundPerf}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pad-10">Benchmark</td>
+                    <td class="pad-10"
+                        *ngFor="let benchmarkPerf of advancedFactsheet.sinceInceptionCmp.benchmarkPerformance">
+                        {{benchmarkPerf}}
+                    </td>
+                </tr>
+            </table>
+           <!-- <div id="sinceInceptionColumnChart" [chartData]="sinceInceptionColumnGraphData"
+                 [chartOptions]="sinceInceptionColumnChartOptions"
+                 chartType="ColumnChart" GoogleChart ></div>-->
+        </div>
+        <div class="col-md-6">
+            <h4>Annual Returns</h4>
+            <table border="1" class="text-center">
+                <tr>
+                    <td class="pad-10"></td>
+                    <td class="pad-10" *ngFor="let dataPoint of advancedFactsheet.annualReturns.dataPoints">
+                        {{dataPoint}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pad-10">Fund</td>
+                    <td class="pad-10" *ngFor="let fundPerf of advancedFactsheet.annualReturns.fundPerformance">
+                        {{fundPerf}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pad-10">Benchmark</td>
+                    <td class="pad-10"
+                        *ngFor="let benchmarkPerf of advancedFactsheet.annualReturns.benchmarkPerformance">
+                        {{benchmarkPerf}}
+                    </td>
+                </tr>
+            </table>
+            <!--<div id="annualReturnsColumnChart" [chartData]="annualReturnsColumnGraphData"
+                 [chartOptions]="annualReturnsColumnChartOptions"
+                 chartType="ColumnChart"
+                 GoogleChart></div>-->
+        </div>
+        <div class="col-md-12">
+            <h4>Quarterly Returns</h4>
+            <table border="1" class="text-center">
+                <tr>
+                    <td class="pad-10">Year</td>
+                    <td class="pad-10" colspan="2">Q1</td>
+                    <td class="pad-10" colspan="2">Q2</td>
+                    <td class="pad-10" colspan="2">Q3</td>
+                    <td class="pad-10" colspan="2">Q4</td>
+                </tr>
+                <tr>
+                    <td class="pad-10"></td>
+                    <td class="pad-10">Fund</td>
+                    <td class="pad-10">Benchmark</td>
+                    <td class="pad-10">Fund</td>
+                    <td class="pad-10">Benchmark</td>
+                    <td class="pad-10">Fund</td>
+                    <td class="pad-10">Benchmark</td>
+                    <td class="pad-10">Fund</td>
+                    <td class="pad-10">Benchmark</td>
+                </tr>
+                <tr *ngFor="let year of advancedFactsheet.quarterlyReturns.dataPoints; let index=index;">
+                    <td class="pad-10">{{year}}</td>
+                    <td class="pad-10"
+                        [startVal]="advancedFactsheet.quarterlyReturns.fundPerformance[4*index]"
+                        [endVal]="advancedFactsheet.quarterlyReturns.benchmarkPerformance[4*index]"
+                        [pivot]="heatMapPivot"
+                        HeatMap>
+                        {{advancedFactsheet.quarterlyReturns.fundPerformance[4*index]}}
+                    </td>
+                    <td class="pad-10">
+                        {{advancedFactsheet.quarterlyReturns.benchmarkPerformance[4*index]}}
+                    </td>
+                    <td class="pad-10" [startVal]="advancedFactsheet.quarterlyReturns.fundPerformance[4*index +1]"
+                        [endVal]="advancedFactsheet.quarterlyReturns.benchmarkPerformance[4*index+1]"
+                        [pivot]="heatMapPivot"
+                        HeatMap>
+                        {{advancedFactsheet.quarterlyReturns.fundPerformance[4*index + 1]}}
+                    </td>
+                    <td class="pad-10">
+                        {{advancedFactsheet.quarterlyReturns.benchmarkPerformance[4*index +1]}}
+                    </td>
+                    <td class="pad-10" [startVal]="advancedFactsheet.quarterlyReturns.fundPerformance[4*index+2]"
+                        [endVal]="advancedFactsheet.quarterlyReturns.benchmarkPerformance[4*index+2]"
+                        [pivot]="heatMapPivot"
+                        HeatMap>
+                        {{advancedFactsheet.quarterlyReturns.fundPerformance[4*index +2]}}
+                    </td>
+                    <td class="pad-10">
+                        {{advancedFactsheet.quarterlyReturns.benchmarkPerformance[4*index +2]}}
+                    </td>
+                    <td class="pad-10" [startVal]="advancedFactsheet.quarterlyReturns.fundPerformance[4*index+3]"
+                        [endVal]="advancedFactsheet.quarterlyReturns.benchmarkPerformance[4*index+3]"
+                        [pivot]="heatMapPivot"
+                        HeatMap>
+                        {{advancedFactsheet.quarterlyReturns.fundPerformance[4*index +3]}}
+                    </td>
+                    <td class="pad-10">
+                        {{advancedFactsheet.quarterlyReturns.benchmarkPerformance[4*index +3]}}
+                    </td>
+                </tr>
+            </table>
+            <h5>Color Coding:</h5>
+            <p>Value = Fund-Benchmark (in %)</p>
+            <table>
+                <tr height="5">
+                    <td style="background-color: #00C43B" width="100">&gt; {{heatMapPivot}}</td>
+                    <td style="background-color: #57E86B" width="100">{{heatMapPivot}} to 0</td>
+                    <td style="background-color: #FFE829" width="100">0 to -{{heatMapPivot}}</td>
+                    <td style="background-color: #FF854E" width="100">&lt; -{{heatMapPivot}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-12">
+            <h4>Peer Comparision</h4>
+            <table>
+                <tr>
+                    <td class="pad-10">Scheme Name</td>
+                    <td class="pad-10">Net Asset</td>
+                    <td class="pad-10">Fincash Rating</td>
+                    <td class="pad-10">Current NAV</td>
+                    <td class="pad-10">1 Year Return</td>
+                    <td class="pad-10">3 Year Return</td>
+                    <td class="pad-10">5 Year Return</td>
+                </tr>
+                <tr *ngFor="let peer of advancedFactsheet.peerComparison">
+                    <td class="pad-10">{{peer.name}}</td>
+                    <td class="pad-10">{{peer.aum | currency:'INR':true:'1.0-0' }}</td>
+                    <td class="pad-10"><span [outerHTML]="peer.rating | rating"></span></td>
+                    <td class="pad-10">{{peer.nav | currency:'INR':true:'1.0-0' }}</td>
+                    <td class="pad-10">{{peer.return1yr}}</td>
+                    <td class="pad-10">{{peer.return3yr}}</td>
+                    <td class="pad-10">{{peer.return5yr}}</td>
+                </tr>
+            </table>
+        </div>
+    </md-tab>
+    <md-tab label="Top Holders &amp; Sectors">
+        <div class="col-md-6">
+            <h4>Top 5 Holdings</h4>
+            <table>
+                <tr>
+                    <td class="pad-10">Name Of Holdings</td>
+                    <td class="pad-10">Share of Assets</td>
+                </tr>
+                <tr *ngFor="let holding of advancedFactsheet.topHoldings.dataMap | keys">
+                    <td class="pad-10">{{holding.key}}</td>
+                    <td class="pad-10">{{holding.value}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h4>Top 5 Sectors</h4>
+            <table>
+                <tr>
+                    <td class="pad-10">Name Of Sector</td>
+                    <td class="pad-10">Share of Assets</td>
+                </tr>
+                <tr *ngFor="let sector of advancedFactsheet.topSectors.dataMap | keys">
+                    <td class="pad-10">{{sector.key}}</td>
+                    <td class="pad-10">{{sector.value}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div id="assetAllocationDonutChart" [chartData]="assetAllocationDonutData"
+                 [chartOptions]="assetAllocationDonutChartOptions" chartType="PieChart" GoogleChart></div>
+        </div>
+    </md-tab>
+    <md-tab label="SIP Performance">
+        <div class="col-md-6">
+            <h4>SIP Performance</h4>
+            <table>
+                <tr>
+                    <td class="pad-10"></td>
+                    <td class="pad-10">1 year return</td>
+                    <td class="pad-10">3 year return</td>
+                    <td class="pad-10">5 year return</td>
+                </tr>
+                <tr>
+                    <td class="pad-10">Benchmark</td>
+                    <td class="pad-10" *ngFor="let val of advancedFactsheet.sipPerformance.benchmarkPerformance">
+                        {{val}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pad-10">Fund</td>
+                    <td class="pad-10" *ngFor="let val of advancedFactsheet.sipPerformance.fundPerformance">{{val}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h4>{{sipAmount | currency:'INR':true:'1.0-0' }} a month invested through SIP</h4>
+            <table>
+                <tr>
+                    <td class="pad-10"></td>
+                    <td class="pad-10">1 year return</td>
+                    <td class="pad-10">3 year return</td>
+                    <td class="pad-10">5 year return</td>
+                </tr>
+                <tr>
+                    <td class="pad-10">Amount Invested</td>
+                    <td class="pad-10" *ngFor="let val of sipPerformanceAmountInvested">{{val
+                        |currency:'INR':true:'1.0-0'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pad-10">Benchmark</td>
+                    <td class="pad-10" *ngFor="let val of sipPerformanceBenchmark">{{val
+                        |currency:'INR':true:'1.0-0'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pad-10">Fund</td>
+                    <td class="pad-10" *ngFor="let val of sipPerformanceFund">{{val
+                        |currency:'INR':true:'1.0-0'}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-12">
+            <div id="sipPerformanceColumnChartDataYearly" [chartData]="sipPerformanceColumnChartDataYearly"
+                 [chartOptions]="sipPerformanceYearlyColumnChartOptions" chartType="ColumnChart" GoogleChart>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div id="sipPerformanceLineChartDataMonthly" [chartData]="sipPerformanceLineChartDataMonthly"
+                 [chartOptions]="sipPerformanceMonthlyLineChartOptions" chartType="LineChart" GoogleChart>
+            </div>
+        </div>
+    </md-tab>
+    <md-tab label="Growth Charts">
+        Growth charts
+    </md-tab>
+</md-tab-group>
+

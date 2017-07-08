@@ -1,0 +1,5 @@
+//@import "src/public/styles/_test";
+
+body, h1{
+  color: red;
+}

@@ -1,0 +1,17 @@
+<figure (click)="back()" *ngIf = "isDrilled" (click)="back()" class="backButton">
+ <img src="../../../assets/img/dashboard/back.svg">
+ <figcaption>Back</figcaption>
+</figure>
+
+<div [hidden]="investmentDataAvailable" class="loading">
+    <img src="../../../assets/img/loading.gif" align="center">
+</div>
+
+<span *ngIf="noData" >No data to display</span>
+
+
+<chart [options]="options" class="clickable" *ngIf="investmentDataAvailable" >
+ <series>
+  <point (select)="onPointSelect($event)"></point>
+ </series>
+</chart>

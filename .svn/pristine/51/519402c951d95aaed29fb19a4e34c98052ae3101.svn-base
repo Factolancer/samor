@@ -1,0 +1,85 @@
+import {Component, OnInit, AfterViewInit, Input, ViewChild, ViewChildren, Output} from '@angular/core';
+import {Subscription, Observable} from "rxjs";
+
+import {User} from '../models/user';
+import {HttpService} from "../services/http-service.service";
+import {BankSearchService} from './sections/bank-section/search.service';
+import {UserService} from "./user.service";
+import {Http, Headers, Jsonp} from "@angular/http";
+import {KYCService} from "./kyc.service";
+import {Router, ActivatedRoute} from "@angular/router";
+
+@Component({
+    selector: 'app-registration',
+    templateUrl: './registration.component.html',
+    styleUrls: ['./registration.styles.scss'],
+    providers: [BankSearchService, UserService, KYCService]
+})
+export class RegistrationComponent implements OnInit {
+
+    // resultsubscription: Subscription
+    @Output() user: User;
+    usersubscription: Subscription;
+
+    constructor(public http: HttpService, public userService: UserService, private kycService: KYCService, public router: Router,
+                public route: ActivatedRoute) {
+
+        // this.resultsubscription = this.searchService.searchResults.subscribe(
+        //     result => {
+        //         this.bankList = result.banks;
+        //     }
+        // );
+
+    }
+
+    ngOnInit() {
+
+        this.route.data.forEach((data: {user: User}) => {
+            this.user = data.user;
+        });
+        this.userService.currentUser.subscribe(
+            result => {
+                this.user = result
+                console.log("IN REGISTRATION CONSTRUCTOR. THIS.USER = ")
+                console.log(this.user);
+            }
+        )
+    }
+
+    indexBanks() {
+        this.http.get("/indexBanks").subscribe(output => {
+            console.log("details indexed");
+        });
+    }
+
+    showKyc: Observable<any>;
+    uatUrl = "https://eiscuat1.camsonline.com/ekycuat3/eKYCVal_Aadhar.aspx";
+    returnUrl = "http://localhost/";
+    pan = "ALDPN3048F";
+    aadhar = "321463430696";// "386739705452";
+    appID = "fincash";
+    userId = "UECH_SHEP";
+    password = "HzK6$g3";
+    intermediaryId = "B";
+    kyc_data = this.pan + "|pareshnagore@gmail.com|7032909303|fincash|" + this.userId + "|" + this.password + "|B|MFKYC" //9952302214
+
+    public headers = new Headers();
+
+    postData = {
+        Aadhar: this.aadhar,
+        url: this.returnUrl
+        //kyc_data: this.pan + "||9952302214|fincash|" + this.userId + "|" + this.password + "|B"
+    }
+
+    queryString = "&Aadhar=" + this.aadhar + "&url=" + this.returnUrl + "&kyc_data=" + this.kyc_data;
+
+    test(){
+        this.router.navigateByUrl("http://www.google.com")
+    }
+    CheckKYC(){
+        this.http.post('/getKycBasic', this.postData)
+            .subscribe(result => {
+                console.log(result);
+            })
+    }
+}

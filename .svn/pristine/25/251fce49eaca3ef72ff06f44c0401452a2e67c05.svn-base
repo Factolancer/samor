@@ -1,0 +1,9 @@
+<div>
+    <input type="text" size="100" #query (keyup)="searchBarInput($event,query.value)" list="searchSuggestions"
+           placeholder="Type your search query here">
+    <datalist id="searchSuggestions">
+        <option *ngFor="let suggestion of searchSuggestions | async" value="{{suggestion.name}}">
+    </datalist>
+    <button color="primary" md-raised-button="" class="md-primary" ng-reflect-color="primary"
+            (click)="searchBarInput($event,query.value)"><i class="material-icons">&#xE8B6;</i></button>
+</div>

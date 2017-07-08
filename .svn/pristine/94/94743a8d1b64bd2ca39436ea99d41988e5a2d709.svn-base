@@ -1,0 +1,15 @@
+export class SubOrderSummary {
+    constructor(public subOrderId: number,
+                public orderProcessed: number,
+                public soptrfnum: number,
+                public investmentMode: string,
+                public schemeDisplayName?: string,
+                public schemePlan?: string,
+                public schemeOption?: string,
+                public amount?: number,
+                public sipNoOfInstallments?: number,
+                public sipFrequency?: string,
+                public sipDayOfMonth?: number,
+                public quantity?: number) {
+    }
+}

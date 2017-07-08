@@ -1,0 +1,63 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {Subject, Observable} from "rxjs";
+
+import {User} from '../models/user';
+import {Resolve, ActivatedRouteSnapshot} from "@angular/router";
+
+@Injectable()
+export class UserService{
+
+    user: User
+
+    private userSource = new Subject<User>();
+    currentUser = this.userSource.asObservable();
+
+    constructor(private http: HttpService) { }
+
+    resolve(route: ActivatedRouteSnapshot){
+        return this.http.get('/getUserData')
+            .map(output => {
+                console.log("IN RESOLVE. OUTPUT = ");
+                console.log(output as User);
+                return output as User;
+            })
+    }
+
+    updateBasicData(userdata: any){
+        this.user.userBasic = userdata;
+        console.log("IN BAISC UPdATE. THIS.USER = " + this.user)
+        this.updateData();
+    }
+    updateKYCData(userdata:any){
+        this.user.userAddress = userdata;
+        console.log(this.user);
+    }
+    updateBankData(userdata: any){
+        this.user.userBank = userdata;
+        console.log(this.user);
+    }
+    updateOtherData(userdata: any){
+        this.user.userFatca = userdata;
+        if (userdata.controls['tax_country_india'].value == 'Yes') {
+            this.user.userFatca.tax_country = 'India';
+        }
+        else {
+            this.user.userFatca.tax_country = userdata.controls['tax_country'].value;
+        }
+        if (userdata.controls['investor_type'].value == 'Resident Indian') {
+            this.user.userFatca.nationality = 'India';
+        }
+        else {
+            this.user.userFatca.nationality = userdata.controls['country'].value;
+        }
+        console.log(this.user);
+    }
+
+    updateData() {
+        this.http.post('/postUserData', this.user)
+            .map(output => {
+                console.log(output);
+            })
+    }
+}

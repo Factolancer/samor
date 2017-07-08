@@ -1,0 +1,30 @@
+/**
+ * Created by Fincash on 24-02-2017.
+ */
+import {Injectable} from "@angular/core";
+import {Logger} from "../../shared/logger/logger";
+import {Subject, BehaviorSubject} from "rxjs";
+
+@Injectable()
+export class DemoService {
+
+    constructor(private log:Logger){};
+    private animationSubject = new BehaviorSubject<number>(0);
+
+    animation = this.animationSubject.asObservable();
+
+    setAnimationNo(count : number){
+        this.animationSubject.next(count);
+    }
+    getAnimationNo(){
+        return this.animationSubject.getValue();
+    }
+    resetAnimationNo(){
+        this.setAnimationNo(0);
+    }
+
+
+
+
+
+}

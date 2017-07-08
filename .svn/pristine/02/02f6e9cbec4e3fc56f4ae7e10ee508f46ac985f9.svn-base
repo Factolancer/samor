@@ -1,0 +1,124 @@
+import {Inject, Injectable, PLATFORM_ID} from "@angular/core";
+import {Logger} from "../logger/logger";
+import {isPlatformBrowser, isPlatformWorkerApp, isPlatformWorkerUi, PlatformLocation} from "@angular/common";
+import {DOCUMENT} from "@angular/platform-browser";
+import "../../../lib/modernizr.js";
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+import {UtilityService} from "./utility.service";
+
+@Injectable()
+export class BrowserSupportService {
+    isPlatformBrowser: boolean;
+    document: any;
+    baseUrl: string;
+
+    constructor(private logger: Logger, @Inject(PLATFORM_ID) private platformId: any,
+                private platformLocation: PlatformLocation, @Inject(APP_CONFIG) private config: IAppConfig,
+                @Inject(DOCUMENT) private _document: any, private utilityService: UtilityService) {
+        this.isPlatformBrowser = isPlatformBrowser(this.platformId) || isPlatformWorkerApp(this.platformId) || isPlatformWorkerUi(this.platformId)
+        //this.document = _document;
+        this.baseUrl = this.platformLocation['location'].origin;
+    }
+
+    checkBasicBrowserSupport() {
+        if (this.isPlatformBrowser) {
+            /*this.logger.debug("Modernizr.flexbox" + Modernizr.flexbox);
+             this.logger.debug("Modernizr.canvas" + Modernizr.canvas);
+             this.logger.debug("Modernizr.localstorage" + Modernizr.localstorage);
+             this.logger.debug("Modernizr.flexwrap" + Modernizr.flexwrap);
+             this.logger.debug("Modernizr.media" + Modernizr.mediaqueries);
+             this.logger.debug("Modernizr.svg" + Modernizr.svg);
+             this.logger.debug("Modernizr.promises" + Modernizr.promises);
+             //this.logger.debug("Modernizr.intl: " + Modernizr.intl);
+
+
+             for (let prop in Modernizr) {
+             if (typeof Modernizr[prop] === 'function')
+             this.logger.debug(prop + ":" + Modernizr[prop]());
+             else if (typeof Modernizr[prop] === 'string' || typeof Modernizr[prop] === 'boolean')
+             this.logger.debug(prop + ":" + Modernizr[prop]);
+             else
+             this.logger.debug(prop + ":" + Modernizr[prop]);
+             }*/
+            if (!Modernizr.flexbox || !Modernizr.canvas || !Modernizr.localstorage ||
+                !Modernizr.flexwrap || !Modernizr.mediaqueries || !Modernizr.svg ||
+                !Modernizr.promises || !Modernizr.intl) {
+                this.logger.debug("Some feature is not supported in this browser");
+                let url = this.config.browserSupportMissingURL + this.prepareUrlSuffix();
+                this.utilityService.redirectionByWindow(url);
+            } else {
+                this.logger.debug("This browser supports all basic features required");
+            }
+        } else {
+            this.logger.debug("Not a platform browser");
+        }
+    }
+
+    prepareUrlSuffix() {
+
+        let urlParams = "?";
+        if(!Modernizr.flexbox) {
+            urlParams += ("flexbox=" + Modernizr.flexbox)
+        }
+
+        if(!Modernizr.canvas) {
+            if(urlParams.length>1) {
+                urlParams += ("&canvas=" + Modernizr.canvas)
+            } else {
+                urlParams += ("canvas=" + Modernizr.canvas)
+            }
+        }
+
+        if(!Modernizr.localstorage) {
+            if(urlParams.length>1) {
+                urlParams += ("&localstorage=" + Modernizr.localstorage)
+            } else {
+                urlParams += ("localstorage=" + Modernizr.localstorage)
+            }
+        }
+
+        if(!Modernizr.flexwrap) {
+            if(urlParams.length>1) {
+                urlParams += ("&flexwrap=" + Modernizr.flexwrap)
+            } else {
+                urlParams += ("flexwrap=" + Modernizr.flexwrap)
+            }
+        }
+
+        if(!Modernizr.mediaqueries) {
+            if(urlParams.length>1) {
+                urlParams += ("&mediaqueries=" + Modernizr.mediaqueries)
+            } else {
+                urlParams += ("mediaqueries=" + Modernizr.mediaqueries)
+            }
+        }
+
+        if(!Modernizr.svg) {
+            if(urlParams.length>1) {
+                urlParams += ("&svg=" + Modernizr.svg)
+            } else {
+                urlParams += ("svg=" + Modernizr.svg)
+            }
+        }
+
+        if(!Modernizr.promises) {
+            if(urlParams.length>1) {
+                urlParams += ("&promises=" + Modernizr.promises)
+            } else {
+                urlParams += ("promises=" + Modernizr.promises)
+            }
+        }
+
+        if(!Modernizr.intl) {
+            if(urlParams.length>1) {
+                urlParams += ("&intl=" + Modernizr.intl)
+            } else {
+                urlParams += ("intl=" + Modernizr.intl)
+            }
+        }
+
+        return urlParams
+    }
+
+
+}

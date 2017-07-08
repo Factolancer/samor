@@ -1,0 +1,84 @@
+import {Contact} from './contact';
+import {Address} from './address';
+import {Bank} from './bank';
+import {Nominee} from './nominee';
+import {UserBanks} from "./user-banks";
+
+export class UserBasic {
+    constructor(public firstName: string,
+                public middleName: string,
+                public lastName: string,
+                public pan: string,
+                public panName: string,
+                public fatherName: string,
+                public motherName: string,
+                public contact: Contact,
+                public dob: string,
+                public gender: string,
+                public maritalStatus?: string) {
+    }
+}
+
+export class UserAddress {
+    constructor(public permanentAddress: Address,
+                public currentAddress: Address,
+                public permanentEqualsCurrent: boolean) {
+    }
+}
+
+
+export class UserBank {
+    constructor(public buaid: string,
+                public holderName: string,
+                public accountType: string,
+                public bank: Bank,
+                public accountNumber: string,
+                public acccount?: any) {
+    }
+}
+
+export class UserFatca {
+    constructor(public futid: string,
+                public income: string,
+                public occupation: string,
+                public sourceOfWealth: string,
+                public nationality: string,
+                public birthCountry: string,
+                public birthCity: string,
+                public taxCountry: string,
+                public politicallyExposed: string,
+                public politicallyRelated: string,
+                public tin?: string,
+                public isIndianTaxPayer?: string) {
+    }
+}
+
+export class UserNominee {
+    constructor(public ndtid: string,
+                public nomineeName: string,
+                public nomineeRelation: string,
+                public nomineeDob: string,
+                public nomineeAddress: Address) {
+    }
+}
+
+export class Docs {
+    constructor(public passport_photo?: File,
+                public pan_card?: File,
+                public proof_of_address?: File,
+                public signature?: File,
+                public cancelled_cheque?: File,) {
+    }
+}
+
+export class User {
+
+    constructor(public userBasic: UserBasic,
+                public userAddress: UserAddress,
+                public userBank: UserBank,
+                public userFatca: UserFatca,
+                public userNominee: UserNominee,
+                public docs?: Docs) {
+
+    }
+}

@@ -1,0 +1,35 @@
+import {Injectable, ViewContainerRef, Inject} from "@angular/core";
+import {MdSnackBarConfig, MdSnackBar} from "@angular/material";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {Subject, Observable} from "rxjs";
+
+@Injectable()
+export class SnackBarService {
+
+    guardMessageSubject: Subject<string>;
+    guardMessageObservable: Observable<string>;
+
+
+    constructor(private mdSnackBar: MdSnackBar, @Inject(APP_CONFIG) private config: IAppConfig,) {
+        this.guardMessageSubject = new Subject();
+        this.guardMessageObservable = this.guardMessageSubject.asObservable();
+    }
+
+    showSnackBar(message: string, action: any, viewContainerRef: ViewContainerRef) {
+        let config = new MdSnackBarConfig();
+        config.duration = this.config.snackBarTime;
+        config.viewContainerRef = viewContainerRef;
+        this.mdSnackBar.open(message, action, config);
+    }
+
+    showIndefiniteSnackBar(message: string, action: any, viewContainerRef: ViewContainerRef) {
+        let config = new MdSnackBarConfig();
+        config.duration = 86400000;
+        config.viewContainerRef = viewContainerRef;
+        this.mdSnackBar.open(message, action, config);
+    }
+
+    setGuardMessage(message: string) {
+        this.guardMessageSubject.next(message);
+    }
+}

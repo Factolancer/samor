@@ -1,0 +1,9 @@
+.complete-area {
+    width: 100%;
+}
+
+.disclaimer-text {
+    font-size: 8px;
+    max-height: 150px;
+    overflow: auto;
+}

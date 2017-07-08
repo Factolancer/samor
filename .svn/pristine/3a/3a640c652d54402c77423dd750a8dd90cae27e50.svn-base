@@ -1,0 +1,259 @@
+import { Component, OnInit, AfterViewInit, Input, ViewChild, ViewChildren } from '@angular/core';
+import {NgForm, FormGroup, Validators, FormControl, FormBuilder, Validator, FormControlName} from '@angular/forms';
+
+import { EmailValidator, CompareValidator } from '../validator';
+import { Occupation } from './occupation';
+import { AddressProof } from './addressproof';
+import { Relation } from './relation';
+import { User } from './user';
+import { Country } from '../countries';
+
+@Component({
+  selector: 'app-registration',
+  templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.css']
+})
+export class RegistrationComponent implements OnInit {
+
+  public occupations = Occupation;
+  public addressprooofs = AddressProof;
+  public relations = Relation;
+  public countries = Country;
+  user: User;
+
+  basicForm: FormGroup;
+  kycForm: FormGroup;
+  bankForm: FormGroup;
+  otherForm: FormGroup;
+
+  basicsaved = false;
+  kycsaved = false;
+  banksaved = false;
+  othersaved = false;
+
+  basiccollapsed = true;
+  kyccollapsed = true;
+  bankcollapsed = true;
+  othercollapsed = true;
+
+  nomineepresent = false;
+  isNRI = false;
+  indiantaxpayer = 'Yes';
+
+  constructor(private fb: FormBuilder) {
+    this.user = new User({pan:'', mob: '', email:'', name:'', dob:'', gender:''},
+        {job:'', income:'', address:'', father_spouse:'', address_proof:'', pin:'', district:'', state:''},
+        {name:'', ifsc:'', account_type:'', account_number:null},
+        {investor_type: 'Resident Indian', birth_country: 'India', country: 'India', tax_country: 'India', politically_exposed:'No', politically_related: 'No'})
+  }
+
+  ngOnInit() {
+    this.basicForm = this.fb.group({
+      pan: ['', Validators.compose([Validators.required, Validators.pattern('[0-9a-zA-Z]{10}')])],
+      mob: ['', Validators.compose([ Validators.required, Validators.minLength(10)])],
+      name: ['', Validators.compose([Validators.required])],
+      email: ['', Validators.compose([Validators.required, EmailValidator.isValidMailFormat])],
+      dob: ['', [Validators.required]],
+      gender: ['', [Validators.required]],
+      marital_status: ['', Validators.required]
+    });
+
+    this.kycForm = this.fb.group({
+      job: ['', Validators.required],
+      income: ['', Validators.compose([Validators.required])],
+      father_spouse: ['', Validators.required],
+      address_proof: ['', Validators.required],
+      pin: ['', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])],
+      address: ['', Validators.compose([Validators.required])],
+      district: ['', Validators.compose([Validators.required])],
+      state: ['', Validators.compose([Validators.required])],
+      nominee_name: ['', Validators.compose([])],
+      nominee_relation:[''],
+      nominee_dob:['']
+    });
+
+    this.bankForm = this.fb.group({
+      name: ['', Validators.compose([Validators.required])],
+      ifsc: ['', Validators.compose([Validators.required, Validators.pattern('[0-9a-zA-Z]{11}')])],
+      account_type: [''],
+      account_number: ['', Validators.compose([Validators.required])],
+      confirm_account_number: ['', Validators.compose([Validators.required])]
+    });
+
+    this.otherForm = this.fb.group({
+      investor_type: ['Resident Indian', Validators.compose([Validators.required])],
+      birth_country: ['India', Validators.compose([])],
+      international_address: [''],
+      international_postal_code: [''],
+      international_district: [''],
+      international_state: [''],
+      country: [''],
+      tax_country_india: ['Yes'],
+      tax_country: [''],
+      politically_exposed: ['No'],
+      politically_related: ['No']
+    });
+  }
+
+  onBasicSubmit(){
+    this.basicsaved = true;
+    this.user.Basic = this.basicForm.value;
+    console.log(this.user);
+    this.toggleBasic();
+  }
+  onKYCSubmit(){
+    this.kycsaved = true;
+    this.user.KYC = this.kycForm.value;
+    if (!this.nomineepresent){
+      this.user.KYC.nominee_name='';
+      this.user.KYC.nominee_relation='';
+      this.user.KYC.nominee_dob='';
+    }
+    console.log(this.user);
+    this.toggleKyc();
+  }
+  onBankSubmit(){
+    this.banksaved = true;
+    this.user.Bank = this.bankForm.value;
+    console.log(this.user);
+    this.toggleBank();
+  }
+  onOtherSubmit(){
+    this.othersaved = true;
+    this.user.Other = this.otherForm.value;
+    if (this.otherForm.controls['tax_country_india'].value=='Yes'){
+      this.user.Other.tax_country = 'India';
+    }
+    else{
+      this.user.Other.tax_country = this.otherForm.controls['tax_country'].value;
+    }
+    if (this.otherForm.controls['investor_type'].value=='Resident Indian'){
+      this.user.Other.country = 'India';
+    }
+    else{
+      this.user.Other.country = this.otherForm.controls['country'].value;
+    }
+    console.log(this.user);
+    this.toggleOther();
+  }
+
+  isAccountNumberSame(account, account_confirm: FormControl){
+    if (account.value === account_confirm.value) return true;
+    else return false;
+  }
+
+  toggleBasic(){
+    if (this.basiccollapsed==true) this.basiccollapsed=false;
+    else this.basiccollapsed=true;
+  }
+  toggleKyc(){
+    if (this.kyccollapsed==true) this.kyccollapsed=false;
+    else this.kyccollapsed=true;
+  }
+  toggleBank(){
+    if (this.bankcollapsed==true) this.bankcollapsed=false;
+    else this.bankcollapsed=true;
+  }
+  toggleOther(){
+    if (this.othercollapsed==true) this.othercollapsed=false;
+    else this.othercollapsed=true;
+  }
+
+  // @ViewChild('basicForm') currentBasicForm: NgForm;
+  // @ViewChild('kycForm') currentKycForm: NgForm;
+  // @ViewChild('bankForm') currentBankForm: NgForm;
+  //
+  //
+  // ngAfterViewChecked() {
+  //   this.basicformChanged();
+  //   this.kycformChanged();
+  //   this.bankformChanged();
+  //   console.log("In after view checked");
+  // }
+  //
+  // basicformChanged() {
+  //   // if (this.currentBasicForm === this.basicForm) {console.log("current basic = basic"); return; }
+  //   this.basicForm = this.currentBasicForm;
+  //   if (this.basicForm) {
+  //     console.log("in basic form");
+  //     this.basicForm.valueChanges
+  //         .subscribe(data => this.onValueChanged(data));
+  //   }
+  // }
+  // kycformChanged() {
+  //   if (this.currentKycForm === this.kycForm) { return; }
+  //   this.kycForm = this.currentKycForm;
+  //   if (this.kycForm) {
+  //     this.kycForm.valueChanges
+  //         .subscribe(data => this.onValueChanged(data));
+  //   }
+  // }
+  // bankformChanged() {
+  //   if (this.currentBankForm === this.bankForm) { return; }
+  //   this.bankForm = this.currentBankForm;
+  //   if (this.kycForm) {
+  //     this.kycForm.valueChanges
+  //         .subscribe(data => this.onValueChanged(data));
+  //   }
+  // }
+  //
+  // onValueChanged(data?: any) {
+  //   if (!this.basicForm || !this.kycForm || !this.bankForm) { return; }
+  //   const basicform = this.basicForm.form;
+  //   const kycform = this.kycForm.form;
+  //   const bankform = this.bankForm.form;
+  //
+  //   for (const field in this.formErrors) {
+  //     // clear previous error message (if any)
+  //     this.formErrors[field] = '';
+  //     const basiccontrol = basicform.get(field);
+  //     const kyccontrol = kycform.get(field);
+  //     const bankcontrol = bankform.get(field);
+  //
+  //     if (basiccontrol && basiccontrol.dirty && !basiccontrol.valid) {
+  //       console.log("basic dirty & not valid");
+  //       const messages = this.validationMessages[field];
+  //       for (const key in basiccontrol.errors) {
+  //         this.formErrors[field] += messages[key] + ' ';
+  //       }
+  //       console.log(this.formErrors['pan']);
+  //     }
+  //     if (kyccontrol && kyccontrol.dirty && !kyccontrol.valid){
+  //       const messages = this.validationMessages[field];
+  //       for (const key in kyccontrol.errors) {
+  //         this.formErrors[field] += messages[key] + ' ';
+  //       }
+  //     }
+  //     if (bankcontrol && bankcontrol.dirty && !bankcontrol.valid){
+  //       const messages = this.validationMessages[field];
+  //       for (const key in bankcontrol.errors) {
+  //         this.formErrors[field] += messages[key] + ' ';
+  //       }
+  //     }
+  //   }
+  // }
+  //
+  // formErrors = {
+  //   'name': '',
+  //   'pan': '',
+  //   'mobile':'',
+  //   'email': '',
+  //   'dob':''
+  // };
+  //
+  // validationMessages = {
+  //   'name': {
+  //     'required':      'Name is required.',
+  //     'minlength':     'Name must be at least 4 characters long.',
+  //     'maxlength':     'Name cannot be more than 24 characters long.',
+  //     'forbiddenName': 'Someone named "Bob" cannot be a hero.'
+  //   },
+  //   'pan': {
+  //     'required': 'PAN number is required.',
+  //     'minlength': 'PAN number is incorrect, please enter valid PAN number',
+  //     'maxlength': 'PAN number is incorrect, please enter valid PAN number'
+  //   }
+  // };
+
+
+}

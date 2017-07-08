@@ -1,0 +1,143 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="95">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <div fxFlex ngClass.gt-sm="heading-32-dark-grey pad-tb-25" ngClass.lt-md="heading-24-dark-grey pad-tb-10">Redeem Funds</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" ngClass.gt-sm="search-bar" ngClass.lt-md="search-bar-m">
+            <div fxFlex.gt-sm="60" fxFlex.lt-md="98">
+                <app-redeem-fund-search-bar></app-redeem-fund-search-bar>
+            </div>
+        </div>
+        <div *ngIf="redData.fundsData.length>0" fxLayout="column" fxLayoutAlign="center" ngClass.gt-sm="mar-t-50" ngClass.lt-md="mar-t-20">
+            <div fxFlex="100" align="center" class="grey-back pad-tb-10 heading-18-grey-bold">Redemption Details</div>
+            <md-card fxFlex="100" fxHide.lt-md="true" class="medium-grey-back pad-tb-10" ngClass.lt-md="no-padding">
+                <div fxLayout="row" fxLayoutAlign="center center" ngClass.lt-md="txt-12">
+                    <div fxFlex.gt-sm="30" fxFlex.lt-md="" align="center" class="dark-grey-text bold">Fund</div>
+                    <div fxFlex.gt-sm="30" fxFlex.lt-md="" align="center" class="dark-grey-text bold">Folio Detail</div>
+                    <div fxFlex.gt-sm="10" fxFlex.lt-md="" align="center" class="dark-grey-text bold">Market Value</div>
+                    <div fxFlex.gt-sm="10" fxFlex.lt-md="" align="center" class="dark-grey-text bold">Full/Partial</div>
+                    <div fxFlex.gt-sm="15" fxFlex.lt-md="" align="center" class="dark-grey-text bold">
+                        Unit/Amt
+                        <md-icon class="md-12 no-select" mdTooltip={{navToolTipText}}>
+                            &#xE88E;</md-icon>
+                    </div>
+                    <div fxFlex="5" align="right" class="dark-grey-text bold">Remove</div>
+                </div>
+            </md-card>
+            <form fxLayoutWrap *ngIf="redemptionFormGroup" [formGroup]="redemptionFormGroup"
+                  (ngSubmit)="onRedemptionProceed()" ngClass.lt-md="txt-12">
+                <md-card fxFlex="100" class="no-padding mar-tb-5"
+                         *ngFor="let fundGroup of redemptionFormGroup.get('fundsData')['controls']; let index= index">
+                    <div fxLayout="row" class="pad-t-5" ngClass.lt-md="res-table">
+                        <div fxFlex.gt-sm="30" fxFlex.lt-md="" align="center" class="pad-t-10 pad-lr-10 pad-b-5">
+                            <div fxLayout="column" fxHide.gt-sm="" class="bor-b-1-lgray pad-tb-10 mar-b-5 dark-grey-text bold center-align">Fund</div>
+                            <div fxLayout="column">
+                                <div fxFlex>
+                                    <div fxLayout="row" class="dark-grey-text bold">
+                                        {{redData.fundsData[index].fundName}}
+                                    </div>
+                                    <div fxLayout="row" class="medium-grey-text italic pad-tb-5">
+                                        Plan: {{redData.fundsData[index].plan}}, Option: {{redData.fundsData[index].option.dividendOption}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex.gt-sm="30" fxFlex.lt-md="" align="center" class=" pad-t-10 pad-lr-10 pad-b-5">
+                            <div fxLayout="column" fxHide.gt-sm="" class="bor-b-1-lgray pad-tb-10 mar-b-5 dark-grey-text bold center-align">Folio Detail</div>
+                            <div fxLayout="column">
+                                <div fxFlex>
+                                    <div fxLayout="row">
+                                        <div fxFlex="50">{{redData.fundsData[index].folioNo}}</div>
+                                        <div fxFlex="50">Redeemable Units: {{redData.fundsData[index].redeemableUnits}}
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" class="pad-tb-5">
+                                        <div fxFlex="50" class="medium-grey-text italic">
+                                            {{redData.fundsData[index].holdingMode}}
+                                        </div>
+                                        <div fxFlex="50" class="md-brand-secondary">Total Units:
+                                            {{redData.fundsData[index].totalUnits}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex.gt-sm="10" fxFlex.lt-md="" align="center" fxFlexOffset.lt-md="10" class="pad-t-10 pad-lr-10 pad-b-5">
+                            <div fxLayout="column" fxHide.gt-sm="" class="bor-b-1-lgray pad-tb-10 mar-b-5 dark-grey-text bold center-align">Market Value</div>
+                            {{redData.fundsData[index].currValue | round | currency:'INR':true:'1.0-0' }}
+                            <md-icon class="md-12 no-select" mdTooltip="NAV {{redData.fundsData[index].currNav | round2}} as on {{redData.fundsData[index].navDate | date:'d mmm yyyy'}}"> &#xE88E;</md-icon>
+                        </div>
+                        <div fxFlex.gt-sm="10" fxFlex.lt-md="" align="center" class=" pad-t-10 pad-lr-10 pad-b-5">
+                            <div fxLayout="column" fxHide.gt-sm="" class="bor-b-1-lgray pad-tb-10 dark-grey-text bold center-align">Full/Partial</div>
+
+                            <md-slide-toggle [formControl]="fundGroup.get('redemptionType')">
+                                <span *ngIf="fundGroup.get('redemptionType').value==true">Full</span>
+                                <span *ngIf="fundGroup.get('redemptionType').value==false">Partial</span>
+                                <!--<span *ngIf="[value]==true">Full</span>
+                                <span *ngIf="[value]==false">Partial</span>-->
+                            </md-slide-toggle>
+
+                        </div>
+                        <div fxFlex.gt-sm="15" fxFlex.lt-md="" align="center" class=" pad-t-10 pad-lr-10 pad-b-5">
+                            <div fxLayout="column" fxHide.gt-sm="" class="bor-b-1-lgray pad-tb-10 mar-b-5 dark-grey-text bold center-align">Unit/Amount</div>
+                            <div fxLayout="column">
+                                <div fxFlex>
+                                    <md-slide-toggle [attr.disabled]="fundGroup.get('redemptionType').value"
+                                                     [formControl]="fundGroup.get('amountUnitFlag')"
+                                                     [ngClass]="{'medium-grey-text': fundGroup.get('redemptionType').value}">
+                                        <span *ngIf="fundGroup.get('amountUnitFlag').value==true">Amount</span>
+                                        <span *ngIf="fundGroup.get('amountUnitFlag').value==false">Unit</span>
+                                    </md-slide-toggle>
+                                </div>
+                                <div fxFlex>
+                                        <md-input-container class="width-100" ngClass.lt-md="width-100" ngClass.gt-sm="width-60">
+                                            <span mdPrefix *ngIf="fundGroup.get('amountUnitFlag').value">&#x20b9;&nbsp;</span>
+                                            <input mdInput type="number"
+                                                   [formControl]="fundGroup.get('redemptionAmountOrUnit')"
+                                                   [readonly]="fundGroup.get('redemptionType').value"
+                                                   [ngClass]="{'medium-grey-text': fundGroup.get('redemptionType').value}">
+                                            <md-hint *ngIf="redemptionFormErrors.fundsData[index].redemptionAmountOrUnit" class="errorMessage">
+                                                {{redemptionFormErrors.fundsData[index].redemptionAmountOrUnit}}
+                                            </md-hint>
+                                        </md-input-container>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex.gt-sm="5" fxFlex.lt-md="" align="center" class="pad-t-10 pad-lr-10 pad-b-5">
+                            <div fxLayout="column" fxHide.gt-sm="" class="bor-b-1-lgray pad-tb-10 mar-b-5 dark-grey-text bold center-align">Remove</div>
+                            <md-icon class="md-16 remove-btn clickable" (click)="removeFund(redData.fundsData[index], index)">&#xE888;</md-icon>
+                        </div>
+                    </div>
+                </md-card>
+
+                <div  fxFlexfxLayout="row"fxLayoutAlign="start center" class="mar-t-15">
+                    <span class="disclaimer-text">Note:<br/>
+                        <span>1. Exit loads as applicable</span><br/>
+                        <span>2. Customers are advised to check the minimum redemption amount/units before redemption request</span>
+                    </span>
+                </div>
+                <div fxFlex="100vw" fxLayout="row" fxLayoutAlign="center center" fxLayoutAlign.lt-md="center center"
+                     class="pad-tb-10">
+                    <div fxFlex="20" fxFlex.lt-md="90">
+                        <button type="submit" color="primary" md-raised-button="" class="cta-50"
+                                [ngClass]="{'shake':shake}">
+                            PROCEED
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+    </div>
+</div>
+<div *ngIf="redData.fundsData.length==0"  fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="50">
+        <div fxLayout="column" fxLayoutAlign="center center" class="grey-border">
+            <div fxFlex ngClass.gt-sm="heading-32-dark-grey pad-tb-25" ngClass.lt-md="heading-24-dark-grey pad-tb-10">Search and add funds to redeem</div>
+        </div>
+    </div>
+</div>

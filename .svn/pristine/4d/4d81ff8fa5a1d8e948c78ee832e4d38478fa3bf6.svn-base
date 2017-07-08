@@ -1,0 +1,9 @@
+import {CalculationKeys} from "./calculation-keys";
+export interface SipCalcQuestion {
+    id: number;
+    statement: string;
+    answer?: any;
+    helperText?: string;
+    inputLength?: number;
+    calculationKey?: CalculationKeys;
+}

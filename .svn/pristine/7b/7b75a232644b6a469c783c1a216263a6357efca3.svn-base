@@ -1,0 +1,71 @@
+import {Component, OnInit, AfterViewInit, Input, ViewChild, ViewChildren, Output, OnDestroy} from '@angular/core';
+import {Subscription, Observable} from "rxjs";
+
+import {User} from '../models/user';
+import {HttpService} from "../services/http-service.service";
+import {BankSearchService} from './sections/bank-section/search.service';
+import {UserService} from "./userdata.service";
+import {Http, Headers, Jsonp} from "@angular/http";
+import {KYCService} from "./kyc.service";
+import {Router, ActivatedRoute} from "@angular/router";
+
+@Component({
+    selector: 'app-registration',
+    templateUrl: './registration.component.html',
+    styleUrls: ['./registration.styles.scss'],
+    providers: [BankSearchService, UserService, KYCService]
+})
+export class RegistrationComponent implements OnInit, OnDestroy {
+
+    // resultsubscription: Subscription
+    private kycCollapsed: boolean = true
+    private kycState: String = 'hide'
+    private bankCollapsed: boolean = true
+    private bankState: String = 'hide'
+    private otherCollapsed: boolean = true
+    private otherState: String = 'hide'
+    makeKycVisible() : void {
+        this.kycCollapsed = false;
+        this.kycState = 'show';
+    }
+    makeBankVisible(): void {
+        this.bankCollapsed = false
+        this.bankState = 'show'
+    }
+    makeOtherVisible(): void {
+        this.otherCollapsed = false
+        this.otherState = 'show'
+    }
+    user: User;
+    usersubscription: Subscription;
+
+    constructor(public http: HttpService, public userService: UserService, private kycService: KYCService, public router: Router,
+                public route: ActivatedRoute) {
+        console.log("In Registration Constructor")
+        this.usersubscription = this.userService.currentUser.subscribe(
+            result => {
+                this.user = result
+                console.log("IN REGISTRATION CONSTRUCTOR. THIS.USER = ")
+                console.log(this.user);
+            })
+    }
+
+    ngOnInit() {
+
+        /*this.route.data.forEach((data: {user: User}) => {
+            this.user = data.user;
+        });*/
+        console.log("In Registration Init")
+    }
+
+    indexBanks() {
+        this.http.get("/indexBanks").subscribe(output => {
+            console.log("details indexed");
+        });
+    }
+
+    ngOnDestroy() {
+        this.usersubscription.unsubscribe()
+    }
+
+}

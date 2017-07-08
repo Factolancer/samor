@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0081c9">
+    <title>FincashFrontend</title>
+    <base href="/">
+    <!-- styles -->
+    <script src="public/javascript/jspdf.min.js"></script>
+    <script src="public/javascript/jspdf.plugin.autotable.src.js"></script>
+    <script src="public/javascript/jspdf.plugin.text_align.js"></script>
+    <!-- captcha -->
+    <!--<script src='https://www.google.com/recaptcha/api.js'></script>-->
+
+
+    <!--{{#unless environment.production}}-->
+    <!--<script src="/ember-cli-live-reload.js" investementType="text/javascript"></script>-->
+    <!--{{/unless}}-->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!--<link href="public/styles/bootstrap.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" media="screen and (min-device-width: 600px)" href="public/styles/web.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<app-root>Loading...</app-root>
+
+<!--{{#each scripts.polyfills}}-->
+<!--<script src="{{.}}"></script>-->
+<!--{{/each}}-->
+<!--<script>-->
+<!--System.import('system-config.js').then(function () {-->
+<!--System.import('main');-->
+<!--}).catch(console.error.bind(console));-->
+<!--</script>-->
+<!--<script type="text/javascript" src="https://www.google.com/jsapi"></script>-->
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    var googleLoaded = false;
+</script>
+</body>
+</html>
+

@@ -1,0 +1,510 @@
+<!--<section>-->
+    <!--&lt;!&ndash;<md-card _ngcontent-pxi-6>&ndash;&gt;-->
+    <!--&lt;!&ndash;<md-card-title>&ndash;&gt;-->
+    <!--<md-toolbar color="lightgray" class="sectiontitle">-->
+        <!--<i [ngClass]="{'material-icons': true, 'md-dark': !basicsaved, 'md-inactive': !basicsaved, 'blue600': basicsaved}">check</i>-->
+        <!--<a (click)="toggleBasic()">Basic Details</a>-->
+    <!--</md-toolbar>-->
+    <!--&lt;!&ndash;</md-card-title>&ndash;&gt;-->
+    <!--&lt;!&ndash;<br/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<md-card-content>&ndash;&gt;-->
+    <!--<form [formGroup]="basicForm" (ngSubmit)="onBasicSubmit()" [hidden]="basiccollapsed" novalidate>-->
+        <!--<md-grid-list cols="2" rowHeight="100px">-->
+            <!--<md-grid-tile class="form-group">-->
+                <!--<md-input required formControlName="name" placeholder="Name"></md-input>-->
+                <!--<div *ngIf="!basicForm.controls['name'].valid && (basicForm.controls['name'].touched)"-->
+                     <!--class="errorMessage">-->
+                    <!--<span>Name is required</span>-->
+                <!--</div>-->
+            <!--</md-grid-tile>-->
+            <!--<md-grid-tile>-->
+                <!--<md-input required formControlName="pan" placeholder="PAN" #pan [value]="pan.value.toUpperCase()"></md-input>-->
+                <!--<div *ngIf="!basicForm.controls['pan'].valid && (basicForm.controls['pan'].touched)"-->
+                     <!--class="errorMessage">-->
+                    <!--<span>Please enter valid PAN number</span>-->
+                <!--</div>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+        <!--<div formGroupName="contact">-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile style="display: block">-->
+                    <!--<md-input required formControlName="mob" placeholder="Mobile no"></md-input>-->
+                    <!--<div *ngIf="!basicForm.controls['contact'].get('mob').valid && (basicForm.controls['contact'].get('mob').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter valid Mobile number</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile class="form-group">-->
+                    <!--<md-input required formControlName="email" placeholder="Email Id"></md-input>-->
+                    <!--<div *ngIf="!basicForm.controls['contact'].get('email').valid && (basicForm.controls['contact'].get('email').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter valid email id</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile style="display: block">-->
+                    <!--<md-input formControlName="tel" placeholder="Telephone No."></md-input>-->
+                    <!--<div *ngIf="!basicForm.controls['contact'].get('tel').valid && (basicForm.controls['contact'].get('tel').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter valid Telephone number</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile class="form-group">-->
+                    <!--<md-input formControlName="fax" placeholder="Fax No."></md-input>-->
+                    <!--<div *ngIf="!basicForm.controls['contact'].get('fax').valid && (basicForm.controls['contact'].get('fax').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter valid Fax number</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+        <!--</div>-->
+        <!--<md-grid-list cols="2" rowHeight="100px">-->
+            <!--<md-grid-tile class="form-group">-->
+                <!--<label class="field_label">Date of Birth </label>-->
+                <!--<md-input required formControlName="dob" type="date" class="date_margin"></md-input>-->
+            <!--</md-grid-tile>-->
+            <!--<md-grid-tile>-->
+                <!--<label class="field_label">Nationality</label>-->
+                <!--<select required>-->
+                    <!--<option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>-->
+                <!--</select>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+        <!--<md-grid-list cols="2" rowHeight="100px">-->
+            <!--<md-grid-tile class="form-group">-->
+                <!--<label class="field_label">Gender</label>-->
+                <!--<md-radio-group required formControlName="gender">-->
+                    <!--<md-radio-button value="Male">Male</md-radio-button>-->
+                    <!--<md-radio-button value="Female">Female</md-radio-button>-->
+                <!--</md-radio-group>-->
+            <!--</md-grid-tile>-->
+            <!--<md-grid-tile class="form-group" style="display: block">-->
+                <!--<label class="field_label">Marital Status</label>-->
+                <!--<md-radio-group required formControlName="marital_status">-->
+                    <!--<md-radio-button value="Single">Single</md-radio-button>-->
+                    <!--<md-radio-button value="Married">Married</md-radio-button>-->
+                <!--</md-radio-group>-->
+            <!--</md-grid-tile>-->
+            <!--<md-grid-tile>-->
+
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+        <!--<md-grid-list cols="1" rowHeight="50px" class="button-list-margins">-->
+            <!--<md-grid-tile>-->
+                <!--<button md-raised-button color="primary" [disabled]="!basicForm.valid">Save</button>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+    <!--</form>-->
+    <!--&lt;!&ndash;</md-card-content>&ndash;&gt;-->
+    <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
+<!--</section>-->
+
+<div>
+    <br/>
+    <basic-section></basic-section>
+
+    <kyc-section></kyc-section>
+
+    <bank-section></bank-section>
+
+    <other-section></other-section>
+</div>
+
+<button (click)="indexBanks()">Index here</button>
+
+<!--<section>-->
+    <!--&lt;!&ndash;<md-card _ngcontent-pxi-6>&ndash;&gt;-->
+    <!--<md-toolbar color="lightgray" class="sectiontitle">-->
+        <!--<i [ngClass]="{'material-icons': true, 'md-dark': !kycsaved, 'md-inactive': !kycsaved, 'blue600': kycsaved}">check</i>-->
+        <!--<a (click)="toggleKyc()">Know Your Customer Details</a>-->
+    <!--</md-toolbar>-->
+    <!--&lt;!&ndash;<br/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<md-card-content>&ndash;&gt;-->
+    <!--<form [formGroup]="kycForm" (ngSubmit)="onKYCSubmit()" [hidden]="kyccollapsed" novalidate>-->
+        <!--<md-grid-list cols="2" rowHeight="100px">-->
+            <!--<md-grid-tile>-->
+                <!--<md-input required formControlName="income" placeholder="Annual Income(in lakhs)"></md-input>-->
+                <!--<div *ngIf="!kycForm.controls['income'].valid && (kycForm.controls['income'].touched)"-->
+                     <!--class="errorMessage">-->
+                    <!--<span>Required field</span>-->
+                <!--</div>-->
+            <!--</md-grid-tile>-->
+            <!--<md-grid-tile>-->
+                <!--<label class="field_label">Occupation</label>-->
+                <!--<select required formControlName="job">-->
+                    <!--<option *ngFor="let item of occupations" [value]="item.name">{{item.name}}</option>-->
+                <!--</select>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+        <!--<md-grid-list cols="2" rowHeight="100px">-->
+            <!--<md-grid-tile>-->
+                <!--<md-input required formControlName="father_spouse" placeholder="Father/Spouse Name"></md-input>-->
+                <!--<div *ngIf="!kycForm.controls['father_spouse'].valid && (kycForm.controls['father_spouse'].touched)"-->
+                     <!--class="errorMessage">-->
+                    <!--<span>Please enter Father/Spouse name</span>-->
+                <!--</div>-->
+            <!--</md-grid-tile>-->
+            <!--<md-grid-tile>-->
+                <!--<label class="field_label">Address Proof</label>-->
+                <!--<select formControlName="address_proof">-->
+                    <!--<option *ngFor="let item of addressprooofs" [value]="item.name">{{item.name}}</option>-->
+                <!--</select>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+        <!--<label>Communication Address</label>-->
+        <!--<div formGroupName="current_address">-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" required formControlName="address1" style="margin-left: -5%"-->
+                              <!--placeholder="Address line 1"></md-input>-->
+                    <!--<div *ngIf="!kycForm.controls['current_address'].get('address1').valid && (kycForm.controls['current_address'].get('address1').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter your communication address</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" formControlName="address2" style="margin-left: -5%"-->
+                              <!--placeholder="Address line 2"></md-input>-->
+                    <!--<div *ngIf="!kycForm.controls['current_address'].get('address2').valid && (kycForm.controls['current_address'].get('address1').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter your communication address</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input required formControlName="pin" placeholder="Pin Code" (blur)="GetPinDetails()"></md-input>-->
+                    <!--<div *ngIf="!kycForm.controls['current_address'].get('pin').valid && (kycForm.controls['current_address'].get('pin').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter valid 6 digit Pin Code</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" required formControlName="district" placeholder="District"></md-input>-->
+                    <!--<div *ngIf="!kycForm.controls['current_address'].get('district').valid && (kycForm.controls['current_address'].get('district').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Required</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" required formControlName="state" placeholder="State"></md-input>-->
+                    <!--<div *ngIf="!kycForm.controls['current_address'].get('state').valid && (kycForm.controls['current_address'].get('state').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Required</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+        <!--</div>-->
+        <!--<md-grid-list cols="1">-->
+            <!--<md-checkbox [(ngModel)]="permanantEqualsPresent" [ngModelOptions]="{standalone: true}">-->
+                <!--My permanent address is same as above-->
+            <!--</md-checkbox>-->
+        <!--</md-grid-list>-->
+        <!--<label *ngIf="!permanantEqualsPresent">Permanent Address</label>-->
+        <!--<div formGroupName="permanent_address" *ngIf="!permanantEqualsPresent">-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" required formControlName="address1" style="margin-left: -5%"-->
+                              <!--placeholder="Address line 1"></md-input>-->
+                    <!--<div *ngIf="!kycForm.controls['permanent_address'].get('address1').valid && (kycForm.controls['permanent_address'].get('address1').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter your communication address</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" formControlName="address2" style="margin-left: -5%"-->
+                              <!--placeholder="Address line 2"></md-input>-->
+                    <!--<div *ngIf="!kycForm.controls['permanent_address'].get('address2').valid && (kycForm.controls['permanent_address'].get('address1').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter your communication address</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input required formControlName="pin" placeholder="Pin Code" (blur)="GetPinDetails()"></md-input>-->
+                    <!--<div *ngIf="!kycForm.controls['permanent_address'].get('pin').valid && (kycForm.controls['permanent_address'].get('pin').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter valid 6 digit Pin Code</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" required formControlName="district" placeholder="District"></md-input>-->
+                    <!--<div *ngIf="!kycForm.controls['permanent_address'].get('district').valid && (kycForm.controls['permanent_address'].get('district').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Required</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" required formControlName="state" placeholder="State"></md-input>-->
+                    <!--<div *ngIf="!kycForm.controls['permanent_address'].get('state').valid && (kycForm.controls['permanent_address'].get('state').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Required</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+        <!--</div>-->
+        <!--<md-grid-list cols="1" rowHeight="50px">-->
+            <!--<md-checkbox [(ngModel)]="nomineepresent" [ngModelOptions]="{standalone: true}">-->
+                <!--I want to add a nominee-->
+            <!--</md-checkbox>-->
+        <!--</md-grid-list>-->
+        <!--<div formGroupName="nominee" *ngIf="nomineepresent">-->
+            <!--<md-grid-list cols="2" rowHeight="100px" >-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input formControlName="nominee_name" placeholder="Your Nominee Name"></md-input>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+                    <!--<label class="field_label">Relationship to you</label>-->
+                    <!--<select formControlName="nominee_relation">-->
+                        <!--<option *ngFor="let item of relations" [value]="item.name">{{item.name}}</option>-->
+                    <!--</select>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+            <!--<md-grid-list cols="2" rowHeight="100px"  >-->
+                <!--<md-grid-tile>-->
+                    <!--<label class="field_label">Nominee DOB</label>-->
+                    <!--<md-input formControlName="nominee_dob" type="date" class="date_margin"></md-input>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+        <!--</div>-->
+        <!--<md-grid-list cols="1" rowHeight="50px" class="button-list-margins">-->
+            <!--<md-grid-tile>-->
+                <!--<button md-raised-button color="primary" [disabled]="!kycForm.valid">Save</button>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+    <!--</form>-->
+    <!--&lt;!&ndash;</md-card-content>&ndash;&gt;-->
+    <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
+<!--</section>-->
+
+<!--<section>-->
+    <!--&lt;!&ndash;<md-card _ngcontent-pxi-6>&ndash;&gt;-->
+    <!--<md-toolbar color="lightgray" class="sectiontitle">-->
+        <!--<i [ngClass]="{'material-icons': true, 'md-dark': !banksaved, 'md-inactive': !banksaved, 'blue600': banksaved}">check</i>-->
+        <!--<a (click)="toggleBank()">Bank Details</a>-->
+    <!--</md-toolbar>-->
+    <!--&lt;!&ndash;<br/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<md-card-content>&ndash;&gt;-->
+    <!--<form [formGroup]="bankForm" (ngSubmit)="onBankSubmit()" [hidden]="bankcollapsed" novalidate>-->
+        <!--<md-grid-list cols="2" rowHeight="100px">-->
+            <!--<md-grid-tile>-->
+                <!--<md-input required formControlName="holder_name" placeholder="Name as on Cheque Book" #holder_name [value]="holder_name.value.toUpperCase()"></md-input>-->
+                <!--<div *ngIf="!bankForm.controls['holder_name'].valid && (bankForm.controls['holder_name'].touched)"-->
+                     <!--class="errorMessage">-->
+                    <!--<span>Name is required</span>-->
+                <!--</div>-->
+            <!--</md-grid-tile>-->
+            <!--<md-grid-tile>-->
+                <!--<label class="field_label">Account Type</label>-->
+                <!--<select required formControlName="account_type">-->
+                    <!--<option>Savings Account</option>-->
+                    <!--<option>Current Account</option>-->
+                <!--</select>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+        <!--<div formGroupName="bank">-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<label class="field_label">Bank Name</label>-->
+                    <!--<select required formControlName="bank_name" (blur)="setBankName()">-->
+                        <!--<option *ngFor="let item of banks" [value]="item">{{item}}</option>-->
+                    <!--</select>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input required formControlName="branch" placeholder="Branch" #branch [value]="branch.value.toUpperCase()"-->
+                              <!--(keyup)="searchForBranch($event.target.value)"></md-input>-->
+                    <!--<div class="dropdown" *ngIf="user.Bank.bank">-->
+                        <!--<ul *ngFor="let item of bankList" class="result">-->
+                            <!--<li>-->
+                                <!--<a (click)="select(item)">{{item.branch}}-{{item.city}}-{{item.IFSC}}</a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                    <!--<div *ngIf="!bankForm.controls['bank'].get('branch').valid && (bankForm.controls['bank'].get('branch').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>IFSC code is incorrect</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input required formControlName="city" placeholder="City"-->
+                              <!--[(ngModel)]="user.Bank.bank.city"></md-input>-->
+                    <!--<div *ngIf="!bankForm.controls['bank'].get('city').valid && (bankForm.controls['bank'].get('city').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>City required</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input required formControlName="ifsc" placeholder="IFSC Code"-->
+                              <!--[(ngModel)]="user.Bank.bank.IFSC"></md-input>-->
+                    <!--<div *ngIf="!bankForm.controls['bank'].get('ifsc').valid && (bankForm.controls['bank'].get('ifsc').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>IFSC code is incorrect</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+        <!--</div>-->
+        <!--<div formGroupName="account">-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input required formControlName="account_number" placeholder="Bank Account Number"></md-input>-->
+                    <!--<div *ngIf="!bankForm.controls['account'].get('account_number').valid && (bankForm.controls['account'].get('account_number').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Account Number is incorrect</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input required formControlName="confirm_account_number" onpaste="return false"-->
+                              <!--placeholder="Confirm Bank Account Number"></md-input>-->
+                    <!--&lt;!&ndash;<div *ngIf="(!bankForm.controls['account'].get('confirm_account_number').valid || (bankForm.controls['account'].get('confirm_account_number').value != bankForm.controls['account'].get('account_number').value))&ndash;&gt;-->
+                                <!--&lt;!&ndash;&& (bankForm.controls['account'].get('confirm_account_number').touched)"&ndash;&gt;-->
+                         <!--&lt;!&ndash;class="errorMessage">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span>Please confirm your account number</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--<div *ngIf="(!bankForm.controls['account'].get('confirm_account_number').valid)" class="errorMessage">Confirm again</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+        <!--</div>-->
+        <!--<md-grid-list cols="1" rowHeight="50px" class="button-list-margins">-->
+            <!--<md-grid-tile>-->
+                <!--<button md-raised-button color="primary" [disabled]="!bankForm.valid">Save</button>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+    <!--</form>-->
+    <!--&lt;!&ndash;</md-card-content>&ndash;&gt;-->
+    <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
+<!--</section>-->
+
+<!--<section>-->
+    <!--&lt;!&ndash;<md-card _ngcontent-pxi-6>&ndash;&gt;-->
+    <!--<md-toolbar color="lightgray" class="sectiontitle">-->
+        <!--<i [ngClass]="{'material-icons': true, 'md-dark': !othersaved, 'md-inactive': !othersaved, 'blue600': othersaved}">check</i>-->
+        <!--<a (click)="toggleOther()">Other Details</a>-->
+    <!--</md-toolbar>-->
+    <!--&lt;!&ndash;<br/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<md-card-content>&ndash;&gt;-->
+    <!--<form [formGroup]="otherForm" (ngSubmit)="onOtherSubmit()" [hidden]="othercollapsed" novalidate>-->
+        <!--<md-grid-list cols="2" rowHeight="100px">-->
+            <!--<md-grid-tile class="form-group" style="display: block" >-->
+                <!--<label class="field_label">Investor Type</label>-->
+                <!--<md-radio-group required formControlName="investor_type" [(ngModel)]="user.Other.investor_type">-->
+                    <!--<md-radio-button value="Resident Indian">Resident Indian</md-radio-button>-->
+                    <!--<md-radio-button value="NRI">NRI</md-radio-button>-->
+                <!--</md-radio-group>-->
+            <!--</md-grid-tile>-->
+            <!--<md-grid-tile></md-grid-tile>-->
+        <!--</md-grid-list>-->
+        <!--<md-grid-list cols="2" rowHeight="100px">-->
+            <!--<md-grid-tile>-->
+                <!--<label class="field_label">Birth Country</label>-->
+                <!--<select required formControlName="birth_country">-->
+                    <!--<option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>-->
+                <!--</select>-->
+            <!--</md-grid-tile>-->
+            <!--<md-grid-tile> </md-grid-tile>-->
+        <!--</md-grid-list>-->
+        <!--<div formGroupName="overseas_address" *ngIf="user.Other.investor_type=='NRI'">-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" required formControlName="address1" style="margin-left: -5%"-->
+                              <!--placeholder="Address line 1"></md-input>-->
+                    <!--<div *ngIf="!otherForm.controls['overseas_address'].get('address1').valid && (otherForm.controls['overseas_address'].get('address1').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter your communication address</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" formControlName="address2" style="margin-left: -5%"-->
+                              <!--placeholder="Address line 2"></md-input>-->
+                    <!--<div *ngIf="!otherForm.controls['overseas_address'].get('address2').valid && (otherForm.controls['overseas_address'].get('address1').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter your communication address</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input required formControlName="pin" placeholder="Pin Code" (blur)="GetPinDetails()"></md-input>-->
+                    <!--<div *ngIf="!otherForm.controls['overseas_address'].get('pin').valid && (otherForm.controls['overseas_address'].get('pin').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Please enter valid 6 digit Pin Code</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" required formControlName="district" placeholder="District"></md-input>-->
+                    <!--<div *ngIf="!otherForm.controls['overseas_address'].get('district').valid && (otherForm.controls['overseas_address'].get('district').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Required</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+            <!--<md-grid-list cols="2" rowHeight="100px">-->
+                <!--<md-grid-tile>-->
+                    <!--<md-input type="text" required formControlName="state" placeholder="State"></md-input>-->
+                    <!--<div *ngIf="!otherForm.controls['overseas_address'].get('state').valid && (otherForm.controls['overseas_address'].get('state').touched)"-->
+                         <!--class="errorMessage">-->
+                        <!--<span>Required</span>-->
+                    <!--</div>-->
+                <!--</md-grid-tile>-->
+                <!--<md-grid-tile>-->
+                    <!--<label class="field_label">Country</label>-->
+                    <!--<select formControlName="country">-->
+                        <!--<option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>-->
+                    <!--</select>-->
+                <!--</md-grid-tile>-->
+            <!--</md-grid-list>-->
+        <!--</div>-->
+        <!--<md-grid-list cols="1" rowHeight="100px">-->
+            <!--<md-grid-tile class="form-group" style="display: block" >-->
+                <!--<label class="field_label">Tax resident of another country</label>-->
+                <!--<md-radio-group required formControlName="tax_country_india" [(ngModel)]="indiantaxpayer">-->
+                    <!--<md-radio-button value="Yes">Tax resident of India</md-radio-button>-->
+                    <!--<md-radio-button value="No">Tax resident of another Country</md-radio-button>-->
+                <!--</md-radio-group>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+        <!--<md-grid-list cols="1" rowHeight="100px" *ngIf="indiantaxpayer=='No'">-->
+            <!--<md-grid-tile class="form-group" style="display: block">-->
+                <!--<label class="field_label">Tax Country</label>-->
+                <!--<select formControlName="tax_country">-->
+                    <!--<option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>-->
+                <!--</select>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+        <!--<md-grid-list cols="2" rowHeight="100px">-->
+            <!--<md-grid-tile class="form-group" style="display: block">-->
+                <!--<label class="field_label">Politically exposed</label>-->
+                <!--<md-radio-group required formControlName="politically_exposed">-->
+                    <!--<md-radio-button value="Yes">Yes</md-radio-button>-->
+                    <!--<md-radio-button value="No">No</md-radio-button>-->
+                <!--</md-radio-group>-->
+            <!--</md-grid-tile>-->
+            <!--<md-grid-tile class="form-group" style="display: block" >-->
+                <!--<label class="field_label">Politically related</label>-->
+                <!--<md-radio-group required formControlName="politically_related">-->
+                    <!--<md-radio-button value="yes">Yes</md-radio-button>-->
+                    <!--<md-radio-button value="No">No</md-radio-button>-->
+                <!--</md-radio-group>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+        <!--<md-grid-list cols="1" rowHeight="50px" class="button-list-margins">-->
+            <!--<md-grid-tile>-->
+                <!--<button md-raised-button color="primary" [disabled]="!otherForm.valid">Save</button>-->
+            <!--</md-grid-tile>-->
+        <!--</md-grid-list>-->
+    <!--</form>-->
+    <!--&lt;!&ndash;</md-card-content>&ndash;&gt;-->
+    <!--&lt;!&ndash;</md-card>&ndash;&gt;-->
+<!--</section>-->
+
+

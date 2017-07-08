@@ -1,0 +1,33 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {LoginToInvestComponent} from "./logintoinvest.component";
+import {ForgotPasswordComponent} from "./forgot-password.component";
+import {ResetPasswordComponent} from "./reset-password.component";
+
+import {AuthGuard} from "../core/guards/auth.guard";
+import {URLAccessGuard} from "../core/guards/urlAccess.guard";
+
+
+const loginRoutes: Routes = [
+    {
+        path: 'auth',
+        children: [
+            {
+                path: 'password-assistance/forgot',
+                component: ForgotPasswordComponent,
+                canActivate: [URLAccessGuard]
+            },{
+                path: 'password-assistance/reset/:key',
+                component: ResetPasswordComponent
+
+            },{
+                path: ':path',
+                component: LoginToInvestComponent
+            }
+
+        ]
+
+    }
+];
+
+export const loginRouting: ModuleWithProviders = RouterModule.forChild(loginRoutes);

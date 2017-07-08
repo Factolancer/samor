@@ -1,0 +1,78 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Your Watchlist</h1>
+        </div>
+    </section>
+    <section class="grey-back">
+        <div class="row" *ngIf="watchlistProducts.length==0">
+            <div class="col-md-12">
+                <h3 class="center-align">You don't have any funds in Watchlist</h3>
+                <button md-raised-button="" routerLink="/explore/sip" class="center-align">Explore</button>
+            </div>
+        </div>
+        <!--<app-watchlist-view &lt;!&ndash;*ngFor="let item of watchlistProducts"&ndash;&gt; [_product]="watchlistProducts" class="watchlist-product"
+                            &lt;!&ndash;(onFundSelected)="fundSelected($event)" (remove)="removeProduct($event)"&ndash;&gt;>
+        </app-watchlist-view>-->
+
+        <div class="row">
+            <div class="col-md-12">
+                <table>
+                    <thead class="table-header">
+                    <td class=" table-element">Fund</td>
+                    <td class=" table-element">Category</td>
+                    <td class=" table-element">Rating</td>
+                    <td class=" table-element">1yr Returns</td>
+                    <td class="table-element">Risk</td>
+                    <td class=" table-element">AUM</td>
+                    <td class=" table-element">Inception Date</td>
+                    <td class="table-element">Exit Load / Lock-in</td>
+                    <td class=" table-element" *ngIf="!isFincashProduct">Action</td>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let scheme of watchlistProducts" class="table-row" (click)="selectFund(scheme)"
+                        [ngClass]="{'selected-row': isSelected(scheme)}" [class.active]="isSelected(scheme)">
+                        <td class="table-element left-align clickable">
+                            <a routerLink="/factsheet/{{scheme.scheme_id}}">
+                                <md-icon class="material-icons factsheet-icon md-14">&#xE873;</md-icon>
+                                {{scheme.scheme_name}}
+                            </a>
+                        </td>
+                        <td class="table-element">{{scheme.category}}</td>
+                        <td class="table-element"></td>
+                        <td class="table-element">{{scheme.return_1yr}}</td>
+                        <td class="table-element">{{scheme.risk}}</td>
+                        <td class="table-element">{{scheme.aum}}</td>
+                        <td class="table-element">{{scheme.inception}}</td>
+                        <td class="table-element">{{scheme.exit_load}}</td>
+                        <td class="table-element" *ngIf="!isFincashProduct"
+                            (click)="removeFund(scheme.scheme_id)">
+                            <button md-icon-button=""><i class="material-icons">&#xE14C;</i></button><!--Clear icon-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6 pull-right">
+                <button md-raised-button="" class="pull-right" routerLink="/explore/sip">Add Funds
+                </button>
+            </div>
+        </div>
+    </section>
+    <section>
+        <!--<div id="line_chart" [chartData]="annualReturnsLineGraphData" [chartOptions]="annualReturnsLineGraphOptions"
+             chartType="LineChart" GoogleChart>
+        </div>-->
+    </section>
+
+    <section class="data-foot" *ngIf="watchlistProducts.length!=0">
+        <div class="row">
+            <div class="col-md-12">
+                <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                        routerLink="/checkout/init">Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+

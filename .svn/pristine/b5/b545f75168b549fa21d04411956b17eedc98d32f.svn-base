@@ -1,0 +1,9 @@
+export class TransactionFilter {
+
+    public startDate:Date;
+    public endDate:Date;
+    public fundId:number;
+    public transType:number;
+
+    constructor(){}
+}

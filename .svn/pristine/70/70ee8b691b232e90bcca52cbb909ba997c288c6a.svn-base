@@ -1,0 +1,316 @@
+import {Component, Inject, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
+import {Router} from "@angular/router";
+import {MdDialog, MdDialogConfig} from "@angular/material";
+import {Fund} from "../models/fund";
+import {CartService} from "../core/services/cart.service";
+import {InvestmentModeEnum} from "../enum/investment-mode-enum";
+import {ConfirmationDialogComponent} from "../shared/confirmation-dialog.component";
+import {isNullOrUndefined} from "util";
+import {Subscription} from "rxjs/Subscription";
+import {URLAccessGuard} from "../core/guards/urlAccess.guard";
+import {Logger} from "../core/logger/logger";
+import {SnackBarService} from "../core/services/snack-bar.service";
+import {TitleService} from "../core/services/title.service";
+import {Observable} from "rxjs/Observable";
+import {HeaderService} from "../core/services/header.service";
+import {FactsheetService} from "../factsheet/factsheet.service";
+import {BasicFactsheetComponent} from "../factsheet/basic-factsheet.component";
+import {MdDialogRef} from "@angular/material";
+import {TransactionSummary} from "../dashboard/models";
+import {PaymentObject} from "../checkout/models/payment-object";
+import {CurrencyPipe, PlatformLocation} from "@angular/common";
+import {APP_CONFIG, IAppConfig} from "../../environments/environment";
+import {DashboardDataService} from "../core/services/dashboard-data.service";
+import {LoadingDialogComponent} from "../shared/loading-dialog.component";
+import {UtilityService} from "../core/services/utility.service";
+
+@Component({
+    selector: 'app-cart',
+    templateUrl: './cart.component.html',
+    styleUrls: ['./cart.styles.scss']
+})
+export class CartComponent implements OnInit, OnDestroy {
+
+    emptyCartObservable: Observable<boolean>;
+    notemptyCartObservable: Observable<boolean>;
+    cartItems: Fund[];
+    investmentMode = InvestmentModeEnum;
+    cartSubscription: Subscription;
+    className: string;
+    factsheetDialogRef: MdDialogRef<BasicFactsheetComponent>;
+    existingTransactions: TransactionSummary[];
+    loadingDialogRef: any;
+    loadingCloseSubscription: Subscription;
+
+    constructor(private cartService: CartService, private platformLocation: PlatformLocation,
+                private dialog: MdDialog, public factsheetService: FactsheetService,
+                private urlAccessGaurd: URLAccessGuard, private viewContainerRef: ViewContainerRef,
+                @Inject(APP_CONFIG) private config: IAppConfig, private dataService: DashboardDataService,
+                private snackBarService: SnackBarService, private router: Router, private logger: Logger,
+                private titleService: TitleService, private utilityService: UtilityService,
+                private headerService: HeaderService) {
+        this.className = "CartComponent";
+        this.cartItems = [];
+        this.emptyCartObservable = this.cartService.emptyCartSubject.asObservable();
+        this.notemptyCartObservable = this.cartService.notemptyCartSubject.asObservable();
+
+    }
+
+    ngOnInit() {
+        this.cartSubscription = this.cartService.cartObservable.subscribe(cart => {
+            this.cartItems = cart.funds;
+        });
+        this.existingTransactions = [];
+        this.titleService.setTitle("cart");
+        this.titleService.setMetaTags("cart");
+    }
+
+    ngOnDestroy() {
+        if(this.loadingDialogRef){
+            this.loadingCloseSubscription = this.loadingDialogRef.afterClosed().subscribe(value => {
+            });
+            this.closeLoadingDialog();
+        }
+        this.cartSubscription.unsubscribe();
+        if (this.loadingCloseSubscription) {
+            this.loadingCloseSubscription.unsubscribe();
+        }
+    }
+
+    payOrder(transaction: TransactionSummary) {
+        let paymentUrl = this.platformLocation['location'].origin + this.config.paymentFallbackUrl;
+        this.dataService.getPaymentLink(new PaymentObject(+transaction.orderId, paymentUrl)).subscribe(paymentResponse => {
+            let responsePaymentObj = paymentResponse as PaymentObject;
+            this.logger.debug(this.className, responsePaymentObj);
+            this.utilityService.redirectionByWindow(responsePaymentObj.bseUrl);
+        })
+    }
+
+    cancelOrder(transaction: TransactionSummary) {
+
+        this.openOrderCancelConfirmationDialog(transaction.fundName, transaction.dividendFreq, transaction.schemePlan, transaction.dividendOption, transaction.subOrderAmount).subscribe(value => {
+            if (value) {
+                this.showLoadingDialog();
+                this.dataService.cancelOrder(transaction.subOrderId).subscribe(res => {
+                    if (!isNullOrUndefined(res.success) && res.success == true) {
+                        Observable.timer(2000).subscribe(() => {
+                            if(this.loadingDialogRef){
+                                this.loadingCloseSubscription = this.loadingDialogRef.afterClosed().subscribe(value => {
+                                    this.getExistingTransactions();
+                                    this.snackBarService.showSnackBar("Order successfully cancelled", "OKAY", this.viewContainerRef);
+                                });
+                                this.closeLoadingDialog();
+                            }
+                        });
+                    } else {
+                        if(this.loadingDialogRef){
+                            this.loadingCloseSubscription = this.loadingDialogRef.afterClosed().subscribe(value => {
+                                this.snackBarService.showSnackBar("Unable to cancel order", "OKAY", this.viewContainerRef);
+                            });
+                            this.closeLoadingDialog();
+                        }
+                    }
+                })
+            }
+        })
+
+    }
+
+    showLoadingDialog() {
+        let config = new MdDialogConfig();
+        let device = this.headerService.deviceType();
+        if (device === 'xs' || device === 'sm') {
+            config.width = '100%';
+        } else {
+            config.width = '25vw';
+        }
+        config.disableClose = true;
+        config.viewContainerRef = this.viewContainerRef;
+        let loadingConfig = {
+            text: "Processing..."
+        };
+        this.loadingDialogRef = this.dialog.open(LoadingDialogComponent, config);
+        this.loadingDialogRef.componentInstance.config = loadingConfig;
+
+    }
+
+    closeLoadingDialog() {
+        if (this.loadingDialogRef) {
+            this.loadingDialogRef.close();
+        }
+    }
+
+    openOrderCancelConfirmationDialog(fundName: string, dividendFreq: string, schemePlan: string, option: string, amount: number) {
+        let message = "Are you sure you want to cancel the order for ";
+        message += fundName + " - ";
+        message += dividendFreq + " " + schemePlan + " Plan ";
+        message += option + " Option ";
+        message += " for amount " + new CurrencyPipe("en-US").transform(amount, 'INR', true, '1.0-0') + " ?";
+        return this.openDialog("Confirm Cancel", message)
+    }
+
+    openDialog(title?: string, message?: string) {
+        let config = new MdDialogConfig();
+        let device = this.headerService.deviceType();
+        if (device === 'xs' || device === 'sm') {
+            config.width = '100%';
+        } else {
+            config.width = '30vw';
+        }
+        config.disableClose = true;
+        config.viewContainerRef = this.viewContainerRef;
+
+        let confirmationConfig = {
+            confirmationTitle: title,
+            confirmationText: message,
+            confirmationActions: [['Y', "Yes", "hollow-cta-36"], ['N', "No", "hollow-cta-36"]]
+        };
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, config);
+        dialogRef.componentInstance.config = confirmationConfig;
+        return dialogRef.afterClosed().map(result => {
+            if (result[0] == 'Y') {
+                return true
+            } else {
+                return false
+            }
+        });
+
+    }
+
+    removeFund(fund: Fund, index: number) {
+        let updatedList = this.cartItems.filter((item, idx) => idx != index);
+        //this.cartItems = this.cartItems.filter((item, idx) => idx != index);
+        let removeFundObservable = this.cartService.removeFundFromCart(updatedList, true);
+        if (removeFundObservable != null) {
+            removeFundObservable.subscribe(res => {
+                    if (res['success']) {
+                        this.cartItems = updatedList;
+                        this.snackBarService.showSnackBar("Fund successfully deleted from cart!", "Okay", this.viewContainerRef);
+                    } else if (res['message']) {
+                        this.snackBarService.showSnackBar(res['message'], "Okay", this.viewContainerRef);
+                    }
+                }
+            )
+        }
+    }
+
+    validate() {
+        let investmentModeSelected = true;
+        for (let fund of this.cartItems) {
+            if (isNullOrUndefined(fund.investmentMode) || fund.investmentMode.length == 0) {
+                investmentModeSelected = false;
+
+            }
+        }
+        if (!investmentModeSelected) {
+            this.snackBarService.showSnackBar("Please Select Investment Mode", "Okay", this.viewContainerRef);
+        } else {
+
+            let fundIdList = [];
+            for (let fund of this.cartItems) {
+                fundIdList.push(fund.id);
+            }
+            this.cartService.checkDuplicateOrders(fundIdList).subscribe(res => {
+                this.existingTransactions = res as TransactionSummary[];
+                if (this.existingTransactions.length == 0) {
+                    this.headerService.onDemandProgressBar();
+                    this.cartService.updateCartData(this.cartItems).subscribe(result => {
+                        this.logger.debug(this.className, " validate()", ['/checkout/init'], result);
+                        this.headerService.cancelOnDemandProgressBar();
+                        this.urlAccessGaurd.allow = true;
+                        this.router.navigate(['/checkout/init']);
+                        //this.logger.debug(this.className," validate()" , "navigated ", result);
+                    });
+                }
+            });
+
+        }
+    }
+
+    ignoreAndPlaceOrder() {
+        let investmentModeSelected = true;
+        for (let fund of this.cartItems) {
+            if (isNullOrUndefined(fund.investmentMode) || fund.investmentMode.length == 0) {
+                investmentModeSelected = false;
+
+            }
+        }
+        if (!investmentModeSelected) {
+            this.snackBarService.showSnackBar("Please Select Investment Mode", "Okay", this.viewContainerRef);
+        } else {
+            this.headerService.onDemandProgressBar();
+            this.cartService.updateCartData(this.cartItems).subscribe(result => {
+                this.logger.debug(this.className, " validate()", ['/checkout/init'], result);
+                this.headerService.cancelOnDemandProgressBar();
+                this.urlAccessGaurd.allow = true;
+                this.router.navigate(['/checkout/init']);
+                //this.logger.debug(this.className," validate()" , "navigated ", result);
+            });
+        }
+    }
+
+    getExistingTransactions() {
+        let fundIdList = [];
+        for (let fund of this.cartItems) {
+            fundIdList.push(fund.id);
+        }
+        this.cartService.checkDuplicateOrders(fundIdList).subscribe(res => {
+            this.existingTransactions = res as TransactionSummary[];
+        })
+    }
+
+    investmentModeUpdate(fund: Fund, index: number) {
+        //console.log(fund);
+        let fundFoundCount = 0;
+        this.cartItems.forEach(item => {
+            if (item.id == fund.id && item.investmentMode == fund.investmentMode) {
+                fundFoundCount++;
+            }
+        });
+
+        if (fundFoundCount > 1) {
+            let config = new MdDialogConfig();
+            let device = this.headerService.deviceType();
+            if (device === 'xs' || device === 'sm') {
+                config.width = '100%';
+            } else {
+                config.width = '25vw';
+            }
+            config.disableClose = true;
+            config.viewContainerRef = this.viewContainerRef;
+
+            let confirmationConfig = {
+                confirmationTitle: "Attention!",
+                confirmationText: fund.name + " cant't have same investment mode twice, would you like to remove the " + fund.investmentMode + " fund?",
+                confirmationActions: [['Y', "Yes", "hollow-cta-36"], ['N', "No", "hollow-cta-36"]]
+            }
+
+            let dialogRef = this.dialog.open(ConfirmationDialogComponent, config);
+            dialogRef.componentInstance.config = confirmationConfig;
+            dialogRef.afterClosed().subscribe(result => {
+                if (result[0] == 'Y') {
+                    this.removeFund(fund, index);
+                } else {
+                    //toggle back the investment mode
+                    //  console.log(this.cartItems[index].investmentMode);
+                    this.cartItems[index].investmentMode == InvestmentModeEnum[InvestmentModeEnum.SIP] ?
+                        this.cartItems[index].investmentMode = InvestmentModeEnum[InvestmentModeEnum.LUMPSUM] :
+                        this.cartItems[index].investmentMode = InvestmentModeEnum[InvestmentModeEnum.SIP];
+                    //console.log(this.cartItems[index].investmentMode);
+                }
+
+                //console.log(this.cartItems[index]);
+            });
+        }
+    }
+
+    viewFactSheet(fund: Fund) {
+        let config = this.factsheetService.getFactsheetDialogConfig();
+        config.viewContainerRef = this.viewContainerRef;
+        this.factsheetDialogRef = this.dialog.open(BasicFactsheetComponent, config);
+        this.factsheetDialogRef.componentInstance.fund = fund;
+
+    }
+
+
+}

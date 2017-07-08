@@ -1,0 +1,42 @@
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Params} from "@angular/router";
+import {CheckoutService} from "../checkout.service";
+import {disclaimers} from "../../../properties/discalimers";
+import {OrderSummary} from "../models/order-summary";
+import {Logger} from "../../shared/logger/logger";
+import {InvestmentModeEnum} from "../../enum/investment-mode-enum";
+
+@Component({
+    selector: 'app-order',
+    templateUrl: 'order.component.html',
+    styleUrls: ['../checkout.styles.scss']
+})
+export class OrderComponent implements OnInit {
+
+    orderId: string;
+    orderSummary: OrderSummary;
+    disclaimer: string;
+    className: string;
+    investmentMode = InvestmentModeEnum;
+
+    constructor(private checkoutService: CheckoutService, private activatedRoute: ActivatedRoute,
+                private logger: Logger) {
+        this.className = "OrderComponent";
+    }
+
+    ngOnInit() {
+        this.activatedRoute.params.subscribe((params: Params) => {
+            this.orderId = params['orderId'];
+            this.checkoutService.getOrderStatus(this.orderId).subscribe(res => {
+                this.orderSummary = res as OrderSummary;
+                this.logger.debug(this.className, this.orderSummary);
+            });
+        });
+
+        this.disclaimer = `${disclaimers.order}`
+    }
+
+    print() {
+        window.print();
+    }
+}

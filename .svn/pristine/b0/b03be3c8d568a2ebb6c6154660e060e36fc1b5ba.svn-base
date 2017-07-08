@@ -1,0 +1,112 @@
+<div class="my-account" fxLayout="row">
+  <table width="100%" fxFlex="100">
+    <th class="title">My Account</th>
+    <tbody>
+    <tr>
+      <td>
+        <a routerLink="/kyc" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/kyc.svg" fxFlex="20">
+          <span fxFlex="70">KYC</span>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a routerLink="/registration" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/registration.svg" fxFlex="20">
+          <span fxFlex="70">Registration</span>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a routerLink="/myaccount" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/account.svg" fxFlex="20">
+          <span fxFlex="70">My Account</span>
+        </a>
+      </td>
+    </tr>
+    <tr *ngIf="invested">
+      <td>
+        <a routerLink="/report" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/holding-report.svg" fxFlex="20">
+          <span fxFlex="70">Holding Report</span>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a routerLink="/sip" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/bank-account.svg" fxFlex="20">
+          <span fxFlex="70">Bank Account</span>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a routerLink="/invest" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/holding.svg" fxFlex="20">
+          <span fxFlex="70">Invest <i>Now</i></span>
+        </a>
+      </td>
+    </tr>
+    <tr *ngIf="invested">
+      <td>
+        <a routerLink="/redeem" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/redeem.svg" fxFlex="20">
+          <span fxFlex="70" style="border-bottom: none">Redeem Funds</span>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="invested" class="personalised-offers" fxLayout="row">
+  <table width="100%" fxFlex="100">
+    <th class="title">Personalised Offers</th>
+    <tbody>
+    <tr>
+      <td><a routerLink="#" target="_blank" class="links">Invest in TaxSaver</a></td>
+    </tr>
+    <tr>
+      <td><a routerLink="#" target="_blank" class="links">Start a SIP</a></td>
+    </tr>
+    <tr>
+      <td><a routerLink="#" target="_blank" class="links">Save through SavingPlus</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="quick-links" fxLayout="row">
+  <table width="100%" fxFlex="100">
+    <th class="title">Quick Links</th>
+    <tbody>
+    <tr>
+      <td><a routerLink="#" target="_blank" class="links">SIP Calculator</a></td>
+    </tr>
+    <tr>
+      <td><a routerLink="#" target="_blank" class="links">Tax Calculator</a></td>
+    </tr>
+    <tr>
+      <td><a routerLink="#" target="_blank" class="links">Explore Funds</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div *ngIf="invested" class="report" fxLayout="row">
+  <table width="100%" fxFlex="100">
+    <th class="title">Reports</th>
+    <tbody>
+    <tr>
+      <td><a routerLink="#" target="_blank" class="links">Capital Gains</a></td>
+    </tr>
+    <tr>
+      <td><a routerLink="#" target="_blank" class="links">Transaction Report</a></td>
+    </tr>
+    <tr>
+      <td><a routerLink="#" target="_blank" class="links">IRR</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

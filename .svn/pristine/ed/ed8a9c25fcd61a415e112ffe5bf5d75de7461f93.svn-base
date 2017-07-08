@@ -1,0 +1,35 @@
+import {Component, OnInit} from '@angular/core';
+import {SipGoals} from "./goals";
+import {SipCalcGoal} from "./sip-calc-goal";
+import {Router, ActivatedRoute} from "@angular/router";
+
+@Component({
+    selector: 'app-sip-calc',
+    templateUrl: './sip-calc.component.html',
+    styleUrls: ['./sip-calc.styles.scss']
+})
+export class SipCalcComponent implements OnInit {
+
+    showGoals: boolean;
+    sipGoals: any;
+    calculatorTitle: string;
+
+    constructor(private router: Router, private route: ActivatedRoute) {
+    }
+
+
+    ngOnInit() {
+        this.showGoals = false;
+        this.sipGoals = SipGoals;
+        this.calculatorTitle = "Systematic Investment Plan (SIP) Calculator";
+    }
+
+    selectGoal(goal: SipCalcGoal) {
+        this.router.navigate(['questions', goal.id], {relativeTo: this.route});
+    }
+
+    showGoalOptions() {
+        this.calculatorTitle = "What is your Goal to Invest in SIP?";
+        this.showGoals = true;
+    }
+}

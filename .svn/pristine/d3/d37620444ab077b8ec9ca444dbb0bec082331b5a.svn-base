@@ -1,0 +1,133 @@
+<div fxHide.gt-sm="true" fxLayoutAlign.lt-md="space-around start" fxLayout.sm="column" class="center-align">
+    <div fxFlex>
+        <div md-menu-item class="center-align txt-13" (click)="showmyacc = !showmyacc"><i class="material-icons">account_box</i>
+            <md-icon class="md-16" [ngClass]="{'rotate':showmyacc}">&#xE313;</md-icon>
+        </div>
+        <div class="my-account-m" [@toggleCollapse]="showmyacc?'expand':'collapse'">
+            <p><a (click)="goTo('registration/kyc')" class="links" fxFlexLayout="row" fxLayoutAlign="center">KYC/Registration</a>
+            </p>
+            <p><a *ngIf="showEkycLink" (click)="goTo('registration/kyc/aadhar')" class="links" fxFlexLayout="row"
+                  fxLayoutAlign="center">
+                <span fxFlex="70">Proceed with eKYC
+            <md-icon class="md-12"
+                     mdTooltip="eKYC has investment limit of 50,000 p.a. per AMC">
+            &#xE88E;</md-icon>
+          </span>
+            </a></p>
+            <p><a *ngIf="invested" (click)="goTo('dashboard/report/1')" class="links" fxFlexLayout="row"
+                  fxLayoutAlign="center">Holding Report</a>
+            <p>
+            <p><a (click)="goTo('products')" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+                <span>Invest <i>Now</i></span>
+            </a></p>
+        </div>
+    </div>
+    <div fxFlex>
+        <div md-menu-item class="center-align txt-13" (click)="showql = !showql"><i class="material-icons">&#xE157;</i>
+            <md-icon class="md-16" [ngClass]="{'rotate':showql}">&#xE313;</md-icon>
+        </div>
+        <div class="quick-links-m" [@toggleCollapse]="showql?'expand':'collapse'">
+            <p><a (click)="goTo('/calculator/sip')" class="links">SIP Calculator</a></p>
+            <p><a (click)="goTo('/calculator/tax')" class="links">Tax Calculator</a></p>
+            <p><a (click)="goTo('/explore')" class="links">Explore Funds</a></p>
+        </div>
+    </div>
+    <div fxFlex *ngIf="invested">
+        <div md-menu-item class="center-align txt-13" (click)="showrep = !showrep"><i
+                class="material-icons">&#xE8B0;</i>
+            <md-icon class="md-16" [ngClass]="{'rotate':showrep}">&#xE313;</md-icon>
+        </div>
+        <div class="report-m" [@toggleCollapse]="showrep?'expand':'collapse'">
+            <p><a (click)="goTo('dashboard/report/3')" class="links">Capital Gains</a></p>
+            <p><a (click)="goTo('dashboard/report/2')" class="links">Transaction Report</a></p>
+            <p><a (click)="goTo('dashboard/report/5')" class="links">IRR</a></p>
+        </div>
+    </div>
+
+</div>
+
+<span fxHide.lt-md="true">
+    <div class="my-account" fxLayout="row">
+  <table width="100%" fxFlex="100">
+    <th class="highlight">My Account</th>
+    <tbody>
+    <tr>
+      <td>
+        <a (click)="goTo('registration/kyc')" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/kyc.svg" fxFlex="20">
+          <span fxFlex="70">KYC/Registration</span>
+        </a>
+      </td>
+    </tr>
+    <tr *ngIf="showEkycLink">
+      <td>
+        <a (click)="goTo('registration/kyc/aadhar')" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/holding-report.svg" fxFlex="20">
+          <span fxFlex="70">Proceed with eKYC
+            <md-icon class="md-12"
+                     mdTooltip="eKYC has investment limit of 50,000 p.a. per AMC">
+            &#xE88E;</md-icon>
+          </span>
+        </a>
+      </td>
+    </tr>
+    <tr *ngIf="invested">
+      <td>
+        <a (click)="goTo('dashboard/report/1')" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/holding-report.svg" fxFlex="20">
+          <span fxFlex="70">Holding Report</span>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a (click)="goTo('products')" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/invest.svg" fxFlex="20">
+          <span fxFlex="70">Invest <i>Now</i></span>
+        </a>
+      </td>
+    </tr>
+    <!-- <tr *ngIf="invested">
+       <td>
+         <a (click)="goTo('redeem-funds')" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+           <img src="../../../assets/img/dashboard/navigation-panel/redeem.svg" fxFlex="20">
+           <span fxFlex="70">Redeem Funds</span>
+         </a>
+       </td>
+     </tr>-->
+    </tbody>
+  </table>
+</div>
+    <div class="quick-links" fxLayout="row">
+      <table width="100%" fxFlex="100">
+        <th class="highlight">Quick Links</th>
+        <tbody>
+        <tr>
+          <td><a (click)="goTo('/calculator/sip')" class="links">SIP Calculator</a></td>
+        </tr>
+        <tr>
+          <td><a (click)="goTo('/calculator/tax')" class="links">Tax Calculator</a></td>
+        </tr>
+        <tr>
+          <td><a (click)="goTo('/explore')" class="links">Explore Funds</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="invested" class="report" fxLayout="row">
+      <table width="100%" fxFlex="100">
+        <th class="highlight">Reports</th>
+        <tbody>
+        <tr>
+          <td><a (click)="goTo('dashboard/report/3')" class="links">Capital Gains</a></td>
+        </tr>
+        <tr>
+          <td><a (click)="goTo('dashboard/report/2')" class="links">Transaction Report</a> </td>
+        </tr>
+        <tr>
+          <td><a (click)="goTo('dashboard/report/5')" class="links">IRR</a> </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+</span>

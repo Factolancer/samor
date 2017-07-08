@@ -1,0 +1,29 @@
+import {Component, OnInit, trigger, state, style, transition, animate} from '@angular/core';
+
+@Component({
+  selector: 'app-demoa',
+  templateUrl: 'demoa.component.html',
+  styleUrls: ['../cash.styles.scss'],
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({transform: 'translateX(0)'})),
+      transition('void => *', [
+        style({transform: 'translateX(-100%)'}),
+        animate(100)
+      ]),
+      transition('* => void', [
+        animate(100, style({transform: 'translateX(100%)'}))
+      ])
+    ])
+  ]
+})
+export class DemoaComponent implements OnInit {
+
+  mystate = 'out';
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

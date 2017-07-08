@@ -1,0 +1,88 @@
+<div fxLayout="row" fxLayoutAlign="center" class="mar-t-60">
+    <div fxFlex="40">
+
+        <div *ngIf=canAccess class="forgot-pass-container">
+
+            <div *ngIf=!passChanged fxLayout="row" fxLayoutAlign="center center" class="forgot-pass-header">
+                Reset Password
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center" class="forgot-pass-text">
+                <div fxFlex="100">
+                    <span *ngIf=!passChanged> User: {{userDetails.email}}</span>
+                    <span *ngIf=passChanged> Congrats!</span>
+                </div>
+            </div>
+
+            <div *ngIf=!passChanged fxLayout="row" fxLayoutAlign="center center" class="forgot-pass-content"
+                 [ngClass]="{flipOut:emailSent}">
+                <div fxFlex="70" fxAlign="center">
+
+                    <form [formGroup]="resetPasswordForm" (ngSubmit)="onResetPassword()" fxFlex="90" fxFlexOffset="5">
+
+                        <div formGroupName="password" fxLayout="row" fxLayoutWrap="wrap">
+                            <div fxFlex="40"><p>New Password</p></div>
+                            <md-input-container fxFlex="60">
+                                <input mdInput required type={{typePass}} formControlName="enter_password"
+                                       placeholder="Password" #signUpPass>
+                                <span class="clickable showPass" md-suffix
+                                      (click)="typePass = typePass =='password'?'text':'password'">
+                                    <i class="material-icons">remove_red_eye</i>
+                                </span>
+                                <md-hint align="end" class="error"
+                                         *ngIf="(resetPasswordForm.controls['password']['controls']['enter_password'].touched|| resetPassSubmitted)&&resetPasswordForm.controls['password']['controls']['enter_password'].invalid">
+                                    <span *ngIf="resetPasswordForm.controls['password']['controls']['enter_password'].value.length==0">Password is required</span>
+                                    <span *ngIf="resetPasswordForm.controls['password']['controls']['enter_password'].hasError('minlength') || resetPasswordForm.controls['password']['controls']['enter_password'].hasError('maxlength')">Password length should be 8-20</span>
+                                </md-hint>
+                            </md-input-container>
+                            <div fxFlex="40"><p>Reset Password</p></div>
+                            <md-input-container fxFlex="60">
+                                <input mdInput required type="password" formControlName="confirm_password"
+                                       placeholder="Confirm Password"
+                                       onpaste="return false">
+                                <md-hint align="end" class="error"
+                                         *ngIf="resetPasswordForm.controls['password'].invalid">
+                                                    <span *ngIf="(resetPasswordForm.controls['password']['controls']['confirm_password'].valid ||resetPassSubmitted) && resetPasswordForm.controls['password']['controls']['enter_password'].valid
+                                                    &&resetPasswordForm.controls['password'].invalid">
+                                                        Passwords don't match </span>
+                                </md-hint>
+
+                            </md-input-container>
+                        </div>
+                        <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="end">
+
+                            <div fxFlex="60" class="left-align">
+                                <button md-raised-button color="primary" class="reset-pass-button"
+                                        [ngClass]="{'resLoading':resLoading}" [disabled]=resLoading
+                                        (click)="validateResetPass(resetPasswordForm.valid)">
+                                    <span [ngClass]="{'vis-hidden':resLoading}">Save</span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <div *ngIf=passChanged class="email-sent-container" fxLayout="column" fxLayoutAlign="center">
+                <img src="../../assets/img/ringing-bell.svg">
+                <p align="center">
+                    <span><i class="material-icons success">check</i></span>
+                    <span class="message">Your  password has been reset <span
+                            class="colr-bs">successfully!</span></span>
+                </p>
+            </div>
+        </div>
+
+
+        <div *ngIf=!canAccess class="warning-box" fxLayoutAlign="center center" fxLayoutWrap="wrap">
+            <div fxFlex="100">
+                <p class="message">{{warningMsg}}</p>
+            </div>
+            <p fxFlex="100">Please
+                <a fxFlex="20" class="hollow-cta-36" md-button="" (click)="regenerateLink()">click here</a>
+                to reset your password.
+            </p>
+        </div>
+
+    </div>
+</div>

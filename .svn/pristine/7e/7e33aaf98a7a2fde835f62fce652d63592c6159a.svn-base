@@ -1,0 +1,27 @@
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {Router} from "@angular/router";
+
+import {DashboardDataService} from "../dashboard-data.service";
+import {LoginService} from "../../login/login.service";
+
+@Component({
+  selector: 'app-navigation-panel',
+  templateUrl: './navigation-panel.component.html',
+  styleUrls: ['./navigation-panel.component.scss'],
+  providers: [DashboardDataService, LoginService]
+})
+export class NavigationPanelComponent implements OnInit {
+  invested:boolean;
+    result: any
+  constructor(public router: Router, public dataService: DashboardDataService, public loginService: LoginService, private viewContainerRef: ViewContainerRef) { }
+
+  ngOnInit() {
+    this.ifInvested();
+  }
+  ifInvested(){
+      this.invested  = this.dataService.hasInvested();
+  }
+  goTo(link){
+     this.router.navigateByUrl(link);
+  }
+}

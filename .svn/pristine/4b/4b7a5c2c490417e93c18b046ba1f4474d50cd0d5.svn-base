@@ -1,0 +1,47 @@
+import {SipCalcGoal} from "./sip-calc-goal";
+
+export const SipGoals: SipCalcGoal[] = [
+    <SipCalcGoal> {
+        id: 1,
+        name: "Retirement Planning",
+        imagePath: "public/images/sip/calc/retirement.png",
+        goalParagraph: `I am planning for retirement. My current age is _.I am planning to retire at _, my life expectancy is _ and my regular expenses are _ currently.I am expecting average long term inflation rate as _.And long term growth rate in the equity market would be _.`
+    },
+    <SipCalcGoal> {
+        id: 2,
+        name: "Higher Education of child",
+        imagePath: "public/images/sip/calc/education.png",
+        goalParagraph: `I am planning for higher education of my child _. S/he has _ to go for it.The expenses required for this is _.I am expecting average long term inflation rate as _. And long term growth rate in the equity market would be _.`
+    },
+    <SipCalcGoal> {
+        id: 3,
+        name: "Marriage of a child",
+        imagePath: "public/images/sip/calc/marriage.png",
+        goalParagraph: `I am planning for marriage of my child _. S/he has _ left for it. The expenses required for this is _.I am expecting average long term inflation rate as _. And long term growth rate in the equity market would be _.`
+    },
+    <SipCalcGoal> {
+        id: 4,
+        name: "Buying a house",
+        imagePath: "public/images/sip/calc/house.png",
+        goalParagraph: `I am planning to buy a house after _. The expenses required for this is _. I am expecting average long term inflation rate as _. And long term growth rate in the equity market would be _.`
+    },
+    <SipCalcGoal> {
+        id: 5,
+        name: "Buying a car",
+        imagePath: "public/images/sip/calc/car.png",
+        goalParagraph: `I am planning to buy a car after _. The expenses required for this is _. I am expecting average long term inflation rate as _. And long term growth rate in the equity market would be _.`
+    },
+    <SipCalcGoal> {
+        id: 6,
+        name: "Any Other",
+        imagePath: "public/images/sip/calc/other.png",
+        goalParagraph: `I am planning for a financial goal _. The expenses required for this is _. I am expecting average long term inflation rate as _. And long term growth rate in the equity market would be _`
+    },
+];
+
+export const CheckReturns: SipCalcGoal = <SipCalcGoal> {
+    id: 1,
+    name: "checkReturns",
+    imagePath: "public/images/sip/calc/returns.png",
+    goalParagraph: "I want to invest _ per month for SIP. My investment plan is for _. I am expecting a long term inflation rate _. And long term growth rate in the equity market would be _."
+};

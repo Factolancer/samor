@@ -1,0 +1,39 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {ReturnsBasedComponent} from "./returns-based.component";
+import {GoalBasedComponent} from "./goal-based.component";
+import {SipCalcGoalComponent} from "./sip-calc-goal.component";
+import {SipCalcComponent} from "./sip-calc.component";
+
+
+const sipCalculatorRoutes: Routes = [
+    {
+        path: 'sip',
+        children: [
+            {
+                path: 'returns',
+                component: ReturnsBasedComponent
+            },
+            {
+                path: 'goals',
+                children: [
+                    {
+                        path: 'questions/:id',
+                        component: GoalBasedComponent
+                    },
+                    {
+                        path: '',
+                        component: SipCalcGoalComponent
+                    }
+                ]
+            },
+            {
+                path: '',
+                component: SipCalcComponent,
+            }
+        ]
+    },
+];
+
+export const sipCalculatorRouting: ModuleWithProviders = RouterModule.forChild(sipCalculatorRoutes);
+

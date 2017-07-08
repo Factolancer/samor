@@ -1,0 +1,27 @@
+import {Component, OnInit, OnDestroy} from '@angular/core';
+
+@Component({
+  selector: 'fincash-footer',
+  templateUrl: './footer.component.html',
+  styleUrls: ['./footer.component.scss']
+})
+export class FooterComponent implements OnInit, OnDestroy {
+
+  copyYear : string;
+  contact:string;
+  supEmail:string;
+  constructor() {
+    this.copyYear = new Date().getFullYear()+'';
+    this.contact = '022-813456543';
+    this.supEmail = 'support@fincash.com'
+  }
+
+  ngOnInit() {
+
+  }
+
+  ngOnDestroy(){
+
+  }
+
+}

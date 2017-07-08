@@ -1,0 +1,60 @@
+@import "../../styles/partials/web-partials";
+
+.sal-box{background-color: rgba(83, 173, 208, 0.77);
+  position: relative;
+  height:450px;
+  letter-spacing: 0.5px;
+  .mainTxt{color:#ffffff; font-size:30px;font-weight: 500;}
+  .secTxt{color:#ffffff; font-size: 20px;font-weight: 300;}
+}
+.about-us-container{
+  background-color: #f2f2f2;
+  img{max-width: 100%;
+    transition: 3s all;
+    &:hover{ transform: translateY(5px);}}
+}
+.founder-container{
+  background-color: $white;
+  img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    transition: 0.55s all;
+    &:hover{ transform: translateX(5px)}
+  }
+}
+.team-container{
+  background-color: #f2f2f2;
+
+  .member{
+    height: 350px;
+    /*background:url('../../assets/img/team/dummy-profile.jpg');*/
+    /*background-size:100% 100%;*/
+
+    .details{
+      opacity: 0.79;
+      background-color: #1b455f;
+      .name{color: white;}
+      .role{color: #459bff;}
+      transition: 0.55s all;
+      height: 80px;
+      overflow-y:hidden;
+      &:hover{ transform: translateY(10px);height: 150px;}
+    }
+  }
+
+}
+
+
+
+
+
+
+.title{color: $dark-grey; padding-bottom: 5px;font-weight: 400;}
+.text{
+  color:$dark-grey;line-height: 25px;
+}
+.bb-1{
+  border-bottom: 1px solid $dark-grey;
+}
+.h-line-white{height: 1px;background-color: $white}

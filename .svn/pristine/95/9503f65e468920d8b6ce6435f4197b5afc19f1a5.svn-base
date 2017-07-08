@@ -1,0 +1,63 @@
+import {Component, OnInit, OnDestroy, ViewContainerRef, Inject} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {SnackBarService} from "../services/snack-bar.service";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+
+@Component({
+    selector: 'fincash-footer',
+    templateUrl: './footer.component.html',
+    styleUrls: ['./footer.component.scss']
+})
+export class FooterComponent implements OnInit, OnDestroy {
+
+    copyYear: string;
+    contact: string;
+    supEmail: string;
+    addressMapLink: any;
+
+    socialLinks: Array<any> = [];
+
+    constructor(private viewContainerRef: ViewContainerRef, private httpService: HttpService, private snackBarService: SnackBarService,
+                @Inject(APP_CONFIG) private config: IAppConfig) {
+        this.copyYear = new Date().getFullYear() + '';
+        this.contact = '022-813456543';
+        this.supEmail = 'support[at]fincash[dot]com';
+        this.addressMapLink = 'https://www.google.co.in/maps/place/Fincash.com/@19.114247,73.0117153,17z/data=!3m1!4b1!4m5!3m4!1s0x3be7c0c3ccb41bd7:0xaced9317ab9d35e9!8m2!3d19.114247!4d73.013904';
+        this.socialLinks = [{
+            'image': this.config.staticImagePath + '/assets/img/social-icons/linkedin-white-logo.svg',
+            'link': 'https://www.linkedin.com/company/fincash.com',
+            'alt': 'linkedin_logo'
+        }, {
+            'image': this.config.staticImagePath + '/assets/img/social-icons/facebook-white-logo.svg',
+            'link': 'https://www.facebook.com/fincash.in',
+            'alt': 'facebook_logo'
+        }, {
+            'image': this.config.staticImagePath + '/assets/img/social-icons/twitter-white-logo.svg',
+            'link': 'https://twitter.com/TheFincash',
+            'alt': 'twitter_logo'
+        }, {
+            'image': this.config.staticImagePath + '/assets/img/social-icons/quora-white-logo.svg',
+            'link':'https://www.quora.com/topic/Fincash-com',
+            'alt': 'quora_logo'
+        }
+
+        ];
+
+
+    }
+
+    ngOnInit() {
+        this.httpService.httpErrorObservable.subscribe(error => {
+            this.snackBarService.showSnackBar("PLEASE TRY AGAIN", "OKAY", this.viewContainerRef);
+        });
+
+        this.snackBarService.guardMessageObservable.subscribe(msg => {
+            this.snackBarService.showIndefiniteSnackBar(msg, "CLOSE", this.viewContainerRef);
+        })
+    }
+
+    ngOnDestroy() {
+
+    }
+
+}

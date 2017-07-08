@@ -1,0 +1,23 @@
+/**
+ * Created by Fincash on 22-02-2017.
+ */
+import {NgModule} from '@angular/core';
+import {SharedModule} from "../shared/shared.module";
+
+import {productgpageRouting} from "./product.routes";
+import {ProductComponent} from "./product.component";
+import {ProductSolutionComponent} from "./product-solution.component";
+
+
+
+
+@NgModule({
+    imports: [
+        SharedModule,
+        productgpageRouting
+    ],
+    declarations: [ProductComponent, ProductSolutionComponent],
+    exports:[ProductSolutionComponent]
+})
+export class ProductModule {
+}

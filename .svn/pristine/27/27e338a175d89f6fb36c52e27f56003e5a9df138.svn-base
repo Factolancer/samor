@@ -1,0 +1,23 @@
+import {Component, OnInit} from "@angular/core";
+
+
+@Component({
+
+    selector: 'expert-sip',
+    templateUrl: 'expert.component.html',
+    styleUrls: ['expert.component.css', '../../app.component.css', '../sip.component.css'],
+})
+export class ExpertComponent implements OnInit {
+
+
+    constructor() {
+    }
+
+
+    ngOnInit() {
+
+
+    }
+
+
+}

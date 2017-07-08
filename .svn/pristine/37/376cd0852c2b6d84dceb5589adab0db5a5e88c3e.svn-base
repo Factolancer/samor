@@ -1,0 +1,110 @@
+/**
+ * Created by Fincash on 01-03-2017.
+ */
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {FormBuilder, FormGroup, Validators, AbstractControl} from "@angular/forms";
+import {HttpService} from "../core/services/http-service.service";
+import {Logger} from "../core/logger/logger";
+import {LoginService} from "../core/services/login.service";
+import {ActivatedRoute, Router, Params} from "@angular/router";
+import {Subscription} from "rxjs";
+
+function passwordValidator(c: AbstractControl) {
+    return c.get('confirm_password').value === c.get('enter_password').value
+        ? null : {'mismatch': true};
+}
+
+@Component({
+    selector: 'app-reset-pass',
+    templateUrl: './reset-password.component.html',
+    styleUrls: ['./password.component.scss']
+})
+
+export class ResetPasswordComponent implements OnInit, OnDestroy {
+
+    key:any;
+    resetPassSub: Subscription;
+    resetPasswordForm: FormGroup;
+    resetPassSubmitted:boolean;
+    typePass:string;
+    passChanged:boolean = false;
+    warningMsg :string ;
+    resLoading :boolean;
+    canAccess:boolean;
+
+    constructor(public viewContainerRef:ViewContainerRef,
+                private http: HttpService, private fb: FormBuilder, private logger:Logger,
+    private route: ActivatedRoute) {
+        this.route.params.subscribe((params: Params) =>{
+            this.key = params.key;
+        })
+        this.typePass = "password";
+        this.passChanged = false;
+        this.canAccess= this.resLoading = false;
+    }
+
+
+    userDetails:any = [];
+
+    ngOnInit() {
+        if(this.key && this.key.length>0){
+            this.canAccess = true;
+        this.http.upost('/getMailKeyValidity',{key:this.key}).subscribe(
+            res=>{
+                this.logger.info(res);
+                    if (res.success){
+                        this.userDetails.email = res.username;
+                    } else {
+                        this.warningMsg = 'This link is expired!';
+                        this.canAccess = false;
+                    }
+            },
+            err=>{
+                this.logger.error(err);
+            }
+        )
+        } else{
+            this.warningMsg = 'You are not authorised to access this page!';
+            this.canAccess = false;
+        }
+
+        this.resetPasswordForm = this.fb.group({
+            password: this.fb.group({
+                enter_password: ['', Validators.compose([Validators.required])],
+                confirm_password: ['', Validators.compose([])]
+            }, {validator: Validators.compose([passwordValidator])})
+        })
+    }
+    validateResetPass(isValid){
+        if(!isValid){
+            this.resetPassSubmitted = true;
+        }
+        return isValid;
+    }
+    onResetPassword(){
+        this.resLoading =  true;
+        let userData = this.resetPasswordForm.value;
+        this.logger.info(userData.password.confirm_password);
+        let password = userData.password.confirm_password;
+        let key = this.key || '';
+        this.resetPassSub = this.http.upost('/resetPassword',
+            {'password': password, 'key': key, 'email':this.userDetails.email}).subscribe(res=>{
+                this.resLoading =  false;
+                if(res.success && res.success == true) {
+                this.passChanged = true;
+            }
+             this.logger.info("password change status", res);
+        },
+        err =>{
+            this.resLoading =  false;
+            this.logger.error("error updating password", err);
+        })
+    }
+
+    ngOnDestroy(){
+        if(this.resetPassSub){
+            this.resetPassSub.unsubscribe();
+        }
+
+    }
+}

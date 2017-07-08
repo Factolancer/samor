@@ -1,0 +1,25 @@
+import {Injectable} from "@angular/core";
+import {Router, Resolve, ActivatedRouteSnapshot} from "@angular/router";
+import {Observable} from "rxjs";
+import {Checkout} from "./checkout";
+import {CheckoutService} from "./checkout.service";
+import {Summary} from "./summary";
+
+
+@Injectable()
+export class SummaryResolveService implements Resolve<boolean | Summary> {
+    constructor(private router: Router, private checkoutService: CheckoutService) {
+    }
+
+    resolve(route: ActivatedRouteSnapshot): Observable<boolean | Summary> {
+
+        return this.checkoutService.getSummaryData().map(output => {
+            if (output) {
+                return output as Summary;
+            } else {
+                this.router.navigate(['/login']);
+                return false;
+            }
+        });
+    }
+}

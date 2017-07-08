@@ -1,0 +1,88 @@
+import {Component, ViewContainerRef, OnInit, OnDestroy, Inject} from "@angular/core";
+import {Http} from "@angular/http";
+import {JwtHelper} from "angular2-jwt";
+import {MdDialog} from "@angular/material";
+import {LoginService} from "./login/login.service";
+import {Router, NavigationEnd} from "@angular/router";
+import {Subscription} from "rxjs";
+import {APP_CONFIG, IAppConfig} from "../environments/environment";
+
+
+@Component({
+    selector: 'fincash-app',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    providers: [JwtHelper]
+})
+export class AppComponent implements OnInit, OnDestroy {
+
+    // logInDialogRef: MdDialogRef<LoginComponent>;
+    result: any
+    routerChangeSubscription: Subscription;
+
+    public constructor(public http: Http, private viewContainerRef: ViewContainerRef, public dialog: MdDialog,
+                       public loginService: LoginService, public jwtHelper: JwtHelper, private router: Router,
+                       @Inject(APP_CONFIG) private config: IAppConfig) {
+    }
+
+    logUserIn() {
+        this.router.navigate(['/login'])
+        // this.loginService
+        //     .loginUser(this.viewContainerRef)
+        //     .subscribe(res => {
+        //             this.result = res;
+        //         },
+        //         error => {
+        //             console.log(error)
+        //         });
+    }
+
+    /*signUserUp() {
+        this.loginService
+            .signUpUser(this.viewContainerRef)
+            .subscribe(res => {
+                    this.result = res;
+                },
+                error => {
+                    console.log(error);
+                })
+    }*/
+
+    logUserOut() {
+        this.loginService
+            .logOutUser()
+    }
+
+    userLoggedIn() {
+        // console.log("Checking status");
+        let token = localStorage.getItem(this.config.localStoragePrefix+'id_token');
+        if (token === "null" || token === "undefined" || token == null)
+            return false;
+        else {
+            let decoded = this.jwtHelper.decodeToken(token);
+            if (!decoded.username.includes("Anonymous")) {
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+
+    ngOnInit() {
+        this.routerChangeSubscription = this.router.events.subscribe((evt) => {
+            if (!(evt instanceof NavigationEnd)) {
+                return;
+            }
+            document.body.scrollTop = 0;
+        });
+    }
+
+    ngOnDestroy() {
+        this.routerChangeSubscription.unsubscribe();
+    }
+
+
+}
+
+
+

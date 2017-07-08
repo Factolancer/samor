@@ -1,0 +1,226 @@
+<!--<div class="col-md-6 col-md-offset-3">-->
+<!--<div>-->
+<!--<md-grid-list cols="2" rowHeight="80px">-->
+<!--<md-grid-tile [colspan]="2">-->
+<!--Product Details >> Fund Selection >> Investment Portfolio >> Summary & Checkout-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile [colspan]="2" class="screenheading">-->
+<!--Increase your bank balance by investing in SavingsPlus-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="2">-->
+<!--<md-card>-->
+<!--<md-card-content>-->
+<!--<table>-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th>S.No.</th>-->
+<!--<th>Fund</th>-->
+<!--<th>1 month return(%)</th>-->
+<!--<th>3 month return(%)</th>-->
+<!--<th>1 year return(%)</th>-->
+<!--<th>Fund Age</th>-->
+<!--<th>Risk</th>-->
+<!--<th>AUM(Cr.)</th>-->
+<!--<th>Min. Investment</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody>-->
+<!--<tr>-->
+<!--<td>1</td>-->
+<!--<td>Reliance Money Manager Fund</td>-->
+<!--<td>0.83</td>-->
+<!--<td>2.37</td>-->
+<!--<td>8.65</td>-->
+<!--<td>9 years</td>-->
+<!--<td>Low</td>-->
+<!--<td>15,382</td>-->
+<!--<td>500</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</md-card-content>-->
+<!--</md-card>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="2">-->
+<!--&lt;!&ndash;<md-card style="display: inline">&ndash;&gt;-->
+<!--&lt;!&ndash;<md-card-content>&ndash;&gt;-->
+<!--<table style="text-align: center; background-color: #0081c9; color: white; margin-top: 10px">-->
+<!--<tr style="background-color: #0081c9">-->
+<!--<td><i class="material-icons">trending_up</i>Higher real returns as compared to savings and deposits</td>-->
+<!--<td><i class="material-icons">update</i>Instant Redemption</td>-->
+<!--<td><i class="material-icons">lock_open</i>No lock-in & Exit load</td>-->
+<!--<td><i class="material-icons">check_box</i>Invest & redeem at a click!</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--&lt;!&ndash;</md-card-content>&ndash;&gt;-->
+<!--&lt;!&ndash;</md-card>&ndash;&gt;-->
+<!--</md-grid-tile>-->
+<!--</md-grid-list>-->
+<!--</div>-->
+<!--</div>-->
+
+<div class="row col-sm-10 col-sm-offset-1">
+    <app-savings-plus-card class="col-sm-12" [funds]="savingsPlusFunds"></app-savings-plus-card>
+    <div class="col-sm-12">
+        <md-card class="cash-fund-card">
+            <md-card-content class="center-align">
+                <div class="col-sm-3 no-padding">
+                    <div class="col-sm-2">
+                        <div class="white-circle">
+                            <i class="material-icons md-brand-secondary">trending_up</i>
+                        </div>
+                    </div>
+                    <div class="col-sm-10">
+                        Higher returns as compared to Savings and Deposits
+                    </div>
+                </div>
+
+                <div class="col-sm-3 no-padding">
+                    <div class="col-sm-2">
+                        <div class="white-circle">
+                            <i class="material-icons md-brand-secondary">update</i>
+                        </div>
+                    </div>
+                    <div class="col-sm-10">
+                        Same day redemption
+                    </div>
+                </div>
+
+                <div class="col-sm-3 no-padding">
+                    <div class="col-sm-2">
+                        <div class="white-circle">
+                            <i class="material-icons md-brand-secondary">lock_open</i>
+                        </div>
+                    </div>
+                    <div class="col-sm-10">
+                        No lock-in or exit load
+                    </div>
+                </div>
+
+                <div class="col-sm-3 no-padding">
+                    <div class="col-sm-2">
+                        <div class="white-circle">
+                            <i class="material-icons md-brand-secondary">check_box</i>
+                        </div>
+                    </div>
+                    <div class="col-sm-10">
+                        Invest and redeem on a click!
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
+<br/>
+<div class="row col-sm-10 col-sm-offset-1">
+
+</div>
+
+
+<!--<div class="col-sm-12">-->
+    <!--<md-card class="cash-fund-card">-->
+        <!--<md-card-content>-->
+            <!--<table>-->
+                <!--<tr>-->
+                    <!--<td>-->
+                        <!--<div class="white-circle">-->
+                            <!--<i class="material-icons">trending_up</i>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--Higher returns as compared to Savings and Deposits &nbsp;-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<div class="white-circle">-->
+                            <!--<i class="material-icons">update</i>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--Same day Redemption &nbsp;-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<div class="white-circle">-->
+                            <!--<i class="material-icons">lock_open</i>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--No lock-in or exit load &nbsp;-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<div class="white-circle">-->
+                            <!--<i class="material-icons">check_box</i>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--Invest and redeem on a click!-->
+                    <!--</td>-->
+                <!--</tr>-->
+            <!--</table>-->
+            <!--&lt;!&ndash;<div class="white-circle">&ndash;&gt;-->
+            <!--&lt;!&ndash;<i class="material-icons">trending_up</i>&ndash;&gt;-->
+            <!--&lt;!&ndash;Higher returns as compared to Savings and Deposits&ndash;&gt;-->
+            <!--&lt;!&ndash;<i class="material-icons">update</i>&ndash;&gt;-->
+            <!--&lt;!&ndash;<i class="material-icons">lock_open</i>&ndash;&gt;-->
+            <!--&lt;!&ndash;<i class="material-icons">check_box</i>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div>&ndash;&gt;-->
+            <!--&lt;!&ndash;Higher returns as compared to Savings and Deposits&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+            <!--&lt;!&ndash;<div class="white-circle">&ndash;&gt;-->
+            <!--&lt;!&ndash;<i class="material-icons">update</i>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+            <!--&lt;!&ndash;<div class="white-circle">&ndash;&gt;-->
+            <!--&lt;!&ndash;<i class="material-icons">lock_open</i>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+            <!--&lt;!&ndash;<div class="white-circle">&ndash;&gt;-->
+            <!--&lt;!&ndash;<i class="material-icons">check_box</i>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</md-card-content>-->
+    <!--</md-card>-->
+<!--</div>-->
+<!--<div class="col-sm-12">-->
+    <!--<md-card class="cash-fund-card">-->
+        <!--<md-card-content>-->
+            <!--<div class="col-sm-1">-->
+                <!--<div class="white-circle">-->
+                    <!--<i class="material-icons">trending_up</i>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-2">-->
+                <!--Higher returns as compared to Savings and Deposits-->
+            <!--</div>-->
+
+            <!--<div class="col-sm-1">-->
+                <!--<div class="white-circle">-->
+                    <!--<i class="material-icons">update</i>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-2">-->
+                <!--Same day redemption-->
+            <!--</div>-->
+
+            <!--<div class="col-sm-1">-->
+                <!--<div class="white-circle">-->
+                    <!--<i class="material-icons">lock_open</i>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-2">-->
+                <!--No lock-in or exit load-->
+            <!--</div>-->
+
+            <!--<div class="col-sm-1">-->
+                <!--<div class="white-circle">-->
+                    <!--<i class="material-icons">check_box</i>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-2">-->
+                <!--Invest and redeem on a click!-->
+            <!--</div>-->
+        <!--</md-card-content>-->
+    <!--</md-card>-->
+<!--</div>-->

@@ -1,0 +1,7 @@
+export class IRR {
+    folioNo: string;
+    fundName: string;
+    xirr: Number;
+
+    constructor(){}
+}

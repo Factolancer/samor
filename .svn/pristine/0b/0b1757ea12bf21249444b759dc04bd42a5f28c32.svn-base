@@ -1,0 +1,44 @@
+@import "../../../styles/styles";
+
+.transaction-container{
+  @include dropElement(1s, ease-out, 0s, 1, -100%, 0);
+  margin-bottom: 20px;
+  border: solid 1px #d6d6d6;
+  .title{
+    background-color: $light-grey;
+    padding: 10px;font-size: 16px;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    th,td{text-align: center; font-size: 12px}
+    th{background-color: $medium-grey;height:40px;vertical-align: middle}
+    tbody  {
+      tr{height: 40px;}
+      tr:nth-child(odd){background-color: $light-grey;}
+
+    }
+  }
+}
+
+//pagination styling
+
+.page-number-btn {
+  background-color: $white;
+  color: $brand-secondary;
+  margin: 0 0 0 0;
+  text-align: center;
+  padding: 0 15px;
+  border: 1px solid $medium-grey;
+  height: 25px;
+  cursor: pointer;
+  &:disabled{
+    background-color: $light-grey;
+    cursor: not-allowed;
+  }
+
+  &:hover, &.active{
+    background-color: $brand-secondary;
+    color: $white;
+  }
+}

@@ -1,0 +1,192 @@
+import {Component, OnInit} from '@angular/core';
+import {NgForm, FormGroup, Validators, FormControl, FormBuilder, Validator, FormControlName} from '@angular/forms';
+import {Subscription} from "rxjs";
+
+import {User} from "../../../models/user";
+import {Address} from "../../../models/address";
+import {UserService} from '../../user.service';
+import {HttpService} from "../../../services/http-service.service";
+import {AddressProof} from "../../constants/addressproof";
+import {Occupation} from "../../constants/occupation";
+import {Relation} from "../../constants/relation";
+import {Http} from "@angular/http";
+import {Country} from '../../../countries';
+import {Income} from "../../constants/incomerange";
+import {IPV} from "../../constants/ipvoptions";
+
+@Component({
+    selector: 'kyc-section',
+    templateUrl: 'kyc-section.component.html',
+    styleUrls: ['../../registration.component.css']
+})
+
+export class KycSectionComponent implements OnInit {
+
+    kycForm: FormGroup;
+    current_address: FormGroup;
+    permanent_address: FormGroup;
+    public occupations = Occupation;
+    public addressprooofs = AddressProof;
+    public relations = Relation;
+    public countries = Country;
+    public incomerange = Income;
+    public ipvoptions = IPV;
+
+    kycsaved = false;
+    kyccollapsed = true;
+    nomineepresent = false;
+    permanantEqualsPresent = true;
+    nominee_address_type = '1';
+
+    user: User
+    usersubscription: Subscription;
+
+    constructor(private fb: FormBuilder, public userService: UserService, public httpservice: HttpService, public http: Http) {
+        this.user = new User({pan: '', name: '', dob: '', gender: '', contact: {}},
+            {job: '', income: '', father_spouse: '', address_proof: '', current_address: {}, permanent_address: {}},
+            {
+                holder_name: '', account_type: 'Savings Account', account_number: '',
+                bank: {bank_name: '', ifsc: '', city: '', state: ''}
+            },
+            {
+                investor_type: 'Resident Indian',
+                birth_country: 'India',
+                nationality: 'India',
+                tax_country: 'India',
+                politically_exposed: 'No',
+                politically_related: 'No'
+            });
+
+        this.usersubscription = this.userService.currentUser.subscribe(
+            result => {
+                this.user = result
+            }
+        )
+    }
+
+    ngOnInit() {
+        this.kycForm = this.fb.group({
+            job: ['', Validators.required],
+            income: ['', Validators.compose([Validators.required])],
+            father_spouse: ['', Validators.required],
+            address_proof: ['', Validators.required],
+            current_address: this.fb.group({
+                address1: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
+                address2: ['', Validators.compose([])],
+                pin: ['', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])],
+                district: ['', Validators.compose([Validators.required])],
+                state: ['', Validators.compose([Validators.required])],
+                city: [''],
+                country: ['']
+            }),
+            permanent_address: this.fb.group({
+                address1: ['', Validators.compose([Validators.maxLength(50)])], // ['', Validators.compose([Validators.required])],
+                address2: [''], // ['', Validators.compose([])],
+                pin: [''], // ['', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])],
+                district: [''], // ['', Validators.compose([Validators.required])],
+                state: [''], // ['', Validators.compose([Validators.required])],
+                city: [''],
+                country: ['']
+            }),
+            nominee: this.fb.group({
+                nominee_name: ['', Validators.compose([])],
+                nominee_relation: [''],
+                nominee_dob: [''],
+                nominee_address: this.fb.group({
+                    address1: ['', Validators.compose([Validators.required, Validators.maxLength(50)])], // ['', Validators.compose([Validators.required])],
+                    address2: [''], // ['', Validators.compose([])],
+                    pin: [''], // ['', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])],
+                    district: [''], // ['', Validators.compose([Validators.required])],
+                    state: [''], // ['', Validators.compose([Validators.required])],
+                    city: [''],
+                    country: ['']
+                })
+            }),
+            ipv: this.fb.group({
+                ipvoption: [''],
+                ipvschedule: [''],
+                ipvid: ['']
+            })
+        });
+    }
+
+    onKYCSubmit() {
+        this.kycsaved = true;
+        if (this.permanantEqualsPresent) {
+            this.kycForm.controls['permanent_address'].setValue(this.kycForm.controls['current_address'].value)
+        }
+
+        if (this.nomineepresent){
+            if (this.nominee_address_type=='1'){
+                this.kycForm.controls['nominee'].get('nominee_address').setValue(this.kycForm.controls['current_address'].value)
+            }
+            if (this.nominee_address_type=='2'){
+                this.kycForm.controls['nominee'].get('nominee_address').setValue(this.kycForm.controls['permanent_address'].value)
+            }
+        }
+        this.userService.updateKYCData(this.kycForm.value);
+        /*this.user.KYC = this.kycForm.value;*/
+        // if (!this.nomineepresent){
+        //   this.user.KYC.nominee_name='';
+        //   this.user.KYC.nominee_relation='';
+        //   this.user.KYC.nominee_dob='';
+        // }
+        /*console.log(this.user);*/
+        this.toggleKyc();
+    }
+
+    toggleKyc() {
+        if (this.kyccollapsed == true) this.kyccollapsed = false;
+        else this.kyccollapsed = true;
+    }
+
+    GetPinDetails() {
+        let pin_current = this.kycForm.controls['current_address'].get('pin').value;
+        let pin_permanent = this.kycForm.controls['permanent_address'].get('pin').value;
+
+        var currentpinurl = 'https://data.gov.in/api/datastore/resource.json?resource_id=6176ee09-3d56-4a3b-8115-21841576b2f6&api-key=0441375b4ec291db5cde0e7bfd031195';
+        currentpinurl = currentpinurl + '&filters[pincode]=' + pin_current + '&fields=pincode,statename,Districtname'
+
+        var permanentpinurl = 'https://data.gov.in/api/datastore/resource.json?resource_id=6176ee09-3d56-4a3b-8115-21841576b2f6&api-key=0441375b4ec291db5cde0e7bfd031195';
+        permanentpinurl = permanentpinurl + '&filters[pincode]=' + pin_permanent + '&fields=pincode,statename,Districtname'
+
+        if (pin_current) {
+            this.http.get(currentpinurl)
+                .subscribe(
+                    response => {
+                        console.log(response.json().records);
+                        this.kycForm.controls['current_address'].get('state').setValue(response.json().records[0].statename);
+                        this.kycForm.controls['current_address'].get('district').setValue(response.json().records[0].Districtname);
+                    }
+                );
+            // this.httpservice.post('/pincode', {"pin": pin_current})
+            //     .subscribe(
+            //         response => {
+            //           console.log(response);
+            //           this.kycForm.controls['current_address'].get('state').setValue(response.state);
+            //           this.kycForm.controls['current_address'].get('district').setValue(response.district);
+            //         }
+            //     );
+        }
+
+        if (pin_permanent) {
+            this.http.get(permanentpinurl)
+                .subscribe(
+                    response => {
+                        console.log(response.json().records);
+                        this.kycForm.controls['permanent_address'].get('state').setValue(response.json().records[0].statename);
+                        this.kycForm.controls['permanent_address'].get('district').setValue(response.json().records[0].Districtname);
+                    }
+                );
+            // this.httpservice.post('/pincode', {"pin": pin_permanent})
+            //     .subscribe(
+            //         response => {
+            //           console.log(response.json().city);
+            //           this.kycForm.controls['permanent_address'].get('state').setValue(response.json().state);
+            //           this.kycForm.controls['permanent_address'].get('district').setValue(response.json().district);
+            //         }
+            //     );
+        }
+    }
+
+}

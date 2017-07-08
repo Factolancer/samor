@@ -1,0 +1,30 @@
+import {Component, OnInit} from '@angular/core';
+import {GoogleChart} from "../../shared/google-chart.directive";
+
+@Component({
+    selector: 'app-asset-allocation',
+    templateUrl: './asset-allocation.component.html',
+    providers: [GoogleChart],
+    styleUrls: ['./asset-allocation.component.css']
+})
+export class AssetAllocationComponent implements OnInit {
+
+    constructor(private googlechart: GoogleChart) {
+    }
+
+    ngOnInit() {
+    }
+
+    public data = [
+        ['Category', 'Amount'],
+        ['ELSS', 15000],
+        ['Equity Large Cap',     8000],
+        ['Gilt Short Term',      3000],
+        ['Liquid',  10000],
+        ['Gold ETF', 5000]];
+
+    public pieChartOptions = {
+        title: 'Scheme Category vs Amount',
+        is3D: true,
+    };
+}

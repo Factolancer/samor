@@ -1,0 +1,157 @@
+import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Subscription} from "rxjs";
+import {ExploreFundsService} from "./explore-funds.service";
+import {Input} from "@angular/core/src/metadata/directives";
+import {FundDisplay} from "./fund-display";
+import {CartItem} from "../models/cart-item";
+import {ProductEnum} from "../enum/product-enum";
+import {InvestmentTypeEnum} from "../enum/investment-type-enum";
+import {CartService} from "../cart/cart.service";
+import {FundDetails} from "../models/fund-details";
+
+
+@Component({
+    selector: 'app-fund',
+    templateUrl: './fund.component.html',
+    styleUrls: ['./fund.component.css']
+})
+export class FundComponent implements OnInit, OnDestroy {
+
+    //inputs
+    @Input() set funds(funds: FundDetails[]) {
+        this._funds = funds || [];
+    }
+
+    @Input() set showListView(allowed: boolean) {
+        this.fundDisplay.isListView = allowed;
+        //this.fundSerivce.setFundDisplay(this.fundDisplay);
+    }
+
+    @Input() set showCardView(allowed: boolean) {
+        this.fundDisplay.isListView = !allowed;
+        //  this.fundSerivce.setFundDisplay(this.fundDisplay);
+    }
+
+    //subscriptions
+    fundDisplaySubscription: Subscription;
+
+    /*
+     results: SearchResults;
+     resultSubscription: Subscription;
+     searchInputSubscription: Subscription;
+     fundSearchInput: FundSearchInput;
+     */
+    //variables
+    //defaultSortOrder: string;
+    //currentSortElement: string;
+    // comparisonList: string[];
+    //isDesc: boolean;
+    fundDisplay: FundDisplay;
+    _funds: FundDetails[];
+    //_isListView: boolean;
+    //_isCardView: boolean;
+    // rows: number = 10;
+    //from: number = 0;
+    factSheetId: number;
+
+    constructor(private exploreFundsService: ExploreFundsService, private cartService: CartService) {
+        /*//subscription for search results
+         this.resultSubscription = this.searchService.searchResults.subscribe(
+         rs => {
+         console.log("Infund Component" + rs);
+         this.results = rs;
+         });
+         //subscription for search input
+         this.searchInputSubscription = this.searchService.fundSearchInput.subscribe(
+         si => {
+         this.fundSearchInput = si;
+         this.from = si.from;
+         this.rows = si.rows;
+         this.currentSortElement = si.sortElement;
+         });*/
+
+        //subscription for fund display
+        this.fundDisplaySubscription = this.exploreFundsService.fundDisplay.subscribe(
+            fd => {
+                console.log("fund component just listened for fund display!");
+                this.fundDisplay = fd;
+            }
+        )
+
+        //  this.fundDisplay = this.fundSerivce.getFundDisplay();
+
+        //setting default values
+        // this.isDesc = true;
+        //this.isListView = true;
+        //  this.defaultSortOrder = "desc";
+
+    }
+
+    //used for column level sorting of fields
+    /* sort(value: string) {
+     console.log(value);
+     this.currentSortElement = value;
+     if (this.fundSearchInput.sortElement === this.currentSortElement) {
+     this.fundSearchInput.sortOrder = this.toggleSortOrder();
+     } else {
+     this.fundSearchInput.sortElement = this.currentSortElement;
+     this.fundSearchInput.sortOrder = this.defaultSortOrder;
+     this.isDesc = true
+     }
+
+     this.searchService.sort(this.fundSearchInput)
+     }
+
+     //used for toggling the sort order
+     toggleSortOrder() {
+     if (this.isDesc) {
+     this.isDesc = false
+     return "asc"
+     } else {
+     this.isDesc = true
+     return "desc"
+     }
+     }*/
+
+
+    /* //supposed to be used for view toggling
+     toggleView() {
+     this.isListView = !this.isListView;
+     }*/
+
+
+    /* //to be used to set the number of rows to be shows selected manually
+     setRowsToDisplay(value: string) {
+     this.fundSearchInput.rows = +value;
+     this.searchService.searchFund(this.fundSearchInput);
+     }*/
+
+    viewFactSheet(id: number) {
+        this.factSheetId = id;
+    }
+
+    addToCart(fundId: number) {
+        let cartItem = <CartItem> {
+            product: ProductEnum[ProductEnum.SIP],
+            investmentType: InvestmentTypeEnum[InvestmentTypeEnum.SIP],
+            fundIds: [fundId]
+        };
+        this.cartService.addToCart(cartItem).subscribe(output=> {
+            alert(output.response);
+        });
+    }
+
+    //on destroy to handle memory leak on element destroy
+    ngOnDestroy() {
+        /* this.resultSubscription.unsubscribe();
+         this.searchInputSubscription.unsubscribe();*/
+        this.fundDisplaySubscription.unsubscribe();
+    }
+
+    ngOnInit() {
+
+
+    }
+
+
+}

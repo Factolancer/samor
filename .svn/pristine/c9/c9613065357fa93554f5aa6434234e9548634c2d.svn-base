@@ -1,0 +1,26 @@
+<!--<chart type="StockChart" [options]="options"></chart>-->
+
+
+<div [hidden]="transactionDataAvailable" class="loading">
+  <img src="../../../public/images/loading.gif">
+</div>
+
+<div class="transaction-container" *ngIf="transactionDataAvailable" fxLayout="column">
+  <div class="title" align="center"  >Transaction History</div>
+  <div fxLayout="row">
+    <table>
+      <th>Fund</th>    <th>Date</th>     <th>Amount</th>     <th>Status</th>
+      <tr *ngFor="let transaction of transactions">
+        <td >{{transaction.name}}</td>
+        <td >{{transaction.date}}</td>
+        <td >{{transaction.amount}}</td>
+        <td >{{transaction.status}}</td>
+      </tr>
+    </table>
+  </div>
+  <!-- | paginate: { itemsPerPage: 5, currentPage: p -->
+  <!--<div fxLayout="row" >
+    <pagination-controls (pageChange)="p = $event" #api fxFlex align="end"></pagination-controls>
+  </div>-->
+
+</div>

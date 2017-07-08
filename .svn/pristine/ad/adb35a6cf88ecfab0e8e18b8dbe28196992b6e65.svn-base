@@ -1,0 +1,61 @@
+md-input{
+    width: 90%;
+}
+
+md-grid-tile{
+    display: block;
+}
+
+figure{
+    display: block !important;
+}
+
+section{
+     width: 45%;
+     align-self: center;
+     margin: auto;
+ }
+
+ select{
+     width: 90%;
+ }
+
+
+ md-radio-group{
+     margin-left: -35%;
+ }
+
+ .errorMessage {
+     position: relative;
+ }
+ .errorMessage span {
+     position: absolute;
+     color: red;
+     top: -10px;
+     font-size:0.63em;
+ }
+
+ button{
+     margin-right: -57.5%;
+ }
+ /*.date_margin{*/
+     /*margin-left: -35%;*/
+ /*}*/
+ 
+ .field_label{
+     color: rgba(0, 0, 0, 0.38);
+     display: block;
+     font-family: Roboto, "Helvetica Neue", sans-serif;
+     text-align: left;
+     font-size: 14px;
+     font-weight: bold;
+     margin-bottom: 5px;
+     line-height: 20px;
+     position: absolute;
+     text-align: left;
+ }
+ /*.sectiontitle {*/
+     /*font-family: OpenSans;*/
+     /*font-size: 16px;*/
+     /*font-weight: 500;*/
+ /*}*/

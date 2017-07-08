@@ -1,0 +1,21 @@
+
+
+<div class="prod-branding-container pad-tb-20">
+  <div fxLayout="row"  fxLayoutAlign="center" class="wrapper">
+    <div fxFlex="100">
+      <div align="center" class="sub-heading pad-tb-10">WITH <span class="colr-bs">FINCASH</span> YOU CAN</div>
+
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutAlign.xs="start">
+        <md-card fxFlex="40"  class="mar-20" align="center" *ngFor="let productBenefit of productBenefits, let i=index" (click)="goTo(product.routerUrl)">
+          <md-card-title>
+            <img src={{productBenefit.image}}>
+            <p class="mar-t-5"><span>{{productBenefit.title}}</span></p>
+          </md-card-title>
+          <md-card-content>
+            {{productBenefit.content}}
+          </md-card-content>
+        </md-card>
+      </div>
+    </div>
+  </div>
+</div>

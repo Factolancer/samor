@@ -1,0 +1,16 @@
+/*
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {LandingpageComponent} from "./landingpage.component";
+
+const landingpageRoutes: Routes = [
+    {
+        path: '',
+        component: LandingpageComponent,
+    }
+];
+
+export const landingpageRouting: ModuleWithProviders = RouterModule.forChild(landingpageRoutes);
+
+
+*/

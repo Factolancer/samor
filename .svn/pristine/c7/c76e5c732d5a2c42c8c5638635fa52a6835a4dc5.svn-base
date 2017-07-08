@@ -1,0 +1,22 @@
+<app-filter-title [filterTitle]="filterTitle" [showFilterContent]="true" #title></app-filter-title>
+<div class="filter-content" *ngIf="title.showFilterContent">
+    <div (click)="clearFilter()" class="filter-clear clickable"
+         *ngIf="selectedArray.length > 0">
+        <md-icon class="md-14 icon-align clear-icon">&#xE14C;</md-icon>
+        Clear all
+    </div>
+    <div *ngFor="let selectedItem of selectedArray;">
+        <md-checkbox (change)="filter($event.checked, selectedItem)" value="selectedItem.id"
+                     [checked]="true">
+            <span [outerHTML]="selectedItem.name | rating"></span>
+        </md-checkbox>
+        <br>
+    </div>
+    <div *ngFor="let item of ratingFilterData">
+        <md-checkbox (change)="filter($event.checked, item)" value="item.id"
+                     [disabled]="item.count == 0">
+            <span [outerHTML]="item.name | rating"></span><span *ngIf="item.count!=0">({{item.count}})</span>
+        </md-checkbox>
+        <br>
+    </div>
+</div>

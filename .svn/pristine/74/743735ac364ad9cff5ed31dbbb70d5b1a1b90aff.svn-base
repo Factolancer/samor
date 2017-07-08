@@ -1,0 +1,24 @@
+import {Injectable} from "@angular/core";
+import {Router, Resolve, ActivatedRouteSnapshot} from "@angular/router";
+import {Observable} from "rxjs";
+import {Fund} from "../../models/fund";
+import {HttpService} from "../../core/services/http-service.service";
+
+@Injectable()
+export class SavingsPlusFundResolveService implements Resolve<boolean | Fund[]> {
+    constructor(private router: Router, public http: HttpService) {
+    }
+
+    resolve(route: ActivatedRouteSnapshot): Observable<boolean | Fund[]> {
+
+        return this.http.get('/getSavingsPlusFunds').map(output => {
+            if (output) {
+                console.log(output);
+                return output as Fund[];
+            } else {
+                this.router.navigate(['/cash']);
+                return false;
+            }
+        });
+    }
+}

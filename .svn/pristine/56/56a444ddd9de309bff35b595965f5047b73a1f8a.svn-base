@@ -1,0 +1,128 @@
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {ReportService} from "./report.service";
+import {Subscription} from "rxjs/Subscription";
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import { MdDialogConfig, MdDialog } from "@angular/material";
+import {InfoDialogComponent} from "../shared/info-dialog.component";
+import {disclaimers} from "../../properties/discalimers";
+import {TitleService} from "../core/services/title.service";
+import {HeaderService} from "../core/services/header.service";
+import {RedemptionService} from "../core/services/redemption.service";
+import {Logger} from "../core/logger/logger";
+import {Redemption} from "../redemption/models/redemption";
+
+@Component({
+    selector: 'app-report',
+    templateUrl: './report.component.html',
+    styleUrls: ['./report.styles.scss']
+})
+export class ReportComponent implements OnInit,OnDestroy {
+
+    selectedTab: number;
+    fundIndexSubscription: Subscription;
+    id: number;
+    tabIndexSubscription: Subscription;
+    tabDataSubscription: Subscription;
+    redemptionDataSubscription: Subscription;
+    redData: Redemption;
+    showRedemptionList: boolean;
+    className: string;
+
+
+    constructor(private reportService: ReportService, public headerService: HeaderService, private activatedRoute: ActivatedRoute,
+                private viewContainerRef: ViewContainerRef, private dialog: MdDialog, private titleService: TitleService,
+                private redemptionService: RedemptionService, private logger: Logger, private router: Router) {
+        this.selectedTab = 0;
+        this.className = "ReportComponent";
+    }
+
+    ngOnInit() {
+        this.titleService.setTitle("report");
+
+        this.tabIndexSubscription = this.activatedRoute.params.subscribe((params: Params) => {
+            this.id = params['id'];
+            if (this.id) {
+                this.selectedTab = this.id;
+                this.loadTab();
+            }
+        });
+
+        this.fundIndexSubscription = this.reportService.fundIndexResult.subscribe((fund: number) => {
+            this.selectedTab = 2;
+        });
+
+        this.redemptionDataSubscription = this.redemptionService.redemptionObservable.subscribe(data => {
+            this.logger.debug(this.className, data);
+            this.redData = data;
+            if (this.redData.fundsData.length == 0){
+                this.showRedemptionList = false;
+            }
+        });
+
+    }
+
+    gotoTab(){
+        this.router.navigate(['dashboard/report/'+this.selectedTab]);
+    }
+
+    loadTab() {
+        if (this.selectedTab == 1 && this.reportService.getHoldingTabResult() != true) {
+            this.reportService.setHoldingTabResult(true);
+        }
+        if (this.selectedTab == 2 && this.reportService.getTransactionTabResult() != true) {
+            this.reportService.setTransactionTabResult(true);
+        }
+        if (this.selectedTab == 3 && this.reportService.getCapitalGainsTabInit() != true) {
+            this.reportService.setCapitalGainsTabInit(true);
+        }
+        if (this.selectedTab == 4 && this.reportService.geAssetAllocationTabInit() != true) {
+            this.reportService.setAssetAllocationTabInit(true);
+        }
+        if (this.selectedTab == 5 && this.reportService.getIrrTabInit() != true) {
+            this.reportService.setIrrTabInit(true);
+        }
+    }
+
+    seeDisclaimers() {
+        let config = new MdDialogConfig();
+        let device = this.headerService.deviceType();
+        if (device === 'xs' || device === 'sm') {
+            config.width = '100%';
+        }else {
+            config.width = '50vw';
+        }
+        config.height = "65vh";
+        config.viewContainerRef = this.viewContainerRef;
+
+        let infoDialogConfig = {
+            infoTitle: "Disclaimers",
+            infoText: [`${disclaimers.report_1}`, `${disclaimers.report_2}`]
+        }
+
+        let dialogRef = this.dialog.open(InfoDialogComponent, config);
+        dialogRef.componentInstance.config = infoDialogConfig;
+    }
+
+    goToRedeem(){
+        this.router.navigate(['/redeem/init']);
+    }
+
+    removeFundFromRedemption(index: number){
+        this.redData.fundsData.splice(index, 1);
+        this.redemptionService.redemptionData.next(this.redData);
+    }
+
+    removeAllFromRedemption() {
+        this.redData.fundsData.splice(0, this.redData.fundsData.length);
+        this.redemptionService.redemptionData.next(this.redData);
+    }
+
+    ngOnDestroy() {
+        this.fundIndexSubscription.unsubscribe();
+        this.tabIndexSubscription.unsubscribe();
+        if (this.redemptionDataSubscription) {
+            this.redemptionDataSubscription.unsubscribe();
+        }
+    }
+
+}

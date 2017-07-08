@@ -1,0 +1,107 @@
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {Subscription} from "rxjs";
+import {User} from "../models/user";
+import {HttpService} from "../core/services/http-service.service";
+import {BankSearchService} from "./sections/bank-section/search.service";
+import {UserService} from "./userdata.service";
+import {KYCService} from "./kyc.service";
+import {Router, ActivatedRoute} from "@angular/router";
+import {Logger} from "../core/logger/logger";
+import {isNullOrUndefined} from "util";
+import {TitleService} from "../core/services/title.service";
+import {SnackBarService} from "../core/services/snack-bar.service";
+
+@Component({
+    selector: 'app-registration',
+    templateUrl: './registration.component.html',
+    styleUrls: ['./registration.styles.scss'],
+    providers: [BankSearchService, UserService, KYCService]
+})
+export class RegistrationComponent implements OnInit, OnDestroy {
+
+    // resultsubscription: Subscription
+    kycCollapsed: boolean = true
+    kycState: String = 'hide'
+    bankCollapsed: boolean = true
+    bankState: String = 'hide'
+    otherCollapsed: boolean = true
+    otherState: String = 'hide'
+    nomineeCollapsed: boolean = true
+    nomineeState: String = 'hide'
+    makeKycVisible() : void {
+        this.kycCollapsed = false;
+        this.kycState = 'show';
+    }
+    makeBankVisible(): void {
+        this.bankCollapsed = false
+        this.bankState = 'show'
+    }
+    makeOtherVisible(): void {
+        this.otherCollapsed = false
+        this.otherState = 'show'
+    }
+    makeNomineeVisible(): void {
+        this.nomineeCollapsed = false;
+        this.nomineeState = 'show'
+    }
+    user: User;
+    path: any;
+    usersubscription: Subscription;
+
+    className: any
+    constructor(public http: HttpService, public userService: UserService, private kycService: KYCService, public router: Router,
+                public route: ActivatedRoute, public logger: Logger, public titleService: TitleService, public viewContainerRef: ViewContainerRef,
+                public snackBarService: SnackBarService) {
+        this.className = "RegistrationComponent";
+    }
+
+    ngOnInit() {
+        this.titleService.setTitle('registration')
+        console.log("DATE " + Date.now())
+        this.usersubscription = this.userService.currentUser.subscribe(
+            result => {
+                this.logger.debug(this.className,result);
+                this.user = result;
+            }
+        );
+    }
+
+    indexBanks() {
+        this.http.get("/indexBanks").subscribe(output => {
+            console.log("details indexed");
+        });
+    }
+
+    toToUpload(){
+        let pan = this.user.userBasic.pan;
+        let address = this.user.userAddress.permanentAddress;
+        let addressString = address.address1 + " " + address.address2 + " " + address.city + " " + address.district + " " + address.pin;
+        let bank = this.user.userBank;
+        let bankString = bank.accountNumber + " - " + bank.bank.IFSC;
+        let userData = {"pan": pan, "address": addressString, "bank": bankString}
+
+        if (this.user.userBank.buaid.length>0 && this.user.userFatca.futid.length>0 && this.user.userAddress.permanentAddress.amtid.length>0
+            && this.user.userBasic.pan.length>0 && this.user.userBasic.dob.length>0 && this.user.userBasic.gender.length>0 && this.user.userBasic.panName.length>0
+            && this.user.userBasic.contact.mob.length>0){
+            this.router.navigate(['/registration/upload', userData]);
+            this.http.get('/bse/bseRegistration')
+                .subscribe(data => {
+                    this.logger.debug(this.className, data)
+                    /*if (data['success']){
+                        this.http.get('/bse/bseRegisterFatca')
+                            .subscribe(fatcaData => {
+                                this.logger.debug(this.className, fatcaData);
+                            })
+                    }*/
+                })
+        }
+        else {
+            this.snackBarService.showSnackBar("Please complete the form", "Okay", this.viewContainerRef);
+        }
+    }
+
+    ngOnDestroy() {
+        this.usersubscription.unsubscribe()
+    }
+
+}

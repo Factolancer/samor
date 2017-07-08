@@ -1,0 +1,7 @@
+export class FilterData {
+    constructor(public id: string,
+                public displayVal: string,
+                public count: number,
+                public selected: boolean) {
+    }
+}

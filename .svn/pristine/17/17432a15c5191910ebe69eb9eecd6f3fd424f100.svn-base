@@ -1,0 +1,19 @@
+import {NgModule} from "@angular/core";
+import {CheckoutComponent} from "./checkout.component";
+import {SharedModule} from "../shared/shared.module";
+import {checkoutRouting} from "./checkout.routes";
+import {CheckoutService} from "./checkout.service";
+import {CheckoutProductViewComponent} from "./checkout-product-view/checkout-product-view.component";
+import {CheckoutResolveService} from "./CheckoutResolveService";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        checkoutRouting,
+    ],
+    providers: [CheckoutService, CheckoutResolveService],
+    declarations: [CheckoutComponent, CheckoutProductViewComponent]
+})
+
+export class CheckoutModule {
+}

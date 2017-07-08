@@ -1,0 +1,57 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {FundSearchInput} from "../fund-search-input";
+import {Subscription} from "rxjs";
+import {ExploreFundsService} from "../explore-funds.service";
+import {ExploreFundConstants} from "../explore-funds.constants";
+
+@Component({
+    selector: 'app-aum-filter',
+    templateUrl: './aum-filter.component.html',
+    styleUrls: ['./filters.styles.scss']
+})
+export class AumFilterComponent implements OnDestroy, OnInit {
+
+    searchInput: FundSearchInput;
+    searchInputSubscription: Subscription;
+    filterTitle: string;
+    minAUM = 0;
+    maxAUM = 100000;
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput.subscribe(
+            searchInput => {
+                this.searchInput = searchInput;
+                if (searchInput.queryType == ExploreFundConstants.SEARCH_QUERY) {
+                    this.minAUM = 0;
+                    this.maxAUM = 1000000;
+                }
+            }
+        )
+    }
+
+    filter(value: any) {
+        this.searchInput.aumRange = "[" + this.minAUM + " TO " + this.maxAUM + "]";
+        this.exploreFundsService.filterFunds(this.searchInput);
+    }
+
+    clearFilter() {
+        this.minAUM = 0;
+        this.maxAUM = 1000000;
+        this.searchInput.aumRange = "[" + this.minAUM + " TO " + this.maxAUM + "]";
+        this.exploreFundsService.filterFunds(this.searchInput);
+    }
+
+    ngOnInit() {
+        this.filterTitle = "Min AUM (Cr)";
+         /*this.exploreFundsService.getFilterData("/sip/getAUMRange").subscribe(
+         output => {
+         this.minAUM = output.min;
+         this.maxAUM = output.max;
+         });*/
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+    }
+
+}

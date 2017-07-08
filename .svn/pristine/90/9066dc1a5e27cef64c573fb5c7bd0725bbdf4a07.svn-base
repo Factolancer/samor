@@ -1,0 +1,140 @@
+import {Component, OnInit, AfterViewInit, Input, ViewChild, ViewChildren} from '@angular/core';
+import {Subscription} from "rxjs";
+
+import {User} from '../models/user';
+import {HttpService} from "../services/http-service.service";
+import {UserService} from "./user.service";
+
+@Component({
+    selector: 'app-registration',
+    templateUrl: './registration.component.html',
+    styleUrls: ['./registration.component.css'],
+    providers: [UserService]
+})
+export class RegistrationComponent implements OnInit {
+
+    // resultsubscription: Subscription
+    user: User;
+    usersubscription: Subscription;
+
+    constructor(/*private fb: FormBuilder, public  searchService: BankSearchService,*/public http: HttpService, public userService: UserService) {
+
+        // this.resultsubscription = this.searchService.searchResults.subscribe(
+        //     result => {
+        //         this.bankList = result.banks;
+        //     }
+        // );
+
+        this.usersubscription = this.userService.currentUser.subscribe(
+            result => {
+                this.user = result
+            }
+        )
+    }
+
+    ngOnInit() {
+    }
+
+    indexBanks() {
+        this.http.get("/indexBanks").subscribe(output => {
+            console.log("details indexed");
+        });
+    }
+
+    // @ViewChild('basicForm') currentBasicForm: NgForm;
+    // @ViewChild('kycForm') currentKycForm: NgForm;
+    // @ViewChild('bankForm') currentBankForm: NgForm;
+    //
+    //
+    // ngAfterViewChecked() {
+    //   this.basicformChanged();
+    //   this.kycformChanged();
+    //   this.bankformChanged();
+    //   console.log("In after view checked");
+    // }
+    //
+    // basicformChanged() {
+    //   // if (this.currentBasicForm === this.basicForm) {console.log("current basic-section = basic-section"); return; }
+    //   this.basicForm = this.currentBasicForm;
+    //   if (this.basicForm) {
+    //     console.log("in basic-section form");
+    //     this.basicForm.valueChanges
+    //         .subscribe(data => this.onValueChanged(data));
+    //   }
+    // }
+    // kycformChanged() {
+    //   if (this.currentKycForm === this.kycForm) { return; }
+    //   this.kycForm = this.currentKycForm;
+    //   if (this.kycForm) {
+    //     this.kycForm.valueChanges
+    //         .subscribe(data => this.onValueChanged(data));
+    //   }
+    // }
+    // bankformChanged() {
+    //   if (this.currentBankForm === this.bankForm) { return; }
+    //   this.bankForm = this.currentBankForm;
+    //   if (this.kycForm) {
+    //     this.kycForm.valueChanges
+    //         .subscribe(data => this.onValueChanged(data));
+    //   }
+    // }
+    //
+    // onValueChanged(data?: any) {
+    //   if (!this.basicForm || !this.kycForm || !this.bankForm) { return; }
+    //   const basicform = this.basicForm.form;
+    //   const kycform = this.kycForm.form;
+    //   const bankform = this.bankForm.form;
+    //
+    //   for (const field in this.formErrors) {
+    //     // clear previous error message (if any)
+    //     this.formErrors[field] = '';
+    //     const basiccontrol = basicform.get(field);
+    //     const kyccontrol = kycform.get(field);
+    //     const bankcontrol = bankform.get(field);
+    //
+    //     if (basiccontrol && basiccontrol.dirty && !basiccontrol.valid) {
+    //       console.log("basic-section dirty & not valid");
+    //       const messages = this.validationMessages[field];
+    //       for (const key in basiccontrol.errors) {
+    //         this.formErrors[field] += messages[key] + ' ';
+    //       }
+    //       console.log(this.formErrors['pan']);
+    //     }
+    //     if (kyccontrol && kyccontrol.dirty && !kyccontrol.valid){
+    //       const messages = this.validationMessages[field];
+    //       for (const key in kyccontrol.errors) {
+    //         this.formErrors[field] += messages[key] + ' ';
+    //       }
+    //     }
+    //     if (bankcontrol && bankcontrol.dirty && !bankcontrol.valid){
+    //       const messages = this.validationMessages[field];
+    //       for (const key in bankcontrol.errors) {
+    //         this.formErrors[field] += messages[key] + ' ';
+    //       }
+    //     }
+    //   }
+    // }
+    //
+    // formErrors = {
+    //   'name': '',
+    //   'pan': '',
+    //   'mobile':'',
+    //   'email': '',
+    //   'dob':''
+    // };
+    //
+    // validationMessages = {
+    //   'name': {
+    //     'required':      'Name is required.',
+    //     'minlength':     'Name must be at least 4 characters long.',
+    //     'maxlength':     'Name cannot be more than 24 characters long.',
+    //     'forbiddenName': 'Someone named "Bob" cannot be a hero.'
+    //   },
+    //   'pan': {
+    //     'required': 'PAN number is required.',
+    //     'minlength': 'PAN number is incorrect, please enter valid PAN number',
+    //     'maxlength': 'PAN number is incorrect, please enter valid PAN number'
+    //   }
+    // };
+
+}

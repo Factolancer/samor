@@ -1,0 +1,31 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="60" fxFlex.xs="100">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                <div fxFlex class="heading-32-dark-grey center-align">Systematic Investment Plan (SIP) Calculator</div>
+                <hr/>
+                <div fxFlex class="sub-heading-16-medium-grey quote">
+                    "We don't have to be smarter than the rest. We have to be more disciplined than the rest." -- Warren
+                    Buffett
+                </div>
+            </div>
+        </div>
+        <div class="grey-back pad-30">
+            <md-card class="card pad-tb-20">
+                <div fxLayout="row" fxLayoutAlign="space-around center">
+                    <div fxFlex (click)="showGoalOptions()" class="icon-space clickable">
+                        <div class=""><img src="../../../assets/img/sip/calc/amount.svg" alt="Right amount of SIP icon">
+                        </div>
+                        <div class="highlight">Invest in SIP to Achieve Your Goal!</div>
+                    </div>
+                    <div fxFlex routerLink="returns" class="icon-space clickable">
+                        <div class=""><img src="../../../assets/img/sip/calc/returns_big.svg" alt="Return on SIP icon">
+                        </div>
+                        <div class="highlight">See how Your SIP Investment Grows!</div>
+                    </div>
+                </div>
+            </md-card>
+        </div>
+    </div>
+</div>
+

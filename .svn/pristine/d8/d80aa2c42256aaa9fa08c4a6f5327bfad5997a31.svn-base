@@ -1,0 +1,20 @@
+/**
+ * Main application routes
+ */
+
+'use strict';
+
+var errors = require('./components/errors');
+module.exports = function(app) {
+
+  // Insert routes below
+  app.use('/api/kyc', require('./api/kyc'));
+  app.use('/api/bse', require('./api/bse'));
+  app.use('/api/file', require('./api/fileupload'));
+  //app.use('/api/users', require('./api/user'));
+  app.use('/*', require('./api/default'));
+  //app.use('/auth', require('./auth'));
+  // All undefined asset or api routes should return a 404
+  //app.route('/:url(api|auth|components|app|bower_components|assets)/*').get(errors[404]);
+
+};

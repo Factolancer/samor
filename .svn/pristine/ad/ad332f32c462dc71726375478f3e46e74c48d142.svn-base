@@ -1,0 +1,4 @@
+.fundName{
+    color:blue;
+    cursor: pointer;
+}

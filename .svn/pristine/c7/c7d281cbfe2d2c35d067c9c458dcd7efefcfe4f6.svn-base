@@ -1,0 +1,28 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Set up monthly investment plan(SIPs)</h1>
+        </div>
+    </section>
+    <section class="data-body">
+        <md-grid-list cols="3" gutterSize="20px" rowHeight="250px">
+            <md-grid-tile routerLink='expert' class="clickable">
+                <img src="public/images/sip/expert.png">
+                <!--<md-grid-tile-footer class="center-align">-->
+
+                    I Know where to invest
+
+                <!--</md-grid-tile-footer>-->
+
+            </md-grid-tile>
+            <md-grid-tile routerLink='smartsip' class="clickable">
+                <img src="public/images/sip/smart-sip.png">
+                Go For a SmartSIP
+            </md-grid-tile>
+            <md-grid-tile routerLink='calculator' class="clickable">
+                Use SIP Calculator
+            </md-grid-tile>
+        </md-grid-list>
+    </section>
+
+</div>

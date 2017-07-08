@@ -1,0 +1,222 @@
+import {SipCalcQuestion}from "./sip-calc-question";
+import {CalculationKeys} from "./calculation-keys";
+
+export const SipGoalQuestions: SipCalcQuestion[][] = [
+    [
+        //retirement planning
+        <SipCalcQuestion>{
+            id: 1,
+            statement: "When do you plan to retire?",
+            suffix: "years",
+            answer: 60,
+        },
+        <SipCalcQuestion>{id: 2, statement: "What is your current age?", suffix: "years"},
+        <SipCalcQuestion>{
+            id: 3,
+            statement: "What amount would you need at the time of retirement?",
+            prefix: "&#x20B9;",
+            suffix: ".00",
+            calculationKey: CalculationKeys.amount
+        },
+        <SipCalcQuestion>{
+            id: 4,
+            statement: "What long term inflation rate do you expect?",
+            suffix: "%",
+            helperText: "Inflation forecast for next 5 years is 4-5%!. Reference: Market Sources.",
+            calculationKey: CalculationKeys.inflation
+        },
+        <SipCalcQuestion>{
+            id: 5,
+            statement: "What long term growth rate do you expect in the equity market?",
+            suffix: "%",
+            helperText: "Long term interest rate from equity market has been 8-15%. Reference: Market Sources.",
+            calculationKey: CalculationKeys.rate
+        },
+    ],
+
+    [
+        //higher education
+        <SipCalcQuestion>{id: 1, statement: "Name of the child?",},
+        <SipCalcQuestion>{
+            id: 2,
+            statement: "Years to go for higher studies?",
+            suffix: "years",
+            calculationKey: CalculationKeys.years
+        },
+        <SipCalcQuestion>{
+            id: 3,
+            statement: "What would be the amount of fees and expenses required?",
+            prefix: "&#x20B9;",
+            suffix: ".00",
+            calculationKey: CalculationKeys.amount
+        },
+        <SipCalcQuestion>{
+            id: 4,
+            statement: "What long term inflation rate do you expect?",
+            suffix: "%",
+            helperText: "Inflation forecast for next 5 years is 4-5%!. Reference: Market Sources.",
+            calculationKey: CalculationKeys.inflation
+        },
+        <SipCalcQuestion>{
+            id: 5,
+            statement: "What long term growth rate do you expect in the equity market?",
+            suffix: "%",
+            helperText: "Long term interest rate from equity market has been 8-15%. Reference: Market Sources.",
+            calculationKey: CalculationKeys.rate
+        },
+    ],
+
+    [
+        //marriage of a child
+        <SipCalcQuestion>{id: 1, statement: "Name of the child?",},
+        <SipCalcQuestion>{
+            id: 2,
+            statement: "Years left for marriage?",
+            suffix: "years",
+            calculationKey: CalculationKeys.years
+        },
+        <SipCalcQuestion>{
+            id: 3,
+            statement: "Total spending required for the marriage?",
+            prefix: "&#x20B9;",
+            suffix: ".00",
+            calculationKey: CalculationKeys.amount
+        },
+        <SipCalcQuestion>{
+            id: 4,
+            statement: "What long term inflation rate do you expect?",
+            suffix: "%",
+            helperText: "Inflation forecast for next 5 years is 4-5%!. Reference: Market Sources.",
+            calculationKey: CalculationKeys.inflation
+        },
+        <SipCalcQuestion>{
+            id: 5,
+            statement: "What long term growth rate do you expect in the equity market?",
+            suffix: "%",
+            helperText: "Long term interest rate from equity market has been 8-15%. Reference: Market Sources.",
+            calculationKey: CalculationKeys.rate
+        },
+    ], [
+        //Buying a house
+        <SipCalcQuestion>{
+            id: 1,
+            statement: "After how long are you planning to buy a house?",
+            suffix: "years",
+            calculationKey: CalculationKeys.years
+        },
+        <SipCalcQuestion>{
+            id: 2,
+            statement: "How much do you need to invest in the house?",
+            prefix: "&#x20B9;",
+            suffix: ".00",
+            calculationKey: CalculationKeys.amount
+        },
+        <SipCalcQuestion>{
+            id: 3,
+            statement: "What long term inflation rate do you expect?",
+            suffix: "%",
+            helperText: "Inflation forecast for next 5 years is 4-5%!. Reference: Market Sources.",
+            calculationKey: CalculationKeys.inflation
+        },
+        <SipCalcQuestion>{
+            id: 4,
+            statement: "What long term growth rate do you expect in the equity market?",
+            suffix: "%",
+            helperText: "Long term interest rate from equity market has been 8-15%. Reference: Market Sources.",
+            calculationKey: CalculationKeys.rate
+        },
+    ], [
+
+        //buying a car
+        <SipCalcQuestion>{
+            id: 1,
+            statement: "After how long are you planning to buy a car?",
+            suffix: "years",
+            calculationKey: CalculationKeys.years
+        },
+        <SipCalcQuestion>{
+            id: 2,
+            statement: "How much money do you need to invest in the car?",
+            prefix: "&#x20B9;",
+            suffix: ".00",
+            calculationKey: CalculationKeys.amount
+        },
+        <SipCalcQuestion>{
+            id: 3,
+            statement: "What long term inflation rate do you expect?",
+            suffix: "%",
+            helperText: "Inflation forecast for next 5 years is 4-5%!. Reference: Market Sources.",
+            calculationKey: CalculationKeys.inflation
+        },
+        <SipCalcQuestion>{
+            id: 4,
+            statement: "What long term growth rate do you expect in the equity market?",
+            suffix: "%",
+            helperText: "Long term interest rate from equity market has been 8-15%. Reference: Market Sources.",
+            calculationKey: CalculationKeys.rate
+        },
+    ], [
+        // others
+        <SipCalcQuestion>{id: 1, statement: "What is your long term financial goal?"},
+        <SipCalcQuestion>{
+            id: 2,
+            statement: "After how will you take to achieve this goal?",
+            suffix: "years",
+            calculationKey: CalculationKeys.years
+        },
+        <SipCalcQuestion>{
+            id: 3,
+            statement: "How much money do you need to invest to achieve this goal?",
+            prefix: "&#x20B9;",
+            suffix: ".00",
+            calculationKey: CalculationKeys.amount
+        },
+        <SipCalcQuestion>{
+            id: 4,
+            statement: "What long term inflation rate do you expect?",
+            suffix: "%",
+            helperText: "Inflation forecast for next 5 years is 4-5%!. Reference: Market Sources.",
+            calculationKey: CalculationKeys.inflation
+        },
+        <SipCalcQuestion>{
+            id: 5,
+            statement: "What long term growth rate do you expect in the equity market?",
+            suffix: "%",
+            helperText: "Long term interest rate from equity market has been 8-15%. Reference: Market Sources.",
+            calculationKey: CalculationKeys.rate
+        },
+    ]
+];
+
+
+export const SipReturnsQuestions: SipCalcQuestion[] =
+    [
+        //calculate returns on your SIP questions
+        <SipCalcQuestion>{
+            id: 1,
+            statement: "How much do you want to invest monthly on SIP?",
+            prefix: "&#x20B9;",
+            suffix: ".00",
+            calculationKey: CalculationKeys.principal
+        },
+        <SipCalcQuestion>{
+            id: 2,
+            statement: "For how long are you planning to invest?",
+            suffix: "years",
+            calculationKey: CalculationKeys.years
+        },
+        <SipCalcQuestion>{
+            id: 3,
+            statement: "What long term inflation rate do you expect?",
+            suffix: "%",
+            helperText: "Inflation forecast for next 5 years is 4-5%!. Reference: Market Sources.",
+            calculationKey: CalculationKeys.inflation
+        },
+        <SipCalcQuestion>{
+            id: 4,
+            statement: "What long term growth rate do you expect in the equity market? ",
+            suffix: "%",
+            helperText: "Long term interest rate from equity market has been 8-15%. Reference: Market Sources.",
+            calculationKey: CalculationKeys.rate
+        },
+    ];

@@ -1,0 +1,12 @@
+.table-element {
+    padding:5px;
+}
+
+.pagination {
+    text-align: center;
+    float: right;
+}
+
+.sip-list {
+    margin:5px;
+}

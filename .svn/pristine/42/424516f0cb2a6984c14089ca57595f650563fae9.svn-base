@@ -1,0 +1,50 @@
+import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID} from "@angular/core";
+import {NavigationEnd, Router} from "@angular/router";
+import {APP_CONFIG, IAppConfig} from "../environments/environment";
+import {Logger} from "./core/logger/logger";
+import {Subscription} from "rxjs/Subscription";
+import {isPlatformBrowser, isPlatformWorkerApp, isPlatformWorkerUi} from "@angular/common";
+import {UtilityService} from "./core/services/utility.service";
+declare var ga: Function;
+
+@Component({
+    selector: 'fincash-app',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+})
+export class AppComponent implements OnInit, OnDestroy {
+
+    // logInDialogRef: MdDialogRef<LoginComponent>;
+    routerChangeSubscription: Subscription;
+    private className: string;
+
+    public constructor(public logger: Logger, private router: Router, @Inject(APP_CONFIG) private config: IAppConfig, @Inject(PLATFORM_ID) private platformId: any,
+                       private utilityService: UtilityService) {
+        // initialize userObject from token;
+        this.className = 'AppComponent';
+    }
+
+    ngOnInit() {
+        this.routerChangeSubscription = this.router.events.subscribe((evt) => {
+            this.logger.debug(this.className, "event", evt);
+            if (!(evt instanceof NavigationEnd)) {
+                return;
+            }
+
+            if (isPlatformBrowser(this.platformId) || isPlatformWorkerApp(this.platformId) || isPlatformWorkerUi(this.platformId)) {
+                this.utilityService.scrollToTop();
+                if (this.config.isGoogleAnalyticsAllowed && ga) {
+                    this.logger.debug("calling GA");
+                    ga('set', 'page', evt.urlAfterRedirects);
+                    ga('send', 'pageview');
+                }
+
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        this.routerChangeSubscription.unsubscribe();
+
+    }
+}

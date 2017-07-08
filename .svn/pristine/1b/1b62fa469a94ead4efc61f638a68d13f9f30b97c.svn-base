@@ -1,0 +1,10 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <md-tab-group [selectedIndex]="0">
+        <md-tab label="Transaction Report">
+            <app-transaction-report></app-transaction-report>
+        </md-tab>
+        <md-tab label="Capital Gains Report">
+            <app-capital-gains-report></app-capital-gains-report>
+        </md-tab>
+    </md-tab-group>
+</div>

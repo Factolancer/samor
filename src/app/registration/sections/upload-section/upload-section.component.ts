@@ -1,0 +1,424 @@
+import {animate, Component, Inject, OnInit, state, style, transition, trigger, ViewContainerRef} from "@angular/core";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Subscription} from "rxjs/Subscription";
+import {User} from "../../../models/user";
+import {UserService} from "../../userdata.service";
+import {HttpService} from "../../../core/services/http-service.service";
+import {Heading} from "../../constants/headings";
+import {Logger} from "../../../core/logger/logger";
+import {Tooltips} from "../../constants/tooltips";
+import {CNDGroup} from "../../../constants/CNDGroup";
+import {isNullOrUndefined} from "util";
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import {KYCConstants, KYCGroup} from "../../../constants/KYCGroup";
+import {APP_CONFIG, IAppConfig} from "../../../../environments/environment";
+import {UploadService} from "../../../core/services/upload.service";
+import {LookUpService} from "../../../core/services/lookup.service";
+import {LoginService} from "../../../core/services/login.service";
+import { MdDialog, MdDialogConfig } from "@angular/material";
+import {LoadingDialogComponent} from "../../../shared/loading-dialog.component";
+import {KycStatusService} from "../../../core/services/kycstatus.service";
+import {SnackBarService} from "../../../core/services/snack-bar.service";
+import {HeaderService} from "../../../core/services/header.service";
+
+@Component({
+    selector: 'upload-section',
+    templateUrl: './upload-section.component.html',
+    styleUrls: ['../../registration.styles.scss'],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({opacity: '1', height: '*', visibility: 'visible'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ])
+        ])
+    ]
+})
+export class UploadSectionComponent implements OnInit {
+
+    addressForm: FormGroup;
+    bankForm: FormGroup;
+    state: string = 'hide';
+    public heading = Heading;
+    tooltips = Tooltips;
+    addressProofs: any;
+    bankProofs: any;
+    pan: string;
+    address: string;
+    bank: string;
+    loadingDialogRef: any;
+
+    photodmtid: string = "";
+    pandmtid: string = "";
+    addressdmtid: string = "";
+    bankdmtid: string = "";
+    signaturedmtid: string = "";
+
+    photoimagepath: string = "";
+    panimagepath: string = "";
+    addressimagepath: string = "";
+    bankimagepath: string = "";
+    signatureimagepath: string = "";
+
+    photoUploadDisable: boolean;
+    panUploadDisable: boolean;
+    addressUploadDisable: boolean;
+    bankUploadDisable: boolean;
+    signatureUploadDisable: boolean;
+
+    addresscndrfnum: string;
+    bankcndrfnum: string;
+    photoUploadInProgress: boolean;
+    panUploadInProgress: boolean;
+    addressInProgress: boolean;
+    bankInProgress: boolean;
+    signatureInProgress: boolean;
+
+    user: User;
+    usersubscription: Subscription;
+    closingDialogSubscription: Subscription;
+    formData: any;
+    userid: any;
+    uploadPath: any;
+    filePath: string;
+    panUploaded: boolean;
+    kycDone: boolean;
+    className: string;
+
+    constructor(private fb: FormBuilder, public userService: UserService, public headerService: HeaderService, public http: HttpService, public logger: Logger, public router: Router,
+                public uploadService: UploadService, public lookupService: LookUpService, public loginService: LoginService,
+                public route: ActivatedRoute, @Inject(APP_CONFIG) private config: IAppConfig, public dialog: MdDialog, public viewContainerRef: ViewContainerRef,
+                public kycService: KycStatusService, public snackBarService: SnackBarService) {
+        this.className = "UploadDoc";
+        this.addresscndrfnum = "";
+        this.uploadPath = this.config.uploadPath;
+        this.userService.currentUser.subscribe(
+            result => {
+                this.user = result
+            }
+        );
+        this.panUploaded = false;
+    }
+
+    ngOnInit() {
+        this.showLoadingDialog();
+        this.lookupService.getByGroup(CNDGroup.ADDRESS_PROOF).subscribe(response => {
+            this.addressProofs = response
+        });
+        this.lookupService.getByGroup(CNDGroup.BANK_PROOF).subscribe(response => {
+            this.bankProofs = response
+        });
+
+        this.kycService.checkKycStatus()
+            .subscribe(value => {
+                this.kycDone = (value['kycstatus'] == KYCGroup.KYC_Done || value['kycstatus'] == KYCGroup.KYC_EXTERNALLYDONE) ? true : false;
+            });
+        this.http.secureGet('/user/getDmtIds')
+            .subscribe(response => {
+                this.photodmtid = response['photodmtid'];
+                this.pandmtid = response['pandmtid'];
+                this.addressdmtid = response['addressdmtid'];
+                this.bankdmtid = response['bankdmtid'];
+                this.signaturedmtid = response['signaturedmtid'];
+                this.addresscndrfnum = response['addresscndtype'];
+                this.bankcndrfnum = response['bankcndtype'];
+                this.photoimagepath = this.uploadPath + response['photopath'];
+                this.panimagepath = this.uploadPath + response['panpath'];
+                this.addressimagepath = this.uploadPath + response['addresspath'];
+                this.bankimagepath = this.uploadPath + response['bankpath'];
+                this.signatureimagepath = this.uploadPath + response['signaturepath'];
+                this.photoUploadDisable = (response['photostatus'] == KYCGroup.DOC_APPROVED);
+                this.panUploadDisable = (response['panstatus'] == KYCGroup.DOC_APPROVED);
+                this.addressUploadDisable = (response['addressstatus'] == KYCGroup.DOC_APPROVED);
+                this.bankUploadDisable = ((response['bankstatus'] == KYCGroup.DOC_APPROVED));
+                this.signatureUploadDisable = (response['signaturestatus'] == KYCGroup.DOC_APPROVED);
+                this.logger.debug(this.className, this.photodmtid);
+                this.logger.debug(this.className, this.photoimagepath);
+                this.logger.debug(this.className, 'init reponse ------>>>', response);
+                if(this.loadingDialogRef){
+                    this.closingDialogSubscription = this.loadingDialogRef.afterClosed().subscribe(value => {});
+                    this.closeLoadingDialog();
+                }
+            });
+        let userObj = this.loginService.getUserObject();
+        this.logger.debug(this.className, userObj)
+
+        if (!isNullOrUndefined(userObj) && !isNullOrUndefined(userObj.userid)) {
+            this.userid = userObj.userid;
+            this.logger.debug(this.className, this.userid)
+        }
+        this.route.params.subscribe((params: Params) => {
+            this.pan = params.pan;
+            this.address = params.address;
+            this.bank = params.bank;
+        });
+        this.addressForm = this.fb.group({
+            proofList: ['', Validators.required],
+            addressProof: ['', Validators.required]
+        });
+        this.bankForm = this.fb.group({
+            proofList: ['', Validators.required],
+            bankProof: ['', Validators.required]
+        })
+    }
+
+    photoFileChangeEvent(event: any) {
+        this.formData = new FormData();
+        let photoFile = <File> event.srcElement.files[0];
+        if (photoFile.size>(5*1024*1024)) {
+            this.snackBarService.showSnackBar("File size is too big", "OKAY", this.viewContainerRef);
+            return
+        }
+        this.photoUploadInProgress = true;
+        // Userid is being appended with fieldName in order to read userid at server side
+        this.formData.append("photo-" + this.userid, photoFile, photoFile.name);
+        this.logger.debug(this.className, photoFile);
+        this.logger.debug(this.className, this.formData);
+        this.uploadService.uploadDoc(this.formData)
+            .subscribe(result => {
+                    this.logger.debug(this.className, result);
+                    if (result.json().success) {
+                        let filePath = result.json().uploadfile;
+                        let dmtObj = {
+                            "dmtid": this.photodmtid,
+                            "path": filePath,
+                            "cndtype": KYCConstants.CND_DOCTYPE_PHOTOGRAPH
+                        };
+                        this.uploadService.saveFilePath(dmtObj)
+                            .subscribe(res => {
+                                this.photoUploadInProgress = false;
+                                this.logger.debug(this.className, res);
+                                this.photodmtid = res['dmtid'];
+                                this.photoimagepath = this.uploadPath + res['path'];
+                            });
+                    }
+                    else {
+                        this.snackBarService.showSnackBar(result.json().msg.toString, "OKAY", this.viewContainerRef);
+                        this.photoUploadInProgress = false;
+                    }
+                },
+                err => {
+                    this.logger.debug(this.className, err);
+                    this.photoUploadInProgress = false;
+                }
+            );
+    }
+
+    panFileChangeEvent(event: any) {
+        this.formData = new FormData();
+        let panFile = <File> event.srcElement.files[0];
+        if (panFile.size>(5*1024*1024)) {
+            this.snackBarService.showSnackBar("File size is too big", "OKAY", this.viewContainerRef);
+            return
+        }
+        this.panUploadInProgress = true;
+        this.formData.append("idProof-" + this.userid, panFile, panFile.name);
+        this.logger.debug(this.className, panFile);
+        this.logger.debug(this.className, this.formData);
+        this.uploadService.uploadDoc(this.formData)
+            .subscribe(result => {
+                    this.logger.debug(this.className, result);
+                    if (result.json().success) {
+                        let filePath = result.json().uploadfile;
+                        let dmtObj = {"dmtid": this.pandmtid, "path": filePath, "cndtype": KYCConstants.CND_DOCTYPE_PANCARD}
+                        this.uploadService.saveFilePath(dmtObj)
+                            .subscribe(res => {
+                                this.panUploadInProgress = false;
+                                this.logger.debug(this.className, res);
+                                this.pandmtid = res['dmtid'];
+                                this.panimagepath = this.uploadPath + res['path'];
+                            })
+                    }
+                    else {
+                        this.snackBarService.showSnackBar(result.json().msg.toString, "OKAY", this.viewContainerRef);
+                        this.panUploadInProgress = false;
+                    }
+                },
+                err => {
+                    this.logger.debug(this.className, err);
+                    this.panUploadInProgress = false;
+                }
+            );
+    }
+
+    addressFileChangeEvent(event: any) {
+        this.formData = new FormData();
+        let addressFile = <File> event.srcElement.files[0];
+        if (addressFile.size>(5*1024*1024)) {
+            this.snackBarService.showSnackBar("File size is too big", "OKAY", this.viewContainerRef);
+            return
+        }
+        this.addressInProgress = true;
+        this.formData.append("addressproof-" + this.userid, addressFile, addressFile.name);
+        this.logger.debug(this.className, addressFile);
+        this.logger.debug(this.className, this.formData);
+        this.uploadService.uploadDoc(this.formData)
+            .subscribe(result => {
+                    this.logger.debug(this.className, result);
+                    if (result.json().success) {
+                        let filePath = result.json().uploadfile;
+                        this.logger.debug(this.className, this.addresscndrfnum);
+                        let dmtObj = {"dmtid": this.addressdmtid, "path": filePath, "cndtype": this.addresscndrfnum};
+                        this.logger.debug(this.className, dmtObj);
+                        this.uploadService.saveFilePath(dmtObj)
+                            .subscribe(res => {
+                                this.addressInProgress = false;
+                                this.logger.debug(this.className, res);
+                                this.addressdmtid = res['dmtid'];
+                                this.addresscndrfnum = res['cndtype'];
+                                this.addressimagepath = this.uploadPath + res['path'];
+                                if (res['error']) {
+                                    this.snackBarService.showSnackBar(res['error'], "Okay", this.viewContainerRef);
+                                }
+                            })
+                    }
+                    else {
+                        this.snackBarService.showSnackBar(result.json().msg.toString, "OKAY", this.viewContainerRef);
+                        this.addressInProgress = false;
+                    }
+                },
+                err => {
+                    this.logger.debug(this.className, err);
+                    this.addressInProgress = false;
+                }
+            );
+    }
+
+    chequeFileChangeEvent(event: any) {
+        this.formData = new FormData();
+        let chequeFile = <File> event.srcElement.files[0];
+        if (chequeFile.size>(5*1024*1024)) {
+            this.snackBarService.showSnackBar("File size is too big", "OKAY", this.viewContainerRef);
+            return
+        }
+        this.bankInProgress = true;
+        this.formData.append("bankproof-" + this.userid, chequeFile, chequeFile.name);
+        this.logger.debug(this.className, chequeFile);
+        this.logger.debug(this.className, this.formData);
+        this.uploadService.uploadDoc(this.formData)
+            .subscribe(result => {
+                    this.logger.debug(this.className, result);
+                    if (result.json().success) {
+                        let filePath = result.json().uploadfile;
+                        this.logger.debug(this.className, this.bankcndrfnum);
+                        let dmtObj = {"dmtid": this.bankdmtid, "path": filePath, "cndtype": this.bankcndrfnum};
+                        this.uploadService.saveFilePath(dmtObj)
+                            .subscribe(res => {
+                                this.bankInProgress = false;
+                                this.logger.debug(this.className, res);
+                                this.bankdmtid = res['dmtid'];
+                                this.bankcndrfnum = res['cndtype'];
+                                this.bankimagepath = this.uploadPath + res['path'];
+                            })
+                    }
+                    else {
+                        this.snackBarService.showSnackBar(result.json().msg.toString, "OKAY", this.viewContainerRef);
+                        this.bankInProgress = false;
+                    }
+                },
+                err => {
+                    this.logger.debug(this.className, err);
+                    this.bankInProgress = false;
+                }
+            );
+    }
+
+    signatureFileChangeEvent(event: any) {
+        this.formData = new FormData();
+        let signatureFile = <File> event.srcElement.files[0];
+        if (signatureFile.size>(5*1024*1024)) {
+            this.snackBarService.showSnackBar("File size is too big", "OKAY", this.viewContainerRef);
+            return
+        }
+        this.signatureInProgress = true;
+        this.formData.append("signature-" + this.userid, signatureFile, signatureFile.name);
+        this.logger.debug(this.className, signatureFile);
+        this.logger.debug(this.className, this.formData);
+        this.uploadService.uploadDoc(this.formData)
+            .subscribe(result => {
+                    this.logger.debug(this.className, result);
+                    if (result.json().success) {
+                        let filePath = result.json().uploadfile;
+                        this.logger.debug(this.className, this.bankcndrfnum);
+                        let dmtObj = {
+                            "dmtid": this.signaturedmtid,
+                            "path": filePath,
+                            "cndtype": KYCConstants.CND_DOCTYPE_SIGNATURE
+                        };
+                        this.uploadService.saveFilePath(dmtObj)
+                            .subscribe(res => {
+                                this.signatureInProgress = false;
+                                this.logger.debug(this.className, res);
+                                this.signaturedmtid = res['dmtid'];
+                                this.signatureimagepath = this.uploadPath + res['path'];
+                            })
+                    }
+                    else {
+                        this.snackBarService.showSnackBar(result.json().msg.toString, "OKAY", this.viewContainerRef);
+                        this.signatureInProgress = false;
+                    }
+                },
+                err => {
+                    this.logger.debug(this.className, err);
+                    this.signatureInProgress = false;
+                }
+            );
+    }
+
+    showLoadingDialog() {
+        let config = new MdDialogConfig();
+        let device = this.headerService.deviceType();
+        if (device === 'xs' || device === 'sm') {
+            config.width = '80%';
+        }else {
+            config.width = "25vw";
+        }
+        config.disableClose = true;
+        config.viewContainerRef = this.viewContainerRef;
+        // config.data = {"text": "Loading..."};
+        let loadingConfig = {
+            text: "Loading..."
+        };
+        this.loadingDialogRef = this.dialog.open(LoadingDialogComponent, config);
+        this.loadingDialogRef.componentInstance.config = loadingConfig;
+    }
+
+    closeLoadingDialog() {
+        if(this.loadingDialogRef){
+            this.loadingDialogRef.close();
+        }
+    }
+
+    completeRegistration() {
+        if (this.kycDone && this.bankdmtid.length > 0 && this.signaturedmtid.length > 0) {
+            this.userService.createRegistrationTicket().subscribe(res=>{
+                this.logger.info("---------> reg ticket success", res);
+            },err=>{this.logger.info("---------> reg ticket fail");
+            });
+            this.router.navigate(['/registration/complete']);
+        }
+        else if (!this.kycDone && this.bankdmtid.length > 0 && this.signaturedmtid.length > 0 && this.photodmtid.length > 0 &&
+            this.pandmtid.length > 0 && this.addressdmtid.length > 0) {
+            this.userService.createRegistrationTicket().subscribe(res=>{
+                this.logger.info("---------> reg ticket success", res);
+            },err=>{this.logger.info("---------> reg ticket fail");
+            });
+            this.router.navigate(['/registration/complete']);
+        }
+        else {
+            this.snackBarService.showSnackBar("Please upload the relevant documents first", "Okay", this.viewContainerRef);
+        }
+
+    }
+
+    ngOnDestroy() {
+        if (this.loadingDialogRef) {
+            this.loadingDialogRef.close();
+        }
+        if (this.closingDialogSubscription){
+            this.closingDialogSubscription.unsubscribe();
+        }
+    }
+
+}

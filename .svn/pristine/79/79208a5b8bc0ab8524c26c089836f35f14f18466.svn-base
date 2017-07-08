@@ -1,0 +1,137 @@
+import {Component, OnInit, trigger, style, transition, animate, state} from "@angular/core";
+import {SipCalcQuestion} from "./sip-calc-question";
+import {SipCalcGoal} from "./sip-calc-goal";
+import {Params, ActivatedRoute, Router} from "@angular/router";
+import {SipGoalQuestions} from "./questions";
+import {SipGoals} from "./goals";
+import {CalculationKeys} from "./calculation-keys";
+
+@Component({
+    selector: 'app-goal-based',
+    templateUrl: './goal-based.component.html',
+    styleUrls: ['./goal-based.component.css'],
+    animations: [
+        trigger('questionAnimation', [
+            state('next', style({transform: 'translateX(0)', opacity: 1.0})),
+            state('prev', style({transform: 'translateX(0)', opacity: 1.0})),
+            transition('next => prev', style({transform: 'translateX(-100%)', opacity: 1.0}), animate('300ms')),
+            transition('* => next', style({transform: 'translateX(-100%)', opacity: 0.0}), animate('900ms'))
+        ])
+    ]
+
+    /*animations: [
+     trigger('questionAnimation', [
+     transition('void => prev', [ ///Entering
+     style({transform: 'translateX(-100%)', opacity: 0.0}),
+     animate('1s 100ms ease-in-out', style({transform: 'translateX(0)', opacity: 1.0}))
+     ]),
+     transition('prev => void', [ ///Leaving
+     style({transform: 'translateX(0)', opacity: 1.0}),
+     animate('1s 100ms ease-in-out', style({transform: 'translateX(100%)', opacity: 0.0}))
+     ]),
+     transition('void => next', [ ///Entering
+     style({transform: 'translateX(100%)', opacity: 0.0}),
+     animate('1s 100ms ease-in-out', style({transform: 'translateX(0)', opacity: 1.0}))
+     ]),
+     transition('next => void', [ ///Leaving
+     style(({transform: 'translate(0)', opacity: 1.0})),
+     animate('1s 100ms ease-in-out', style({transform: 'translateX(-100%)', opacity: 0.0}))
+     ])
+     ]),
+     ]*/
+})
+export class GoalBasedComponent implements OnInit {
+
+    orientation: string;
+    selectedQuestion: SipCalcQuestion;
+    questions: SipCalcQuestion[];
+    goal: SipCalcGoal;
+    goalId: any;
+    principal: string;
+
+    constructor(private router: Router, private route: ActivatedRoute) {
+    }
+
+    next() {
+        this.orientation = 'next';
+        let index = this.questions.indexOf(this.selectedQuestion);
+        if (this.questions[index + 1]) {
+            this.selectedQuestion = this.questions[index + 1]
+        } else {
+            this.showResults();
+        }
+
+    }
+
+    prev() {
+        this.orientation = 'prev';
+        let index = this.questions.indexOf(this.selectedQuestion);
+        if (this.questions[index - 1]) {
+            this.selectedQuestion = this.questions[index - 1];
+        } else {
+            this.selectedQuestion = this.questions[0];
+        }
+    }
+
+    calculate() {
+        let years = 0;
+        let amount = 0;
+        let inflation = 0;
+        let rate = 0;
+
+        if (this.goalId == 1) {
+            years = this.getYearsForRetirement();
+        }
+
+        this.questions.forEach(question => {
+            switch (question.calculationKey) {
+                case CalculationKeys.inflation:
+                    inflation = question.answer;
+                    break;
+                case CalculationKeys.amount:
+                    amount = question.answer;
+                    break;
+                case CalculationKeys.inflation:
+                    inflation = question.answer;
+                    break;
+                case CalculationKeys.rate:
+                    rate = question.answer;
+                    break;
+                case CalculationKeys.years:
+                    years = question.answer;
+                default:
+                    break;
+            }
+        });
+
+        let applicableRate = (rate - inflation) / 1200;
+        let months = years * 12;
+        //adjustment of amount against inflation
+        let adjustedAmount = amount * ((1 + inflation / 100) ** years);
+        //required principal to be invested
+        this.principal = ((adjustedAmount * applicableRate) / ((1 + applicableRate) ** months - 1)).toFixed(0);
+    }
+
+    getYearsForRetirement() {
+        let retireAge = 0;
+        let currentAge = 0;
+        this.questions.forEach(question => {
+            if (question.id == 1)
+                retireAge = +question.answer;
+            else if (question.id == 2)
+                currentAge = +question.answer;
+        });
+        return retireAge - currentAge;
+    }
+
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            this.goalId = params['id'];
+        });
+
+        this.goalId = +this.goalId;
+        this.questions = SipGoalQuestions[this.goalId - 1]
+        this.goal = SipGoals[this.goalId - 1];
+    }
+
+}

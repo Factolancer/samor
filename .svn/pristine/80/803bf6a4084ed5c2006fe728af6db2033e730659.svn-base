@@ -1,0 +1,55 @@
+import {NgModule} from "@angular/core";
+import {BrowserModule, Title} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
+import {AUTH_PROVIDERS} from "angular2-jwt";
+import {routes, appRoutingProviders} from "./app.routes";
+import {SipModule} from "./sip";
+import {RiskModule} from "./risk";
+import {RegistrationModule} from "./registration/registration.module";
+import {AppComponent} from "./app.component";
+import {HomeComponent} from "./home";
+import {LoginComponent} from "./login";
+import {SignupComponent} from "./signup";
+import {AuthGuard} from "./auth.guard";
+import {ReCaptchaComponent} from "./components/angular2-recaptcha/angular2-recaptcha.component";
+import {MdToolbarModule} from "@angular2-material/toolbar";
+import {CartModule} from "./cart/cart.module";
+import {MdIconModule} from "@angular2-material/icon";
+import {MdButtonModule} from "@angular2-material/button";
+import {CashModule} from "./cash/cash.module";
+import {ExploreFundsModule} from "./explore-funds/explore-funds.module";
+import {CompareModule} from "./compare/compare.module";
+import {FactsheetModule} from "./factsheet/factsheet.module";
+import {CheckoutModule} from "./checkout/checkout.module";
+
+@NgModule({
+    imports: [BrowserModule,
+        FormsModule,
+        HttpModule,
+        routes,
+        RiskModule,
+        RegistrationModule,
+        CashModule,
+        SipModule,
+        MdToolbarModule.forRoot(),
+        CartModule,
+        MdIconModule.forRoot(),
+        MdButtonModule.forRoot(),
+        ExploreFundsModule,
+        CompareModule,
+        FactsheetModule,
+        CheckoutModule,
+    ],
+    declarations: [ AppComponent, HomeComponent, LoginComponent, SignupComponent, ReCaptchaComponent ],
+    providers: [
+        HttpModule,
+        AUTH_PROVIDERS,
+        AuthGuard,
+        appRoutingProviders,
+        Title,
+    ],
+    bootstrap: [AppComponent]
+})
+export class AppModule {
+}

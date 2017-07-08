@@ -1,0 +1,133 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {Subject, Observable, BehaviorSubject} from "rxjs";
+
+import {User, UserBasic, UserBank, UserFatca, UserAddress, UserNominee} from '../models/user';
+import {Resolve, ActivatedRouteSnapshot} from "@angular/router";
+import {Http} from "@angular/http";
+import {Contact} from "../models/contact";
+import {Address} from "../models/address";
+import {Bank} from "../models/bank";
+
+@Injectable()
+export class UserService{
+
+    private userSubject: BehaviorSubject<User>;
+    currentUser : Observable<User>;
+
+    constructor(private fchttpservice: HttpService) {
+        console.log("In UserService Constructor")
+        let user = new User(new UserBasic('', '', '', '', '', '', '', new Contact('', '', '', ''), '', '', ''),
+            new UserAddress(new Address('', '', '', '', '', '', '', ''), new Address('', '', '', '', '', '', '', '')),
+            new UserBank('', '', new Bank('', '', '', '','', '', '', ''), ''),
+            new UserFatca('', '', '', '', '', '', '', ''),
+            new UserNominee('', '', '', new Address('', '', '', '', '', '', '', '')),
+            {}
+        );
+
+        this.userSubject = new BehaviorSubject<User>(user);
+        this.currentUser = this.userSubject.asObservable();
+    }
+
+    public setUserSubject(user: User){
+        this.userSubject.next(user);
+    }
+
+    public getUserSubject() {
+        return this.userSubject.getValue();
+    }
+
+    /*resolve(route: ActivatedRouteSnapshot){
+        return this.http.get('/getUserData')
+            .map(output => {
+                console.log("IN RESOLVE. OUTPUT = ");
+                console.log(output as User);
+                return output as User;
+            })
+    }*/
+
+    getUserBasicData() {
+        this.fchttpservice.get('/user/getUserBasicData')
+            .subscribe(output => {
+                console.log(output)
+                let user = this.getUserSubject();
+                user.userBasic = output as UserBasic;
+                this.setUserSubject(user);
+            })
+    }
+
+    updateBasicData(userdata: any, firstName: string, lastName: string){
+        console.log("In UpdateBasicData")
+        let user = this.getUserSubject();
+        user.userBasic = userdata;
+        user.userBasic.firstName = firstName
+        user.userBasic.lastName = lastName
+        this.fchttpservice.post('/user/postUserBasicData', user.userBasic)
+            .subscribe(output => {
+                    console.log(output);
+                },
+                error => {
+                    console.log(error);
+                })
+        console.log(user)
+        // this.updateData(user);
+    }
+    updateKYCData(userdata:any){
+        let user = this.getUserSubject();
+        user.userAddress = userdata;
+        this.fchttpservice.post('/user/postUserAddressData', user)
+            .subscribe(output => {
+                    console.log(output);
+                },
+                error => {
+                    console.log(error);
+                })
+        console.log(user);
+        // this.updateData(user);
+    }
+    updateBankData(userdata: any, accountNumber: string){
+        let user = this.getUserSubject();
+        user.userBank = userdata;
+        user.userBank.accountNumber = accountNumber
+        this.fchttpservice.post('/user/postUserBasicData', user.userBank)
+            .subscribe(output => {
+                    console.log(output);
+                },
+                error => {
+                    console.log(error);
+                })
+        console.log(user);
+        // this.updateData(user);
+    }
+    updateOtherData(userdata: any){
+        let user = this.getUserSubject();
+        user.userFatca = userdata;
+
+        if (user.userFatca.isIndianTaxPayer == 'Yes') {
+            user.userFatca.taxCountry = '115';
+        }
+        else {
+            user.userFatca.taxCountry = userdata.controls['taxCountry'].value;
+        }
+        console.log(user);
+        this.fchttpservice.post('/user/postUserFatcaData', user.userFatca)
+            .subscribe(output => {
+                    console.log(output);
+                },
+                error => {
+                    console.log(error);
+                })
+        // this.updateData(user);
+    }
+
+    updateData(user) {
+        console.log("In Update Data");
+        this.fchttpservice.post('/user/postUserData', user)
+            .subscribe(output => {
+                console.log(output);
+            },
+            error => {
+                console.log(error);
+            })
+    }
+}

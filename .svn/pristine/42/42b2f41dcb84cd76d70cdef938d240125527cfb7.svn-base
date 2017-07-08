@@ -1,0 +1,31 @@
+import { Injectable } from '@angular/core';
+import { Jsonp, URLSearchParams } from '@angular/http';
+
+@Injectable()
+export class KYCService {
+    constructor(private jsonp: Jsonp) {}
+
+    uatUrl = "https://eiscuat1.camsonline.com/ekycuat3/eKYCVal_Aadhar.aspx";
+    returnUrl = "http://localhost/";
+    pan = "ALDPN3048F";
+    aadhar = "321463430696";// "386739705452";
+    appID = "fincash";
+    userId = "UECH_SHEP";
+    password = "HzK6$g3";
+    intermediaryId = "B";
+    kyc_data = this.pan + "|pareshnagore@gmail.com|7032909303|fincash|" + this.userId + "|" + this.password + "|B|MFKYC" //9952302214
+
+    queryString = "&Aadhar=" + this.aadhar + "&url=" + this.returnUrl + "&kyc_data=" + this.kyc_data;
+
+    check(){
+        return this.jsonp
+            .get(this.uatUrl + this.queryString)
+            .map(response => {
+                console.log(response);
+                <string>response.json()
+            })
+
+        // window.open(this.uatUrl + this.queryString);
+    }
+
+}

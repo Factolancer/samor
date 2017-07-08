@@ -1,0 +1,302 @@
+<div class="wrapper" fxLayout="row" fxLayoutAlign="center center" xmlns="http://www.w3.org/1999/html">
+    <div fxFlex="90">
+        <div class="pad-tb-15" fxLayout="column" fxLayoutAlign="center center">
+            <div class="heading-32-cash border-down">Earn more by investing in
+                <span class="imp">SavingsPlus</span>
+            </div>
+
+            <div class="heading-14-demo" style="padding-bottom: 15px;">
+                <hr/>
+                "Benefits of Bank Account with better returns to double your savings"
+            </div>
+        </div>
+
+
+        <div fxLayout="row" fx fxLayoutAlign="center center">
+            <div fxFlex="90" class="demoa-slide-box mar-tb-20">
+                <!--<md-card class="no-padding mar-tb-20">-->
+                <div fxLayout="row" fxLayoutAlign="center center" class="demoa-slide-title pad-tb-20">
+                    <div fxFlex>This is what your Savings Bank Account and <br/>
+                        SavingsPlus Earnings comparison looks like
+
+
+                    </div>
+                </div>
+
+                <div fxLayout="row" fx fxLayoutAlign="center center">
+                    <div fxFlex="90" class="demoa-slide-box mar-tb-20">
+                        <div fxLayout="row" fxLayoutGap="20px"
+                             class="pad-25">
+
+
+                            <md-card class="no-padding" fxFlex="90">
+                                <md-card-content>
+
+                                    <div fxLayout="row" fx fxLayoutAlign="center center">
+                                        <div style="margin-top: 30px; margin-bottom: 0px;" id="line_chart"
+                                             [chartData]="data" [chartOptions]="line_ChartOptions"
+                                             chartType="LineChart" GoogleChart>
+                                        </div>
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+
+                            <md-card class="no-padding" fxFlex="90">
+                                <md-card-content>
+
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <div fxFlex class="no-padding  pad-tb-25 demob-slide-title"
+                                             style="height: 65px; width: 100px;">
+
+                                        </div>
+                                        <div fxFlex class="no-padding  pad-tb-25 demob-slide-title"><b>Savings Account
+                                            Earnings <br/>
+                                        </b>
+                                        </div>
+                                        <div fxFlex class="no-padding  pad-tb-25 demob-slide-title"><b>
+                                            SavingsPlus Earnings</b>
+                                        </div>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <div fxFlex class="pad-tb-15">
+                                            <h5 class="demob-tag-size"><b>Earnings for a Quarter</b></h5>
+                                            <h5 class="demob-tag-size" md-tooltip="Assuming average monthly balance increases by Rs. 50,000 p.m. resulting in yearly  savings of Rs. 6 Lakhs"><b>Earnings for a Year</b></h5>
+                                        </div>
+                                        <div fxFlex class="no-padding pad-tb-15">
+                                            <h5 class="demob-tag-size">₹ 1000</h5>
+                                            <h5 class="demob-tag-size">₹ 13000</h5>
+                                        </div>
+                                        <div fxFlex class="pad-tb-15">
+                                            <h5 class="demob-tag-size">₹ 2000</h5>
+                                            <h5 class="demob-tag-size">₹ 26000</h5>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <div fxFlex class="no-padding  pad-tb-25 demob-slide-bottom">Extra
+                                            Earnings from SavingsPlus <b>₹ 13000</b>
+                                        </div>
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+                        </div>
+                    </div>
+                </div>
+
+                <!--footer-->
+                <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center" class="pad-05">
+                    <div>
+                        <button class="btn-border" routerLink="../demoa">Back</button>
+                    </div>
+                    <div>
+                        <button class="btn-border" routerLink="../demoall">Next</button>
+                    </div>
+                </div>
+                <!--footer-->
+                <!--</md-card>-->
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!--<div class="col-md-8 col-md-offset-2">-->
+<!--<div>-->
+<!--<md-grid-list cols="24" rowHeight="80px">-->
+<!--<md-grid-tile [colspan]="24">-->
+<!--Product Details >> Fund Selection >> Investment Portfolio >> Summary & Checkout-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="24" [@showhide]="heading" class="screenheading">-->
+<!--{{headingarray[index]}}-->
+<!--</md-grid-tile>-->
+<!--&lt;!&ndash;[ngClass]="{'screenheading': headingvisible, 'step': !headingvisible}"&ndash;&gt;-->
+<!--<md-grid-tile [rowspan]="4"></md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="12" [rowspan]="4">-->
+<!--<md-card>-->
+<!--<md-card-content>-->
+<!--<div style="text-align: center; background-color: #0081c9; color: white;">-->
+<!--<h4 style="padding: 5px; margin-bottom: 0;">Example of an account statement</h4>-->
+<!--</div>-->
+
+<!--<table style="width: 100%">-->
+<!--<colgroup>-->
+<!--<col width="25%">-->
+<!--<col width="25%">-->
+<!--<col width="25%">-->
+<!--<col width="25%">-->
+<!--</colgroup>-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th>Date</th>-->
+<!--<th>Cash flow</th>-->
+<!--<th>Amount</th>-->
+<!--<th>Account Balance</th>-->
+<!--</tr>-->
+<!--</thead>-->
+
+<!--<tbody>-->
+<!--<tr>-->
+<!--<td>{{'1 Jan' | date:'d MMM'}}</td>-->
+<!--<td class="green" style="text-align: center">Salary</td>-->
+<!--<td class="green" style="text-align: center">70,000</td>-->
+<!--<td class="darkblue" style="text-align: right">70,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>9 Jan</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 1</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-20,000</td>-->
+<!--<td class="darkblue" style="text-align: right">50,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>{{'15 Jan' | date:'d-MMM'}}</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 2</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-10,000</td>-->
+<!--<td class="darkblue" style="text-align: right">40,000</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+
+<!--<tbody style="background-color: #ffffff">-->
+<!--<tr>-->
+<!--<td>1 Feb</td>-->
+<!--<td class="green" style="text-align: center">Salary</td>-->
+<!--<td class="green" style="text-align: center">70,000</td>-->
+<!--<td class="darkblue" style="text-align: right">1,10,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>10 Feb</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 1</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-7,000</td>-->
+<!--<td class="darkblue" style="text-align: right">1,03,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>20 Feb</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 2</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-15,000</td>-->
+<!--<td class="darkblue" style="text-align: right">88,000</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+
+<!--<tbody>-->
+<!--<tr>-->
+<!--<td>1 Mar</td>-->
+<!--<td class="green" style="text-align: center">Salary</td>-->
+<!--<td class="green" style="text-align: center">70,000</td>-->
+<!--<td class="darkblue" style="text-align: right">1,58,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>11 Mar</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 1</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-10,000</td>-->
+<!--<td class="darkblue" style="text-align: right">1,48,000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>29 Mar</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 2</td>-->
+<!--<td class="red" style="text-align: right">&nbsp;&nbsp;-15,000</td>-->
+<!--<td class="darkblue" style="text-align: right">1,33,000</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</md-card-content>-->
+<!--</md-card>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [rowspan]="4">-->
+<!--<i class="material-icons" style="font-size: xx-large">forward</i>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="3" [rowspan]="4" >-->
+<!--<div>-->
+<!--<button *ngIf="!balanceVisible" (click)="showBalance()">Show Average Monthly Balance</button>-->
+<!--<avgbal *ngIf="balanceVisible"></avgbal>-->
+<!--</div>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="3" [rowspan]="4" >-->
+<!--<div>-->
+<!--<button *ngIf="!savningsEarningVisible && balanceVisible" (click)="showSavingAcc()">-->
+<!--How much you get from Bank?-->
+<!--</button>-->
+<!--<accearning *ngIf="savningsEarningVisible"></accearning>-->
+<!--</div>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="3" [rowspan]="4" >-->
+<!--<div>-->
+<!--<button *ngIf="!cashMagEarningVisible && savningsEarningVisible" (click)="showCashMag()">-->
+<!--And here's how much you'll get from SavingsPlus-->
+<!--</button>-->
+<!--<cashearning *ngIf="cashMagEarningVisible"></cashearning>-->
+<!--</div>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [rowspan]="4"></md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="13" [rowspan]="4">-->
+<!--<div *ngIf="differenceVisible" id="line_chart" [chartData]="data" [chartOptions]="line_ChartOptions"-->
+<!--chartType="LineChart" GoogleChart>-->
+<!--</div>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [rowspan]="4">-->
+<!--<button *ngIf="cashMagEarningVisible" (click)="showGraph()"><i class="material-icons"-->
+<!--style="font-size: xx-large">arrow_back</i>-->
+<!--</button>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="9" [rowspan]="3">-->
+<!--<md-card *ngIf="cashMagEarningVisible">-->
+<!--<md-card-content>-->
+<!--<table style="width: 100%">-->
+<!--<colgroup>-->
+<!--<col width="34%">-->
+<!--<col width="33%">-->
+<!--<col width="33%">-->
+<!--</colgroup>-->
+<!--<tbody style="border: 0">-->
+<!--<tr style="background-color: white">-->
+<!--<td></td>-->
+<!--<td><i class="material-icons" style="font-size: xx-large" *ngIf="cashMagEarningVisible">arrow_downward</i>-->
+<!--</td>-->
+<!--<td><i class="material-icons" style="font-size: xx-large" *ngIf="cashMagEarningVisible">arrow_downward</i>-->
+<!--</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>Earnings for quarter</td>-->
+<!--<td>&#x20B9; 1000</td>-->
+<!--<td>&#x20B9; 2000</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>Earnings for year</td>-->
+<!--<td>&#x20B9; 13000</td>-->
+<!--<td>&#x20B9; 26000</td>-->
+<!--</tr>-->
+<!--<tr style="background-color: white">-->
+<!--<td colspan="2">-->
+<!--<b>Extra earning from SavingsPlus</b>-->
+<!--</td>-->
+<!--<td style="font-size: x-large">&#x20B9; 13000</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+
+<!--</table>-->
+<!--</md-card-content>-->
+<!--</md-card>-->
+<!--</md-grid-tile>-->
+
+<!--<md-grid-tile [colspan]="24">-->
+<!--<button md-raised-button (click)="toFunds()" style="float: right" color="primary">Click to Invest !-->
+<!--</button>-->
+<!--</md-grid-tile>-->
+
+<!--</md-grid-list>-->
+<!--</div>-->
+<!--</div>-->
+

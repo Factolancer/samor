@@ -1,0 +1,124 @@
+import {Inject, Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {HttpService} from "./http-service.service";
+import {KYCGroup} from "../../constants/KYCGroup";
+import {Logger} from "../logger/logger";
+import {SnackBarService} from "./snack-bar.service";
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+import {ActivatedRouteSnapshot, Router, RouterStateSnapshot} from "@angular/router";
+import {DataStorageService} from "./data-storage.service";
+
+@Injectable()
+export class KycStatusService {
+
+    kycstatus: string;
+    className: string;
+    docUploaded: boolean;
+
+    constructor(public logger: Logger, public httpService: HttpService, @Inject(APP_CONFIG) private config: IAppConfig,
+                public snackBarService: SnackBarService,public dataStorageService: DataStorageService, public router: Router) {
+        this.className = "KycStatusService"
+    }
+
+    public checkUserStatus(): Observable<boolean> {
+        return this.httpService.secureGet('/user/isUserVarified').retry(3).timeout(30000).map(res => {
+            if (res['success'] && res['status']=="Y"){
+                return true;
+            }
+            else {
+                return false;
+            }
+        })
+    }
+
+    public checkIndividual(): Observable<boolean> {
+        return this.httpService.secureGet('/user/isUserIndividual').retry(3).timeout(30000).map(res => {
+            if (res['success']){
+                return true;
+            }
+            else {
+                this.router.navigate([this.config.defaultAfterLogin]);
+                return false;
+            }
+        })
+    }
+
+    public checkKycStatus(): Observable<any> {
+        return this.httpService.secureGet('/user/checkKycStatus').retry(3).timeout(30000)
+            .map(response => {
+                this.logger.debug(this.className, response)
+                this.kycstatus = response.kycstatus;
+
+                this.logger.debug(this.className, (this.kycstatus === KYCGroup.KYC_Done || this.kycstatus === KYCGroup.KYC_EXTERNALLYDONE))
+
+                return response;
+                /*if (this.kycstatus === KYCGroup.KYC_Done || this.kycstatus === KYCGroup.KYC_EXTERNALLYDONE)
+                    return true;
+                else{
+                    if (this.kycstatus === KYCGroup.KYC_NOTDONE){
+                        this.snackBarService.setGuardMessage("Your KYC is incomplete");
+                        return false;
+                    }
+                    else {
+                        this.snackBarService.setGuardMessage("Your KYC status is pending, kindly wait for approval");
+                        return false;
+                    }
+
+                }*/
+            });
+
+    }
+
+    public checkKycStatusBoolean(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+        this.docUploaded = false;
+        return this.checkKycStatus().map(response => {
+            /*this.httpService.get('/user/getDmtIds')
+             .subscribe(response => {*/
+            if (response['photodmtid'] && response['photodmtid'].length > 0 &&
+                response['pandmtid'] && response['pandmtid'].length > 0 &&
+                response['addressdmtid'] && response['addressdmtid'].length > 0 &&
+                response['bankdmtid'] && response['bankdmtid'].length > 0 &&
+                response['signaturedmtid'] && response['signaturedmtid'].length > 0){
+                this.docUploaded = true
+            }
+            else
+                this.docUploaded = false;
+
+            // KYC done and doc uploaded, user through
+            if (response['kycstatus'] && (response['kycstatus'] === KYCGroup.KYC_Done || response['kycstatus'] === KYCGroup.KYC_EXTERNALLYDONE) &&
+                response['bankdmtid'] && response['bankdmtid'].length>0 && response['signaturedmtid'] && response['signaturedmtid'].length>0){
+                return true;
+            }
+            // KYC done but doc not uploaded, Go to uploads
+            else if (response['kycstatus'] && (response['kycstatus'] === KYCGroup.KYC_Done || response['kycstatus'] === KYCGroup.KYC_EXTERNALLYDONE)) {
+                this.dataStorageService.set(this.config.kycGuard.storagekey, state.url);
+                this.snackBarService.setGuardMessage("Please upload documents first");
+                this.router.navigate([this.config.uploadGuard.navigate]);
+                return false;
+            }
+            // KYC not done, go to Registration
+            else if (response['kycstatus'] && (response['kycstatus'] === KYCGroup.KYC_NOTDONE)) {
+                this.dataStorageService.set(this.config.kycGuard.storagekey, state.url);
+                this.snackBarService.setGuardMessage("KYC is not done");
+                this.router.navigate([this.config.kycGuard.navigate]);
+                return false;
+            }
+            // KYC UnderProcess, doc uploaded, Please wait page
+            else if (this.docUploaded) {
+                this.dataStorageService.set(this.config.kycGuard.storagekey, state.url);
+                this.router.navigate([this.config.kycWaitUrl]);
+                return false;
+            }
+            // KYC UnderProcess, doc not uploaded, go to Uploads
+            else {
+                this.dataStorageService.set(this.config.kycGuard.storagekey, state.url);
+                this.snackBarService.setGuardMessage("Please upload documents first");
+                this.router.navigate([this.config.uploadGuard.navigate]);
+                return false;
+            }
+        }, err => {
+            return false;
+        })
+
+    }
+}

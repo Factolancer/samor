@@ -1,0 +1,64 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Params, ActivatedRoute, Router} from "@angular/router";
+import {FundSearchResults} from "../registration/sections/bank-section/search-results";
+import {Title} from "@angular/platform-browser";
+import {FundSearchInput} from "../search/fund-search-input";
+import {Subscription} from "rxjs";
+import {SearchService} from "../registration/sections/bank-section/search.service";
+import {ExploreFundsService} from "./explore-funds.service";
+import {CompareService} from "../compare/compare.service";
+import {CompareGuard} from "../compare/compare.guard";
+
+
+@Component({
+    selector: 'app-explore-funds',
+    templateUrl: './explore-funds.component.html',
+    styleUrls: ['./explore-funds.component.css']
+})
+export class ExploreFundsComponent implements OnInit, OnDestroy {
+
+
+    searchResults: FundSearchResults;
+    fundSearchInput: FundSearchInput;
+    searchResultsSubscription: Subscription;
+    showFilterContent: boolean;
+
+    constructor(private route: ActivatedRoute, private router: Router, private searchService: SearchService, private exploreFundsService: ExploreFundsService,
+                private titleService: Title, private compareService: CompareService, private compareGaurd: CompareGuard) {
+        this.searchResultsSubscription = this.searchService.fundSearchInput.subscribe(
+            (searchInput: FundSearchInput) => {
+                console.log("inside switch map!");
+                this.searchService.search(searchInput).subscribe(output => {
+                    this.searchResults = output as FundSearchResults;
+                    let fundDisplay = this.exploreFundsService.getFundDisplay();
+                    fundDisplay.totalCount = this.searchResults.numFound;
+                    this.exploreFundsService.setFundDisplay(fundDisplay)
+                });
+            });
+    }
+
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            // this.investmentType = params['investmentType'];
+        });
+
+        // this.titleService.setTitle("Search for " + this.investmentType + " funds");
+        this.showFilterContent = false;
+        this.fundSearchInput = this.searchService.getFundSearchInput();
+        this.fundSearchInput.searchType = 'sip';
+        this.searchService.setFundSearchInput(this.fundSearchInput);
+
+        console.log(this.searchService.getFundSearchInput());
+    }
+
+    compare() {
+        this.compareService.setIdList([10, 12, 14]);
+        this.compareGaurd.allow = true;
+        this.router.navigateByUrl("/compare");
+    }
+
+    ngOnDestroy() {
+        this.searchResultsSubscription.unsubscribe();
+    }
+
+}

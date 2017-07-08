@@ -1,0 +1,9 @@
+@import "../../public/styles/partials/web-partials";
+
+.section-header {
+  background-color: yellow;
+  color: $white;
+  @include heading(20px, 300);
+  width: 100%;
+  line-height: 50px;
+}

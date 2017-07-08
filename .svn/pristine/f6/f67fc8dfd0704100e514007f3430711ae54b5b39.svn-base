@@ -1,0 +1,42 @@
+import {ExploreFundConstants} from "./explore-funds.constants";
+export class FundSearchInput {
+    amcCode: string[];
+    keyword: string;
+    from: number;
+    rows: number;
+    rating: number[];
+    age: number;
+    category: string[];
+    sortElement: string;
+    sortOrder: string;
+    aumRange: string;
+    searchType: string;
+    queryType: string;
+
+    constructor(amcCode?: string[],
+                keyword?: string,
+                from?: number,
+                rows?: number,
+                rating?: number[],
+                age?: number,
+                category?: string[],
+                sortElement?: string,
+                sortOrder?: string,
+                aumRange?: string,
+                searchType?: string,
+                queryType?: string) {
+
+        this.amcCode = amcCode || [];
+        this.keyword = keyword || '';
+        this.from = from || 0;
+        this.rows = rows || 5;
+        this.age = age || 0;
+        this.rating = rating || [];
+        this.category = category || [];
+        this.sortElement = sortElement || "";
+        this.sortOrder = sortOrder || "";
+        this.aumRange = aumRange || "";
+        this.searchType = searchType || ExploreFundConstants.ALL_FUNDS;
+        this.queryType = queryType || ExploreFundConstants.SEARCH_QUERY;
+    }
+}

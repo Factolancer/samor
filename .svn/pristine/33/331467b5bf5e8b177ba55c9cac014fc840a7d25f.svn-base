@@ -1,0 +1,113 @@
+<section class="grey-back">
+    <div class="col-md-2">
+        <ul class="float-right list-style clickable">
+            <li>Dashboard</li>
+            <li>Profile</li>
+            <li>Risk Profiling</li>
+            <li>KYC</li>
+            <li>Holdings</li>
+            <li>Reports</li>
+        </ul>
+    </div>
+    <div class="col-md-7">
+        <div class="row">
+            <div class="col-md-12 alert-info pad-10">
+                Please complete your <b class="clickable" routerLink="/registration">Registration &amp; KYC</b>
+                process in order to make investments easy!
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pad-10">
+                <h3>Returns</h3>
+                Put Donut Chart here
+            </div>
+            <div class="col-md-6 pad-10">
+                <h3>Holdings Summary</h3>
+                <table>
+                    <tr>
+                        <td>Current Holdings value:</td>
+                        <td> {{10000 | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                    <tr>
+                        <td>Invested Amount:</td>
+                        <td>{{10200 | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                    <tr>
+                        <td>Realized Gain/Loss:</td>
+                        <td>{{1500 | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                    <tr>
+                        <td>Unrealized Gain/Loss:</td>
+                        <td>{{-200 | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Your Portfolio Performance</h3>
+                <p>Graph based on fund returns <b>OR</b> table of fund values</p>
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="pad-10">Fund</th>
+                        <th class="pad-10">NAV</th>
+                        <th class="pad-10">Units</th>
+                        <th class="pad-10">Invested Amount</th>
+                        <th class="pad-10">Current Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="pad-10">HSBC Tax Saver Equity Fund</td>
+                        <td class="pad-10">{{15.65 | currency:'INR':true:'1.2-2'}}</td>
+                        <td class="pad-10">10</td>
+                        <td class="pad-10">{{16000 | currency:'INR':true:'1.0-0'}}</td>
+                        <td class="pad-10">{{16500 | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                    <tr>
+                        <td class="pad-10">Birla Sun Life Fixed Term Plan Series Dr</td>
+                        <td class="pad-10">{{20.25 | currency:'INR':true:'1.2-2'}}</td>
+                        <td class="pad-10">10</td>
+                        <td class="pad-10">{{5000 | currency:'INR':true:'1.0-0'}}</td>
+                        <td class="pad-10">{{4800 | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                    <tr>
+                        <td class="pad-10">ICICI Prudential FMCG Fund</td>
+                        <td class="pad-10">{{21.56 | currency:'INR':true:'1.2-2'}}</td>
+                        <td class="pad-10">10</td>
+                        <td class="pad-10">{{6000 | currency:'INR':true:'1.0-0'}}</td>
+                        <td class="pad-10">{{5800 | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-12 pad-10">
+                <button md-raised-button="" color="primary" routerLink="/watchlist">View Watchlist</button>
+                <button md-raised-button="" color="primary" routerLink="/explore/all">Explore Funds</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12  grey-back pad-10">
+                <h3 class="text-center">Smart SIP</h3>
+                <button md-raised-button="" color="primary" routerLink="/sip/smartsip">Invest</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12  grey-back pad-10">
+                <h3 class="text-center">Savings Plus</h3>
+                <button md-raised-button="" color="primary" routerLink="/cash">Invest</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12  grey-back pad-10">
+                <h3 class="text-center">Tax Saver</h3>
+                <button md-raised-button="" color="primary" routerLink="/tax/taxsaver">Invest</button>
+            </div>
+        </div>
+    </div>
+</section>

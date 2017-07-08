@@ -1,0 +1,325 @@
+<div class="col-sm-10 col-sm-offset-1">
+    <div class="row">
+        <div class="col-sm-12 center-align heading-32 pad-tb-15">Enter your investment details</div>
+    </div>
+    <form [formGroup]="checkoutFormGroup" (ngSubmit)="onCheckoutSubmit()">
+        <div class="row grey-back pad-tb-20 mar-tb-20">
+            <div class="col-sm-12">
+                <md-card class="checkout-product-head">
+                    <div class="row">
+                        <div class="col-sm-3 left-align">Fund</div>
+                        <div class="col-sm-3">Plan Option</div>
+                        <div class="col-sm-1">Investment Mode</div>
+                        <div class="col-sm-1">SIP Date</div>
+                        <div class="col-sm-1">SIP Duration</div>
+                        <div class="col-sm-2">Investment Amount</div>
+                        <div class="col-sm-1">Action</div>
+                    </div>
+                </md-card>
+            </div>
+            <div class="col-sm-12">
+                <md-card class="checkout-product-item">
+                    <div class="row"
+                         *ngFor="let fundGroup of checkoutFormGroup.controls.fundsData.controls; let index= index">
+                        <!--Fund-->
+                        <div class="col-sm-3 left-align">
+                            <div class="row">
+                                <div class="col-sm-1" style="padding-right: 0;">
+                                    <md-icon class="material-icons md-14 clickable">&#xE88E;</md-icon> <!--Info Icon-->
+                                </div>
+                                <div class="col-sm-11">
+                                    {{checkoutData.fundsData[index].fund.name}} <br/>
+                                    <span class="product-tag">
+                                        <md-icon class="md-10">&#xE88E;</md-icon>
+                                        SmartSIP
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Plan Option-->
+                        <div class="col-sm-3">
+                            <select [formControl]="fundGroup.controls.selectedSubOption">
+                                <option *ngFor="let subOption of checkoutData.fundsData[index].subOptionList"
+                                        value="{{subOption}}">
+                                    {{subOption}}
+                                </option>
+                            </select>
+                            <md-hint *ngIf="checkoutFormErrors.fundsData[index].selectedSubOption"
+                                     class="errorMessage">
+                                {{checkoutFormErrors.fundsData[index].selectedSubOption}}
+                            </md-hint>
+                        </div>
+                        <!--Investment Mode-->
+                        <div class="col-sm-1">
+                            <select>
+                                <option>SIP</option>
+                                <option>LUMPSUM</option>
+                            </select>
+                        </div>
+                        <!--SIP Date-->
+                        <div class="col-sm-1">
+                            <div *ngIf="checkoutData.fundsData[index].fund.investmentMode == 0">
+                                <select [formControl]="fundGroup.controls.selectedDeductionDate">
+                                    <option *ngFor="let deductionDate of checkoutData.fundsData[index].deductionDateList"
+                                            value="{{deductionDate}}">
+                                        {{deductionDate}}
+                                    </option>
+                                </select>
+                                <md-hint *ngIf="checkoutFormErrors.fundsData[index].selectedDeductionDate"
+                                         class="errorMessage">
+                                    {{checkoutFormErrors.fundsData[index].selectedDeductionDate}}
+                                </md-hint>
+                            </div>
+                        </div>
+                        <!--Duration-->
+                        <div class="col-sm-1">
+                            <div *ngIf="checkoutData.fundsData[index].fund.investmentMode == 0">
+                                <select>
+                                    <option>1 Year</option>
+                                    <option>2 Years</option>
+                                    <option>3 Years</option>
+                                    <option>4 Years</option>
+                                    <option>5 Years</option>
+                                </select>
+                                <!--<md-input placeholder=""
+                                          [formControl]="fundGroup.controls.investmentDuration">
+                                    <md-hint *ngIf="checkoutFormErrors.fundsData[index].investmentDuration"
+                                             class="errorMessage">
+                                        {{checkoutFormErrors.fundsData[index].investmentDuration}}
+                                    </md-hint>
+                                </md-input>-->
+                            </div>
+                        </div>
+                        <!--Investment Amount-->
+                        <div class="col-sm-2 right-align">
+                            <md-input [formControl]="fundGroup.controls.investmentAmount"
+                                      placeholder="Min Amount ({{checkoutData.fundsData[index].fund.minInvestment}})">
+                                <span md-prefix>&#x20B9;</span><!--Rupee icon-->
+                                <md-hint *ngIf="checkoutFormErrors.fundsData[index].investmentAmount"
+                                         class="errorMessage">
+                                    {{checkoutFormErrors.fundsData[index].investmentAmount}}
+                                </md-hint>
+                            </md-input>
+                        </div>
+                        <!--Action-->
+                        <div class="col-sm-1">
+                            <button type="button" class="remove-btn"
+                                    (click)="removeFund(checkoutData.fundsData[index].fund, index)">
+                                <md-icon class="md-14">&#xE888;</md-icon><!--Clear icon-->
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+            <div class="col-sm-2 add-funds">
+                <button type="button" md-button="" routerLink="/explore/all">
+                    <md-icon class="md-18">&#xE147;</md-icon>
+                    Add Funds
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <md-card class="no-border no-padding">
+                    <div class="row pad-lr-15">
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-3 pad-tb-20">
+                            Nominee:
+                            <select formControlName="selectedNominee">
+                                <option *ngFor="let nominee of checkoutData.nomineeList" value="{{nominee}}">{{nominee}}
+                                </option>
+                            </select>
+                            <md-hint *ngIf="checkoutFormErrors.selectedNominee" class="errorMessage">
+                                {{checkoutFormErrors.selectedNominee}}
+                            </md-hint>
+                        </div>
+                        <div class="col-sm-3  pad-tb-20">
+                            Bank:
+                            <select formControlName="selectedBank">
+                                <option *ngFor="let bank of checkoutData.bankList" value="{{bank}}">{{bank}}</option>
+                            </select>
+                            <md-hint *ngIf="checkoutFormErrors.selectedNominee" class="errorMessage">
+                                {{checkoutFormErrors.selectedNominee}}
+                            </md-hint>
+                        </div>
+                        <div class="col-sm-3 total-inv">
+                            Total Investment Amount<br/>
+                            {{totalInvestmentAmount | currency:'INR':true:'1.0-0'}}
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+        </div>
+        <div class="row pad-tb-10">
+            <div class="col-sm-3 pull-right">
+                <button type="submit" color="primary" md-raised-button="" class="cta-50">
+                    Continue Checkout
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<!--
+    <form [formGroup]="checkoutFormGroup" (ngSubmit)="onCheckoutSubmit()">
+        &lt;!&ndash; <app-checkout-product-view *ngFor="let item of checkoutData.products; let index=index;"
+                                    class="checkout-product"
+                                    (remove)="remove(index)"
+                                    (update)="update()"
+                                    [_product]="item"
+                                    [_formGroup]="checkoutFormGroup.controls.products.at(index)"
+                                    [_formErrors]="checkoutFormErrors.products[index]"></app-checkout-product-view>&ndash;&gt;
+
+
+        <div *ngFor="let item of checkoutData;">
+
+        </div>
+
+
+        <div *ngFor="let item of checkoutData.products; let index=index;">
+            <div [formGroup]="productFormGroup">
+                <div class="row">
+                    <div class=".col-sm-6">
+                        <h3 style="margin-top:0px">{{productEnum[product.productName]}}</h3>
+                    </div>
+                    <div class=".col-sm-6" *ngIf="isFincashProduct">
+                        <button md-raised-button="" class="pull-right"
+                                (click)="removeProduct()">Remove
+                            {{productEnum[product.productName]}}
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=".col-sm-4">
+                        <md-input placeholder="{{productEnum[product.productName]}} Investment Amount"
+                                  formControlName="investmentAmount" (change)="distributeAmount()">
+                            <span md-prefix>&#x20B9;</span>&lt;!&ndash;Rupee icon&ndash;&gt;
+                            <md-hint *ngIf="productFormErrors.investmentAmount" class="errorMessage">
+                                {{productFormErrors.investmentAmount}}
+                            </md-hint>
+                        </md-input>
+                    </div>
+                    <div class=".col-sm-4">
+                        <md-checkbox align="start" *ngIf="isSIP" formControlName="startPaymentToday">
+                            Make First Payment Today
+                        </md-checkbox>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=".col-sm-12">
+                        <table>
+                            <thead class="table-header">
+                            <td class=" table-element">Fund</td>
+                            <td class=" table-element">Investment Mode</td>
+                            <td class=" table-element">Option</td>
+                            <td class="table-element">Sub Option</td>
+                            <td class="table-element" *ngIf="isSIP">Monthly Deduction Date</td>
+                            <td class="table-element" *ngIf="isSIP">No of Installments</td>
+                            <td class="table-element">Investment Amount</td>
+                            <td class=" table-element" *ngIf="!isFincashProduct">Action</td>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let fundGroup of productFormGroup.controls.funds.controls; let index=index;"
+                                class="table-row">
+                                <td class="table-element left-align">
+                                    <md-icon class="material-icons md-14 clickable">&#xE88E;</md-icon> &lt;!&ndash;Info Icon&ndash;&gt;
+                                    {{product.funds[index].name}}
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td class="table-element">
+                                    <select [formControl]="fundGroup.controls.selectedSubOption">
+                                        <option *ngFor="let subOption of product.funds[index].subOptionList"
+                                                value="{{subOption}}">
+                                            {{subOption}}
+                                        </option>
+                                    </select>
+                                    <md-hint *ngIf="productFormErrors.funds[index].selectedSubOption"
+                                             class="errorMessage">
+                                        {{productFormErrors.funds[index].selectedSubOption}}
+                                    </md-hint>
+                                </td>
+                                <td class="table-element" *ngIf="isSIP">
+                                    <select [formControl]="fundGroup.controls.selectedDeductionDate">
+                                        <option *ngFor="let deductionDate of product.funds[index].deductionDateList"
+                                                value="{{deductionDate}}">
+                                            {{deductionDate}}
+                                        </option>
+                                    </select>
+                                    <md-hint *ngIf="productFormErrors.funds[index].selectedDeductionDate"
+                                             class="errorMessage">
+                                        {{productFormErrors.funds[index].selectedDeductionDate}}
+                                    </md-hint>
+                                </td>
+                                <td class="table-element" *ngIf="isSIP">
+                                    <md-input placeholder="{{productEnum[product.productName]}} Investment Period"
+                                              [formControl]="fundGroup.controls.investmentDuration">
+                                        <md-hint *ngIf="productFormErrors.funds[index].investmentDuration"
+                                                 class="errorMessage">
+                                            {{productFormErrors.funds[index].investmentDuration}}
+                                        </md-hint>
+                                    </md-input>
+                                </td>
+                                <td class="table-element">
+                                    <md-input [formControl]="fundGroup.controls.investmentAmount"
+                                              (change)="calculateAmounts()">
+                                        <span md-prefix>&#x20B9;</span>&lt;!&ndash;Rupee icon&ndash;&gt;
+                                        <md-hint *ngIf="productFormErrors.funds[index].investmentAmount"
+                                                 class="errorMessage">
+                                            {{productFormErrors.funds[index].investmentAmount}}
+                                        </md-hint>
+                                    </md-input>
+                                </td>
+                                <td class="table-element" *ngIf="!isFincashProduct">
+                                    <button md-icon-button=""
+                                            (click)="removeFund(index)">
+                                        <i class="material-icons">&#xE14C;</i>&lt;!&ndash;Clear icon&ndash;&gt;
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Total Investment Amount:</label>
+                <label>{{totalInvestmentAmount | currency:'INR':true:'1.0-0'}}</label>
+            </div>
+            <div class="col-sm-4">
+                <label>Nominee:</label>
+                <select formControlName="selectedNominee">&lt;!&ndash;required&ndash;&gt;
+                    <option *ngFor="let nominee of checkoutData.nomineeList" value="{{nominee}}">{{nominee}}
+                    </option>
+                </select>
+                <md-hint *ngIf="checkoutFormErrors.selectedNominee" class="errorMessage">
+                    {{checkoutFormErrors.selectedNominee}}
+                </md-hint>
+            </div>
+            <div class="col-sm-4">
+                <label>Bank Account:</label>
+                <select formControlName="selectedBank">&lt;!&ndash;required&ndash;&gt;
+                    <option *ngFor="let bank of checkoutData.bankList" value="{{bank}}">{{bank}}</option>
+                </select>
+                <md-hint *ngIf="checkoutFormErrors.selectedNominee" class="errorMessage">
+                    {{checkoutFormErrors.selectedNominee}}
+                </md-hint>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a routerLink="/explore/all">
+                    <i class="material-icons">&#xE147;&lt;!&ndash;Add icon&ndash;&gt;</i> Add Funds
+                </a>
+                <button type="submit" color="primary" md-raised-button=""
+                        class="md-primary float-right">Continue Checkout
+                </button>
+            </div>
+        </div>
+    </form>-->
+

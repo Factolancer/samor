@@ -1,0 +1,33 @@
+import {Injectable} from "@angular/core";
+import {Logger} from "../logger/logger";
+
+
+@Injectable()
+export class UtilityService {
+
+    constructor(private logger:Logger){
+
+    }
+    public parseString(string: string, data: any): string {
+        let regEx = /{([a-zA-Z0-9.]+)}/;
+        let stringArray = string.match(regEx);
+        this.logger.debug("UtilityService", data);
+
+        while (stringArray) {
+            let keyString = stringArray[1];
+            let keyStringArray = keyString.split('.');
+            let tempData = data;
+            let replacementString = stringArray[0];
+            keyStringArray.forEach(key => {
+                if (tempData && tempData[key]) {
+                    tempData = tempData[key];
+                } else {
+                    tempData = "";
+                }
+            });
+            string = string.replace(replacementString, tempData);
+            stringArray = string.match(regEx);
+        }
+        return string;
+    }
+}

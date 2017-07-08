@@ -1,0 +1,68 @@
+<div class="col-md-6 col-md-offset-3">
+  <div>
+    <md-grid-list cols="2" rowHeight="80px">
+      <md-grid-tile [colspan]="2">
+        Product Details >> Fund Selection >> Investment Portfolio >> Summary & Checkout
+      </md-grid-tile>
+      <md-grid-tile [colspan]="2" class="screenheading">
+        Increase your bank balance by investing in SavingsPlus
+      </md-grid-tile>
+
+      <md-grid-tile [colspan]="2">
+        <md-card>
+          <md-card-content>
+            <table>
+              <thead>
+              <tr>
+                <th>S.No.</th>
+                <th>Fund</th>
+                <th>1 month return(%)</th>
+                <th>3 month return(%)</th>
+                <th>1 year return(%)</th>
+                <th>Fund Age</th>
+                <th>Risk</th>
+                <th>AUM(Cr.)</th>
+                <th>Min. Investment</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>1</td>
+                <td>Reliance Money Manager Fund</td>
+                <td>0.83</td>
+                <td>2.37</td>
+                <td>8.65</td>
+                <td>9 years</td>
+                <td>Low</td>
+                <td>15,382</td>
+                <td>500</td>
+              </tr>
+              </tbody>
+            </table>
+          </md-card-content>
+        </md-card>
+      </md-grid-tile>
+
+      <md-grid-tile [colspan]="2">
+        <!--<md-card style="display: inline">-->
+        <!--<md-card-content>-->
+        <table style="text-align: center; background-color: #0081c9; color: white; margin-top: 10px">
+          <tr style="background-color: #0081c9">
+            <td><i class="material-icons">trending_up</i>Higher real returns as compared to savings and deposits</td>
+            <td><i class="material-icons">update</i>Instant Redumption</td>
+            <td><i class="material-icons">lock_open</i>No lock-in & Exit load</td>
+            <td><i class="material-icons">check_box</i>Invest & redeem at a click!</td>
+          </tr>
+        </table>
+        <!--</md-card-content>-->
+        <!--</md-card>-->
+      </md-grid-tile>
+    </md-grid-list>
+  </div>
+</div>
+
+<section class="col-md-8 col-md-offset-2">
+  <div>
+
+  </div>
+</section>

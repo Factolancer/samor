@@ -1,0 +1,10 @@
+<div class="center-align heading-18-grey-bold ">SORT</div><hr/>
+<div *ngFor="let action of config.sortActions;" class="center-align">
+    <button md-button="" [ngClass]="{'active-sort': config.currentSortElement === action[1]}" (click)="dialogRef.close(action[1])">{{action[0]}}</button>
+    <span *ngIf="config.currentSortElement === action[1]">
+        <md-icon class="colr-bs">
+            <span *ngIf="config.sortState == 'desc'">&#xE5C5;</span>
+            <span *ngIf="config.sortState == 'asc'">&#xE5C7;</span>
+        </md-icon>
+    </span>
+</div>

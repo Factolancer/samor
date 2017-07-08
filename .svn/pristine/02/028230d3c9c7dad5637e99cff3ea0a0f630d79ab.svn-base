@@ -1,0 +1,141 @@
+import {Component, OnInit, style, state, animate, transition, trigger} from '@angular/core';
+import {NgForm, FormGroup, Validators, FormControl, FormBuilder, Validator, FormControlName} from '@angular/forms';
+import {Subscription} from "rxjs";
+
+import {User} from "../../../models/user";
+import {UserService} from '../../user.service';
+import {HttpService} from "../../../services/http-service.service";
+import {Country} from "../../../countries";
+import {Heading} from "../../constants/headings";
+import {Income} from "../../constants/incomerange";
+import {Occupation} from "../../constants/occupation";
+import {ValidationMessages} from "../../constants/validationmessages";
+import {ActivatedRoute} from "@angular/router";
+
+@Component({
+    selector: 'other-section',
+    templateUrl: './other-section.component.html',
+    styleUrls: ['../../registration.styles.scss'],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({opacity: '1', height: '*', visibility: 'visible'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ])
+        ])
+    ]
+})
+export class OtherSectionComponent implements OnInit {
+
+    otherForm: FormGroup;
+    public countries = Country;
+    public heading = Heading;
+    public incomerange = Income;
+    public occupations = Occupation;
+
+    state: string = 'hide';
+    othersaved = false;
+    othercollapsed = true;
+    isNRI = false;
+    indiantaxpayer = 'Yes';
+
+    user: User
+    usersubscription: Subscription;
+
+    validationMessages = ValidationMessages;
+
+    constructor(private fb: FormBuilder, public userService: UserService, public http: HttpService, private route: ActivatedRoute) { }
+
+    ngOnInit() {
+        this.route.data.forEach((data: {user: User}) => {
+            this.user = data.user;
+        });
+        this.userService.currentUser.subscribe(
+            result => {
+                console.log("In Init of Bank ");
+                console.log(result)
+                this.user = result
+            }
+        )
+        this.buildform();
+    }
+
+    buildform(): void {
+        this.otherForm = this.fb.group({
+            income: ['', Validators.compose([Validators.required])],
+            occupation: ['', Validators.required],
+            nationality: ['India', Validators.required],
+            birth_country: ['India', Validators.compose([Validators.required])],
+            birth_city: ['', Validators.required],
+            tax_country_india: ['Yes'],
+            tax_country: [''],
+            tin: [''],
+            politically_exposed: ['No'],
+            politically_related: ['No'],
+        });
+
+        this.otherForm.statusChanges.subscribe(data => this.onValueChanged(data));
+        this.onValueChanged();
+    }
+
+    onValueChanged(data?: any) {
+        if (!this.otherForm) {
+            return;
+        }
+        const otherform = this.otherForm;
+        if (otherform.pristine) {
+            return;
+        }
+        if (!otherform.dirty) {
+            return;
+        }
+        for (const field in this.formErrors) {
+            // clear previous error message (if any)
+            this.formErrors[field] = '';
+            const control = otherform.controls[field];
+            console.log(control + typeof control);
+            if (!control.valid && control.touched) {
+                console.log(control.errors);
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrors[field] += messages[key] + ' ';
+                }
+            }
+        }
+
+    }
+
+    formErrors = {
+        'birth_city': ''
+    };
+
+    onOtherSubmit() {
+        console.log("we are in other section compoenent")
+        this.othersaved = true;
+        this.otherForm.controls['tax_country_india'].setValue(this.indiantaxpayer)
+        this.userService.updateOtherData(this.otherForm.value);
+        //this.user.Other = this.otherForm.value;
+        /*if (this.otherForm.controls['tax_country_india'].value == 'Yes') {
+         this.user.Other.tax_country = 'India';
+         }
+         else {
+         this.user.Other.tax_country = this.otherForm.controls['tax_country'].value;
+         }
+         if (this.otherForm.controls['investor_type'].value == 'Resident Indian') {
+         this.user.Other.country = 'India';
+         }
+         else {
+         this.user.Other.country = this.otherForm.controls['country'].value;
+         }*/
+        //console.log(this.user);
+        this.toggleOther();
+    }
+
+    toggleOther() {
+        if (this.othercollapsed == true) this.othercollapsed = false;
+        else this.othercollapsed = true;
+
+        this.state = (this.state === 'hide' ? 'show' : 'hide')
+    }
+}

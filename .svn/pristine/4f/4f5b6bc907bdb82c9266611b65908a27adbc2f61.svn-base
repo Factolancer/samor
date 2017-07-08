@@ -1,0 +1,35 @@
+@import "../../../styles/partials/web-partials";
+
+.prod-sol-container{
+  text-align: center;
+  //overflow-x: scroll;
+  md-card{
+    -webkit-transition: all 200ms ease-in-out;
+    -ms-transition: all 200ms ease-in-out;
+    -moz-transition: all 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
+    &:hover{
+      @include scaleUp(1.1,$medium-grey);
+    }
+  }
+  md-card-title{
+    img{height: 40px; width:40px;  border:1px solid $brand-secondary; border-radius: 50%;}
+    p {
+      margin-top: 0;
+      span {
+        color: $brand-secondary;
+        font-size: 16px;
+        padding-bottom: 5px;
+        border-bottom: solid 2px $medium-grey;
+      }
+    }
+  }
+  md-card-content{
+    color: $dark-grey;
+    line-height: 20px;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+

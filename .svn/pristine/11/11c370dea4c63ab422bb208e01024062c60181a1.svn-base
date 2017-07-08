@@ -1,0 +1,75 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <md-card class="mar-tb-5 report-card no-padding">
+        <div fxLayout="row" fxLayoutAlign="center center" class="summary-heading">
+            <div fxFlex="50">Portfolio Summary</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between" class="summary-card1" *ngIf="assetClassAllocation">
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header" mdTooltipPosition="above" mdTooltip="As of {{assetClassAllocation.asOfDate | date}}">Current Value</span>
+                    <span class="summary-details mar-t-10 center-align">{{assetClassAllocation.currentValue | currency:'INR':true:'1.2-2'}}</span>
+                </div>
+            </div>
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Cost Value</span>
+                    <span class="summary-details mar-t-10 center-align">{{assetClassAllocation.costValue | currency:'INR':true:'1.2-2'}}</span>
+                </div>
+            </div>
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Unrealized Gain</span>
+                    <span class="summary-details mar-t-10 center-align">{{assetClassAllocation.unrealizedGain | currency:'INR':true:'1.2-2'}}</span>
+                </div>
+            </div>
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Realized Gain</span>
+                    <span class="summary-details mar-t-10 center-align">{{assetClassAllocation.realizedGain | currency:'INR':true:'1.2-2'}}</span>
+                </div>
+            </div>
+        </div>
+    </md-card>
+    <div fxLayout="row" fxLayoutAlign="center center" class="portfolio-allocation-heading summary-heading mar-t-20">
+        <span fxFlex><b>Portfolio Allocation by Asset Class</b></span>
+    </div>
+    <md-card class="report-card no-padding">
+        <div fxLayout="row" fxLayoutAlign="center center" class="allocation-header mar-tb-20 pad-lr-30">
+            <div fxFlex="15">
+                Asset Class
+            </div>
+            <div fxFlex="15" class="center-align">
+                Invested Amount (Rs.)
+            </div>
+            <div fxFlex="20" class="center-align">
+                Share(%)
+            </div>
+            <div fxFlex="20" class="center-align">
+                Current Value (Rs.)
+            </div>
+            <div fxFlex="20" class="center-align">
+                Share(%)
+            </div>
+        </div>
+    </md-card>
+    <md-card class="report-card no-padding mar-tb-5">
+        <div *ngIf="assetClassAllocation">
+            <div *ngFor="let assetClassDetail of assetClassAllocation.assetClassDetailsList; let i = index" fxLayout="row"
+                 fxLayoutAlign="center center" class="allocation-details pad-lr-30" [ngClass]="{lastRow: i==assetClassAllocation.assetClassDetailsList.length-1, focus:i!=assetClassAllocation.assetClassDetailsList.length-1}">
+                <span fxFlex="15" class="asset-class">{{assetClassDetail.assetClass}}</span>
+                <span fxFlex="15" class="asset-class-details center-align">{{assetClassDetail.investedAmt | reportNumber}}</span>
+                <span fxFlex="20" class="asset-class-details center-align">{{assetClassDetail.share | reportNumber}}</span>
+                <span fxFlex="20" class="asset-class-details center-align">
+                    {{assetClassDetail.currValue | reportNumber}} (
+                    <span [ngClass]="{decrease: assetClassDetail.currentCostRatio < 1 && assetClassDetail.currentCostRatio != 0.00, increase:assetClassDetail.currentCostRatio >= 1}">{{assetClassDetail.currentCostRatio | reportNumber}}%</span>
+                    <span >
+                        <md-icon *ngIf="assetClassDetail.currentCostRatio >= 1" class="upArrow">&#xE5D8;</md-icon>
+                        <md-icon *ngIf="assetClassDetail.currentCostRatio < 1 && assetClassDetail.currentCostRatio != 0.00" class="downArrow">&#xE5DB;</md-icon>
+                    </span>
+                    )
+                </span>
+                <span fxFlex="20" class="asset-class-details center-align">{{assetClassDetail.currShare | reportNumber}}</span>
+            </div>
+        </div>
+    </md-card>
+</div>

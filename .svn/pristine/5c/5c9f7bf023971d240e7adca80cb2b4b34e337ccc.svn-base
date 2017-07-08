@@ -1,0 +1,23 @@
+'use strict';
+
+// Production specific configuration
+// =================================
+module.exports = {
+    DOMAIN: 'http://10.1.0.2:81',
+    // Server IP
+    ip: process.env.IP || '10.1.0.2',
+    // Server port
+    port: process.env.PORT || '81',
+    // MongoDB connection options
+    mongo: {
+        uri: process.env.MONGOLAB_URI ||
+        'mongodb://10.1.0.2/fincash'
+    },
+    NODEMAILER: {
+        service: 'Gmail',
+        auth: {
+            user: 'taiga@fincash.com',
+            pass: 'pswd'
+        }
+    }
+};

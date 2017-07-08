@@ -1,0 +1,8 @@
+export interface CartItem {
+    product: string,
+    investmentType: string,
+    fundIds: number[]
+}
+
+
+

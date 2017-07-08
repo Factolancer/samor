@@ -1,0 +1,93 @@
+import {Component, OnInit, ViewEncapsulation, OnDestroy} from '@angular/core';
+import {DashboardDataService} from "./dashboard-data.service";
+import {ChartOptions} from "./chart/chart-options";
+
+import {Router} from "@angular/router";
+import {LoginService} from "../core/services/login.service";
+import {Subscription} from "rxjs/Subscription";
+import {TitleService} from "../core/services/title.service";
+import {HeaderService} from "../core/services/header.service";
+
+@Component({
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+})
+
+export class DashboardComponent implements OnInit, OnDestroy {
+    public invested: Boolean;
+    private pf: Object;
+    portfolioDataAvailable: boolean = false;
+    pendingDataAvailable: boolean = false;
+
+    pfsubcription: Subscription;
+
+    serverError = {
+        pf: false,
+        assetAllocation: false
+    }
+
+    private pendings: Array<Object> = [];
+
+    constructor(public dataService: DashboardDataService, private router: Router, private loginService: LoginService,
+                private headerService: HeaderService, private titleService: TitleService) {
+    };
+
+    goTo(link) {
+        this.router.navigateByUrl(link);
+    }
+
+    ngOnInit() {
+        this.ifInvested();
+        this.titleService.setTitle("dashboard");
+
+    }
+
+    ngOnDestroy() {
+        if (this.pfsubcription) {
+            this.pfsubcription.unsubscribe()
+        }
+    }
+
+    ifInvested() {
+        let userObject = this.loginService.getUserObject();
+        if (userObject && userObject.foliocount && userObject.foliocount > 0) {
+            this.invested = true;
+            this.getPortfolio();
+        } else {
+            this.invested = false;
+            this.getPendingDetails();
+        }
+        return this.invested;
+    }
+
+    getPortfolio() {
+        this.pfsubcription = this.dataService.getPortfolio()
+            .subscribe(
+                res => {
+                    this.pf = res;
+                    this.portfolioDataAvailable = true;
+                },
+                err => {
+                    console.log('an error occured');
+                    this.serverError.pf = true;
+                }
+            )
+    }
+
+    getPendingDetails() {
+        /*this.dataService.getPendingDetails()
+         .subscribe(
+         res=>{
+         this.pendings = res;
+         this.pendingDataAvailable = true;
+         },
+         err=>{console.log('an error occured')}
+         )*/
+    }
+
+
+}
+
+

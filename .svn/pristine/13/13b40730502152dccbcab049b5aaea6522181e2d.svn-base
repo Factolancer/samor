@@ -1,0 +1,15 @@
+import { Injectable } from '@angular/core';
+import {HttpService} from "../../services/http-service.service";
+import {AssetAllocation} from "./asset-allocation";
+import {Observable} from "rxjs";
+
+@Injectable()
+export class AssetAllocationService {
+
+  constructor(private httpService:HttpService) { }
+
+  getAssetAllocation(): Observable<AssetAllocation[]>{
+    return this.httpService.get('/getAssetAllocationReport')
+        .map(res => res as AssetAllocation[])
+  }
+}

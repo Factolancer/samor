@@ -1,0 +1,87 @@
+import {Component, OnInit, Input} from "@angular/core";
+
+
+@Component({
+    selector: 'app-more-data',
+    templateUrl: 'more-data.component.html',
+    styleUrls: ['more-data.component.css'],
+})
+
+
+export class MoreDataComponent implements OnInit {
+
+    constructor() {
+
+    }
+
+    pattern: string;
+    currentDataList: any;
+    defaultDataList: any;
+    @Input() set dataList(value: any){
+        this.currentDataList = value;
+        this.defaultDataList = value;
+    }
+    @Input() title: string;
+
+    KMPSearch(pat: string, txt: string) {
+        let M: number = pat.length;
+        let N: number = txt.length;
+        let lps: number[] = [];//= new number[M]// = new int[M];
+        let j = 0;  // index for pat[]
+        this.computeLPSArray(pat, M, lps);
+        let i = 0;
+        while (i < N) {
+            if (pat.charAt(j) == txt.charAt(i)) {
+                j++;
+                i++;
+            }
+            if (j == M) {
+                //System.out.println("Found pattern at index " + (i - j));
+                j = lps[j - 1];
+                console.log(txt);
+                return txt;
+            }
+            else if (i < N && pat.charAt(j) != txt.charAt(i)) {
+
+                if (j != 0)
+                    j = lps[j - 1];
+                else
+                    i = i + 1;
+            }
+        }
+    }
+
+    computeLPSArray(pat: string, M: number, lps: number[]) {
+        let len = 0;
+        let i = 1;
+        lps[0] = 0;
+        while (i < M) {
+            if (pat.charAt(i) == pat.charAt(len)) {
+                len++;
+                lps[len] = len;
+                i++;
+            }
+            else {
+                if (len != 0) {
+                    len = lps[len - 1];
+                }
+                else {
+                    lps[i] = len;
+                    i++;
+                }
+            }
+        }
+    }
+
+    searchDataList() {
+        if (this.pattern.length > 2) {
+            this.currentDataList = [];
+            this.defaultDataList.forEach(elm =>this.KMPSearch(this.pattern, elm))
+        }
+
+    }
+
+    ngOnInit() {
+    }
+
+}

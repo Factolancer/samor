@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-filter-master',
+  templateUrl: './filter-master.component.html',
+  styleUrls: ['filters.scss']
+})
+export class FilterMasterComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

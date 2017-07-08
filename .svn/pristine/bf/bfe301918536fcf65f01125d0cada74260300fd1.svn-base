@@ -1,0 +1,33 @@
+import {Injectable, Inject} from "@angular/core";
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from "@angular/router";
+import {Observable} from "rxjs";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {Logger} from "../logger/logger";
+import {IsBasicDetailsUpdatedService} from "../services/isbasicDetailUpdated.service";
+import {LocalStorageService} from "angular-2-local-storage";
+import {SnackBarService} from "../services/snack-bar.service";
+
+
+@Injectable()
+export class BasicDetailStatusGuard implements CanActivate {
+    className: string;
+
+    constructor(public isBasicDetailUpdatedService: IsBasicDetailsUpdatedService, @Inject(APP_CONFIG) private config: IAppConfig, public router: Router,
+                public logger: Logger, public localStorageService: LocalStorageService, private snackBarService: SnackBarService) {
+        this.className = "BasicDetailStatusGuard";
+    }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+
+        return this.isBasicDetailUpdatedService.checkIfBasicDetailsUpdated().map(value => {
+            if (!value) {
+                this.localStorageService.set(this.config.userBasicGuard.storagekey, state.url);
+                this.snackBarService.setGuardMessage("Basic details")
+                this.router.navigate([this.config.userBasicGuard.navigate]);
+                return false;
+            } else {
+                return true;
+            }
+        });
+    }
+}

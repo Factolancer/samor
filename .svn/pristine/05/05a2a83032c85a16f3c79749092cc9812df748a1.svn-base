@@ -1,0 +1,4 @@
+<span>
+    <span>{{cartItemsCount}}</span>
+    <md-icon [ngClass]="cssClass">&#xE8CC;</md-icon>
+</span>

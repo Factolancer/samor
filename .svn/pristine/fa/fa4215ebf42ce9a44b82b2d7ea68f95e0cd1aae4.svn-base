@@ -1,0 +1,50 @@
+<div [hidden]="performersDataAvailable" class="loading">
+  <img src="../../../assets/img/loading.gif">
+</div>
+
+<div class="top-performer-container" *ngIf="performersDataAvailable">
+  <div class="title" align="center" >Top Performers in your Portfolio</div>
+  <div fxLayout="row" class="content" *ngIf="performers.length">
+    <div class="perfomers" fxFlex="40">
+      <table >
+        <tr *ngFor="let performer of performers, let i=index" class="clickable">
+          <template [ngIf]="i<topPerformerCount">
+            <td mdTooltip="{{performer.name}}" mdTooltipPosition="above" (click)="active=i" class="truncate">
+              <i class="material-icons" style="font-size: 10px;margin: 5px 3px 15px;">info_outline</i>
+              {{performer.name}}
+            </td>
+          </template>
+
+        </tr>
+      </table>
+    </div>
+
+    <div class="details" fxFlex="60" *ngIf="active>=0">
+      <div fxLayout="row" fxLayoutAlign="center">
+        <div class="name truncate" mdTooltip="{{performers[active].name}}" mdTooltipPosition="above">
+          <i class="material-icons" style="font-size: 12px;margin: 5px 3px 15px;">info_outline</i>
+          {{performers[active].name}}
+        </div>
+        <span class="rating" [innerHTML]="performers[active].rating | rating"></span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <div  fxFlex align="start">
+          <div class="ring">
+            <span class="percentage">{{performers[active].return}} %</span> <br/>
+            <span class="field">1 year return</span>
+          </div>
+
+        </div>
+        <div fxFlex align="end">
+          <div class="ring">
+            <span class="category">{{performers[active].category}}</span> <br/>
+            <span class="field">category</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dataUnavailable" *ngIf="!performers.length" >
+    <span>Sorry, unable to fetch data</span>
+  </div>
+</div>

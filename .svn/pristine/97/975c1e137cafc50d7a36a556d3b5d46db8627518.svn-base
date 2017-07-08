@@ -1,0 +1,80 @@
+@import "../../public/styles/partials/web-partials";
+
+.main-header {
+  color: $white;
+  background-color: $brand-secondary;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 85px;
+  margin: 0 !important;
+}
+
+.other-header {
+  line-height: 64px;
+  background-color: $dark-grey;
+  color: $white;
+  margin: 0 !important;
+  text-align: center;
+}
+
+.main-content {
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  color: $black;
+  border-bottom: solid 1px $dark-grey;
+  background-color: $light-grey;
+  margin: 0 !important;
+  padding: 20px 0;
+}
+
+.other-content {
+  font-size: 16px;
+  text-align: center;
+  color: $dark-grey;
+  background-color: $light-grey;
+  padding: 20px 0;
+  border-bottom: solid 1px $dark-grey;
+  margin: 0 !important;
+}
+
+.white-circle {
+  width: 42px;
+  height: 42px;
+  background-color: $white;
+  border-radius: 50%;
+  padding: 9px 9px;
+}
+
+.saving-plus-icon {
+  color: $brand-secondary;
+}
+
+.heading-32-cash {
+  @include heading(32px, 300);
+
+  .imp {
+    color: $brand-primary;
+    font-weight: 400;
+  }
+}
+
+.heading-16-cash {
+  @include heading(16px, 300);
+  .imp {
+    color: $brand-primary;
+    font-weight: 400;
+  }
+}
+
+.cash-fund-card {
+    background-color: $light-grey;
+    color: $black;
+}
+
+.cash-fund-name {
+    @include heading(16px, 400);
+    color: $brand-secondary;
+}
+

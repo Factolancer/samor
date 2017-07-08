@@ -1,0 +1,35 @@
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {SearchComponent} from './search.component';
+import {SearchService} from "./search.service";
+import {FormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
+import {HttpService} from "../services/http-service.service";
+import {AmcFilterComponent} from './filters/amc-filter.component';
+import {MdCheckboxModule} from "@angular2-material/checkbox";
+import {AumFilterComponent} from './filters/aum-filter.component';
+import {AgeFilterComponent} from "./filters/age-filter.component";
+import {CategoryFilterComponent} from "./filters/category-filter.component";
+import {RatingFilterComponent} from "./filters/rating-filter.component";
+import {MdIconModule} from "@angular2-material/icon";
+import {MoreDataComponent} from './filters/more-data.component';
+import {MdInputModule} from "@angular2-material/input";
+
+
+@NgModule({
+    imports: [
+        CommonModule,
+        FormsModule,
+        HttpModule,
+        MdCheckboxModule,
+        MdIconModule,
+        MdInputModule,
+    ],
+    exports: [SearchComponent, AmcFilterComponent, AgeFilterComponent,
+        RatingFilterComponent, CategoryFilterComponent, AumFilterComponent, MoreDataComponent],
+    providers: [SearchService, HttpService],
+    declarations: [SearchComponent, AmcFilterComponent, AgeFilterComponent,
+        RatingFilterComponent, CategoryFilterComponent, AumFilterComponent, MoreDataComponent]
+})
+export class SearchModule {
+}

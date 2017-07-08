@@ -1,0 +1,20 @@
+Express server listening on 3000, in development mode
+request @ default controller
+D:\workspace\migration-project\server\dist
+127.0.0.1 - - [17/Mar/2017:13:49:20 +0000] "GET /registration/basic HTTP/1.1" 200 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
+request @ default controller
+D:\workspace\migration-project\server\dist
+127.0.0.1 - - [17/Mar/2017:13:52:16 +0000] "GET /registration/basic HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
+request @ default controller
+D:\workspace\migration-project\server\dist
+127.0.0.1 - - [17/Mar/2017:13:54:46 +0000] "GET /registration/basic HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
+request @ default controller
+D:\workspace\migration-project\server\dist
+127.0.0.1 - - [17/Mar/2017:13:56:47 +0000] "GET /registration/basic HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
+request @ default controller
+D:\workspace\migration-project\server\dist
+127.0.0.1 - - [17/Mar/2017:14:03:12 +0000] "GET /registration/basic HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
+request @ default controller
+D:\workspace\migration-project\server\dist
+127.0.0.1 - - [17/Mar/2017:14:04:11 +0000] "GET /registration/basic HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
+error: Forever detected script exited with code: 1

@@ -1,0 +1,29 @@
+<h2> Card-Risk </h2>
+
+<div class="container">
+    <md-card style="display: block; position: absolute">
+        <div *ngFor="let question of selectedQuestion" [@questionAnimation]="orientation">
+
+            {{ question.que }} &mdash; {{answer}}
+
+            <md-radio-group [(ngModel)]="answer">
+                <md-radio-button *ngFor="let option of question.options" [value]="option"
+                                 style="display: block; margin: 8px">
+                    {{option}}
+                </md-radio-button>
+            </md-radio-group>
+        </div>
+
+
+        <p class="control">
+            &laquo;
+            <button md-button (click)="prev()">Previous</button>
+            &mdash;
+            <button md-button (click)="next()">Next</button>
+            &raquo;
+        </p>
+    </md-card>
+
+</div>
+
+

@@ -1,0 +1,9 @@
+<div>
+    <select (change)="searchByAMC($event.target.value)">
+        <option value="">----Choose AMC-----</option>
+        <option *ngFor="let item of amcList;" value={{item.code}}>{{item.name}}</option>
+    </select>
+    <input type="text" [(ngModel)]="query" (keyup)="searchForKeyword()">
+    <button color="primary" md-raised-button="" class="md-primary" ng-reflect-color="primary"
+            (click)="search()"><i class="material-icons">&#xE8B6;</i></button>
+</div>

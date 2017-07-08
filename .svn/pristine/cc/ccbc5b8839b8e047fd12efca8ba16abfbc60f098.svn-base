@@ -1,0 +1,27 @@
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FundComponent} from './fund.component';
+import {Fund} from "./fund";
+import {MdCheckboxModule} from "@angular2-material/checkbox";
+import {RouterModule} from "@angular/router";
+import {FormsModule} from "@angular/forms";
+import {SearchModule} from "../search/search.module";
+import {MdButtonModule} from "@angular2-material/button";
+import {SearchService} from "../search/search.service";
+import { RatingPipe } from './rating.pipe';
+
+
+@NgModule({
+    imports: [
+        CommonModule,
+        MdCheckboxModule,
+        RouterModule,
+        FormsModule,
+        SearchModule,
+        MdButtonModule,
+    ],
+    exports: [FundComponent],
+    declarations: [FundComponent, RatingPipe],
+})
+export class FundModule {
+}

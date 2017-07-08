@@ -1,0 +1,46 @@
+var express = require('express');
+var path = require('path');
+var app = express();
+var port = process.env.PORT || 3000;
+
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var morgan = require('morgan');
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+var passport = require('passport');
+var flash = require('connect-flash');
+var compression = require('compression');
+
+
+var configSecret = require('./config/auth.js');
+var configDB = require('./config/db.js');
+
+
+mongoose.connect(configDB.mongouri);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+  console.log("connected to db" + configDB.mongouri);
+});
+require('./config/passport')(passport);
+
+app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(session({secret: configSecret.secret,
+				 saveUninitialized: true,
+				 resave: true}));
+
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+app.use(compression());
+app.use(express.static(path.join(__dirname, 'dist')));
+require('./server/routes/routes')(app, passport);
+app.listen(port);
+console.log('Server running on port: ' + port);
+
+
+

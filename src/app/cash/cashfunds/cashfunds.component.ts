@@ -1,0 +1,70 @@
+import {Component, OnInit} from "@angular/core";
+import {transition, animate,style , trigger, state} from "@angular/animations";
+import {CashFunds} from "./cashfunds-list";
+import {Fund} from "../../models/fund";
+import {ActivatedRoute, Router} from "@angular/router";
+import {CartService} from "../../core/services/cart.service";
+import {InvestmentModeEnum} from "../../enum/investment-mode-enum";
+import {WrapperCartService} from "../../core/services/wrapper.service";
+import {TitleService} from "../../core/services/title.service";
+
+@Component({
+    selector: 'app-cashfunds',
+    templateUrl: './cashfunds.component.html',
+    styleUrls: ['../cash.styles.scss'],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({transform: 'translateY(0)'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ]),
+            transition('void => show', [
+                style({transform: 'translateY(100%)'}),
+                animate(1000)
+            ])
+        ])
+    ]
+})
+export class CashfundsComponent implements OnInit {
+    fund: CashFunds;
+    fundlist: CashFunds[];
+
+    iconOne: string = 'hide';
+    iconTwo: string = 'hide';
+    iconThree: string = 'hide';
+    iconFour: string = 'hide';
+
+    savingsPlusFunds: Fund[];
+
+    constructor(public route: ActivatedRoute, private cartService: CartService, public router: Router, private titleService: TitleService) {
+
+        // Observable.interval(2000)
+        //     .subscribe(x => {
+        //       //console.log(x);
+        //       // this.headingvisible = !this.headingvisible;
+        //       this.heading = (this.heading == 'visible') ? 'invisible' : 'visible';
+        //       if (x % 2 == 0){
+        //         this.index = (x / 2) % 3
+        //       }
+        //     })
+    }
+
+    ngOnInit() {
+        this.titleService.setTitle('cash_funds');
+        this.titleService.setMetaTags('cash_funds');
+        this.iconOne = 'show';
+
+        this.route.data.forEach((data: {funds: Fund[]}) => {
+            this.savingsPlusFunds = data.funds;
+        });
+
+        this.fundlist = []
+    }
+
+    addToCart(selectedFunds: any) {
+        selectedFunds.forEach(fund => fund.investmentMode = InvestmentModeEnum[InvestmentModeEnum.LUMPSUM]);
+        this.cartService.addFundsToCart(selectedFunds);
+    }
+
+}

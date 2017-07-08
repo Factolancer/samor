@@ -1,0 +1,3 @@
+<p [@flyInOut]="mystate">
+  demoa works!
+</p>

@@ -1,0 +1,90 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {FilterData} from "./filter-data";
+import {ExploreFundsService} from "../explore-funds.service";
+import {Subscription} from "rxjs";
+import {ExploreFundConstants} from "../explore-funds.constants";
+import {FundSearchInput} from "../fund-search-input";
+
+@Component({
+    selector: 'app-amc-filter',
+    templateUrl: './amc-filter.component.html',
+    styleUrls: ['./filters.scss']
+})
+export class AmcFilterComponent implements OnInit, OnDestroy {
+
+    amcFilterData: FilterData[] = [];
+    filterTitle: string;
+    selectedArray: FilterData[] = [];
+    searchInputSubscription: Subscription;
+    searchResultSubscription: Subscription;
+    searchInput: FundSearchInput;
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+
+
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput
+            .subscribe(searchInput => {
+                this.searchInput = searchInput;
+                if (searchInput.queryType == ExploreFundConstants.SEARCH_QUERY) {
+                    this.selectedArray = [];
+                    this.searchInput.amcCode = [];
+                }
+            });
+
+        this.searchResultSubscription = this.exploreFundsService.fundSearchResult.subscribe(searchResults => {
+
+            this.amcFilterData = [];
+            //removing those searchSuggestions which have been already checked
+            if (searchResults.amcFilterData) {
+                this.amcFilterData = searchResults.amcFilterData.filter(item => {
+                    let add = true;
+                    this.selectedArray.forEach(selectedItem => {
+                        if (selectedItem.id === item.id) {
+                            add = false;
+                        }
+                    });
+                    return add;
+                });
+            }
+        })
+    }
+
+    filter(checked: any, item: FilterData) {
+        if (checked) {
+            this.selectedArray.push(item);
+        } else {
+            //deselecting the item.
+            let newArray = [];
+            this.selectedArray.forEach(elm => {
+                if (elm.id != item.id) {
+                    newArray.push(elm)
+                }
+            });
+            this.selectedArray = newArray;
+        }
+
+        //preparing id array from selected elements
+        this.searchInput.amcCode = [];
+        this.selectedArray.forEach(elm => {
+            this.searchInput.amcCode.push(elm.id);
+        });
+//        this.searchInput.rating = this.selectedArray;
+        this.exploreFundsService.filterFunds(this.searchInput);
+
+    }
+
+    clearFilter() {
+        this.selectedArray = [];
+        this.searchInput.amcCode = [];
+        this.exploreFundsService.filterFunds(this.searchInput);
+    }
+
+    ngOnInit() {
+        this.filterTitle = "Fund House";
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+        this.searchResultSubscription.unsubscribe();
+    }
+}

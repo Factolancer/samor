@@ -1,0 +1,18 @@
+/**
+ * Created by Fincash on 18-02-2017.
+ */
+
+import {NgModule} from "@angular/core";
+import {SharedModule} from "../shared/shared.module";
+import {TeamComponent} from "./team.component";
+import {aboutUsRouting} from "./about-us.routes";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        aboutUsRouting
+    ],
+    declarations: [TeamComponent]
+})
+export class AboutUsModule {
+}

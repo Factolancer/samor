@@ -1,0 +1,77 @@
+<section >
+    <div fxLayout="row" fxLayoutAlign="center center" >
+        <div fxFlex="80" style="border:solid 1px #d6d6d6">
+            <span [hidden]="portfolioDataAvailable || !invested" class="loading">
+                <img src="../../public/images/loading.gif">
+            </span>
+
+            <div *ngIf="invested && portfolioDataAvailable" fxLayout="column"  class="portfolio-box">
+                <div align="center" class="portfolio-heading">
+                    <span >Portfolio Overview</span>
+                </div>
+
+                <div fxLayout="row" align="center" class="portfolio-card-container">
+                    <div fxLayout="column" fxFlex="25" class="clickable portfolio-card">
+                        <div class="card-title">Current Value</div>
+                        <div class="card-value">{{pf.currentValue | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                    <div fxLayout="column" fxFlex="25" class="clickable">
+                        <div class="card-title">Cost Value</div>
+                        <div class="card-value">{{pf.costValue | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                    <div fxLayout="column" fxFlex="25" class="clickable">
+                        <div class="card-title">Realised Gain</div>
+                        <div class="card-value">{{pf.realisedGain | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                    <div fxLayout="column" fxFlex="25" class="clickable">
+                        <div class="card-title">Unrealised Gain</div>
+                        <div class="card-value">{{pf.unrealisedGain | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                </div>
+
+            </div>
+            <div fxLayout="row" style="padding: 20px">
+                <div class="navigation-bar" fxFlex="20">
+                    <app-navigation-panel></app-navigation-panel>
+                </div>
+                <div fxLayout="column" style="margin:0 20px" fxFlex="100vw">
+
+                    <div *ngIf="invested" class="chart-container">
+                        <md-tab-group [selectedIndex]="1" class="chart-selector">
+
+                            <md-tab label="Overall">
+                                    <md-card fxFlex="100" >
+                                        <md-card-title>Asset Allocation</md-card-title>
+                                        <md-card-content fxLayoutAlign="center">
+                                            <app-chart></app-chart>
+                                        </md-card-content>
+                                    </md-card>
+                            </md-tab>
+                            <md-tab label="SIP">
+                                <div fxLayout="row">
+                                    <md-card fxFlex="100" >
+                                        <md-card-title>SIP Assets Allocation</md-card-title>
+                                        <md-card-content fxLayoutAlign="center">
+                                            <app-chart></app-chart>
+                                        </md-card-content>
+                                    </md-card>
+                                </div>
+
+                            </md-tab>
+                        </md-tab-group>
+
+                    </div>
+                    <app-product-solution></app-product-solution>
+
+                    <div *ngIf="invested" class="transaction-container">
+                        <app-transaction></app-transaction>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</section>

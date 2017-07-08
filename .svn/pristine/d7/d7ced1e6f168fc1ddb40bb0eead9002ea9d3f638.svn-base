@@ -1,0 +1,14 @@
+import {Injectable} from "@angular/core";
+import {CartService} from "./cart.service";
+@Injectable()
+export class WrapperCartService {
+
+    //workaround for savings plus cart issue
+    constructor(public cartService: CartService) {
+    }
+
+    getCartService() {
+        return this.cartService;
+    }
+
+}

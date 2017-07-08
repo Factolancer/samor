@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-md-2">
+        <h4 style="font-weight: bold">Filters</h4>
+        <hr>
+        <app-category-filter></app-category-filter>
+        <hr>
+        <app-aum-filter></app-aum-filter>
+        <hr>
+        <app-age-filter></app-age-filter>
+        <hr>
+        <app-rating-filter></app-rating-filter>
+
+        <!-- <app-amc-filter></app-amc-filter>-->
+    </div>
+    <div class="col-md-10">
+        <app-search></app-search>
+        <app-fund></app-fund>
+    </div>
+</div>

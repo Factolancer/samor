@@ -1,0 +1,53 @@
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {HttpService} from "./http-service.service";
+import {PortfolioAssetAllocation} from "../../dashboard/portfolio-asset";
+import {AssetAllocationDetails} from "../../dashboard/asset-allocation";
+import {AssetClassFund} from "../../dashboard/asset-funds";
+import {Logger} from "../logger/logger";
+import {PaymentObject} from "../../checkout/models/payment-object";
+
+@Injectable()
+export class DashboardDataService {
+    className : string;
+    constructor(private httpservice: HttpService, private logger: Logger) {
+        this.className = "DashboardDataService";
+    }
+
+    getPortfolio(): Observable<any> {
+        return this.httpservice.secureGet('/report/summaryReport')
+            .map(res => res as PortfolioAssetAllocation)
+    }
+
+    getTransaction(): Observable<any> {
+        //TO BE CHANGED  AS PER LOGIC TO GET TRANSACTIONS
+        return this.httpservice.secureGet('/report/getUserTransactions');
+    }
+
+    getInvestmentDetails(): Observable<AssetAllocationDetails> {
+        return this.httpservice.secureGet('/report/getAssetAllocationReport')
+            .map(res => res as AssetAllocationDetails)
+    }
+
+    getInvestedFundDetails(): Observable<AssetClassFund> {
+        return this.httpservice.secureGet('/report/getAssetClassFundDetails')
+            .map(res => res as AssetClassFund)
+    }
+
+    getPendingDetails(): Observable<Array<any>> {
+        //TO BE CHANGED  AS PER LOGIC TO GET REAL NOTIFICATIONS
+        return this.httpservice.secureGet('/report/getAssetAllocationReport');
+    }
+
+    getTopPerformers(): Observable<Array<any>> {
+        return this.httpservice.secureGet('/report/getTopFunds');
+    }
+
+    cancelOrder(subOrderId:number): Observable<any>{
+        return this.httpservice.secureGet('/bse/cancelOrder/'+subOrderId);
+    }
+
+    getPaymentLink(paymentObj: PaymentObject) {
+        return this.httpservice.securePost("/checkout/generatePaymentUrl", paymentObj);
+    }
+}

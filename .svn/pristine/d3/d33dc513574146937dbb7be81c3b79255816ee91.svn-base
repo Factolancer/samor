@@ -1,0 +1,179 @@
+import {Component, OnInit, style, state, animate, transition, trigger} from "@angular/core";
+import {FormGroup, Validators, FormBuilder, AbstractControl, Validator} from "@angular/forms";
+import {Subscription} from "rxjs";
+
+import {User} from "../../../models/user";
+import {UserService} from "../../userdata.service";
+import {Banks} from "../../../bank-list";
+import {Bank} from "../../../models/bank";
+import {BankSearchInput} from "./search-input";
+import {BankSearchService} from "./search.service";
+import {Heading} from "../../constants/headings";
+import {ActivatedRoute} from "@angular/router";
+import {LookUpService} from "../../../services/lookup.service";
+
+function accountNumberValidator(c: AbstractControl) {
+    return c.get('confirmAccountNumber').value === c.get('accountNumber').value
+        ? null : {'mismatch': true};
+}
+
+// function accountNumberValidator(): ValidatorFn{
+//     return (g: FormGroup) => {
+//         return g.get('confirmAccountNumber').value === g.get('accountNumber').value
+//           ? null : {'mismatch': true};
+//     }
+// }
+
+@Component({
+    selector: 'bank-section',
+    templateUrl: './bank-section.component.html',
+    styleUrls: ['../../registration.styles.scss'],
+    providers: [LookUpService],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({opacity: '1', height: '*', visibility: 'visible'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ])
+        ])
+    ]
+})
+export class BankSectionComponent implements OnInit {
+    bankForm: FormGroup;
+    account: FormGroup;
+    acnumber: string;
+    public banks = Banks;
+    public bank: Bank;
+    public bankList: Bank[];
+    user: User;
+    accountType: any
+    public heading = Heading;
+
+    state: string = 'hide';
+    banksaved = false;
+    bankcollapsed = true;
+    showbanklist= false;
+
+    usersubscription: Subscription;
+    resultsubscription: Subscription
+    searchInput: BankSearchInput = {
+        bank_id: 0,
+        bank_name: '',
+        keyword: '',
+        branch: '',
+        city: '',
+        IFSC: '',
+        address: ''
+    };
+
+    constructor(private fb: FormBuilder, public userService: UserService, public  searchService: BankSearchService,
+                private route: ActivatedRoute, public lookupService: LookUpService) {
+
+        console.log("In bank Constructor")
+        this.resultsubscription = this.searchService.searchResults.subscribe(
+            result => {
+                this.bankList = result.banks;
+            }
+        );
+
+        this.user = new User({firstName: '', lastName: '',  pan: '', panName: '', fatherName: '', motherName: '', contact: {}, dob: '', gender: '' },
+            {currentAddress: {}, permanentAddress: {}},
+            {
+                holderName: '', accountType: 'Savings Account', bank: {}, accountNumber: ''
+            },
+            {
+                income: '',
+                occupation: '',
+                nationality: 'India',
+                birthCountry: 'India',
+                birthCity: '',
+                taxCountry: 'India',
+                politicallyExposed: 'No',
+                politicallyRelated: 'No'
+            },
+            {}
+        );
+
+
+        /*this.usersubscription = this.userService.currentUser.subscribe(
+            result => {
+                console.log("In Init of Bank ");
+                console.log(result)
+                this.user = result
+            }
+        )*/
+
+    }
+
+    ngOnInit() {
+        /*this.route.data.forEach((data: {user: User}) => {
+            this.user = data.user;
+        });*/
+        this.lookupService.getByGroup("ACCOUNTTYPE").subscribe(response => {
+            this.accountType = response
+        })
+        console.log("In Bank Init")
+        this.buildform();
+    }
+
+    buildform(): void {
+        this.bankForm = this.fb.group({
+            holderName: ['', Validators.compose([Validators.required])],
+            bank: this.fb.group({
+                bankName: ['', Validators.compose([Validators.required])],
+                IFSC: ['', Validators.compose([Validators.required, Validators.pattern('[0-9a-zA-Z]{11}')])],
+                city: ['', Validators.compose([Validators.required])],
+                branch: ['']
+            }),
+            accountType: ['', Validators.compose([Validators.required])],
+            account: this.fb.group({
+                accountNumber: ['', Validators.compose([Validators.required])],
+                confirmAccountNumber: ['', Validators.compose([])]
+            }, {validator: Validators.compose([accountNumberValidator])})  // {validator: accountNumberValidator}) // )
+        });
+    }
+
+    searchForBranch(value: any) {
+        if (value.length >= 3) {
+            this.searchInput.keyword = value;
+            this.showbanklist = true;
+        } else {
+            this.searchInput.keyword = "";
+            this.showbanklist = false;
+        }
+        this.searchService.searchBranch(this.searchInput)
+    }
+
+    setBankName() {
+        this.searchInput.bank_id = Number(this.bankForm.controls['bank'].get('bankName').value);
+
+    }
+
+    showlist(){
+        this.showbanklist = true;
+    }
+    select(item: Bank) {
+        this.user.userBank[0].bank = item;
+        this.showbanklist = false;
+        // console.log(this.user.userBank.bank.city);
+        //console.log(this.bank.IFSC);
+        // this.bankForm.controls['bank'].get('city').setValue(item.city);
+    }
+
+    onBankSubmit() {
+        let accountNumber = this.bankForm.controls['account'].get('accountNumber').value
+        this.banksaved = true;
+        this.userService.updateBankData(this.bankForm.value, accountNumber);
+        // this.user.userBank = this.bankForm.value;
+        // console.log(this.user);
+        this.toggleBank();
+    }
+
+    toggleBank() {
+        if (this.bankcollapsed == true) this.bankcollapsed = false;
+        else this.bankcollapsed = true;
+
+        this.state = (this.state === 'hide' ? 'show' : 'hide')
+    }
+}

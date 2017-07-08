@@ -1,0 +1,304 @@
+<md-tab-group [selectedIndex]="2">
+    <md-tab>
+        <template md-tab-label>Basic Details</template>
+        <template md-tab-content>
+            <div class="col-md-12">
+                <p>Basic Description : {{advancedFactsheet.basicFactsheet.description}}</p>
+            </div>
+            <div class="col-md-4">
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Basic Details ({{advancedFactsheet.basicFactsheet.fundId}})</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Current NAV (Rs.)</td>
+                        <td>{{advancedFactsheet.basicFactsheet.nav}}</td>
+                    </tr>
+                    <tr>
+                        <td>Inception Date</td>
+                        <td>{{advancedFactsheet.basicFactsheet.inceptionDate}}</td>
+                    </tr>
+                    <tr>
+                        <td>Category</td>
+                        <td>{{advancedFactsheet.basicFactsheet.category}}</td>
+                    </tr>
+                    <tr>
+                        <td>Type</td>
+                        <td>{{advancedFactsheet.basicFactsheet.schemeType}}</td>
+                    </tr>
+                    <tr>
+                        <td>Net Assets (Cr.)</td>
+                        <td>{{advancedFactsheet.basicFactsheet.netAssets}}</td>
+                    </tr>
+                    <tr>
+                        <td>Expense Ratio</td>
+                        <td>{{advancedFactsheet.basicFactsheet.expenseRatio}}</td>
+                    </tr>
+                    <tr>
+                        <td>Fincash’s Risk Rating</td>
+                        <td><span [outerHTML]="advancedFactsheet.basicFactsheet.fincashRating | rating"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Other Important Details</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Exit Load</td>
+                        <td>{{advancedFactsheet.basicFactsheet.exitLoad}}</td>
+                    </tr>
+                    <tr>
+                        <td>Benchmark Name</td>
+                        <td>{{advancedFactsheet.basicFactsheet.benchmarkName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Min Investment Amount</td>
+                        <td>{{advancedFactsheet.basicFactsheet.minInvAmt}}</td>
+                    </tr>
+                    <tr>
+                        <td>Min SIP Investment</td>
+                        <td>{{advancedFactsheet.basicFactsheet.minSIPAmt}}</td>
+                    </tr>
+                    <tr>
+                        <td>Alpha</td>
+                        <td>{{advancedFactsheet.basicFactsheet.alpha}}</td>
+                    </tr>
+                    <tr>
+                        <td>Sharpe Ratio</td>
+                        <td>{{advancedFactsheet.basicFactsheet.sharpeRatio}}</td>
+                    </tr>
+                    <tr>
+                        <td>Information Ratio</td>
+                        <td>{{advancedFactsheet.basicFactsheet.infoRatio}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Return(Compunded Annualised)</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Since Inception</td>
+                        <td>1 Year</td>
+                        <td>3 Year</td>
+                        <td>5 Year</td>
+                    </tr>
+                    <tr>
+                        <td>{{advancedFactsheet.basicFactsheet.retSinceInception}}</td>
+                        <td>{{advancedFactsheet.basicFactsheet.ret1}}</td>
+                        <td>{{advancedFactsheet.basicFactsheet.ret3}}</td>
+                        <td>{{advancedFactsheet.basicFactsheet.ret5}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <img src="public/images/fund/riskometer_2.jpg" width="200"/>
+                <p>Investors understand that their principal will be at
+                    {{advancedFactsheet.basicFactsheet.riskometer}} risk</p>
+            </div>
+        </template>
+    </md-tab>
+    <md-tab>
+        <template md-tab-label>Return &amp; Comparison</template>
+        <template md-tab-content>
+            <div class="col-md-6">
+                <h4>Performance Comparison with benchmark</h4>
+                <table>
+                    <tr>
+                        <td class="pad-10"></td>
+                        <td class="pad-10" *ngFor="let dataPoint of advancedFactsheet.sinceInceptionCmp.dataPoints">
+                            {{dataPoint}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pad-10">Fund</td>
+                        <td class="pad-10" *ngFor="let fundPerf of advancedFactsheet.sinceInceptionCmp.fundPerformance">
+                            {{fundPerf}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pad-10">Benchmark</td>
+                        <td class="pad-10"
+                            *ngFor="let benchmarkPerf of advancedFactsheet.sinceInceptionCmp.benchmarkPerformance">
+                            {{benchmarkPerf}}
+                        </td>
+                    </tr>
+                </table>
+                <div id="sinceInceptionColumnChart" [chartData]="sinceInceptionColumnGraphData"
+                     [chartOptions]="sinceInceptionColumnChartOptions"
+                     chartType="ColumnChart"
+                     GoogleChart></div>
+            </div>
+            <div class="col-md-6">
+                <h4>Annual Returns</h4>
+                <table>
+                    <tr>
+                        <td class="pad-10"></td>
+                        <td class="pad-10" *ngFor="let dataPoint of advancedFactsheet.annualReturns.dataPoints">
+                            {{dataPoint}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pad-10">Fund</td>
+                        <td class="pad-10" *ngFor="let fundPerf of advancedFactsheet.annualReturns.fundPerformance">
+                            {{fundPerf}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pad-10">Benchmark</td>
+                        <td class="pad-10"
+                            *ngFor="let benchmarkPerf of advancedFactsheet.annualReturns.benchmarkPerformance">
+                            {{benchmarkPerf}}
+                        </td>
+                    </tr>
+                </table>
+                <div id="annualReturnsColumnChart" [chartData]="annualReturnsColumnGraphData"
+                     [chartOptions]="annualReturnsColumnChartOptions"
+                     chartType="ColumnChart"
+                     GoogleChart></div>
+            </div>
+            <div class="col-md-12">
+                <h4>Quarterly Returns</h4>
+                <table>
+                    <tr>
+                        <td class="pad-10">Year</td>
+                        <td class="pad-10" colspan="2">Q1</td>
+                        <td class="pad-10" colspan="2">Q2</td>
+                        <td class="pad-10" colspan="2">Q3</td>
+                        <td class="pad-10" colspan="2">Q4</td>
+                    </tr>
+                    <tr>
+                        <td class="pad-10"></td>
+                        <td class="pad-10">Fund</td>
+                        <td class="pad-10">Benchmark</td>
+                        <td class="pad-10">Fund</td>
+                        <td class="pad-10">Benchmark</td>
+                        <td class="pad-10">Fund</td>
+                        <td class="pad-10">Benchmark</td>
+                        <td class="pad-10">Fund</td>
+                        <td class="pad-10">Benchmark</td>
+                    </tr>
+                    <tr>
+                        <td class="pad-10"></td>
+                        <td class="pad-10" *ngFor="let dataPoint of advancedFactsheet.annualReturns.dataPoints">
+                            {{dataPoint}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pad-10">Fund</td>
+                        <td class="pad-10" *ngFor="let fundPerf of advancedFactsheet.annualReturns.fundPerformance">
+                            {{fundPerf}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pad-10">Benchmark</td>
+                        <td class="pad-10"
+                            *ngFor="let benchmarkPerf of advancedFactsheet.annualReturns.benchmarkPerformance">
+                            {{benchmarkPerf}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <h4>Peer Comparision</h4>
+                <table>
+                    <tr>
+                        <td class="pad-10">Scheme Name</td>
+                        <td class="pad-10">Net Asset</td>
+                        <td class="pad-10">Fincash Rating</td>
+                        <td class="pad-10">Current NAV</td>
+                        <td class="pad-10">1 Year Return</td>
+                        <td class="pad-10">3 Year Return</td>
+                        <td class="pad-10">5 Year Return</td>
+                    </tr>
+                    <tr *ngFor="let peer of advancedFactsheet.peerComparison">
+                        <td class="pad-10">{{peer.name}}</td>
+                        <td class="pad-10">{{peer.aum | currency:'INR':true:'1.0-0' }}</td>
+                        <td class="pad-10"><span [outerHTML]="peer.rating | rating"></span></td>
+                        <td class="pad-10">{{peer.nav | currency:'INR':true:'1.0-0' }}</td>
+                        <td class="pad-10">{{peer.return1yr}}</td>
+                        <td class="pad-10">{{peer.return3yr}}</td>
+                        <td class="pad-10">{{peer.return5yr}}</td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+    </md-tab>
+    <md-tab>
+        <template md-tab-label>Top Holders &amp; Sectors</template>
+        <template md-tab-content>
+            <div class="col-md-6">
+                <h4>Top 5 Holdings</h4>
+                <table>
+                    <tr>
+                        <td class="pad-10">Name Of Holdings</td>
+                        <td class="pad-10">Share of Assets</td>
+                    </tr>
+                    <tr *ngFor="let holding of advancedFactsheet.topHoldings.dataMap | keys">
+                        <td class="pad-10">{{holding.key}}</td>
+                        <td class="pad-10">{{holding.value}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h4>Top 5 Sectors</h4>
+                <table>
+                    <tr>
+                        <td class="pad-10">Name Of Sector</td>
+                        <td class="pad-10">Share of Assets</td>
+                    </tr>
+                    <tr *ngFor="let sector of advancedFactsheet.topSectors.dataMap | keys">
+                        <td class="pad-10">{{sector.key}}</td>
+                        <td class="pad-10">{{sector.value}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <div id="assetAllocationDonutChart" [chartData]="assetAllocationDonutData"
+                     [chartOptions]="assetAllocationDonutChartOptions" chartType="PieChart" GoogleChart></div>
+            </div>
+        </template>
+    </md-tab>
+    <md-tab>
+        <template md-tab-label>SIP Performance</template>
+        <template md-tab-content>
+            <h2> Area Chart</h2>
+            <div GoogleChart id="area_chart" [chartData]="area_ChartData" [chartOptions]="area_ChartOptions"
+                 chartType="AreaChart"></div>
+            <h2> Line Chart</h2>
+            <div id="line_chart" [chartData]="line_ChartData" [chartOptions]="line_ChartOptions" chartType="LineChart"
+                 GoogleChart></div>
+            <h2> Pie Chart</h2>
+            <div id="pie_chart" [chartData]="pie_ChartData" [chartOptions]="pie_ChartOptions" chartType="PieChart"
+                 GoogleChart></div>
+            <h2> Bubble Chart</h2>
+            <div id="bubble_chart" [chartData]="bubble_ChartData" [chartOptions]="bubble_ChartOptions"
+                 chartType="BubbleChart" GoogleChart></div>
+            <h2> Scatter Chart</h2>
+            <div id="scatter_chart" [chartData]="scatter_ChartData" [chartOptions]="scatter_ChartOptions"
+                 chartType="ScatterChart" GoogleChart></div>
+        </template>
+    </md-tab>
+    <md-tab>
+        <template md-tab-label>Growth Charts</template>
+        <template md-tab-content>
+            <h2> CandlestickChart</h2>
+            <div id="candle_chart" [chartData]="candle_ChartData" [chartOptions]="candle_ChartOptions"
+                 chartType="CandlestickChart" GoogleChart></div>
+        </template>
+    </md-tab>
+</md-tab-group>
+

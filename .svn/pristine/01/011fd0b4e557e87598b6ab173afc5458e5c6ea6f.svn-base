@@ -1,0 +1,58 @@
+<div class="wrapper"  >
+  <div class="sal-box" fxLayout="row" fxHide.xs="true" fxLayoutWrap fxLayoutAlign="center center">
+    <div fxFlex="50" fxFlex.xs="100">
+      <h1 class="center-align mainTxt" >"{{salutationTxt}}"</h1>
+    </div>
+    <div fxFlex="100" fxLayoutAlign="center center"><div fxFlex="20" class="h-line-white"></div></div>
+
+    <div fxLayoutWrap="wrap" style="position: absolute; bottom: 20px;" fxLayoutAlign="center center">
+      <div fxFlex="80" class="h-line-white"></div>
+      <div fxFlex="60" fxFlex.xs="100">
+        <p class="center-align secTxt mar-tb-5">{{footerSalutationTxt}}</p>
+      </div>
+    </div>
+  </div>
+
+<div fxLayout="row">
+  <div fxFlex class="about-us-container pad-lr-10 pad-tb-30 wrapper">
+    <div fxLayout="row" fxLayout.lt-md="column">
+      <div fxFlex="40" class="pad-20" ><img src="../../assets/img/team/office.jpg" alt="team_office"></div>
+      <div fxFlex="60" fxFlexOffset="20px">
+        <h2 class="title"><span class="bb-1">About Us</span></h2>
+        <p class="text">{{aboutUsTxt}}</p><br/>
+        <p class="text" >{{ourGoal}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div fxLayoutWrap="wrap" fxLayout="row" class="wrapper center-align pad-30 founder-container">
+  <h1 fxFlex="100" class="title"><span class="bb-1">Founders</span></h1>
+  <div fxFlex="50" fxFlex.xs="100" class="pad-20" *ngFor="let founder of founders">
+    <img src={{founder.team.image}} alt={{founder.team.name}}>
+    <p>{{founder.team.name}}</p>
+    <p>{{founder.team.role}}</p>
+    <p class="text justify-content">{{founder.team.bio}}</p>
+  </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutWrap   class="wrapper center-align pad-tb-20 pad-lr-70 team-container">
+  <h1 fxFlex="100" class="title"><span class="bb-1">Team</span></h1>
+  <div fxFlex="100">
+    <div fxLayout="row" fxFlex="100" fxLayoutWrap fxLayoutAlign="space-around center" class="mar-tb-20">
+      <div class="member mar-b-60 pos-rel" fxFlex="21" fxFlex.sm="45" fxFlex.xs="100" *ngFor="let member of team, let i=index"  >
+        <div fxFlex="100" [ngStyle]="{'background':'url('+member.image+')','background-size':'cover'}"></div>
+        <div fxFlex class="details pad-lr-10 pad-tb-5">
+          <a href={{member.profNetLink}} target="_blank"><img class="prof-network " src="../../assets/img/social-icons/linkedin.svg" alt="linkedin_logo"></a>
+          <p class="name left-align">{{member.name}}</p>
+          <p class="role left-align">{{member.role}}</p>
+          <p class="bio left-align" [innerHTML] = "member.bio"></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</div>

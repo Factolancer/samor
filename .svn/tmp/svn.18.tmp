@@ -1,0 +1,24 @@
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
+import {RouterModule} from "@angular/router";
+import { MaterialModule } from '@angular/material';
+import {RatingPipe} from "./rating.pipe";
+import {GoogleChart} from "./google-chart.directive";
+import {KeysPipe} from "./keys.pipe";
+
+@NgModule({
+    exports: [FormsModule,
+        CommonModule,
+        HttpModule,
+        RatingPipe,
+        KeysPipe,
+        RouterModule,
+        MaterialModule.forRoot(),
+        GoogleChart,
+    ],
+    declarations: [RatingPipe, KeysPipe, GoogleChart],
+})
+export class SharedModule {
+}

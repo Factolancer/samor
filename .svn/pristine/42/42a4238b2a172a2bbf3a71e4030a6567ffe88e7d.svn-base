@@ -1,0 +1,31 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../core/services/http-service.service";
+import {Logger} from "../core/logger/logger";
+import {Redemption} from "./models/redemption";
+import {RedemptionBank} from "./models/redemption-bank";
+import {RedemptionNominee} from "./models/redemption-nominee";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
+
+@Injectable()
+export class RedemptionService {
+    className: string;
+    redemptionData: BehaviorSubject<Redemption>;
+    redemptionObservable: Observable<Redemption>;
+
+    constructor(private httpService: HttpService, private logger: Logger) {
+        this.className = "RedemptionService"
+        let redemption = new Redemption("", [], [], [], new RedemptionBank(1, "", "", "", ""), new RedemptionNominee("", "", ""), 0);
+        this.redemptionData = new BehaviorSubject<Redemption>(redemption);
+        this.redemptionObservable = this.redemptionData as Observable<Redemption>;
+    }
+
+    getRedemptionAutoCompleteData(term: string) {
+        return this.httpService.securePost("/redeem/getRedeemSuggestion", {term: term});
+    }
+
+    getRedemptionData() {
+        return new Redemption("", [], [], [], new RedemptionBank(1, "HDFC Bank", "Mahape", "22", "HDFC0002334"), new RedemptionNominee("", "", ""), 0);
+        // return this.httpService.securePost("/checkout/getCheckoutData", {"cartId": this.cartService.getCartSubjectState().id});
+    }
+}

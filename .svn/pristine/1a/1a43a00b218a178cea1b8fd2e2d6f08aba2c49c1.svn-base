@@ -1,0 +1,124 @@
+<md-card class="fund-card" *ngFor="let fundItem of _funds">
+    <div fxLayout="row" fxLayoutWrap fxLayoutAlign="start center">
+        <div fxFlex="5" fxFlex.xs="10">
+            <md-checkbox [(ngModel)]="fundItem.selected"
+                         (change)="changeFundComposition($event.checked, fundItem)">
+            </md-checkbox>
+        </div>
+        <div fxFlex="29" fxFlex.xs="80">
+            <div>
+                <span (click)="viewFactSheet(fundItem)" class="cash-fund-name clickable">
+                    <md-icon class="md-16 medium-grey-text">&#xE873;</md-icon>{{fundItem.basicFactsheet.name}}
+                </span>
+            </div>
+            <div>
+                <span class="medium-grey-text bold no-select" mdTooltip={{ratingDisclaimerText}}>Fincash Rating:</span>
+                <span [outerHTML]="fundItem.rating | rating"></span>
+            </div>
+            <div>
+                <span class="medium-grey-text bold">Riskometer:</span>
+                <span class="medium-grey-text">{{fundItem.basicFactsheet.riskometer | riskometer}}</span>
+            </div>
+        </div>
+        <div fxFlex="11" fxFlex.xs="100" class="fund-card-item" fxFlexOffset.xs="6%">
+            <span class="dark-grey-text bold">1 M Return
+                <md-icon class="md-12 no-select" mdTooltip="As on : {{ fundItem.basicFactsheet.retAsOfDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+            </span><span [fxHide.xs]="true"><br /></span>
+            <span class="medium-grey-text" ngClass.xs="float-right">{{fundItem.basicFactsheet.ret1mn | returns:true}}</span>
+        </div>
+        <div fxFlex="11" fxFlex.xs="100" class="fund-card-item" fxFlexOffset.xs="6%">
+            <span class="dark-grey-text bold">3 M Return
+                <md-icon class="md-12 no-select" mdTooltip="As on : {{ fundItem.basicFactsheet.retAsOfDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+            </span><span [fxHide.xs]="true"><br /></span>
+            <span class="medium-grey-text" ngClass.xs="float-right">{{fundItem.basicFactsheet.ret3mn | returns:true}}</span>
+        </div>
+        <div fxFlex="11" fxFlex.xs="100" class="fund-card-item" fxFlexOffset.xs="6%">
+            <span class="dark-grey-text bold">1 yr. Return
+                <md-icon class="md-12 no-select" mdTooltip="As on : {{ fundItem.basicFactsheet.retAsOfDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+            </span><span [fxHide.xs]="true"><br /></span>
+            <span class="medium-grey-text" ngClass.xs="float-right">{{fundItem.basicFactsheet.ret1yr | returns:true}}</span>
+        </div>
+        <div fxFlex="11" fxFlex.xs="100" class="fund-card-item" fxFlexOffset.xs="6%">
+            <span class="dark-grey-text bold">Fund Age
+                <md-icon class="md-12 no-select" mdTooltip="Inception Date : {{ fundItem.basicFactsheet.inceptionDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+            </span><span [fxHide.xs]="true"><br /></span>
+            <span class="medium-grey-text" ngClass.xs="float-right">{{fundItem.age}} years</span>
+        </div>
+        <div fxFlex="11" fxFlex.xs="100" class="fund-card-item" fxFlexOffset.xs="6%">
+            <span class="dark-grey-text bold">AUM
+                <md-icon class="md-12 no-select" mdTooltip="As on : {{ fundItem.basicFactsheet.aumAsOfDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+            </span><span [fxHide.xs]="true"><br /></span>
+            <span class="medium-grey-text" ngClass.xs="float-right">{{fundItem.aum | currency:'INR':true:'1.0-0' }} Cr.</span>
+        </div>
+        <div fxFlex="11" fxFlex.xs="100" class="fund-card-item" fxFlexOffset.xs="6%">
+            <span class="dark-grey-text bold">Min. Investment</span><span [fxHide.xs]="true"><br /></span>
+            <span class="medium-grey-text" ngClass.xs="float-right">{{fundItem.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}</span>
+        </div>
+    </div>
+</md-card>
+
+<!--
+<div *ngFor="let fundItem of _funds">
+    <md-card class="fund-card">
+        <md-card-content>
+            <table width="100%" class="no-border" ngClass.lt-md='scroll-x'>
+                <tr>
+                    <td>
+                        <md-checkbox [(ngModel)]="fundItem.selected"
+                                     (change)="changeFundComposition($event.checked, fundItem)">
+                        </md-checkbox>
+                    </td>
+                    <td>
+                        <div>
+                            <span (click)="viewFactSheet(fundItem)" class="cash-fund-name clickable">
+                                <md-icon class="md-16 medium-grey-text">&#xE873;</md-icon>&nbsp;&nbsp;{{fundItem.name}}
+                            </span>
+                        </div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="medium-grey-text no-select" mdTooltip={{ratingDisclaimerText}}>Fincash Rating:</span>
+                            <span [outerHTML]="fundItem.rating | rating"></span>
+                        </div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="medium-grey-text">Riskometer:</span>
+                            <span class="medium-grey-text">{{fundItem.risk | riskometer}}</span>
+                        </div>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">1 M Return
+                            <md-icon class="md-12 no-select" mdTooltip="As on : {{ fundItem.basicFactsheet.retAsOfDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+                        </span><br/>
+                        <span class="dark-grey-text">{{fundItem.basicFactsheet.ret1mn | returns:true}}</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">3 M Return
+                            <md-icon class="md-12 no-select" mdTooltip="As on : {{ fundItem.basicFactsheet.retAsOfDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+                       </span><br/>
+                        <span class="dark-grey-text mar-tb-5">{{fundItem.basicFactsheet.ret3mn | returns:true}}</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">1 Yr Return
+                            <md-icon class="md-12 no-select" mdTooltip="As on : {{ fundItem.basicFactsheet.retAsOfDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+                        </span><br/>
+                        <span class="dark-grey-text">{{fundItem.basicFactsheet.ret1yr | returns:true}}</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">Fund Age
+                            <md-icon class="md-12 no-select" mdTooltip="Inception Date : {{ fundItem.basicFactsheet.inceptionDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+                        </span><br/>
+                        <span class="dark-grey-text">{{fundItem.age}} years</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">AUM
+                            <md-icon class="md-12 no-select" mdTooltip="As on : {{ fundItem.basicFactsheet.aumAsOfDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+                        </span><br/>
+                        <span class="dark-grey-text">{{fundItem.aum | currency:'INR':true:'1.0-0' }} Cr.</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">Min. Investment</span><br/>
+                        <span class="dark-grey-text">{{fundItem.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}</span>
+                    </td>
+                </tr>
+            </table>
+        </md-card-content>
+    </md-card>
+</div>-->

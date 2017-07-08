@@ -1,0 +1,62 @@
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+var config = require('../../config/environment');
+var httpRequest = require('request');
+
+exports.setup = function () {
+    var strategyConfig = {};
+    strategyConfig['clientID'] = config.passport.facebook.CLIENT_ID;
+    strategyConfig['clientSecret'] = config.passport.facebook.CLIENT_SECRET;
+    strategyConfig['callbackURL'] = config.DOMAIN + config.passport.facebook.CALLBACK;
+    strategyConfig['profileFields'] = ['id', 'displayName', 'email'];
+    //console.log(strategyConfig);
+    passport.use(new FacebookStrategy(strategyConfig,
+        function (accessToken, refreshToken, profile, done) {
+            /*console.log("token >>> " + accessToken);
+            console.log("refresh token >>> " + refreshToken);
+            console.log(profile);*/
+            var userObject = {};
+            userObject['name'] = profile.displayName;
+            userObject['email'] = profile.emails[0].value;
+            userObject['provider'] = 'facebook';
+            userObject['id'] = profile.id;
+            userObject['facebook'] = profile._json;
+            //console.log(userObject)
+            var url = "http://"+config.playServer.ip + ':' + config.playServer.http_port + '/server/socialLogin';
+            httpRequest({
+                url: url,
+                method: "POST",
+                /*json: true,*/
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(userObject)
+
+            },
+                function (error, response, body) {
+                    if (error && error!=null) {
+                        console.log('upload failed: @  /server/socialLogin ', error);
+                        return done(error);
+                    }
+                    console.log('Upload successful! @  /server/socialLogin Server responded with:', body);
+                    return done(null, body);
+                }
+            );
+        }
+    ));
+};
+
+exports.processCallback = function (req, res) {
+    console.log(req.user);
+    try {
+        var userObject = JSON.parse(req.user);
+        console.log(userObject);
+        if(userObject && userObject.success){
+            res.redirect(config.passport.redirectSuccess+"/"+userObject.id_token);
+        }else{
+            res.redirect(config.passport.redirectFailure);
+        }
+    }catch(err) {
+        res.redirect(config.passport.redirectFailure);
+    }
+}

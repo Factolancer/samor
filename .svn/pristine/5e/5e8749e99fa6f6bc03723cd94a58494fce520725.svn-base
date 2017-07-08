@@ -1,0 +1,149 @@
+@import "../../styles/partials/web-partials";
+
+.basic-factsheet {
+  margin: -24px;
+
+  .basic-title-area {
+    color: $white;
+    font-size: 18px;
+    font-weight: 400;
+    padding: 10px 0 10px 24px;
+    background-color: $brand-secondary;
+  }
+
+  .basic-body-area {
+    margin: 0 24px;
+    padding: 0;
+
+    .card {
+      width: 90%;
+      margin-bottom: 5px;
+      border-radius: 0;
+    }
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 11px rgba(0, 0, 0, 0.3);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $medium-grey;
+      outline: 1px solid $brand-primary;
+    }
+
+  }
+
+  .watchlist-icon-btn {
+    line-height: 25px;
+    height: 30px;
+    width: 30px;
+  }
+
+}
+
+td {
+  padding: 10px;
+}
+
+thead {
+  padding: 10px 0;
+
+  .cols {
+    font-weight: 700;
+    font-size: 12px;
+    background-color: $medium-grey;
+    color: $text-dark-grey;
+    border-bottom: solid 2px $white;
+  }
+
+  .name {
+    border-bottom: solid 2px $white;
+    background-color: $brand-secondary;
+    color: $white;
+    text-align: left;
+    font-weight: 700;
+  }
+
+}
+
+tbody tr {
+  background-color: $light-grey;
+  border-bottom: solid 2px $white;
+  color: $text-medium-grey;
+  font-size: 12px;
+  font-weight: 400;
+
+  &:last-of-type {
+    border: inherit;
+  }
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  /*border: 1px solid $medium-grey;*/
+}
+
+.param-key {
+  color: $text-dark-grey;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.param-value {
+  color: $text-medium-grey;
+  font-size: 12px;
+}
+
+.adv-factsheet {
+  .card {
+    padding: 40px 24px;
+    margin-bottom: 4px;
+  }
+}
+
+.fund-title-area {
+
+  .name {
+    font-size: 28px;
+    color: $brand-primary;
+  }
+
+  .nav {
+    color: $text-dark-grey;
+
+    .date {
+      font-size: 8px;
+      color: $text-medium-grey;
+    }
+  }
+
+  .rating {
+    color: $text-dark-grey;
+    font-size: 14px;
+  }
+}
+
+.graph-box {
+  border: solid 1px $medium-grey;
+  width: 100%;
+  margin: 30px 0;
+
+  .highlight {
+    background-color: $light-grey;
+    color: $text-dark-grey;
+    padding: 15px 0;
+    text-align: center;
+    border-bottom: solid 1px $medium-grey;
+    font-weight: 700;
+  }
+
+  .graph {
+    padding: 5px;
+  }
+}
+

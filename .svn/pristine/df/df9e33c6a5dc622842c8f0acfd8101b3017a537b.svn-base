@@ -1,0 +1,78 @@
+import { Component, OnInit, AfterViewInit, Input, ViewChild, ViewChildren } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
+import { Occupation } from './occupation';
+import { AddressProof } from './addressproof';
+
+@Component({
+  selector: 'app-registration',
+  templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.css']
+})
+export class RegistrationComponent implements OnInit {
+
+  public occupations = Occupation;
+  public addressprooofs = AddressProof;
+
+  basicForm: NgForm;
+  kycForm: NgForm;
+  bankForm: NgForm;
+
+  @ViewChild('basicForm') currentForm: NgForm;
+
+
+  ngAfterViewChecked() {
+    this.formChanged();
+  }
+
+  formChanged() {
+    if (this.currentForm === this.basicForm) { return; }
+    this.basicForm = this.currentForm;
+    if (this.basicForm) {
+      this.basicForm.valueChanges
+          .subscribe(data => this.onValueChanged(data));
+    }
+  }
+
+  onValueChanged(data?: any) {
+    if (!this.basicForm) { return; }
+    const form = this.basicForm.form;
+
+    for (const field in this.formErrors) {
+      // clear previous error message (if any)
+      this.formErrors[field] = '';
+      const control = form.get(field);
+
+      if (control && control.dirty && !control.valid) {
+        const messages = this.validationMessages[field];
+        for (const key in control.errors) {
+          this.formErrors[field] += messages[key] + ' ';
+        }
+      }
+    }
+  }
+
+  formErrors = {
+    'name': '',
+    'power': ''
+  };
+
+  validationMessages = {
+    'name': {
+      'required':      'Name is required.',
+      'minlength':     'Name must be at least 4 characters long.',
+      'maxlength':     'Name cannot be more than 24 characters long.',
+      'forbiddenName': 'Someone named "Bob" cannot be a hero.'
+    },
+    'power': {
+      'required': 'Power is required.'
+    }
+  };
+
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

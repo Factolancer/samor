@@ -1,0 +1,26 @@
+<div class="right-align fund-count">
+    <span *ngIf="totalNumFound>0" class="pad-lr-10">Showing <b>{{searchInputFrom + 1}}</b>-
+        <span *ngIf="searchInputFrom+searchInputRows >= totalNumFound"><b>{{totalNumFound}}</b></span>
+        <span *ngIf="searchInputFrom+searchInputRows < totalNumFound"><b>{{searchInputFrom+searchInputRows}}</b></span>
+        of <b>{{totalNumFound}}</b> results
+    </span>
+
+    <md-button-toggle-group #group="mdButtonToggleGroup" *ngIf="allowRowChange && totalNumFound>0"
+                            [value]="searchInputRows" (change)="setRowsToDisplay(group.value)">
+        <md-button-toggle value="5">
+            5
+        </md-button-toggle>
+        <md-button-toggle value="10">
+            10
+        </md-button-toggle>
+        <md-button-toggle value="15">
+            15
+        </md-button-toggle>
+    </md-button-toggle-group>
+
+    <!-- <select   value="{{}}">
+         <option value="5">5</option>
+         <option value="10">10</option>
+         <option value="15">15</option>
+     </select>-->
+</div>

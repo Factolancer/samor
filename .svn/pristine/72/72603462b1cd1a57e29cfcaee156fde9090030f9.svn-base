@@ -1,0 +1,43 @@
+import {Injectable, ViewContainerRef, ApplicationRef} from '@angular/core';
+import {Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import { tokenNotExpired } from 'angular2-jwt';
+import {MdDialogConfig, MdDialog, MdDialogRef} from "@angular/material";
+import {LoginComponent} from "./login/login.component";
+import {LoginService} from "./login/login.service";
+
+
+@Injectable()
+export class AuthGuard implements CanActivate {
+
+    // logInDialogRef: MdDialogRef<LoginComponent>;
+    viewContainerRef: ViewContainerRef;
+    // loginService: LoginService;
+    public result: any;
+
+    constructor(private appRef: ApplicationRef, private loginService: LoginService, private router: Router) {
+        this.viewContainerRef = appRef.components[0].instance.viewContainerRef;
+        // this.logInDialogRef = appRef.components[0].instance.loginDialogRef
+    }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        if (tokenNotExpired()) {
+            return true;
+        }
+
+        this.loginService
+            .loginUser(this.viewContainerRef)
+            .subscribe(res => {this.result = res; this.router.navigate([state.url])},
+                       error => {console.log(error)});
+
+        return false;
+    }
+
+    loginUser(){
+
+        // let config = new MdDialogConfig();
+        // config.viewContainerRef = this.viewContainerRef;
+        // config.role = 'dialog';
+        // config.width = '40%';
+        // this.logInDialogRef = this.dialog.open(LoginComponent, config);
+    }
+}

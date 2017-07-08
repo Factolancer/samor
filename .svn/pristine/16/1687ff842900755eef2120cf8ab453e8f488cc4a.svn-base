@@ -1,0 +1,134 @@
+<div class="data-body ">
+    <div class="col-md-8 form-group">
+        <div class="row col-md-5 float-right text-right">
+            End Date: <input type="date" [(ngModel)]="endDate">
+        </div>
+        <div class="row col-md-5">
+            Start Date: <input type="date" [(ngModel)]="startDate">
+            <span class="red" *ngIf="filterError">Start Date must be less than or equal to End Date</span>
+        </div>
+
+    </div>
+    <div class="col-md-4">
+
+        <div class="col-md-7">
+            <i class="material-icons float-right">&#xE324;</i>
+        </div>
+        <div class="col-md-3" style="margin-left: -30px;">
+            <span class="">9706953703</span>
+        </div>
+
+    </div>
+    <div class="col-md-8 form-group">
+        <div class="row col-md-6">
+            <div class="row col-md-2">
+                Fund:
+            </div>
+            <div class="col-md-10">
+                <select [(ngModel)]="selectedFundId">
+                    <option *ngFor="let fund of fundList" value="{{fund.fundId}}">{{fund.fundName}}</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="col-md-6" style="margin-left: 30px;">
+
+            <div class="col-md-6">
+                Transaction Type:
+            </div>
+            <div class="col-md-6">
+                <select [(ngModel)]="selectedTransType">
+                    <option *ngFor="let trans of transactionTypes" value="{{trans.id}}">{{trans.transType}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+
+        <div class="col-md-7">
+            <i class="material-icons float-right">&#xE0BE;</i>
+        </div>
+        <div class="col-md-3" style="margin-left: -30px;">
+            <span class="">product@fincash.com</span>
+        </div>
+    </div>
+    <div class=" col-md-12 text-right">
+        <span (click)="download()" class="clickable"><i class="material-icons">&#xE2C4;</i></span>
+    </div>
+    <div class="col-md-2 form-group">
+        <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                (click)="filterTransactions()">Show Transactions
+        </button>
+    </div>
+    <div class="col-md-10 text-center form-group" *ngIf="funds && funds.length > 0">
+        <h4>Transaction Details</h4>
+    </div>
+    <div *ngFor="let fund of funds">
+
+        <div class="col-md-12">
+            <div class="row col-md-2">
+                <label>Folio No:</label>
+            </div>
+            <div class="col-md-4">
+                {{fund.folioNo}}
+            </div>
+            <div class="row col-md-2">
+                <label>Mode of Holding:</label>
+            </div>
+            <div class="col-md-4">
+                {{fund.modeOfHolding}}
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row col-md-2">
+                <label>Fund Name:</label>
+            </div>
+            <div class="col-md-4">
+                {{fund.fundName}}
+            </div>
+            <div class="row col-md-2">
+                <label>Fund Type:</label>
+            </div>
+            <div class="col-md-4">
+                {{fund.fundType}}
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Date</th>
+                    <th>Transaction Description</th>
+                    <th>Amount(Rs.)</th>
+                    <th>NAV(Rs.)</th>
+                    <th>Units</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Opening Balance</th>
+                    <th></th>
+                    <th></th>
+                    <th>{{fund.prevUnits}}</th>
+                    <th>{{fund.prevValue}}</th>
+                </tr>
+                <tr *ngFor="let trans of fund.transactionList">
+                    <td>{{trans.transDate | date: 'dd-MM-yyyy'}}</td>
+                    <td>{{trans.transDescription}}</td>
+                    <td>{{trans.amount}}</td>
+                    <td>{{trans.nav}}</td>
+                    <td>{{trans.units}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <th>Closing Balance</th>
+                    <th></th>
+                    <th></th>
+                    <th>{{fund.currentUnits}}</th>
+                    <th>{{fund.currentValue}}</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

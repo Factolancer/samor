@@ -1,0 +1,86 @@
+/**
+ * Created by Fincash on 06-02-2017.
+ */
+import * as Highcharts from 'highcharts';
+// If you want you can also load any Highcharts module here: 'highcharts/highcharts-more', 'highcharts/modules/map' and etc.
+// See the node_modules/highcharts folders to find a necessary module
+import * as Highcharts3d from 'highcharts/highcharts-3d';
+// Any Highcharts static API is available throw the Highcharts variable
+/*Highcharts.setOptions({
+ colors: ['#058DC7', '#50B432', '#ED561B']
+ });*/
+
+// Plug the highcharts-3d module
+Highcharts3d(Highcharts);
+export class ChartOptions{
+
+    public assetOptions:Object = {
+
+        title: {text: ''},
+        chart: {zoomType: 'x', type: 'pie', height: 250, width: 400,
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        credits: {enabled: false},
+        colors:["#74E1E1","#90ED7D","#f7a35c"],
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '<span style="text-transform: capitalize;">{point.name}</span>:{point.percentage:.1f}%'
+                },
+                depth:30
+            }
+        },
+        tooltip: {
+            headerFormat: null,
+            pointFormat: '<span style="color:{point.color};text-transform: capitalize">{point.name}</span>: <b> INR {point.y:.0f}</b><br/>'
+        },
+        series :[{
+            name: '',
+            colorByPoint: true,
+            allowPointSelect: true,
+            data:[]
+        }]
+    };
+    public assetBreakupOptions:Object = {
+        title: {text: ''},
+        chart: {zoomType: 'x', type: 'pie', height: 250, width: 400},
+        credits: {enabled: false},
+        colors:["#FF4C4C","#023F5B","#6ACBAE", "#00BED5","#9AC872", "#63D8DD","#FD2F58","#F9A640",
+            "#653F6C","#33A47E","#0A8BAA", "#EB6586", "#849F62"],
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: false,
+                    format: '<span style="text-transform: capitalize;">{point.name}</span>:{point.percentage:.1f}%',
+                },
+                depth:20,
+                showInLegend: true
+            }
+        },
+        legend: {
+            itemStyle: {
+                fontSize:'10px'
+            },
+            borderWidth: 1,
+            align:'right'
+        },
+        tooltip: {
+            headerFormat: null,
+            pointFormat: '<span style="color:{point.color}; text-transform: capitalize">{point.name}</span>: <b>INR {point.y:.0f} <br/>({point.percentage:.1f}%)</br><br/>'
+        },
+        series :[{
+            name: '',
+            colorByPoint: true,
+            allowPointSelect: true,
+            data:[]
+        }]
+    };
+
+
+
+}

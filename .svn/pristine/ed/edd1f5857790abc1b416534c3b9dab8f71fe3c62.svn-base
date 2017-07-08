@@ -1,0 +1,52 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Enter your investment details</h1>
+        </div>
+    </section>
+    <form [formGroup]="checkoutFormGroup" (ngSubmit)="onCheckoutSubmit()">
+        <section class="data-body">
+            <app-checkout-product-view *ngFor="let item of checkoutData.products; let index=index;"
+                                       class="checkout-product"
+                                       (remove)="remove(index)"
+                                       (update)="update()"
+                                       [_product]="item"
+                                       [_formGroup]="checkoutFormGroup.controls.products.at(index)"
+                                       [_formErrors]="checkoutFormErrors.products[index]"></app-checkout-product-view>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Total Investment Amount:</label>
+                    <label>{{totalInvestmentAmount | currency:'INR':true:'1.0-0'}}</label>
+                </div>
+                <div class="col-md-4">
+                    <label>Nominee:</label>
+                    <select formControlName="selectedNominee" required>
+                        <option *ngFor="let nominee of checkoutData.nomineeList" value="{{nominee}}">{{nominee}}
+                        </option>
+                    </select>
+                    <md-hint *ngIf="checkoutFormErrors.selectedNominee" class="errorMessage">
+                        {{checkoutFormErrors.selectedNominee}}
+                    </md-hint>
+                </div>
+                <div class="col-md-4">
+                    <label>Bank Account:</label>
+                    <select formControlName="selectedBank" required>
+                        <option *ngFor="let bank of checkoutData.bankList" value="{{bank}}">{{bank}}</option>
+                    </select>
+                    <md-hint *ngIf="checkoutFormErrors.selectedNominee" class="errorMessage">
+                        {{checkoutFormErrors.selectedNominee}}
+                    </md-hint>
+                </div>
+            </div>
+        </section>
+        <section class="data-foot">
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" [disabled]="!checkoutFormGroup.valid" color="primary" md-raised-button=""
+                            class="md-primary float-right">Continue Checkout
+                    </button>
+                </div>
+            </div>
+        </section>
+    </form>
+</div>

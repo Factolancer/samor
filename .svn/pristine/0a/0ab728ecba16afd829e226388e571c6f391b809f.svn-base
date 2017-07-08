@@ -1,0 +1,36 @@
+CutOff Time : {{cutOffTime}}
+<div fxLayout="row" fxLayoutAlign="start center" class="pad-tb-15 mar-lr-10">
+    <div fxFlex="20">
+    </div>
+    <div fxFlex="40" *ngFor="let bankDetail of bseBankList" class="account-details">
+        <span>{{bankDetail.heading}}</span>
+    </div>
+</div>
+<div class="bank-header">
+
+</div>
+<div fxLayout="row" fxLayoutAlign="start center" class="pad-tb-15 mar-lr-10">
+    <div fxFlex="20" class="account-details">
+        Beneficiary Name
+    </div>
+    <div fxFlex="40" *ngFor="let bankDetail of bseBankList" class="details-value">
+        {{bankDetail.beneficiaryName}}
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center" class="pad-tb-15 mar-lr-10">
+    <div fxFlex="20" class="account-details">
+        Beneficiary Account No.
+    </div>
+    <div fxFlex="40" *ngFor="let bankDetail of bseBankList" class="details-value">
+        {{bankDetail.accountNo}}
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center" class="pad-tb-15 mar-lr-10">
+    <div fxFlex="20" class="account-details">
+        IFSC Code
+    </div>
+    <div fxFlex="40" *ngFor="let bankDetail of bseBankList" class="details-value">
+        {{bankDetail.ifsc}}
+    </div>
+</div>
+<button md-button="" (click)="dialogRef.close()">Proceed</button>

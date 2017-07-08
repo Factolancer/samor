@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-md-12"><span class="filter-title">Min AUM(Cr)</span>
+        <button md-button="" (click)="clearFilter()" class="float-right filter-clear"
+                *ngIf="searchInput.aumRange != '[* TO *]'">Clear
+        </button>
+    </div>
+    <div class="col-md-12 filter-content">
+        Rs.<input type="text" [(ngModel)]="minAUM" size="5" placeholder="Min AUM"> to
+        Rs.<input type="text" [(ngModel)]="maxAUM" size="5" placeholder="Max AUM">
+        <button color="accent" md-icon-button="" class="md-accent" ng-reflect-color="accent"
+                (click)="filter()"><span class=" md-button-wrapper">
+        <md-icon class="md-18 material-icons" role="img" aria-label="favorite">&#xE8B6;</md-icon>
+        </span>
+        </button>
+    </div>
+</div>

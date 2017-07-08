@@ -1,0 +1,43 @@
+/**
+ * Created by Fincash on 28-02-2017.
+ */
+
+import { Component, OnInit} from '@angular/core';
+
+import {Router, Params, ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs";
+
+import {StaticRoutes} from "./constants/staticroutes";
+
+
+@Component({
+    selector: 'static-content',
+    templateUrl: './static-txt.component.html',
+    styleUrls: ['./static-txt.component.scss']
+})
+export class StaticTextComponent implements OnInit {
+
+    staticRouteSub:Subscription;
+    staticRoutes = StaticRoutes;
+
+    constructor(private router:Router, private route:ActivatedRoute){
+
+        this.staticRouteSub = this.route.params.subscribe((params: Params) => {
+            if(this.staticRoutes.indexOf(params.path)>0){
+                console.log(this.staticRoutes);
+            }
+            else{
+                this.router.navigate(['/']);
+            }
+
+
+            /*if(!isNullOrUndefined(responseObject) && !isNullOrUndefined(responseObject.success)){
+            }*/
+
+            });
+        };
+    ngOnInit(){
+
+    };
+
+}

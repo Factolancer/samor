@@ -1,0 +1,169 @@
+import {Component, OnInit, Inject, OnDestroy, ViewContainerRef} from "@angular/core";
+import {Router, ActivatedRoute, Params, NavigationEnd} from "@angular/router";
+import {FormBuilder, FormGroup, Validators, AbstractControl} from "@angular/forms";
+import {EmailValidator} from "../validators/validator";
+import {HttpService} from "../services/http-service.service";
+import {APP_CONFIG, IAppConfig} from "../../environments/environment";
+import {Headers} from "@angular/http";
+import {LoginService} from "../services/login.service";
+import {Logger} from "../shared/logger/logger";
+import {Subscription} from "rxjs";
+import {isNullOrUndefined} from "util";
+
+import {MdSnackBar, MdSnackBarConfig} from '@angular/material';
+
+
+function passwordValidator(c: AbstractControl) {
+    return c.get('confirm_password').value === c.get('enter_password').value
+        ? null : {'mismatch': true};
+}
+
+@Component({
+    selector: 'app-logintoinvest',
+    templateUrl: './logintoinvest.component.html',
+    styleUrls: ['./login.component.scss']
+})
+
+
+export class LoginToInvestComponent implements OnInit, OnDestroy {
+    result: any;
+    LoginForm: FormGroup;
+    signUpForm: FormGroup;
+    returnUrl: string;
+    userData: any;
+    name: String;
+    email: String;
+    errormessage: String = "";
+    errormessage2: String = "";
+    subscription: Subscription;
+    selectedTab: number;
+    routerSubscription: Subscription;
+    tabIndexSubscription: Subscription;
+    path: any;
+    className: string;
+
+    logInError: any;
+
+    constructor(private viewContainerRef: ViewContainerRef, public router: Router, private route: ActivatedRoute, public http: HttpService, public fb: FormBuilder,
+                @Inject(APP_CONFIG) private config: IAppConfig, public loginService: LoginService, private logger: Logger, public snackBar: MdSnackBar) {
+
+        this.loginService.checkNredirect();
+        this.returnUrl = this.config.defaultAfterLogin;
+        this.selectedTab = 0;
+        this.className = 'LoginToInvestComponent';
+
+    }
+
+    openSnackBar(message) {
+        let config = new MdSnackBarConfig();
+        config.duration = 2000;
+        config.viewContainerRef = this.viewContainerRef;
+        this.snackBar.open(message, "Okay", config);
+    }
+
+    onLogIn() {
+        this.userData = this.LoginForm.value;
+        this.loginService.loginUser(this.userData).subscribe((value) => {
+                this.logger.debug(this.className, value, "in component");
+                if (!isNullOrUndefined(value.error)) {
+                    this.logInError = value.error;
+                    this.openSnackBar(this.logInError);
+                }
+                let url = this.returnUrl;
+                this.logger.debug(this.className, " onLogIn() sending to url >>> " + url);
+                this.router.navigate([url]);
+            }
+        );
+    }
+
+    onSignUp() {
+        this.userData = this.signUpForm.value
+        this.logger.debug(this.className, this.userData);
+        this.loginService.signUp(this.userData).subscribe((value) => {
+            if (value) {
+                this.logger.debug(this.className, "onSignUp() >> Signup successfull");
+                if (this.returnUrl && this.returnUrl.length > 0) {
+                    this.router.navigate([this.returnUrl]);
+                } else {
+                    this.router.navigate([this.config.defaultAfterLogin]);
+                }
+            } else {
+                this.logger.debug(this.className, "onSignUp() >> User already exists");
+                this.errormessage2 = 'User already exists';
+            }
+        });
+
+    }
+
+    forgotPassword() {
+        this.router.navigate(['/auth/forgot']);
+    }
+
+    loadTab() {
+        this.logger.debug(this.className, "selected tab >>> " + this.selectedTab);
+        if (this.selectedTab == 0) {
+            // login in case
+        } else if (this.selectedTab == 1) {
+            // sign  up case
+        }
+    }
+
+    checkmail(value: string) {
+        this.logger.debug(value);
+        var authHeader = new Headers();
+        authHeader.append("Authorization", "Basic"); //+btoa("api:pubkey-b492fb4e9e8ad8f2ce0c2ae87e12272c"));
+        authHeader.append('Content-Type', 'application/x-www-form-urlencoded');
+        authHeader.append('Allow-Control-Allow-Origin', '*');
+        var url = 'https://api.mailgun.net/v2/address/validate?address=' + value;
+        url = url + '&api_key=pubkey-b492fb4e9e8ad8f2ce0c2ae87e12272c'
+        this.http.get(url).subscribe(response => {
+                this.logger.debug(this.className, response.json().is_valid)
+            }
+        )
+    }
+
+    processTabs() {
+        if (!isNullOrUndefined(this.path)) {
+            if (this.path == 'signup')
+                this.selectedTab = 1;
+            else
+                this.selectedTab = 0;
+        }
+        this.logger.debug(this.className, "Selected tab index  >>> " + this.selectedTab + " path  >>> " + this.path);
+    }
+
+    ngOnInit() {
+
+        // get return url from route parameters or default to '/'
+        this.returnUrl = this.route.snapshot.queryParams['' + this.config.returnUrlParam] || this.config.defaultAfterLogin;
+        this.logger.debug(this.className, "return url route.snapshot.queryParams >>>> " + this.returnUrl);
+
+        this.tabIndexSubscription = this.route.params.subscribe((params: Params) => {
+            this.path = params['path'];
+            this.processTabs();
+        });
+
+        this.routerSubscription = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event) => {
+            this.logger.debug(this.className, event);
+            this.processTabs();
+        });
+
+        this.LoginForm = this.fb.group({
+            email: ['', Validators.compose([Validators.required, EmailValidator.isValidMailFormat/*, AsyncValidator.isEmailCorrect(this.bhttp)*/])],
+            password: ['', Validators.compose([Validators.required])]
+        });
+
+        this.signUpForm = this.fb.group({
+            email: ['', Validators.compose([Validators.required, EmailValidator.isValidMailFormat])],
+            /*mob: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern('^[0-9]{10}$')])],*/
+            password: this.fb.group({
+                enter_password: ['', Validators.compose([Validators.required])],
+                confirm_password: ['', Validators.compose([])]
+            }, {validator: Validators.compose([passwordValidator])})
+        })
+    }
+
+    ngOnDestroy() {
+
+    }
+}

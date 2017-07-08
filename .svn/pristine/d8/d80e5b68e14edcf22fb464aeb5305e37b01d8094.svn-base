@@ -1,0 +1,339 @@
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Checkout} from "./checkout";
+import {FormGroup, FormBuilder, Validators, FormArray, FormControl} from "@angular/forms";
+import {InvestmentModeEnum} from "../enum/investment-mode-enum";
+import {NumberValidator} from "../validators/validator";
+import {CheckoutService} from "./checkout.service";
+import {MdSnackBar, MdSnackBarConfig, MdDialogConfig, MdDialog} from "@angular/material";
+import {Fund} from "../models/fund";
+import {ConfirmationDialogComponent} from "../shared/confirmation-dialog.component";
+import {CartService} from "../cart/cart.service";
+import {Plan, DivOptionList, DivOption} from "./plan";
+import {Logger} from "../shared/logger/logger";
+
+@Component({
+    selector: 'app-checkout',
+    templateUrl: './checkout.component.html',
+    styleUrls: ['./checkout.styles.scss']
+})
+export class CheckoutComponent implements OnInit {
+
+    checkoutData: Checkout;
+    checkoutFormGroup: FormGroup;
+    schemeOptions:any[];
+    totalInvestmentAmount: number;
+    checkoutFormErrors = {};
+    investmentMode = InvestmentModeEnum;
+
+    constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder,
+                private checkoutService: CheckoutService, private cartService: CartService,
+                private mdSnackBar: MdSnackBar, private viewContainerRef: ViewContainerRef,
+                private dialog: MdDialog, private logger:Logger) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: {checkoutData: Checkout}) => {
+            this.checkoutData = data.checkoutData;
+        });
+        //this.checkOutInitialisation();
+        /*this.checkoutFormGroup.valueChanges
+            .subscribe(data => {
+                //  console.log("value change function start");
+                this.onValueChanged(data);
+
+            });*/
+        // this.onValueChanged(); // (re)set validation messages now
+    }
+
+    //updateSipDates(fundIdx)
+    getPlanOptions(idx:number){
+        for(let plan of this.checkoutData.fundsData[idx].planList){
+            if(plan.planId == this.checkoutData.fundsData[idx].selectedPlanId){
+                this.checkoutService.getPlanOptions(plan).subscribe(res =>{
+                    this.checkoutData.fundsData[idx].divOptionList = res.divOptionList as any[]
+                    this.logger.debug(this.schemeOptions)
+                })
+            }
+        }
+    }
+    checkOutInitialisation() {
+        let fundFormGroupArray = this.fb.array([]);
+        let fundFormErrorsArray = [];
+        let minInv = 0;
+
+        this.checkoutData.fundsData.forEach(fundData => {
+            let fund = fundData.fund;
+            minInv += +fund.basicFactsheet.minSIPAmt;
+            let selectedSubOption = fundData.subOptionList[0].optionId;
+            if(fundData.productInvestment.productName.length > 0 && (fundData.productInvestment.investmentMode.length == 0 ||
+                    fund.investmentMode == fundData.productInvestment.investmentMode)){
+                selectedSubOption = fundData.productInvestment.schemeOptionId
+            }
+            if (fund.investmentMode == InvestmentModeEnum[InvestmentModeEnum.SIP]) {
+                /*console.log(fund.investmentMode)
+                 console.log(InvestmentModeEnum[InvestmentModeEnum.SIP]);*/
+                fundFormGroupArray.push(this.fb.group({
+                    investmentAmount: [+fund.basicFactsheet.minSIPAmt, Validators.compose([Validators.required, NumberValidator.minValue(+fund.basicFactsheet.minSIPAmt), NumberValidator.isHundredMultiple()])],
+                    investmentMode: [fund.investmentMode, [Validators.required]],
+                    selectedSubOption: [selectedSubOption, [Validators.required]],
+                    selectedDeductionDate: ['', [Validators.required]],
+                    investmentDuration: ['', [Validators.required]],
+                }));
+                fundFormErrorsArray.push({
+                    'investmentAmount': '',
+                    'selectedSubOption': '',
+                    'selectedDeductionDate': '',
+                    'investmentDuration': ''
+                });
+            } else {
+                fundFormGroupArray.push(this.fb.group({
+                    investmentAmount: [fund.basicFactsheet.minSIPAmt, [Validators.required]],
+                    investmentMode: [fund.investmentMode, [Validators.required]],
+                    selectedSubOption: [selectedSubOption, [Validators.required]],
+                }));
+                fundFormErrorsArray.push({
+                    'investmentAmount': '',
+                    'selectedSubOption': '',
+                    'selectedDeductionDate': '',
+                    'investmentDuration': ''
+                });
+            }
+        });
+
+        this.totalInvestmentAmount = minInv;
+        this.checkoutFormGroup = this.fb.group({
+            selectedNominee: ['', [Validators.required]],
+            selectedBank: ['', [Validators.required]],
+            fundsData: fundFormGroupArray
+        });
+
+        this.checkoutFormErrors = {
+            'selectedNominee': '',
+            'selectedBank': '',
+            'fundsData': fundFormErrorsArray
+        };
+
+
+    }
+
+    onValueChanged(data?: any) {
+        if (!this.checkoutFormGroup) {
+            return;
+        } else {
+            this.updateErrorMessages();
+        }
+
+    }
+
+    updateErrorMessages() {
+        const form = this.checkoutFormGroup;
+        this.totalInvestmentAmount = 0;
+
+        //selected Bank Validation
+        this.checkoutFormErrors['selectedBank'] = '';
+        let selectedBankControl = form.get('selectedBank');
+        if (selectedBankControl && selectedBankControl.dirty && !selectedBankControl.valid) {
+            const messages = this.validationMessages['selectedBank'];
+            for (const key in selectedBankControl.errors) {
+                this.checkoutFormErrors['selectedBank'] += messages[key] + ' ';
+            }
+        }
+
+        //selected Nominee Validation
+        this.checkoutFormErrors['selectedNominee'] = '';
+        let selectedNomineeControl = form.get('selectedNominee');
+        if (selectedNomineeControl && selectedNomineeControl.dirty && !selectedNomineeControl.valid) {
+            const messages = this.validationMessages['selectedNominee'];
+            for (const key in selectedNomineeControl.errors) {
+                this.checkoutFormErrors['selectedNominee'] += messages[key] + ' ';
+            }
+        }
+
+        //funds validation
+        let formFundsArray = form.get('fundsData') as FormArray;
+        this.checkoutFormErrors['fundsData'].forEach((fund, index) => {
+
+            this.totalInvestmentAmount += +formFundsArray.at(index).get('investmentAmount').value;
+
+            //selected sub option
+            fund.selectedSubOption = '';
+            let subOptionControl = formFundsArray.at(index).get('selectedSubOption');
+            if (subOptionControl && subOptionControl.dirty && !subOptionControl.valid) {
+                const messages = this.validationMessages['selectedSubOption'];
+                console.log(subOptionControl.errors);
+                for (const key in subOptionControl.errors) {
+                    fund.selectedSubOption += messages[key] + ' ';
+                }
+            }
+
+            //Deduction Date
+            fund.selectedDeductionDate = '';
+            let deductionDateControl = formFundsArray.at(index).get('selectedDeductionDate');
+            if (deductionDateControl && deductionDateControl.dirty && !deductionDateControl.valid) {
+                const messages = this.validationMessages['selectedDeductionDate'];
+                console.log(deductionDateControl.errors);
+                for (const key in deductionDateControl.errors) {
+                    fund.selectedDeductionDate += messages[key] + ' ';
+                }
+            }
+
+            //investmentDuration
+            fund.investmentDuration = '';
+            let investmentDurationControl = formFundsArray.at(index).get('investmentDuration');
+            if (investmentDurationControl && investmentDurationControl.dirty && !investmentDurationControl.valid) {
+                const messages = this.validationMessages['investmentDuration'];
+                console.log(investmentDurationControl.errors);
+                for (const key in investmentDurationControl.errors) {
+                    fund.investmentDuration += messages[key] + ' ';
+                }
+            }
+
+            //investmentAmount
+            fund.investmentAmount = '';
+            let investmentAmountControl = formFundsArray.at(index).get('investmentAmount');
+            if (investmentAmountControl && investmentAmountControl.dirty && !investmentAmountControl.valid) {
+                const messages = this.validationMessages['investmentAmount'];
+                console.log(investmentAmountControl.errors);
+                for (const key in investmentAmountControl.errors) {
+                    if (key === 'minValue') {
+                        fund.investmentAmount += messages[key] + ' ' + investmentAmountControl.errors[key].requiredValue;
+                    } else {
+                        fund.investmentAmount += messages[key] + ' ';
+                    }
+                }
+            }
+        });
+
+        //console.log("value change function end");
+    }
+
+    validationMessages = {
+        'investmentAmount': {
+            'required': 'Investment Amount is required.',
+            'minValue': 'Minimum Investment amount is ',
+            'hundredMultiple': 'Amount should be a multiple of 100'
+        },
+        'selectedSubOption': {
+            'required': 'SubOption is required.'
+        },
+        'selectedDeductionDate': {
+            'required': 'Deduction Date is required.',
+        },
+        'investmentDuration': {
+            'required': 'Investment Duration is required.',
+            'minValue': 'Minimum Investment Duration is 10 months.',
+        },
+        'selectedBank': {
+            'required': 'Bank is required.'
+        },
+        'selectedNominee': {
+            'required': 'Nominee is required.'
+        },
+
+    };
+
+    removeFund(removalFund: Fund, fundIndex: number) {
+
+        //console.log("fund removal started!");
+        this.checkoutData.fundsData = this.checkoutData.fundsData.filter((fundData, index) => index != fundIndex);
+        this.checkoutFormErrors['fundsData'] = this.checkoutFormErrors['fundsData'].filter((fund, index) => index != fundIndex);
+        let newFundsData = this.fb.array([]);
+        let currentFormArray = this.checkoutFormGroup.get('fundsData') as FormArray;
+        let slicedFormGroups = currentFormArray.controls.filter((formGroup, index) => index != fundIndex);
+        slicedFormGroups.forEach(grp => newFundsData.push(grp));
+        this.checkoutFormGroup.setControl("fundsData", newFundsData);
+        this.cartService.removeFundFromCart([removalFund]).subscribe(res => {
+                let config = new MdSnackBarConfig();
+                config.viewContainerRef = this.viewContainerRef;
+                config.duration = 2000;
+                this.mdSnackBar.open(res.response, "Okay", config);
+            }
+        )
+        //console.log("fund removal ended!");
+    }
+
+    onCheckoutSubmit() {
+        if (this.checkoutFormGroup.valid) {
+            console.log("checkout form submitted!");
+        } else {
+            console.log(this.checkoutFormGroup);
+            let config = new MdSnackBarConfig();
+            config.duration = 2000;
+            config.viewContainerRef = this.viewContainerRef;
+            this.mdSnackBar.open("Please complete the checkout form before submitting!", "Okay", config);
+        }
+    }
+
+
+    //triggered when the user wants to change the investment mode.
+    investmentModeChangeTrigger(index) {
+        //console.log("open");
+        let fundsArray = this.checkoutFormGroup.get("fundsData") as FormArray;
+        let fundGroup = fundsArray.at(index) as FormGroup;
+
+        //add only if the current investment mode is SIP
+        if (fundGroup.get("investmentMode").value == InvestmentModeEnum[InvestmentModeEnum.LUMPSUM]) {
+            fundGroup.addControl("selectedDeductionDate", new FormControl('', [Validators.required]));
+            fundGroup.addControl("investmentDuration", new FormControl('', [Validators.required]));
+        }
+    }
+
+    investmentModeUpdate(fund: Fund, index: number) {
+        //console.log("close");
+        let fundFoundCount = 0;
+        let fundsArray = this.checkoutFormGroup.get("fundsData") as FormArray;
+        let fundGroup = fundsArray.at(index) as FormGroup;
+
+        //checking if duplicate created due to change of investment mode
+        fundsArray.controls.forEach((item, idx) => {
+            if (this.checkoutData.fundsData[idx].fund.id == fund.id &&
+                item.get("investmentMode").value == fundGroup.get("investmentMode").value) {
+                fundFoundCount++;
+            }
+        });
+
+        //if duplication found then asking user for confirmation on removal
+        if (fundFoundCount > 1) {
+            let config = new MdDialogConfig();
+            config.width = "300px";
+            config.disableClose = true;
+            config.viewContainerRef = this.viewContainerRef;
+
+            let confirmationConfig = {
+                confirmationTitle: "Please Confirm!",
+                confirmationText: "Two funds cannot have same investment modes, do you want to remove this fund?",
+                confirmationActions: [['Y', "Yes"], ['N', "No"]]
+
+            }
+
+            let dialogRef = this.dialog.open(ConfirmationDialogComponent, config);
+            dialogRef.componentInstance.config = confirmationConfig;
+            dialogRef.afterClosed().subscribe(result => {
+
+                //user agrees to remove duplicate fund
+                if (result[0] == 'Y') {
+                    console.log("yes");
+                    this.removeFund(fund, index);
+                } else {  //user disagrees to remove the fund then we need to revert back to same state.
+                    console.log("no");
+                    //toggle back the investment mode
+                    if (fundGroup.get("investmentMode").value == InvestmentModeEnum[InvestmentModeEnum.SIP]) {
+                        fundGroup.setControl("investmentMode", new FormControl(InvestmentModeEnum[InvestmentModeEnum.LUMPSUM], [Validators.required]));
+                        fundGroup.removeControl("selectedDeductionDate");
+                        fundGroup.removeControl("investmentDuration");
+                    } else {
+                        fundGroup.setControl("investmentMode", new FormControl(InvestmentModeEnum[InvestmentModeEnum.SIP], [Validators.required]));
+                    }
+
+                }
+            });
+        } else {
+            //if no duplication found and the investment mode is lumpsum then we need to remove the added controls.
+            if (fundGroup.get("investmentMode").value == InvestmentModeEnum[InvestmentModeEnum.LUMPSUM]) {
+                fundGroup.removeControl("selectedDeductionDate");
+                fundGroup.removeControl("investmentDuration");
+            }
+        }
+    }
+}

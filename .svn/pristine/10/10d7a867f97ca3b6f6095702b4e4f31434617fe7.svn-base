@@ -1,0 +1,49 @@
+import {Component, OnInit} from "@angular/core";
+import {HttpService} from "../../services/http-service.service";
+import {FundComponent} from "../../fund/fund.component";
+import {Fund} from "../../fund/fund";
+
+@Component({
+
+    selector: 'expert-sip',
+    templateUrl: 'expert.component.html',
+    styleUrls: ['expert.component.css', '../../app.component.css', '../sip.component.css'],
+})
+export class ExpertComponent implements OnInit {
+    constructor() {
+
+    }
+
+    /* next() {
+     this.searchInput.from += this.searchInput.rows
+     this.search()
+     }
+
+     prev() {
+     this.searchInput.from -= this.searchInput.rows
+     this.search()
+     }*/
+
+    proceed() {
+        //check if user is logged in  or not, if not then prompt for login
+        //once loggedin check for KYC and registration, if not complete take him to regsitration and KYC page
+        //if all done take him to investment page
+        this.incomplete()
+    }
+
+    manageCompareCount(value: any) {
+        console.log(value)
+    }
+
+
+    incomplete() {
+        alert("Yet to be developed!")
+    }
+
+    ngOnInit() {
+
+
+    }
+
+
+}

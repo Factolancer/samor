@@ -1,0 +1,30 @@
+@import "../../../styles/partials/web-partials";
+
+.prod-branding-container{
+  text-align: center;
+  //overflow-x: scroll;
+  md-card{
+    -webkit-transition: all 200ms ease-in-out;
+    -ms-transition: all 200ms ease-in-out;
+    -moz-transition: all 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
+    &:hover{
+      @include scaleUp(1.0,$medium-grey);
+    }
+  }
+  md-card-title{
+    img{height: 40px; width:40px; }
+    p span{
+      color:$dark-grey;
+      font-size: 16px;
+      padding-bottom: 5px;
+      border-bottom:solid 2px $medium-grey;
+    }
+  }
+  md-card-content{
+    color: $brand-secondary;
+    line-height: 20px;
+    padding: 10px 0;
+  }
+}
+

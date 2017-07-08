@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-fund-pagination-panel',
+  templateUrl: './fund-pagination-panel.component.html',
+  styleUrls: ['./fund-pagination-panel.component.css']
+})
+export class FundPaginationPanelComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

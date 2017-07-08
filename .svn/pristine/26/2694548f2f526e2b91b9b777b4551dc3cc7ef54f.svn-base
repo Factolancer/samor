@@ -1,0 +1,126 @@
+
+<div  class="wrapper pos-rel" fxLayout="row"  xmlns="http://www.w3.org/1999/html">
+    <div fxFlex >
+        <div class="pad-tb-15" fxLayout="column" fxLayoutAlign="center center">
+            <div class="heading-32-dark-grey">Earn more by investing in
+                <span>SavingsPlus</span>
+                <hr />
+            </div>
+            <div class="center-align sub-heading-16-medium-grey">
+                Benefits of Bank Account with better returns to double your savings
+            </div>
+        </div>
+        <div fxFlex >
+            <div #scrollToMe fxLayoutAlign="space-around"  fxLayoutWrap="space-around" class="demo-slide-box mar-tb-20" [ngClass]="{'grey-border':elCount>=2}">
+
+                <div *ngIf="elCount>=2" fxFlex="100" fxLayout="row" fxLayoutAlign="center center" class="demoa-slide-title pad-tb-20 mar-b-20 fadeIn">
+                    <div fxFlex >
+                        Bank Savings Account vs Fincash's SavingsPlus
+                    </div>
+                </div>
+
+                <md-card  fxFlex="42" fxFlex.xs="100" *ngIf="elCount>=0" class="no-padding no-box-shadow" [ngClass]="{'moveTopLeft':finished, 'restoreScale':elCount>=3}">
+                        <md-card-content>
+                            <div *ngIf=!finished fxLayout="row" fxLayoutAlign="center center" class="demo-slide-title pad-20">
+                                <div fxFlex>Let's have a look at the <b>Earnings</b> & <b>Expenses</b> of an individual
+                                </div>
+                            </div>
+                            <md-card class="demo-header">
+                                <md-card-content fxLayout="column">
+                                    <div fxLayout="row"  fxLayoutAlign="center center">
+                                        <div fxFlex class="pad-10">Date</div>
+                                        <div fxFlex class="pad-10">Cash Flow</div>
+                                        <div fxFlex class="pad-10">Amount</div>
+                                        <div fxFlex class="pad-10">Account <br> Balance</div>
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+                            <md-card class="grey-border pad-05">
+                                <md-card-content fxLayout="column">
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[0]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[1]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[2]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[3]}}</div>
+                                    </div>
+                                    <div fxLayout="row">
+
+
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[4]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[5]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{ values[6]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[7]}}</div>
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[8]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[9]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{values[10]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[11]}}</div>
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+                            <md-card class="grey-border pad-05">
+                                <md-card-content fxLayout="column">
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[12]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[13]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[14]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[15]}}</div>
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[16]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[17]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{values[18]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[19]}}</div>
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[20]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[21]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{values[22]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[23]}}</div>
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+                            <md-card class="grey-border pad-05">
+                                <md-card-content fxLayout="column">
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[24]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[25]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[26]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[27]}}</div>
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[28]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[29]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{values[30]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[31]}}</div>
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex class="pad-lr-10 demo-row-height">{{values[32]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic">{{values[33]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height red-italic"> {{values[34]}}</div>
+                                        <div fxFlex class="pad-lr-10 demo-row-height"> {{values[35]}}</div>
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+                        </md-card-content>
+                    </md-card>
+
+                <div fxFlex="42" fxFlex.xs="100" *ngIf="elCount>=1" class="fadeIn">
+                    <demoa ></demoa>
+                </div>
+
+                <div  *ngIf="elCount>=2" class="fadeIn slideUp demo-all-cont">
+                    <demoall ></demoall>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

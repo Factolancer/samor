@@ -1,0 +1,50 @@
+{{id}}
+<div *ngIf="basicFactSheet" class="row">
+    <div class="col-md-4">
+        <table>
+            <thead>
+            <tr>Basic Details</tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Current NAV (Rs.)</td>
+                <td>{{basicFactSheet.nav}} "+++++++++++++++" {{basicFactSheet.id}}</td>
+            </tr>
+            <tr>
+                <td>Inception Date</td>
+                <td>{{basicFactSheet.inceptionDate}}</td>
+            </tr>
+            <tr>
+                <td>Category</td>
+                <td>{{basicFactSheet.category.name}}</td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td>{{basicFactSheet.type}}</td>
+            </tr>
+            <tr>
+                <td>Net Assets (Cr.)</td>
+                <td>{{basicFactSheet.netAssets}}</td>
+            </tr>
+            <tr>
+                <td>Expense Ratio</td>
+                <td>{{basicFactSheet.expenseRatio}}</td>
+            </tr>
+            <tr>
+                <td>Riskometer</td>
+                <td>{{basicFactSheet.risk}}</td>
+            </tr>
+            <tr>
+                <td>Fincash’s Risk Rating</td>
+                <td>{{basicFactSheet.fincashRisk}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <button md-raised-button="" routerLink={{advancedViewPath}}>Advanced View
+            <md-icon class="material-icons md-18">&#xE315;</md-icon><!--Right-arrow--></button>
+
+    </div>
+</div>

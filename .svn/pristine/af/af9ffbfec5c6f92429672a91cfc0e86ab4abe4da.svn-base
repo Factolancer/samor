@@ -1,0 +1,23 @@
+import {Injectable} from "@angular/core";
+import {Router, Resolve, ActivatedRouteSnapshot} from "@angular/router";
+import {Observable} from "rxjs";
+import {TaxService} from "../tax.service";
+import {TaxSaverFunds} from "./tax-saver-funds";
+
+@Injectable()
+export class TaxSaverFundResolveService implements Resolve<TaxSaverFunds> {
+    constructor(private router: Router, private taxService: TaxService) {
+    }
+
+    resolve(route: ActivatedRouteSnapshot): Observable<boolean | TaxSaverFunds[]> {
+
+        return this.taxService.getTaxSaverFunds().map(output => {
+            if (output) {
+                return output as TaxSaverFunds[];
+            } else {
+                this.router.navigate(['/login']);
+                return false;
+            }
+        });
+    }
+}

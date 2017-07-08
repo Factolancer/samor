@@ -1,0 +1,77 @@
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {Fund} from "../models/fund";
+import {CartService} from "./cart.service";
+import {InvestmentModeEnum} from "../enum/investment-mode-enum";
+import {MdDialog, MdDialogConfig} from "@angular/material";
+import {ConfirmationDialogComponent} from "../shared/confirmation-dialog.component";
+
+@Component({
+    selector: 'app-cart',
+    templateUrl: './cart.component.html',
+    styleUrls: ['./cart.styles.scss']
+})
+export class CartComponent implements OnInit {
+
+    cartItems: Fund[];
+    investmentMode = InvestmentModeEnum;
+
+    constructor(private route: ActivatedRoute, private cartService: CartService, private dialog: MdDialog,
+                private viewContainerRef: ViewContainerRef) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: {cartItems: Fund[]}) => {
+            this.cartItems = data.cartItems;
+            console.log(this.cartItems);
+        });
+    }
+
+    removeFund(fund: Fund, index: number) {
+        this.cartItems = this.cartItems.filter((item, idx) => idx != index);
+        this.cartService.removeFundFromCart(fund).subscribe(res =>
+            alert("Fund has been removed from the cart!"));
+    }
+
+    investmentModeUpdate(fund: Fund, index: number) {
+        //console.log(fund);
+        let fundFoundCount = 0;
+        this.cartItems.forEach(item => {
+            if (item.id == fund.id && item.investmentMode == fund.investmentMode) {
+                fundFoundCount++;
+            }
+        });
+
+        if (fundFoundCount > 1) {
+            let config = new MdDialogConfig();
+            config.width = "300px";
+            config.disableClose = true;
+            config.viewContainerRef = this.viewContainerRef;
+
+            let confirmationConfig = {
+                confirmationTitle: "Please Confirm!",
+                confirmationText: "Two funds cannot have same investment modes, do you want to remove this fund?",
+                confirmationActions: [['Y', "Yes"], ['N', "No"]]
+
+            }
+
+            let dialogRef = this.dialog.open(ConfirmationDialogComponent, config);
+            dialogRef.componentInstance.config = confirmationConfig;
+            dialogRef.afterClosed().subscribe(result => {
+                if (result[0] == 'Y') {
+                    this.cartItems = this.cartItems.filter((item, idx) => idx != index);
+                } else {
+                    //toggle back the investment mode
+                    //  console.log(this.cartItems[index].investmentMode);
+                    this.cartItems[index].investmentMode == InvestmentModeEnum.SIP ?
+                        this.cartItems[index].investmentMode = InvestmentModeEnum.LUMPSUM :
+                        this.cartItems[index].investmentMode = InvestmentModeEnum.SIP;
+                    //console.log(this.cartItems[index].investmentMode);
+                }
+
+                //console.log(this.cartItems[index]);
+            });
+        }
+    }
+
+}

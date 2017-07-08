@@ -1,0 +1,7 @@
+export const SchemeCodes = {
+    SavingsPlus_Reliance: 116291
+};
+
+export const OrderTypes = {
+    InstantFlag: "INSTA"
+};

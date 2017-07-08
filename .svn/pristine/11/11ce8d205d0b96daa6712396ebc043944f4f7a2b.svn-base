@@ -1,0 +1,32 @@
+@import "../../../styles/styles";
+
+.my-account, .personalised-offers, .quick-links, .report{
+  margin-bottom: 20px;
+  table{border-collapse: collapse;}
+  border: solid 1px $medium-grey;
+  .title{ background-color: $light-grey; color: $dark-grey; padding: 12px; font-weight: 600}
+}
+.personalised-offers, .quick-links, .report{
+  td {
+    padding: 8px 20px;
+    a {
+      color: $dark-grey
+    }
+  }
+}
+.my-account .links{
+  margin: 5px auto;
+  img{
+    height: 25px;
+    width:25px;
+    opacity: 0.6;
+    &:hover{opacity: 1;}
+  }
+  span{
+    color:$dark-grey;
+    border-bottom:solid 1px #d2d2d2;
+    margin-left:5px; line-height:30px; font-size: 14px;
+  }
+}
+
+

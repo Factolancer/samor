@@ -1,0 +1,57 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80">
+        <div fxLayout="column" fxLayoutAlign="center center" class="pad-tb-35">
+            <div fxFlex class="center-align heading-32-blue">Set up Monthly Investment Plan(SIPs)</div>
+        </div>
+        <div fxFlex class="grey-back">
+            <div fxLayout="column" fxLayoutAlign="center center">
+                <div fxFlex class="sip-title-area">
+                    <span class="text">SmartSIP</span>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex class="sip-product-des">
+                        <div class="icon">
+                            <img src="/public/images/sip/healthy_returns.svg" alt="hand of healthy returns icon">
+                        </div>
+                        <div class="text">Selected after analysis of 20000 schemes</div>
+                    </div>
+                    <div fxFlex class="sip-product-des">
+                        <div class="icon">
+                            <img src="/public/images/sip/champion.svg" alt="hand of healthy returns icon">
+                        </div>
+                        <div class="text">Top-3 best performing schemes</div>
+                    </div>
+                    <div fxFlex class="sip-product-des">
+                        <div class="icon">
+                            <img src="/public/images/sip/healthy_returns.svg" alt="hand of healthy returns icon">
+                        </div>
+                        <div class="text">Earn Healthy Returns</div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <div fxFlex="20" class="pad-tb-20">
+                    <button class="cta-50" md-raised-button="" routerLink='smartsip' color="primary">
+                        Invest
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-20">
+            <div class="fc-divider" fxFlex><span>OR</span></div>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start">
+            <div fxFlex="25%" fxFlex.xs="100%" class=" pad-tb-20">
+                <button class="cta-70 pad-tb-20" md-raised-button="" color="primary" routerLink='/explore/all'>Choose
+                    from all schemes
+                </button>
+            </div>
+            <div fxFlex></div>
+            <div fxFlex="25%" fxFlex.xs="100%" class="pad-tb-20">
+                <button class="cta-70" md-raised-button="" color="primary" routerLink='calculator'>Use SIP
+                    Calculator
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

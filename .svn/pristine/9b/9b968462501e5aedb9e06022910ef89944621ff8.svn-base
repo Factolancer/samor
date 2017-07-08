@@ -1,0 +1,206 @@
+<section >
+    <div fxLayout="row" fxLayoutAlign="center center" >
+        <div fxFlex="80" style="border:solid 1px #d6d6d6">
+
+            <div *ngIf="invested" fxLayout="column" class="portfolio-box">
+                <div align="center" class="portfolio-heading">
+                    <span >Portfolio Overview</span>
+                </div>
+
+                <div fxLayout="row" align="center" class="portfolio-card-container">
+                    <div fxLayout="column" fxFlex="25" class="clickable portfolio-card">
+                        <div class="card-title">Current Value</div>
+                        <div class="card-value">{{10000 | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                    <div fxLayout="column" fxFlex="25" class="clickable">
+                        <div class="card-title">Cost Value</div>
+                        <div class="card-value">{{9000 | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                    <div fxLayout="column" fxFlex="25" class="clickable">
+                        <div class="card-title">Realised Gain</div>
+                        <div class="card-value">{{5000 | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                    <div fxLayout="column" fxFlex="25" class="clickable">
+                        <div class="card-title">Unrealised Gain</div>
+                        <div class="card-value">{{4000 | currency:'INR':true:'1.0-0'}}</div>
+                    </div>
+                </div>
+
+            </div>
+            <div fxLayout="row" style="padding: 20px">
+                <div class="navigation-bar" fxFlex="20">
+                    <div class="my-account" fxLayout="row">
+                        <table width="100%" fxFlex="100">
+                            <th class="title">My Account</th>
+                            <tbody>
+                            <tr>
+                                <td><!--<i class="material-icons icon" fxFlexOffset="5px">account_circle</i>-->
+                                    <i class="fa fa-search-plus" aria-hidden="true" fxFlexOffset="5px"></i>
+                                    <a routerLink="#" target="_blank" class="links">KYC</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-file-text-o" aria-hidden="true" fxFlexOffset="5px"></i>
+                                    <a routerLink="#" target="_blank" class="links">Registration</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-user-circle-o" fxFlexOffset="5px"></i>
+                                    <a routerLink="#" target="_blank" class="links">My Account</a></td>
+                            </tr>
+                           <tr *ngIf="invested">
+                                    <td><i class="fa fa-user-circle-o" fxFlexOffset="5px"></i>
+                                    <a routerLink="#" target="_blank" class="links">Holding</a></td>
+                            </tr>
+                            <tr *ngIf="invested">
+                                <td><i class="fa fa-user-circle-o" fxFlexOffset="5px"></i>
+                                    <a routerLink="#" target="_blank" class="links">Holding Report</a></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-university" fxFlexOffset="5px"></i>
+                                    <a routerLink="#" target="_blank" class="links">Bank Account</a></td>
+                            </tr>
+                            <tr *ngIf="invested">
+                                <td><!--<i class="material-icons icons" fxFlexOffset="5px">redeem</i>-->
+                                    <i class="fa fa-gift" aria-hidden="true" fxFlexOffset="5px"></i>
+                                    <a routerLink="#" target="_blank" class="links">Redeem Funds</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="personalised-offers" fxLayout="row">
+                        <table width="100%" fxFlex="100">
+                            <th class="title">Personalsed Offers</th>
+                            <tbody>
+                            <tr>
+                                <td><a routerLink="#" target="_blank" class="links">Invest in TaxSaver</a></td>
+                            </tr>
+                            <tr>
+                                <td><a routerLink="#" target="_blank" class="links">Start in SIP</a></td>
+                            </tr>
+                            <tr>
+                                <td><a routerLink="#" target="_blank" class="links">Save through SavingPlus</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="quick-links" fxLayout="row">
+                        <table width="100%" fxFlex="100">
+                            <th class="title">Quick Links</th>
+                            <tbody>
+                            <tr>
+                                <td><a routerLink="#" target="_blank" class="links">SIP Calculator</a></td>
+                            </tr>
+                            <tr>
+                                <td><a routerLink="#" target="_blank" class="links">Tax Calculator</a></td>
+                            </tr>
+                            <tr>
+                                <td><a routerLink="#" target="_blank" class="links">Invest</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div *ngIf="invested" class="report" fxLayout="row">
+                        <table width="100%" fxFlex="100">
+                            <th class="title">Report</th>
+                            <tbody>
+                            <tr>
+                                <td><a routerLink="#" target="_blank" class="links">Capital Gain</a></td>
+                            </tr>
+                            <tr>
+                                <td><a routerLink="#" target="_blank" class="links">Transaction report</a></td>
+                            </tr>
+                            <tr>
+                                <td><a routerLink="#" target="_blank" class="links">IRR</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div fxLayout="column" style="margin:0 20px" fxFlex="100vw">
+
+                    <div *ngIf="invested" class="chart-container">
+                        <md-tab-group [selectedIndex]="1" class="chart-selector">
+
+                            <md-tab label="Overall">
+
+                            </md-tab>
+                            <md-tab label="SIP">
+                            </md-tab>
+                        </md-tab-group>
+                        <div fxLayout="row">
+                            <md-card fxFlex="50">
+                                <md-card-title>Asset Allocation</md-card-title>
+                                <md-card-content>
+                                    <app-chart (click)="check()"></app-chart>
+                                </md-card-content>
+                            </md-card>
+                            <md-card *ngIf="showDistribution" fxFlex="50" fxFlexOffset="15px">
+                                <md-card-title>Fund Distribution in Equity</md-card-title>
+                                <md-card-content>
+                                    <app-sub-chart></app-sub-chart>
+                                </md-card-content>
+                            </md-card>
+                        </div>
+                    </div>
+
+                    <div class="product-container">
+                        <div class="title">Invest in our Product</div>
+                        <div fxLayout="row">
+                            <md-card fxFlex="50" align="center">
+                                <md-card-title>
+                                    <i class="fa fa-2x fa-shopping-bag" aria-hidden="true"></i><br/>
+                                    Smart SIP
+                                </md-card-title>
+                                <md-card-content>
+                                    1. Invest small to achive your <br/> Financial Goals<br/><br/>
+                                    2. 5 clicks to start a Systematic Investment Plan (SIP) <br/><br/>
+                                    3. Pre-selected top 3 Mutual Funds <br/>
+                                </md-card-content>
+                                <button md-raised-button class="invest-buttton" (click)="invest()">INVEST</button>
+                            </md-card>
+                            <md-card fxFlex="50" fxFlexOffset="15px" align="center">
+                                <md-card-title>
+                                    <i class="fa fa-2x fa-shopping-bag" aria-hidden="true"></i><br/>
+                                    Saving Plus
+                                </md-card-title>
+                                <md-card-content>
+                                    1. Earn more from the money in your bank account<br/><br/>
+
+                                    2. Way better returns than Savings Account (7-9%)<br/><br/>
+
+                                    3. Instant Redemption with no Lock-in & Exit Load
+
+                                </md-card-content>
+                                <button md-raised-button class="invest-buttton" (click)="invest()">INVEST</button>
+                            </md-card>
+                            <md-card fxFlex="50" fxFlexOffset="15px" align="center">
+                                <md-card-title>
+                                    <i class="fa fa-2x fa-shopping-bag" aria-hidden="true"></i><br/>
+                                    Tax Saver
+                                </md-card-title>
+                                <md-card-content>
+                                    1. Save Tax under Section 80C. <br/><br/><br/>
+
+                                    2. Earn tax-free returns via ELSS <br/><br/><br/>
+
+                                    3. Pre-selected top 2 ELSS Funds<br/><br/>
+
+                                </md-card-content>
+                                <button md-raised-button class="invest-buttton" (click)="invest()">INVEST</button>
+                            </md-card>
+                        </div>
+                    </div>
+
+                    <div *ngIf="invested" class="transaction-container">
+                        <app-transaction></app-transaction>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</section>

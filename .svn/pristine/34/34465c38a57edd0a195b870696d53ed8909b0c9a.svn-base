@@ -1,0 +1,136 @@
+<div class="row">
+    <section *ngIf="fundDisplay.isListView">
+        <div class="col-md-12">
+            <table>
+                <thead class="table-header">
+                <td class="table-element">Add to Compare</td>
+                <td class=" table-element" #fund (click)="sort(fund.title)" title="dname">Fund
+                    <span *ngIf="currentSortElement === fund.title ">
+                            <i *ngIf="isDesc" class="material-icons">&#xE5C5;</i>
+                            <i *ngIf="!isDesc" class="material-icons">&#xE5C7;</i>
+                        </span>
+
+                </td>
+                <td class="table-element" #rating (click)="sort(rating.title)" title="drating">Fincash's Fund Rating
+                    <span *ngIf="currentSortElement === rating.title ">
+                            <i *ngIf="isDesc" class="material-icons">&#xE5C5;</i>
+                            <i *ngIf="!isDesc" class="material-icons">&#xE5C7;</i>
+                        </span>
+                </td>
+                <td class=" table-element" #ret3 (click)="sort(ret3.title)" title="dret3">3 yr Return(%)
+                    <span *ngIf="currentSortElement === ret3.title ">
+                            <i *ngIf="isDesc" class="material-icons">&#xE5C5;</i>
+                            <i *ngIf="!isDesc" class="material-icons">&#xE5C7;</i>
+                        </span>
+                </td>
+                <td class="table-element" #risk (click)="sort(risk.title)" title="drisk">Riskometer
+                    <span *ngIf="currentSortElement === risk.title ">
+                            <i *ngIf="isDesc" class="material-icons">&#xE5C5;</i>
+                            <i *ngIf="!isDesc" class="material-icons">&#xE5C7;</i>
+                        </span>
+                </td>
+                <td class="table-element" #age (click)="sort(age.title)" title="dage">Fund Age
+                    <span *ngIf="currentSortElement === age.title ">
+                            <i *ngIf="isDesc" class="material-icons">&#xE5C5;</i>
+                            <i *ngIf="!isDesc" class="material-icons">&#xE5C7;</i>
+                        </span>
+                </td>
+                <td class=" table-element" #aum (click)="sort(aum.title)" title="daum">AUM
+                    <span *ngIf="currentSortElement === aum.title ">
+                            <i *ngIf="isDesc" class="material-icons">&#xE5C5;</i>
+                            <i *ngIf="!isDesc" class="material-icons">&#xE5C7;</i>
+                        </span>
+                </td>
+                <td class="table-element">Min Investment</td>
+                <td class=" table-element">Action</td>
+                </thead>
+                <tbody *ngIf="_funds.length>0">
+                <tr *ngFor="let fundItem of _funds" class="table-row">
+                    <td class="table-element">
+                        <md-checkbox [(ngModel)]="fundItem.selected">
+                        </md-checkbox>
+                    </td>
+                    <td class="table-element left-align clickable" (click)="viewFactSheet(fundItem.id)">
+                        <md-icon class="material-icons factsheet-icon md-14">&#xE873;</md-icon>
+                        {{fundItem.name}}
+
+                    </td>
+                    <td class="table-element">
+                        <span [outerHTML]="fundItem.rating | rating"></span>
+                    </td>
+                    <td class="table-element">{{fundItem.return3yr}}</td>
+                    <td class="table-element">{{fundItem.risk}}</td>
+                    <td class="table-element">{{fundItem.age}} years</td>
+                    <td class="table-element">{{fundItem.aum | currency:'INR':true:'1.0-0' }}</td>
+                    <td class="table-element">{{fundItem.minInvestment | currency:'INR':true:'1.0-0'}}</td>
+                    <td class="table-element">
+                        <button md-raised-button="" (click)="addToCart(fundItem.id)">Add to cart</button>
+                    </td>
+                </tr>
+                </tbody>
+                <tbody *ngIf="_funds.length == 0">No results found!</tbody>
+            </table>
+        </div>
+    </section>
+
+    <section *ngIf="!fundDisplay.isListView">
+        <div *ngFor="let fundItem of _funds" class="col-md-4">
+            <md-card>
+                <md-card-title class="card-fund-title">
+                    <table>
+                        <tr>
+                            <td>
+                                <md-checkbox [(ngModel)]="fundItem.selected"></md-checkbox>
+                            </td>
+                            <td><span class="md-checkbox-label">{{fundItem.name}}</span></td>
+                        </tr>
+                    </table>
+                </md-card-title>
+                <md-card-content class="card-fund-body">
+                    <table width="100%" frame="void" rules="all" class="card-content-table">
+                        <tr>
+                            <td class="card-element" colspan="2">
+                                <span class="card-fund-detail-label">Fincash's Fund Rating</span><br>
+                                <span class="card-fund-detail-value"><span
+                                        [outerHTML]="fundItem.rating | rating"></span></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="card-element">
+                                <span class="card-fund-detail-label">Fund Age</span><br>
+                                <span class="card-fund-detail-value">{{fundItem.age}} years</span>
+                            </td>
+                            <td class="card-element">
+                                <span class="card-fund-detail-label">3 yr. Return(%)</span>
+                                <span class="card-fund-detail-value">{{fundItem.return3yr}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="card-element">
+                                <span class="card-fund-detail-label">AUM (Cr.)</span><br>
+                                <span class="card-fund-detail-value">{{fundItem.aum | currency:'INR':true:'1.0-0' }}</span>
+                            </td>
+                            <td class="card-element">
+                                <span class="card-fund-detail-label">Min. Investment</span><br>
+                                <span class="card-fund-detail-value">{{fundItem.minInvestment | currency:'INR':true:'1.0-0'}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="card-element" colspan="2">
+                                <span class="card-fund-detail-label">Riskometer</span><br>
+                                <span class="card-fund-detail-value">{{fundItem.risk}}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </md-card-content>
+            </md-card>
+        </div>
+    </section>
+</div>
+
+<!--FactSheet-->
+<div *ngIf="factSheetId">
+    {{factSheetId}}
+    <app-basic-factsheet [id]="factSheetId"></app-basic-factsheet>
+</div>
+

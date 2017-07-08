@@ -1,0 +1,62 @@
+<div *ngIf="!serverError['topPerformer']"  [hidden]="performersDataAvailable" class="loading">
+  <img src="../../../assets/img/loading.gif">
+</div>
+
+<div *ngIf="serverError['topPerformer']" class="error">
+  <span>Internal server error, apology! Please check your connection or try after some time.</span>
+</div>
+
+<div class="top-performer-container" *ngIf="performersDataAvailable">
+  <div class="highlight" align="center" >Top Performers in your Portfolio</div>
+  <div fxLayout="row" class="content" *ngIf="performers.length">
+      <table >
+        <tr *ngFor="let performer of performers, let i=index" class="clickable" mdTooltip="{{performer.fundName}}" mdTooltipPosition="right">
+          <template [ngIf]="i<topPerformerCount">
+            <td  (click)="active=i" class="truncate">
+             <!-- <i class="material-icons" style="font-size: 10px;">info_outline</i>-->
+              <span>{{performer.fundName}}</span>
+            </td>
+            <td>
+              <span>
+                (<span [ngClass]="{decrease: performer.fundReturn < 0 , increase:performer.fundReturn >0}">{{performer.fundReturn | number : '1.2-2'}}%</span>
+                 <span >
+                  <md-icon *ngIf="performer.fundReturn > 0" class="upArrow">&#xE5D8;</md-icon>
+                  <md-icon *ngIf="performer.fundReturn<0" class="downArrow">&#xE5DB;</md-icon>)
+                </span>
+             </span>
+            </td>
+
+
+
+          </template>
+        </tr>
+      </table>
+    <!--<div class="details" fxFlex="60" *ngIf="active>=0">
+      <div fxLayout="row" fxLayoutAlign="center">
+        <div class="name truncate" mdTooltip="{{performers[active].name}}" mdTooltipPosition="above">
+          <i class="material-icons" style="font-size: 12px;margin: 5px 3px 15px;">info_outline</i>
+          {{performers[active].name}}
+        </div>
+        <span class="rating" [innerHTML]="performers[active].rating | rating"></span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <div  fxFlex align="start">
+          <div class="ring">
+            <span class="percentage">{{performers[active].return}} %</span> <br/>
+            <span class="field">1 year return</span>
+          </div>
+
+        </div>
+        <div fxFlex align="end">
+          <div class="ring">
+            <span class="category">{{performers[active].category}}</span> <br/>
+            <span class="field">category</span>
+          </div>
+        </div>
+      </div>
+    </div>-->
+  </div>
+  <div class="dataUnavailable" *ngIf="!performers.length" >
+    <span>Sorry, unable to fetch data</span>
+  </div>
+</div>

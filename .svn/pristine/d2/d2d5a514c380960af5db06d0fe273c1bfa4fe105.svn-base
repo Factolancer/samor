@@ -1,0 +1,75 @@
+import {Component, OnDestroy, OnInit} from "@angular/core";
+import {SearchService} from "../search.service";
+import {FundSearchInput} from "../fund-search-input";
+import {Subscription} from "rxjs";
+import {Input} from "@angular/core/src/metadata/directives";
+import {FilterData} from "./filter-data";
+
+@Component({
+    selector: 'app-rating-filter',
+    templateUrl: './rating-filter.component.html',
+    styleUrls: ['./filters.css']
+})
+export class RatingFilterComponent implements OnInit {
+
+
+    @Input() set ratingFilterData(list: FilterData[]) {
+        this._ratingFilterData = [];
+
+        //removing those items which have been already checked
+        this._ratingFilterData = list.filter(item => {
+            let add = true;
+            this.selectedArray.forEach(selectedItem => {
+                if (selectedItem.id === item.id) {
+                    add = false;
+                }
+            });
+            return add;
+        });
+    }
+
+    _ratingFilterData: FilterData[] = [];
+    filterTitle: string;
+    selectedArray: FilterData[] = [];
+
+    constructor(private searchService: SearchService) {
+
+    }
+
+    filter(checked: any, item: FilterData) {
+        let fundSearchInput = this.searchService.getFundSearchInput();
+        if (checked) {
+            this.selectedArray.push(item);
+        } else {
+            //deselecting the item.
+            let newArray = [];
+            this.selectedArray.forEach(elm => {
+                if (elm.id != item.id) {
+                    newArray.push(elm)
+                }
+            });
+            this.selectedArray = newArray;
+        }
+
+        //preparing id array from selected elements
+        fundSearchInput.rating = [];
+        this.selectedArray.forEach(elm => {
+            fundSearchInput.rating.push(elm.id);
+        });
+//        fundSearchInput.rating = this.selectedArray;
+        this.searchService.searchFund(fundSearchInput);
+
+    }
+
+    clearFilter() {
+        this.selectedArray = [];
+        let fundSearchInput = this.searchService.getFundSearchInput();
+        fundSearchInput.rating = [];
+        this.searchService.searchFund(fundSearchInput);
+    }
+
+    ngOnInit() {
+        this.filterTitle = "Fund Rating";
+
+    }
+}

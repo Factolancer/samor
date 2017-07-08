@@ -1,0 +1,23 @@
+/**
+ * Created by Fincash on 12-09-2016.
+ */
+import { NgModule } from '@angular/core';
+import { CommonModule} from "@angular/common";
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MdButtonModule } from '@angular2-material/button';
+import { MdCardModule } from '@angular2-material/card';
+import { MdRadioModule} from '@angular2-material/radio';
+import { MdUniqueSelectionDispatcher} from '@angular2-material/core/coordination/unique-selection-dispatcher';
+
+import { RiskComponent} from './risk.component';
+
+@NgModule({
+  imports: [CommonModule, MdCardModule.forRoot(), MdButtonModule.forRoot(), MdRadioModule.forRoot(),
+            FormsModule, ReactiveFormsModule],
+  // providers: [MdUniqueSelectionDispatcher],
+  declarations: [RiskComponent],
+  exports: [RiskComponent]
+})
+export class RiskModule {
+
+}

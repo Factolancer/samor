@@ -1,0 +1,391 @@
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {FundTransactions, TransactionReport} from "../transaction";
+import {Fund} from "../fund";
+import {ReportService} from "../report.service";
+import {Subscription} from "rxjs/Subscription";
+import {TransactionType} from "./transaction-type";
+import {FolioFilter, TransactionFilter} from "./transaction-filter";
+import {TransactionReportService} from "./transaction-report.service";
+import {LogoImdData} from "../constants";
+import {CustomJspdf} from "./jsPDFext";
+import {isNullOrUndefined} from "util";
+import {DatePipe} from "@angular/common";
+import {disclaimers} from "../../../properties/discalimers";
+import {MdDialog, MdDialogConfig} from "@angular/material";
+import {LoadingDialogComponent} from "../../shared/loading-dialog.component";
+import {HeaderService} from "../../core/services/header.service";
+import {ReportNumberPipe} from "../../shared/report-number.pipe";
+import {Folio} from "../folio";
+
+@Component({
+    selector: 'app-transaction-report',
+    templateUrl: './transaction-report.component.html',
+    styleUrls: ['../report.styles.scss']
+})
+export class TransactionReportComponent implements OnInit,OnDestroy {
+
+    transactionReport:TransactionReport;
+    funds: FundTransactions[];
+    fundList: Fund[];
+    folioList:Folio[];
+    selectedFolioId:number;
+    selectedFundId: number;
+    selectedTransType: string;
+    fundIndexSubscription: Subscription;
+    transactionTabSubscription: Subscription;
+    transactionTypes: TransactionType[];
+    startDate: string;
+    endDate: string;
+    errorMessage:string;
+    loadingDialogRef: any;
+    filterError: boolean;
+    folioUnitsList:any[];
+    folioAmtList:any[];
+    constructor(private reportService: ReportService,public viewContainerRef: ViewContainerRef,
+                public headerService: HeaderService,
+                public dialog: MdDialog, private transactionReportService: TransactionReportService) {
+        this.fundList = [new Fund(-1, "All","","","")];
+        this.transactionTypes = [new TransactionType("B", "All")];
+        this.folioList = [new Folio(-1,"All")];
+        this.selectedFolioId = -1;
+        this.selectedFundId = -1;
+        this.selectedTransType = "B";
+    }
+
+    ngOnInit() {
+        this.fundIndexSubscription = this.reportService.fundIndexResult.subscribe((fundIndex: number) => {
+
+            let currentDate = new Date();
+            this.endDate = new DatePipe("en-US").transform(currentDate,'yyyy-MM-dd');
+            this.startDate = new DatePipe("en-US").transform(currentDate.setDate(currentDate.getDate() - 180),'yyyy-MM-dd');
+            this.selectedFundId = fundIndex;
+            this.filterTransactions();
+
+        });
+        this.transactionTabSubscription = this.reportService.transactionTabResult.subscribe((loadTab: boolean) => {
+            if (loadTab == true) {
+                let currentDate = new Date();
+                //this.fundList = [new Fund(0, "All","","","")];
+                this.endDate = new DatePipe("en-US").transform(currentDate,'yyyy-MM-dd');
+                this.startDate = new DatePipe("en-US").transform(currentDate.setDate(currentDate.getDate() - 180),'yyyy-MM-dd');
+                this.getTransactionFilterValues();
+            } else {
+                /*this.fundList = [new Fund(0, "All","","","")];
+                this.transactionTypes = [new TransactionType("", "All")];
+                this.folioList = [new Folio(0,"All")];*/
+            }
+        });
+    }
+
+    getTransactions(transFilter: TransactionFilter) {
+
+        this.showLoadingDialog();
+        this.transactionReportService.getTransactions(transFilter)
+            .subscribe(transactionReport => {
+                this.closeLoadingDialog();
+                this.transactionReport = transactionReport as TransactionReport;
+                this.funds = this.transactionReport.transactionReportList;
+                this.folioUnitsList = [];
+                this.folioAmtList = [];
+                for(let fund of this.funds){
+                    let folioUnitsList = [];
+                    let folioAmtList = [];
+                    let currFolio = fund.transactionList[0].folioId;
+                    for(let i = 1; i < fund.transactionList.length; i++){
+                        let transaction = fund.transactionList[i];
+                        if(currFolio != transaction.folioId){
+                            let folioTotal = 0;
+                            let folioAmtTotal = 0;
+                            for(let folioUnit of fund.folioUnits){
+                                if(folioUnit.folioId == currFolio){
+                                    folioTotal = folioUnit.folioUnits;
+                                    folioAmtTotal = folioUnit.folioAmount;
+                                }
+                            }
+                            folioUnitsList.push(folioTotal);
+                            folioAmtList.push(folioAmtTotal);
+                            currFolio = transaction.folioId;
+                        } else{
+                            folioUnitsList.push(null);
+                            folioAmtList.push(null);
+                        }
+                    }
+                    let size = fund.folioUnits.length;
+                    folioUnitsList.push(fund.folioUnits[size-1].folioUnits);
+                    folioAmtList.push(fund.folioUnits[size-1].folioAmount);
+                    this.folioUnitsList.push(folioUnitsList);
+                    this.folioAmtList.push(folioAmtList);
+                    console.log(this.folioAmtList);
+                }
+            });
+
+    }
+
+    getTransactionFilterValues(){
+        this.transactionReportService.getTransactionFilterValues().subscribe(transactionReport => {
+            this.transactionReport = transactionReport as TransactionReport;
+            let fundsList = this.transactionReport.fundFilter as FundTransactions[];
+            let folioList = this.transactionReport.folioFilter as FolioFilter[];
+            let transactionTypeList = this.transactionReport.transactionTypeList;
+            for(let transactionType of transactionTypeList){
+                this.transactionTypes.push(new TransactionType(transactionType.typeKey,transactionType.typeValue))
+            }
+            for (let fund of fundsList) {
+                this.fundList.push(new Fund(fund.fundId, fund.fundName, fund.plan,fund.divFreq,fund.divOption));
+            }
+            for (let folio of folioList) {
+                this.folioList.push(new Folio(folio.folioId,folio.folioNo))
+            }
+            if(isNullOrUndefined(this.selectedFundId)){
+                this.selectedFundId = -1;
+            }
+            if(isNullOrUndefined(this.selectedFolioId)){
+                this.selectedFolioId = -1;
+            }
+        });
+    }
+    /*getFundsList() {
+        this.transactionReportService.getTransactions(new TransactionFilter)
+            .subscribe(transactionReport => {
+                this.transactionReport = transactionReport as TransactionReport;
+                let fundsList = this.transactionReport.transactionReportList as FundTransactions[];
+                this.transactionTypes = [new TransactionType("", "All")];
+                let transactionTypeList = this.transactionReport.transactionTypeList;
+                for(let transactionType of transactionTypeList){
+                    this.transactionTypes.push(new TransactionType(transactionType.typeKey,transactionType.typeValue))
+                }
+                this.fundList = [new Fund(0, "All")];
+                this.selectedFundId = 0;
+                this.selectedTransType = "";
+                for (let fund of fundsList) {
+                    this.fundList.push(new Fund(fund.fundId, fund.fundName));
+                }
+            });
+    }*/
+
+    getFoliosByFund(){
+        let transFilter = new TransactionFilter();
+        transFilter.fundId = this.selectedFundId;
+        this.transactionReportService.getFoliosByFund(transFilter).subscribe(transactionReport => {
+            this.transactionReport = transactionReport as TransactionReport;
+            let folioList = this.transactionReport.folioFilter as FolioFilter[];
+            this.folioList = this.folioList.splice(0,1);
+            this.selectedFolioId = -1;
+            for (let folio of folioList) {
+                this.folioList.push(new Folio(folio.folioId, folio.folioNo))
+            }
+        })
+    }
+    filterTransactions() {
+
+        let transFilter = new TransactionFilter();
+        transFilter.startDate = new Date(this.startDate);
+        transFilter.endDate = new Date(this.endDate);
+        transFilter.fundId = this.selectedFundId;
+        transFilter.transType = this.selectedTransType;
+        transFilter.folioId = this.selectedFolioId;
+        if (!isNullOrUndefined(this.startDate) && !isNullOrUndefined(this.endDate != undefined)) {
+            if (transFilter.startDate > transFilter.endDate) {
+                this.funds = [];
+                this.errorMessage = "Start Date must be less than or equal to End Date";
+
+            } else if(this.startDate.length == 0 || this.endDate.length == 0){
+                this.errorMessage = "Please Enter Both Start Date And End Date";
+            }
+            else{
+                this.errorMessage = "";
+                this.getTransactions(transFilter);
+            }
+        } else {
+            this.funds = [];
+            this.errorMessage="Please Enter Both Start Date And End Date";
+        }
+    }
+
+    ngOnDestroy() {
+        this.fundIndexSubscription.unsubscribe();
+        this.transactionTabSubscription.unsubscribe();
+    }
+
+    showLoadingDialog() {
+        let config = new MdDialogConfig();
+        let device = this.headerService.deviceType();
+        if (device === 'xs' || device === 'sm') {
+            config.width = '100%';
+        }else {
+            config.width = '25vw';
+        }
+        config.disableClose = true;
+        config.viewContainerRef = this.viewContainerRef;
+        let loadingConfig = {
+            text: "Processing..."
+        };
+        this.loadingDialogRef = this.dialog.open(LoadingDialogComponent, config);
+        this.loadingDialogRef.componentInstance.config = loadingConfig;
+
+    }
+
+    closeLoadingDialog() {
+        if (this.loadingDialogRef) {
+            this.loadingDialogRef.close();
+        }
+    }
+
+    download() {
+
+        var wrapperPdf = new CustomJspdf('p', 'pt');
+        var pdf = wrapperPdf.jspdf;
+        var startY = 100;
+        pdf.setFontSize(12);
+        wrapperPdf.myText("Transaction Details", {align: "center"}, 0, startY);
+        pdf.setFontStyle('normal');
+        pdf.setFontSize(8);
+
+        wrapperPdf.text("Start Date: " + new DatePipe("en-US").transform(this.startDate,'dd-MM-yyyy'), 40, startY + 30);
+        wrapperPdf.myText("Mobile No: " + this.transactionReport.mobileNo, {align: "right"},40, startY + 30);
+        wrapperPdf.text("End Date: " + new DatePipe("en-US").transform(this.endDate,'dd-MM-yyyy'), 40, startY + 40);
+        wrapperPdf.myText("Email: " + this.transactionReport.emailId, {align: "right"},40, startY + 40);
+        let transName: string = "";
+        for (let trans of this.transactionTypes) {
+            if (trans.id == this.selectedTransType) {
+                transName = trans.transType;
+            }
+        }
+        wrapperPdf.text("Transaction Type: " + transName, 40, startY + 50);
+
+
+        var columns = [{title: "Date", dataKey: "transDate"},
+            {title: "Description", dataKey: "transDesc"},
+            {title: "Folio No.", dataKey: "folio"},
+            {title: "Amount(Rs.)", dataKey: "amount"},
+            {title: "Price(Rs.)", dataKey: "price"},
+            {title: "Units", dataKey: "units"},
+            {title: "Value", dataKey: "value"}];
+        var totalPagesExp = "{total_pages_count_string}";
+        var currentpage = 0;
+        let currFund: number = 0;
+        let newPage: boolean;
+        if(!isNullOrUndefined(this.funds)){
+
+            for (let fund of this.funds) {
+                let openingUnits = new ReportNumberPipe("en-US").transform(fund.openingUnits);
+                let closingUnits = new ReportNumberPipe("en-US").transform(fund.closingUnits);
+                let openingValue = new ReportNumberPipe("en-US").transform(fund.openingValue);
+                let closingValue = new ReportNumberPipe("en-US").transform(fund.closingValue);
+                let rows = [{transDate:"",transDesc: "Opening Balance",folio:"",amount:"",price:"", units:openingUnits , value: openingValue}];
+                let transIdx = 0;
+                for (let transaction of fund.transactionList) {
+
+                    let formattedDate = new DatePipe("en-US").transform(transaction.transDate,'dd-MM-yyyy');
+                    let transactionAmount = new ReportNumberPipe("en-US").transform(transaction.amount);
+                    let transactionUnits = new ReportNumberPipe("en-US").transform(transaction.units);
+                    let transactionPrice = new ReportNumberPipe("en-US").transform(transaction.price);
+                    let transactionValue = "";
+                    if(!isNullOrUndefined(transaction.value)){
+                        transactionValue = transaction.value.toString()
+                    }
+                    rows.push({transDate:formattedDate,transDesc: transaction.transDesc,folio:transaction.folioNo,amount:transactionAmount,price:transactionPrice, units: transactionUnits, value: transactionValue});
+
+                    if(this.folioUnitsList[currFund][transIdx] != null){
+                        let folioTotalUnits = new ReportNumberPipe("en-US").transform(this.folioUnitsList[currFund][transIdx]);
+                        let folioTotalAmt = new ReportNumberPipe("en-US").transform(this.folioAmtList[currFund][transIdx])+' (Net Inflow)';
+                        rows.push({transDate:'',transDesc: 'Closing Balance',folio:'',amount:folioTotalAmt,price:'', units: folioTotalUnits, value: ''});
+                    }
+                    transIdx++;
+                }
+                rows.push({transDate:"",transDesc: "Total Closing Balance",folio:"",amount:"",price:"", units: closingUnits, value: closingValue});
+                pdf.setFontStyle('normal');
+                pdf.setFontSize(8);
+                if (currFund == 0) {
+                    wrapperPdf.text("Fund Name: " + fund.fundName, 40, startY + 70);
+                    //wrapperPdf.text("Folio No: " + fund.folioNo, 40, startY + 70);
+                    wrapperPdf.myText("Mode of Holding: " + fund.modeOfHolding, {align: "right"}, 0, startY + 80);
+                    //wrapperPdf.text("Fund Name: " + fund.fundName, 40, startY + 80);
+                    wrapperPdf.text("Plan - Option: " + fund.divFreq + " " + fund.plan + " - " + fund.divOption, 40, startY + 80);
+                } else {
+                    wrapperPdf.text("Fund Name: " + fund.fundName, 40, pdf.autoTableEndPosY() + 25);
+                    //wrapperPdf.text("Folio No: " + fund.folioNo, 40, pdf.autoTableEndPosY() + 25);
+                    wrapperPdf.myText("Mode of Holding: " + fund.modeOfHolding, {align: "right"}, 0, pdf.autoTableEndPosY() + 35);
+                    //wrapperPdf.text("Fund Name: " + fund.fundName, 40, pdf.autoTableEndPosY() + 35);
+                    wrapperPdf.text("Plan - Option: " + fund.divFreq + " " + fund.plan + " - " + fund.divOption, 40, pdf.autoTableEndPosY() + 35);
+                }
+                var pageContent = function (data) {
+                    // HEADER
+                    pdf.setFontSize(20);
+                    pdf.setTextColor(40);
+                    pdf.setFontStyle('normal');
+                    pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+                    // FOOTER
+                    if (currentpage < pdf.internal.getNumberOfPages()) {
+                        var str = "Page " + pdf.internal.getNumberOfPages();
+                        if (typeof pdf.putTotalPages === 'function') {
+                            str = str + " of " + totalPagesExp;
+                        }
+                        pdf.setFontSize(10);
+                        pdf.setFontStyle('normal');
+                        pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 25);
+                        currentpage = pdf.internal.getNumberOfPages();
+                    }
+                };
+                var addHeaderFooter = function(){
+                    // HEADER
+                    pdf.setFontSize(20);
+                    pdf.setTextColor(40);
+                    pdf.setFontStyle('normal');
+                    pdf.addImage(LogoImdData, 'JPEG', 40, 40, 85, 18);
+                    // FOOTER
+                    if (currentpage < pdf.internal.getNumberOfPages()) {
+                        var str = "Page " + pdf.internal.getNumberOfPages();
+                        if (typeof pdf.putTotalPages === 'function') {
+                            str = str + " of " + totalPagesExp;
+                        }
+                        pdf.setFontSize(10);
+                        pdf.setFontStyle('normal');
+                        pdf.text(str, 40, pdf.internal.pageSize.height - 25);
+                        currentpage = pdf.internal.getNumberOfPages();
+                    }
+                };
+                var individualFolioBalRow;
+                var tableStyle = {
+                    styles: {overflow: 'linebreak'},
+                    headerStyles: {cellPadding:{vertical: 7}, fontSize: 8},
+                    bodyStyles: {cellPadding:{vertical: 6}, fontSize: 8, valign: 'middle'},
+                    pageBreak: 'avoid',
+                    addPageContent: pageContent,
+                    margin: {top: 90},
+                    drawCell: function (cell, data) {
+                        if (data.row.index == 0 || data.row.index == rows.length - 1) {
+                            pdf.setFontStyle('bold');
+                        }
+                        if(cell.raw == 'Closing Balance'){
+                            individualFolioBalRow = data.row.index;
+                        }
+                        if(data.row.index == individualFolioBalRow){
+                            pdf.setFontStyle('bold');
+                        } else{
+                            individualFolioBalRow = null;
+                        }
+                    }
+                };
+                if (currFund == 0) {
+                    tableStyle['startY'] = startY + 85
+                } else {
+                    tableStyle['startY'] = pdf.autoTableEndPosY() + 40
+                }
+                pdf.autoTable(columns, rows, tableStyle);
+                currFund++;
+            }
+            pdf.addPage();
+            addHeaderFooter();
+            pdf.setFontSize(8);
+            pdf.setFontStyle('normal');
+            var splitTitle = pdf.splitTextToSize(`${disclaimers.report_1}`+"\n\n"+`${disclaimers.report_2}`, 515);
+            pdf.text("Disclaimers:",40,100);
+            pdf.text(40, 110, splitTitle);
+            if (typeof pdf.putTotalPages === 'function') {
+                pdf.putTotalPages(totalPagesExp);
+            }
+        }
+        pdf.save('FundTransactions Report.pdf');
+    }
+}

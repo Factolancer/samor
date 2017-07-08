@@ -1,0 +1,16 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {TaxCalcComponent} from "./tax-calc.component";
+
+
+const taxCalcRoutes: Routes = [
+    {
+        path: 'tax',
+        component: TaxCalcComponent
+    },
+
+
+];
+
+export const taxCalculatorRouting: ModuleWithProviders = RouterModule.forChild(taxCalcRoutes);
+

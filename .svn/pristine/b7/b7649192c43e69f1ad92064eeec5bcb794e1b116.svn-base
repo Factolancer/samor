@@ -1,0 +1,9 @@
+export class SearchInput {
+    constructor(public bank_name: string,
+                public keyword: string,
+                public branch: string,
+                public city: string,
+                public IFSC: string,
+                public address: string) {
+    }
+}

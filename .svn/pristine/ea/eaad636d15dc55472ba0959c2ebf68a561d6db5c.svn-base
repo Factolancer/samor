@@ -1,0 +1,33 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {Fund} from "../models/fund";
+
+@Injectable()
+export class CheckoutService {
+
+    constructor(private httpService: HttpService) {
+    }
+
+
+    getCheckoutData() {
+        return this.httpService.get("/checkout/getCheckoutData");
+    }
+
+    getSummaryData() {
+        return this.httpService.get("/checkout/getSummaryData");
+    }
+
+    removeFundFromCheckout(fund: Fund) {
+        return this.httpService.post("/checkout/removeFund",fund);
+    }
+
+    submitCheckoutData(data: any) {
+        return this.httpService.post("/checkout/saveCheckout", {
+            data: data
+        });
+    }
+
+    invest() {
+        return this.httpService.post("/checkout/invest", "");
+    }
+}

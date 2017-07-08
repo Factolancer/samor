@@ -1,0 +1,50 @@
+/***********************IMPORTS********************************/
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+/***********************GENERAL********************************/
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+/***********************TABLE********************************/
+.table-header {
+    background-color: #0081c9;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    color: #ffffff;
+    min-height: 50px;
+}
+
+.table-row {
+    background-color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    margin: 50px;
+}
+
+.table-element {
+    padding: 5px;
+}
+
+.table-col-width-100 {
+    width: 100px;
+}
+
+.table-col-width-150 {
+    width: 150px;
+}
+
+.table-col-width-200 {
+    width: 200px;
+}
+
+/***********************TEXT-ALIGN********************************/
+.left-align {
+    text-align: left;
+}
+
+/***********************BUTTONS********************************/
+.green-button {
+    background-color: #01a14f;
+}

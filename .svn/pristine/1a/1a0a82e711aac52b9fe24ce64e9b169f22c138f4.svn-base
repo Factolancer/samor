@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-lumpsum-table',
+  templateUrl: './lumpsum-table.component.html',
+  styleUrls: ['./lumpsum-table.component.css']
+})
+export class LumpsumTableComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

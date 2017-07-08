@@ -1,0 +1,14 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-portfolio-report',
+  templateUrl: './portfolio-report.component.html',
+  styleUrls: ['./portfolio-report.component.css']
+})
+export class PortfolioReportComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+}

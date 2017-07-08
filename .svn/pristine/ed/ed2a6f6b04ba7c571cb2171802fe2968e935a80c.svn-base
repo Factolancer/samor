@@ -1,0 +1,43 @@
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {DashboardDataService} from "../dashboard-data.service";
+import {LoginService} from "../../login/login.service";
+
+@Component({
+  selector: 'app-navigation-panel',
+  templateUrl: './navigation-panel.component.html',
+  styleUrls: ['./navigation-panel.component.scss'],
+  providers: [DashboardDataService, LoginService]
+})
+export class NavigationPanelComponent implements OnInit {
+  invested:boolean;
+    result: any
+  constructor(public dataService: DashboardDataService, public loginService: LoginService, private viewContainerRef: ViewContainerRef) { }
+
+  ngOnInit() {
+    this.ifInvested();
+    /*    this.invested = this.dataService.hasInvested()||false;*/
+  }
+  ifInvested(){
+    console.log('nav invest status');
+    this.dataService.hasInvested()
+        .subscribe(
+            res=>{
+              this.invested  = res;
+              console.log(this.invested);
+            },
+            err=>{console.log('an error occured')}
+        )
+
+  }
+
+    checkKYC() {
+        this.loginService
+            .checkKYC(this.viewContainerRef)
+            .subscribe(res => {
+                    this.result = res;
+                },
+                error => {
+                    console.log(error)
+                });
+    }
+}

@@ -1,0 +1,14 @@
+<div class="grey-back page-not-found pad-tb-50">
+    <div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+        <div fxFlex="65">
+            <div class="line-1">Oops! <img src="../../assets/img/oops.svg" width="150"></div>
+            <div class="line-2">something went wrong</div>
+            <div class="line-3 pad-tb-10">Please click on below link to start over</div>
+            <div class="pad-tb-20" fxLayout="row" fxLayoutAlign="start center">
+                <div fxFlex="20">
+                    <button class="hollow-cta-50" routerLink="/" md-button="">Go to home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

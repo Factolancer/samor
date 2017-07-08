@@ -1,0 +1,9 @@
+export interface SummaryFund {
+    id: number;
+    name: string;
+    subOption: string;
+    startDate: string;
+    endDate: string;
+    months: number;
+    investmentAmount: number;
+}

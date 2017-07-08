@@ -1,0 +1,19 @@
+/**
+ * Created by Fincash on 23-01-2017.
+ */
+
+
+var config = require('../../config/environment'),
+    express = require('express'),
+    multer  = require('multer'),
+    upload = multer({ dest : config.document.upload}),
+    fs = require('fs'),
+    AWS = require('aws-sdk');
+
+exports.index = function (req, res) {
+
+};
+
+
+
+//module.exports = router;

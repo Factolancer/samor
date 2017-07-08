@@ -1,0 +1,119 @@
+/**
+ * Created by Fincash on 23-01-2017.
+ */
+
+var jwtJson = require('jwt-simple'),
+    httpClient = require('http'),
+    config = require('../../config/environment');
+exports.index = function (req, res) {
+    var path = req.path;
+    var userId = '';
+    if(path && path.indexOf('/')!=-1){
+      var paths =  path.split('/');
+      userId = paths[1];
+      var  tempPath = '';
+      for(var i=0; i<paths.length;i++){
+          if(i!=1){
+              tempPath = tempPath +'/'+ paths[i];
+          }
+      }
+      path  = tempPath.substring(1);
+    }
+    console.log(path);
+    console.log(userId);
+
+    var requestData = req.body;
+    console.log(requestData);
+    var aadhaar = {};
+    var userBasic = {};
+    var address = {};
+    var contact = {};
+    address['country'] = '115';
+    aadhaar['userid'] = userId;
+    var kycresult = requestData.result;
+    var MFKYC = requestData.MFKYC;
+    if(kycresult && kycresult.indexOf('|')>0){
+        var resArray = kycresult.split("|");
+        if(resArray.length>=3){
+            aadhaar['aadhar'] = resArray[0];
+            aadhaar['kycStatus'] = resArray[1];
+            userBasic['pan'] = resArray[2].toUpperCase();
+            if (resArray[3]) {
+                aadhaar['responseCode'] = resArray[3];
+            }
+        }
+    }
+
+
+    if (MFKYC && MFKYC != "" && MFKYC.length>0) {
+        var mfkycArray = MFKYC.split("|");
+        userBasic['panName'] = mfkycArray[0];
+        aadhaar['aadharName'] = mfkycArray[1];
+        userBasic['fatherName'] = mfkycArray[2];
+        userBasic['gender'] = mfkycArray[3];
+        userBasic['maritalStatus'] = mfkycArray[4];
+        userBasic['dob'] = mfkycArray[5];
+        aadhaar['aadhaarNationality'] = mfkycArray[6];
+        aadhaar['pekrn'] = mfkycArray[8];
+        aadhaar['residentialStatus'] = mfkycArray[10]
+        address['address1'] = mfkycArray[11] + mfkycArray[12];
+        address['address2'] = mfkycArray[13];
+        address['city'] = mfkycArray[14];
+        aadhaar['aadharState'] = mfkycArray[15];
+        address['pin'] = mfkycArray[16];
+        contact['mob'] = mfkycArray[17];
+        contact['email'] = mfkycArray[18];
+        contact['tel'] = mfkycArray[20];
+        contact['fax'] = mfkycArray[21];
+        aadhaar['maidenName'] = mfkycArray[22];
+        userBasic['motherName'] = mfkycArray[23];
+        aadhaar['aadharOccupation'] = mfkycArray[24];
+        aadhaar['aadharAddressType'] = mfkycArray[25];
+    }
+
+    var _success = false;
+
+    if((aadhaar.kycStatus && aadhaar.kycStatus.toLowerCase()=='y') || (aadhaar.responseCode && aadhaar.responseCode.toLowerCase()=='ks100')) {
+        _success = true;
+        userBasic['contact'] = contact;
+        var eKYCObject = { "userBasic" : userBasic, "userAddress" : address, "eKycApiData" : aadhaar};
+        console.log(eKYCObject);
+        var post_options = {
+            host: config.playServer.ip,
+            port: config.playServer.port,
+            path: '/postUserEkycData',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        // Set up the request
+        var post_req = httpClient.request(post_options, function(res) {
+            res.setEncoding('utf8');
+            res.on('data', function (chunk) {
+            });
+        });
+        post_req.write(eKYCObject);
+        post_req.end();
+
+    }
+
+    if(_success){
+        var encodedPath = jwtJson.encode("{success : true}",userId,'HS256');
+        path = path + '/'+encodedPath;
+    }else{
+        var encodedPath = jwtJson.encode(JSON.stringify(aadhaar),userId,'HS256');
+        path = path + '/'+encodedPath;
+    }
+
+    console.log("redirecting  user >>>> " + path);
+    console.log(aadhaar);
+    console.log(userBasic);
+    console.log(address);
+    res.redirect(path);
+
+};
+
+
+
+//module.exports = router;

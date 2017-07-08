@@ -1,0 +1,123 @@
+@import "../../styles/partials/web-partials";
+
+.watchlist-icon-btn {
+  line-height: 25px;
+  height: 30px;
+  width: 30px;
+}
+
+.back-button {
+  color: $text-medium-grey;
+
+  &:hover {
+    color: $text-dark-grey;
+
+    .icon {
+      background-color: $light-grey;
+    }
+  }
+
+  .icon {
+    border-radius: 50%;
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+  }
+
+  .text {
+    font-size: 12px;
+    padding: auto;
+    margin: auto;
+  }
+}
+
+.fund {
+  color: $white;
+  border-radius: 0;
+  margin: 0 0 4px 0;
+  text-align: center;
+  padding: 19px;
+  height: 40px;
+}
+
+.fund-1 {
+  @extend .fund;
+  background-color: #CF678A;
+
+  .watchlist-icon {
+    color: #A0385B;
+  }
+}
+
+.fund-2 {
+  @extend .fund;
+  background-color: #E5AE04;
+
+  .watchlist-icon {
+    color: #7F630E;
+  }
+}
+
+.fund-3 {
+  @extend .fund;
+  background-color: #B4C12F;
+
+  .watchlist-icon {
+    color: #7E8A0F;
+  }
+}
+
+.fund-detail {
+  font-size: 14px;
+  text-align: center;
+  margin: 0 0 10px 0;
+
+  .fund-table {
+    width: 100%;
+  }
+
+}
+
+
+.fund-data {
+  border-bottom: solid 1px $medium-grey;
+  margin-bottom: 1px;
+  display: table;
+  padding: 0;
+  width: 100%;
+  color: $text-dark-grey;
+
+  p {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  @for $i from 1 to 20 {
+    &.min-h-#{20 + ($i*5)} {
+      height: 20px + ($i*5);
+    }
+  }
+
+  &:last-of-type {
+    border-bottom: 0;
+    margin-bottom: 0;
+  }
+}
+
+
+.parameters-head {
+  color: $white;
+  border-radius: 0;
+  margin: 0 0 4px 0;
+  text-align: center;
+  padding: 19px;
+  background-color: $brand-secondary;
+  height: 40px;
+}
+
+.parameters {
+  text-align: center;
+  font-size: 14px;
+}
+

@@ -1,0 +1,15 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { CashComponent } from './cash.component';
+import {cashrouting} from "./cash.routing";
+import {SharedModule} from "../shared/shared.module";
+import {CashCardComponent} from "./cashcard.component";
+
+@NgModule({
+  imports: [
+    CommonModule, cashrouting, SharedModule
+  ],
+  declarations: [CashComponent, CashCardComponent]
+})
+export class CashModule { }

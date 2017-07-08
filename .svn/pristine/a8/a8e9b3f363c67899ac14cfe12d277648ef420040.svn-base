@@ -1,0 +1,30 @@
+import {CartService} from "./cart.service";
+import {HttpService} from "./http-service.service";
+import {IsAddressUpdatedService} from "./isaddressupdated.service";
+import {WrapperCartService} from "./wrapper.service";
+import {SnackBarService} from "./snack-bar.service";
+import {LookUpService} from "./lookup.service";
+import {LoginService} from "./login.service";
+import {KycStatusService} from "./kycstatus.service";
+import {IsFatcaUpdatedService} from "./isfatcaupdated.service";
+import {IsBasicDetailsUpdatedService} from "./isbasicDetailUpdated.service";
+import {IsBankUpdatedService} from "./isbankupdated.service";
+import {ExploreFundsService} from "./explore-funds.service";
+import {CompareService} from "./compare.service";
+import {UploadService} from "./upload.service";
+
+
+export const FC_SERVICES = [CartService,
+    ExploreFundsService,
+    HttpService,
+    IsAddressUpdatedService,
+    IsBankUpdatedService,
+    IsBasicDetailsUpdatedService,
+    IsFatcaUpdatedService,
+    KycStatusService,
+    LoginService,
+    LookUpService,
+    SnackBarService,
+    CompareService,
+    UploadService
+];

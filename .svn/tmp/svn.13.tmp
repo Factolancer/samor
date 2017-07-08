@@ -1,0 +1,85 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {SearchResults, BankSearchResults} from "./search-results";
+import {SearchInput, BankSearchInput} from "./search-input";
+import {Subject, Observable} from "rxjs";
+
+
+@Injectable()
+export class SearchService {
+
+    private searchResultsSource = new Subject<SearchResults>();
+    searchResults = this.searchResultsSource.asObservable();
+
+    private searchInputSource = new Subject<SearchInput>();
+    searchInput = this.searchInputSource.asObservable();
+
+    constructor(private httpService: HttpService) {
+    }
+
+    searchFund(searchInput: SearchInput) {
+        searchInput.from = 0;
+        searchInput.sortElement = "drat";
+        searchInput.sortOrder = "desc";
+        this.setSearchInput(searchInput)
+        this.httpService.post("/searchFund", searchInput).subscribe(output => {
+            this.searchResultsSource.next(output as SearchResults);
+        });
+    }
+
+
+    sort(searchInput: SearchInput) {
+        searchInput.from = 0;
+        this.setSearchInput(searchInput)
+        this.httpService.post("/searchFund", searchInput).subscribe(output => {
+            this.searchResultsSource.next(output as SearchResults);
+        });
+    }
+
+    changePage(searchInput: SearchInput) {
+        this.setSearchInput(searchInput)
+        this.httpService.post("/searchFund", searchInput).subscribe(output => {
+            this.searchResultsSource.next(output as SearchResults);
+        });
+    }
+
+
+    getFilterData(path: string) {
+        return this.httpService.get(path);
+    }
+
+    setSearchInput(searchInput: SearchInput) {
+        this.searchInputSource.next(searchInput);
+    }
+
+
+}
+
+@Injectable()
+export class BankSearchService {
+
+
+    private searchResultsSource = new Subject<BankSearchResults>();
+    searchResults = this.searchResultsSource.asObservable();
+
+    private searchInputSource = new Subject<BankSearchInput>();
+    searchInput = this.searchInputSource.asObservable();
+
+    constructor(private httpService: HttpService) { }
+
+    searchBranch(searchInput: BankSearchInput) {
+        this.setSearchInput(searchInput)
+        //searchInput = JSON.stringify(searchInput);
+        console.log("SearchInput: " + JSON.stringify(searchInput))
+        this.httpService.post("/getbanks", searchInput).subscribe(output => {
+            console.log(output.banks);
+            this.searchResultsSource.next(output as BankSearchResults);
+            console.log("Returned from backend");
+        });
+    }
+
+    setSearchInput(searchInput: BankSearchInput) {
+        this.searchInputSource.next(searchInput);
+    }
+
+}

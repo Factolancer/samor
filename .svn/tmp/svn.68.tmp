@@ -1,0 +1,62 @@
+@import "../../public/styles/partials/web-partials";
+
+.journey {
+  margin: 10px 0;
+}
+
+.journey-line {
+  text-align: center;
+  font-weight: 700;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    border-bottom: 2px dashed $dark-grey;
+  }
+
+  .text {
+    position: relative;
+    display: inline-block;
+    padding: 0 10px;
+    font-size: 12px;
+    color: $dark-grey;
+  }
+
+  .blue-circle {
+    position: absolute;
+    border: 2px solid $brand-secondary;
+    top: 13px;
+    left: -5%;
+    padding: 6px 6px;
+    background: $brand-secondary;
+    width: 6px;
+    border-radius: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .grey-circle {
+    position: absolute;
+    border: 2px solid $dark-grey;
+    top: 13px;
+    left: -5%;
+    padding: 6px 6px;
+    background: $dark-grey;
+    width: 6px;
+    border-radius: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.transparent-background {
+  @include heading(24px, 400);
+  //color: $white;
+  background-color: $brand-primary;
+  opacity: 0.3;
+  width: 100%;
+  height: 1080px;
+}

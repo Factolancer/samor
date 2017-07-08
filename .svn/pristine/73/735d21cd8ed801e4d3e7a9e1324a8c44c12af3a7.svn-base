@@ -1,0 +1,25 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Invest in TaxSaver</h1>
+            <h4 class="center-align">SIP type > Fund Selection > Investment Portfolio > Summary &amp; Checkout</h4>
+        </div>
+    </section>
+    <section class="data-body">
+        <app-tax-saver-card #taxSaverFundsComp [funds]="taxSaverFunds"></app-tax-saver-card>
+    </section>
+    <section class="data-foot">
+        <div class="row">
+            <div class="col-md-12">
+                Please select investment mode:
+                <md-radio-group [(ngModel)]="investmentType">
+                    <md-radio-button value="SIP">SIP</md-radio-button>
+                    <md-radio-button value="LUMPSUM">LumpSum</md-radio-button>
+                </md-radio-group>
+                <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                        (click)="proceed(taxSaverFundsComp.selectedFunds)">Proceed to Invest
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

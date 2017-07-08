@@ -1,0 +1,284 @@
+<!--<div class="col-md-6 col-md-offset-3">-->
+<!--<div>-->
+<!--<md-grid-list cols="2" rowHeight="80px">-->
+<!--<md-grid-tile [colspan]="2">-->
+<!--Product Details >> Fund Selection >> Investment Portfolio >> Summary & Checkout-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile [colspan]="2" [@showhide]="heading" class="screenheading">-->
+<!--{{headingarray[index]}}-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile [rowspan]="6" style="border-right: 2px solid;">-->
+<!--<div class="col-md-9" style="margin: auto">-->
+<!--<md-card>-->
+<!--&lt;!&ndash; <md-card-header>&ndash;&gt;-->
+<!--<md-card-subtitle></md-card-subtitle>-->
+<!--<md-card-title style="font-size: 26px">-->
+<!--<table class="table-title">-->
+<!--<tr>-->
+<!--<td class="td-icon" align="right">-->
+<!--<i class="material-icons" style="font-size: xx-large">stars</i>-->
+<!--</td>-->
+<!--<td align="left">-->
+<!--SavingsPlus-->
+<!--</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--</md-card-title>-->
+<!--&lt;!&ndash; </md-card-header>&ndash;&gt;-->
+<!--<md-card-content style="background-color: lightgray; font-size: 15px">-->
+<!--<table>-->
+<!--<tr>-->
+<!--<td class="td-icon">-->
+<!--<i class="material-icons">trending_up</i>-->
+<!--</td>-->
+<!--<td>-->
+<!--Higher returns as compared to Savings and-->
+<!--Deposits&nbsp;&nbsp;(~7-9%)-->
+<!--</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td class="td-icon">-->
+<!--<i class="material-icons">update</i>-->
+<!--</td>-->
+<!--<td>-->
+<!--Same day redemption-->
+<!--</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td class="td-icon">-->
+<!--<i class="material-icons">lock_open</i>-->
+<!--</td>-->
+<!--<td>-->
+<!--No lock-in or exit load-->
+<!--</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td class="td-icon">-->
+<!--<i class="material-icons">check_box</i>-->
+<!--</td>-->
+<!--<td>-->
+<!--Invest and redeem on a click!-->
+<!--</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--</md-card-content>-->
+<!--</md-card>-->
+<!--</div>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile [rowspan]="3">-->
+<!--<div class="col-md-9" style="margin-top: 90px; margin-bottom: 0; width: 80% ">-->
+<!--<md-card>-->
+<!--&lt;!&ndash; <md-card-header>&ndash;&gt;-->
+<!--<md-card-subtitle></md-card-subtitle>-->
+<!--<md-card-title>-->
+<!--<table class="table-title">-->
+<!--<tr>-->
+<!--<td class="td-icon" align="right">-->
+<!--<i class="material-icons">account_balance</i>-->
+<!--</td>-->
+<!--<td align="left">-->
+<!--Savings Account-->
+<!--</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--</md-card-title>-->
+<!--&lt;!&ndash; </md-card-header>&ndash;&gt;-->
+<!--<md-card-content>-->
+<!--<ul>-->
+<!--<li>Low interest rate (~4%)</li>-->
+<!--<li>High taxation</li>-->
+<!--<li>Insured only upto 1 lac</li>-->
+<!--<li>Account maintenance charges</li>-->
+<!--</ul>-->
+<!--</md-card-content>-->
+<!--</md-card>-->
+<!--</div>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile [rowspan]="3">-->
+<!--<div class="col-md-9" style="margin-top: -40px; width: 80%">-->
+<!--<md-card>-->
+<!--&lt;!&ndash; <md-card-header>&ndash;&gt;-->
+<!--<md-card-subtitle></md-card-subtitle>-->
+<!--<md-card-title>-->
+<!--<table class="table-title" style="width: 120%">-->
+<!--<tr>-->
+<!--<td class="td-icon" align="right">-->
+<!--<i class="material-icons">lock</i>-->
+<!--</td>-->
+<!--<td align="left">-->
+<!--Term Deposits-->
+<!--</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--</md-card-title>-->
+<!--&lt;!&ndash; </md-card-header>&ndash;&gt;-->
+<!--<md-card-content>-->
+<!--<ul>-->
+<!--<li>Short term rates(<1 month) very low</li>-->
+<!--<li>Early withdrawal penalty</li>-->
+<!--<li>Rate changes on withdrawal</li>-->
+<!--<li>Small amounts earn lower interest</li>-->
+<!--</ul>-->
+<!--</md-card-content>-->
+<!--</md-card>-->
+<!--</div>-->
+<!--</md-grid-tile>-->
+<!--<md-grid-tile [colspan]="2">-->
+<!--<button md-raised-button (click)="toDemo()" style="float: right; width: 20%" color="primary">See How It-->
+<!--Works!-->
+<!--</button>-->
+<!--&nbsp;-->
+<!--<button md-raised-button (click)="toFunds()" style="float: right; width: 20%" color="primary">Invest-->
+<!--</button>-->
+<!--</md-grid-tile>-->
+<!--</md-grid-list>-->
+<!--</div>-->
+<!--</div>-->
+
+
+<!--<section class="col-md-8 col-md-offset-2">-->
+<!--<div>-->
+<!--<div class="col-md-3">-->
+
+<!--</div>-->
+
+<!--<div class="col-md-3">-->
+
+<!--</div>-->
+
+<!--<div class="col-md-3">-->
+
+<!--</div>-->
+
+<!--<br/>-->
+
+<!--</div>-->
+
+<!--</section>-->
+
+<div class="col-sm-10 col-sm-offset-1">
+    <!--<div class="row journey">-->
+    <!--<div class="col-sm-2 col-sm-offset-2 no-padding">-->
+    <!--<div class="journey-line">-->
+    <!--<div class="blue-circle"></div>-->
+    <!--<span class="text">Product Details</span>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-sm-2 no-padding">-->
+    <!--<div class="journey-line">-->
+    <!--<div class="grey-circle"></div>-->
+    <!--<span class="text">Fund Selection</span>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-sm-2 no-padding">-->
+    <!--<div class="journey-line">-->
+    <!--<div class="grey-circle"></div>-->
+    <!--<span class="text">Investment Portfolio</span>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-sm-2 no-padding">-->
+    <!--<div class="journey-line">-->
+    <!--<div class="grey-circle"></div>-->
+    <!--<span class="text">Summary &amp; Checkout</span>-->
+    <!--<div class="grey-circle" style="left:95%;"></div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="row mar-tb-10">
+        <div class="col-sm-8 col-sm-offset-2 center-align heading-32-cash border-down">Earn more by investing in <span
+                class="imp">SavingsPlus</span>
+            <hr/>
+        </div>
+        <div class="col-sm-8 col-sm-offset-2 center-align heading-16-cash" style="padding-bottom: 15px;">Double your
+            savings from <span
+                    class="imp">SavingsPlus</span></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-sm-offset-1 no-padding">
+            <md-card class="no-padding mar-tb-20">
+                <md-card-content>
+                    <div class="row other-header">
+                        <div class="col-sm-12">Saving Account</div>
+                    </div>
+                    <div class="row other-content">
+                        <div class="col-sm-12">Low interest rate (~4%)</div>
+                    </div>
+                    <div class="row other-content">
+                        <div class="col-sm-12">High taxation</div>
+                    </div>
+                    <div class="row other-content">
+                        <div class="col-sm-12">Insured only upto 1 lac</div>
+                    </div>
+                    <div class="row other-content">
+                        <div class="col-sm-12">Account maintenance</div>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+        <div class="col-sm-4 no-padding">
+            <md-card class="no-padding">
+                <md-card-content>
+                    <div class="row main-header">
+                        <div class="col-sm-12">SAVINGS PLUS</div>
+                    </div>
+                    <div class="row main-content">
+                        <div class="col-sm-2">
+                            <div class="white-circle">
+                                <md-icon class="md-24">trending_up</md-icon>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">Higher returns as compared to Savings and Deposits (~7-9%)</div>
+                    </div>
+                    <div class="row main-content">
+                        <div class="col-sm-2">
+                            <div class="white-circle">
+                                <md-icon class="md-24">update</md-icon>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">Same day redemption</div>
+                    </div>
+                    <div class="row main-content">
+                        <div class="col-sm-2">
+                            <div class="white-circle">
+                                <md-icon class="md-24">lock_open</md-icon>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">No lock-in or exit load</div>
+                    </div>
+                    <div class="row main-content">
+                        <div class="col-sm-2">
+                            <div class="white-circle">
+                                <md-icon class="md-24">check_box</md-icon>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">Invest and redeem on a click!</div>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+        <div class="col-sm-3 no-padding">
+            <md-card class="no-padding mar-tb-20">
+                <md-card-content>
+                    <div class="row other-header">
+                        <div class="col-sm-12">Term Deposit</div>
+                    </div>
+                    <div class="row other-content">
+                        <div class="col-sm-12">Short term rates(<1 month) very low</div>
+                    </div>
+                    <div class="row other-content">
+                        <div class="col-sm-12">Early withdrawal penalty</div>
+                    </div>
+                    <div class="row other-content">
+                        <div class="col-sm-12">Rate changes on withdrawal</div>
+                    </div>
+                    <div class="row other-content">
+                        <div class="col-sm-12">Small amounts earn lower interest</div>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+</div>
+
+
+

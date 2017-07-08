@@ -1,0 +1,84 @@
+@import "../../styles/partials/web-partials";
+
+.portfolio-box{
+	.portfolio-card{
+		&:hover{ box-shadow: 0 0 20px #9ecaed;}
+		margin-bottom: 10px;
+	}
+	@media only screen and (min-width: 768px) {	padding: 20px 100px;
+	}
+	@media only screen and (max-width: 768px) {	padding: 20px;
+	}
+	background-color: $light-grey;
+	.card-title{
+		border:solid 1px #d6d6d6;
+		line-height: 50px;font-weight: 600;
+		color:$white;
+		background-color: $brand-secondary;
+	}
+	.card-value{
+		border:solid 1px #d6d6d6;
+		line-height: 70px;font-weight: 600; font-size: 18px;
+		border-top:none;
+		background-color: $white;
+		color:$brand-secondary;
+	}
+	.clckable{
+		cursor: pointer;
+	}
+}
+.portfolio-heading{
+	@include heading(36px, 300);
+	letter-spacing:1.8px;
+	margin-bottom: 30px;
+	span{
+		padding-bottom: 5px;  border-bottom:solid 1px #4d4c4c;
+	}
+}
+/*.portfolio-card-container>div {
+	margin: 0 30px;
+}*/
+
+.top-performer-container{
+	margin-right: 10px;
+	@include fadeInElement(1.5s);
+}
+.chart-container {
+	margin-bottom: 20px;
+	.chart-content {
+		background-color: $white;
+	}
+	.md-tab-header{
+		background-color: #F2F2F2 !important;
+		max-width: 322px;
+	}
+	md-card{
+		padding: 0;
+		border: solid 1px #d6d6d6;
+		md-card-title{
+			background-color: $light-grey;
+			height: 40px !important;
+			line-height: 40px !important;
+			text-align: center;font-size: 18px;
+			border-bottom: solid 1px #d6d6d6;
+		}
+		md-card-content{
+			min-height:280px;
+			padding: 0px 10px;
+			display: block !important;
+		}
+	}
+}
+.prod-sol-cont{
+	border: solid 1px #d6d6d6;
+	.highlight{
+		background-color: $light-grey;
+		height: 40px !important;
+		line-height: 40px !important;
+		text-align: center;font-size: 18px;
+		border-bottom: solid 1px #d6d6d6;
+	}
+}
+.loading {
+	img{height: 30px; width: 30px;}
+}

@@ -1,0 +1,28 @@
+import { ModuleWithProviders }  from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { CashComponent } from './cash.component';
+import {DemoComponent} from "./demo/demo.component";
+import {CashfundsComponent} from "./cashfunds/cashfunds.component";
+
+export const cashRoutes: Routes = [
+    {
+        path: 'cash',
+        children: [
+            {
+                path: 'demo',
+                component: DemoComponent
+            },
+            {
+                path: 'funds',
+                component: CashfundsComponent
+            },
+            {
+                path: '',
+                component: CashComponent
+            }
+        ]
+    }
+];
+
+export const cashrouting: ModuleWithProviders = RouterModule.forChild(cashRoutes);

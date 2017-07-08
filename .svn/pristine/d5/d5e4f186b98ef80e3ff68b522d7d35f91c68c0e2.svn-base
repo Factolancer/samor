@@ -1,0 +1,96 @@
+import {Injectable, Inject} from "@angular/core";
+import {Http, Response, Headers, RequestOptions} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+import {Logger} from "../shared/logger/logger";
+import {APP_CONFIG, IAppConfig} from "./../../environments/environment";
+import {LocalStorageService} from "angular-2-local-storage";
+import {isNullOrUndefined} from "util";
+import {Subject} from "rxjs/subject";
+
+@Injectable()
+export class HttpService {
+
+    className: string;
+    private requests: any;
+    private httpErrorSubject: Subject<any>;
+    public httpErrorObservable: Observable<any>;
+
+    constructor(private http: Http, private logger: Logger, private  localStorageService: LocalStorageService, @Inject(APP_CONFIG) private config: IAppConfig) {
+        this.className = "HttpService";
+        this.requests = {};
+        this.httpErrorSubject = new Subject<any>();
+        this.httpErrorObservable = this.httpErrorSubject.asObservable();
+    }
+
+
+    uget(path: string): Observable<any> {
+        let headers = this.setHeader();
+        let options = new RequestOptions({headers: headers});
+        path = this.config.playAPIUrl + path;
+        this.logger.debug(this.className, path);
+        return this.http.get(path, options)
+            .map(this.extractData.bind(this))
+            .catch(this.handleError.bind(this));
+    }
+
+    upost(path: string, data: any): Observable<any> {
+        let headers = this.setHeader();
+        let options = new RequestOptions({headers: headers})
+        path = this.config.playAPIUrl + path;
+        this.logger.debug(this.className, path);
+        this.logger.debug(this.className, data);
+        return this.http.post(path, data, options)
+            .map(this.extractData.bind(this))
+            .catch(this.handleError.bind(this))
+    }
+
+    get(path: string): Observable<any> {
+        let headers = this.setHeader();
+        let options = new RequestOptions({headers: headers});
+        path = this.config.playAPIUrl + '/secure' + path;
+        return this.http.get(path, options)
+            .map(this.extractData.bind(this))
+            .catch(this.handleError.bind(this));
+    }
+
+    post(path: string, data: any): Observable<any> {
+        let headers = this.setHeader();
+        let options = new RequestOptions({headers: headers});
+        path = this.config.playAPIUrl + '/secure' + path;
+        this.logger.debug(this.className, path)
+        this.logger.debug(this.className, data);
+        return this.http.post(path, data, options)
+            .map(this.extractData.bind(this))
+            .catch(this.handleError.bind(this))
+    }
+
+    private setHeader() {
+        let getToken = this.localStorageService.get(this.config.authToken)
+        let token = getToken ? getToken : "";
+        this.logger.debug(this.className, " setHeader Token " + token);
+        let headers = new Headers({'Authorization': `Bearer ${token}`});
+        return headers;
+    }
+
+    private extractData(res: Response) {
+        this.logger.debug(this.className, "URL >> " + res.url);
+        this.logger.debug(this.className, "responseHeaders >> " + JSON.stringify(res.headers));
+        let body = res.json();
+        let header = res.headers;
+        let token: string = header.get(this.config.authToken);
+        if (!isNullOrUndefined(token)) {
+            this.localStorageService.set(this.config.authToken, token);
+        }
+        return body || {};
+    }
+
+    private handleError(error: any) {
+        // In a real world app, we might use a remote logging infrastructure
+        // We'd also dig deeper into the error to get a better message
+        let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        this.logger.error(this.className, errMsg);
+        this.httpErrorSubject.next(errMsg);
+    }
+}
+

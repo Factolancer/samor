@@ -1,0 +1,44 @@
+@import '../../public/styles/partials/web-partials';
+
+.checkout-product-head {
+  background-color: $brand-secondary;
+  color: $white;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  border-radius: 0;
+  padding: 15px;
+  text-align: center;
+}
+
+.checkout-product {
+  margin-bottom: 25px;
+}
+
+.checkout-product-divider {
+  border-color: $dark-grey;
+  padding: 5px 0;
+}
+
+.checkout-product-item {
+  background-color: $white;
+  border-radius: 0;
+  color: $black;
+  padding: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+  .fund {
+    padding: 10px 0;
+  }
+}
+
+.remove-btn {
+  color: $black;
+  background-color: $white;
+  border: none;
+  font-size: 16px;
+
+  &:hover {
+    color: $brand-secondary;
+  }
+}

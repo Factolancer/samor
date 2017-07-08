@@ -1,0 +1,15 @@
+import {Category} from "./category";
+
+export class BasicFactSheet {
+    constructor(public id: number,
+                public desc: string,
+                public nav: number,
+                public inceptionDate: string,
+                public category: Category,
+                public type: string,
+                public netAssets: number,
+                public expenseRatio: string,
+                public risk: number,
+                public fincashRisk: string) {
+    }
+}

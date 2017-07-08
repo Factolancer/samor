@@ -1,0 +1,59 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {BehaviorSubject} from "rxjs";
+import {ComparisonFund} from "./comparisonFund";
+
+@Injectable()
+export class CompareService {
+
+    //private fundIdList: number[];
+    private fundCompareDataSource = new BehaviorSubject<ComparisonFund[]>([]);
+    compareData = this.fundCompareDataSource.asObservable();
+
+    constructor(private httpService: HttpService) {
+    }
+
+
+    setFundIdList(fundList: ComparisonFund[]) {
+        //  this.fundIdList = idList;
+        this.fundCompareDataSource.next(fundList);
+    }
+
+
+    getFundIdList(): ComparisonFund[] {
+        return this.fundCompareDataSource.getValue();
+    }
+
+    addToCompare(fund: any): [boolean,string] {
+        let fundList = this.fundCompareDataSource.getValue();
+        if (fundList.length > 0 && fundList[0].category != fund.category) {
+            return [false, "Cannot compare funds from different categories"];
+        } else if (fundList.findIndex(fund)) {
+            return [false, "Already added to compare"];
+        } else if (fundList.length > 4) {
+            return [false, "Cannot compare more than 4 funds"];
+        } else {
+            fundList.push(fund);
+            this.fundCompareDataSource.next(fundList);
+            return [true, "Fund added to comparison"];
+        }
+
+    }
+
+    removeFromCompare(fundId: number) {
+        let fundList = this.fundCompareDataSource.getValue();
+        fundList = fundList.filter(fund => fund.id != fundId);
+        this.fundCompareDataSource.next(fundList);
+    }
+
+    removeAllFromCompare() {
+        this.fundCompareDataSource.next([]);
+    }
+
+    getFundComparisonData() {
+        let fundIdList: number[];
+        this.fundCompareDataSource.getValue().forEach(fund => fundIdList.concat(fund.id))
+        return this.httpService.post('/fund/getComparisonData', {"fundIdList": fundIdList});
+    }
+
+}

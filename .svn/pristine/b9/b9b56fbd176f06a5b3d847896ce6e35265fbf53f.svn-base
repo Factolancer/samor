@@ -1,0 +1,52 @@
+/**
+ * Created by Fincash on 23-01-2017.
+ */
+
+const express = require('express');
+const router = express.Router();
+
+/* GET api listing. */
+router.post('/', (req, res) => {
+    var requestData = req.body;
+    console.log(requestData);
+    var kycresult = requestData.result;
+    var MFKYC = requestData.MFKYC;
+
+    var resArray = kycresult.split("|");
+    var aadhar = resArray[0];
+    var kycStatus = resArray[1];
+    var pan = resArray[2];
+    if (resArray[3]){
+        var errorCode = resArray[3]
+    }
+
+    if (MFKYC != ""){
+        var panName = MFKYC[0]
+        var aadharName = MFKYC[1]
+        var fatherName = MFKYC[2]
+        var gender = MFKYC[3]
+        var maritalStatus = MFKYC[4]
+        var dob = MFKYC[5]
+        var nationality = MFKYC[6]
+
+        var pekrn = MFKYC[8]
+
+        var residentialStatus = MFKYC[10]
+        var addressL1 = MFKYC[11] + MFKYC[12]
+        var addressL2 = MFKYC[13]
+        var city = MFKYC[14]
+        var state = MFKYC[15]
+        var pincode = MFKYC[16]
+        var mob = MFKYC[17]
+        var email = MFKYC[18]
+
+        var tel = MFKYC[20]
+        var fax = MFKYC[21]
+    }
+    res.send(requestData);
+    res.redirect('/'+)
+});
+
+
+
+module.exports = router;

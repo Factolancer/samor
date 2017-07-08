@@ -1,0 +1,46 @@
+//***********************IMPORTS********************************
+@import '_colors';
+
+//***********************VARIABLES********************************
+
+//font
+$font-stack: 'Roboto', sans-serif;
+
+//*********************************MIXINS*****************************
+
+@mixin heading($size, $weight) {
+  font-size: $size;
+  font-weight: $weight;
+}
+
+@mixin cta($height) {
+  height: $height;
+  width: 100%;
+  @if ($height == 70px) {
+    font-size: 18px !important;
+  } @else if ($height==50px) {
+    font-size: 16px !important;
+  } @else if ($height==36px) {
+    font-size: 14px !important;
+  }
+}
+
+@mixin hollow-cta($height) {
+  height: $height;
+  color: $brand-secondary !important;
+  border: 1px solid $brand-primary !important;
+  border-radius: 2px !important;
+  width: 100%;
+  @if ($height == 70px) {
+    font-size: 18px !important;
+  } @else if ($height==50px) {
+    font-size: 16px !important;
+  } @else if ($height==36px) {
+    font-size: 14px !important;
+  }
+}
+
+@mixin heading($size, $weight) {
+  font-size: $size;
+  font-weight: $weight;
+}

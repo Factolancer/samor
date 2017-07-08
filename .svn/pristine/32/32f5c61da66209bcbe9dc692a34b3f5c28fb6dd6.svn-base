@@ -1,0 +1,99 @@
+<div class="row wrapper">
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+            <div class="col-sm-12 center-align heading-32-blue pad-tb-30">Fund Comparison</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div>
+                    <md-card class="parameters-head heading-14">Parameters</md-card>
+                    <md-card class="no-padding parameters">
+                        <div class="row">
+                            <div class="col-sm-4">
+
+                            </div>
+                            <div class="col-sm-8">
+                                <md-card class="sub" *ngFor="let param of funds[0] | keys">{{param.key}}</md-card>
+                            </div>
+                        </div>
+                    </md-card>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <md-card class="fund-1">
+                    <div class="row">
+                        <div class="col-sm-9 heading-14">Axis Bank Debit Fund</div>
+                        <div class="col-sm-3">
+                            <button md-icon-button="" class="watchlist-icon-btn"
+                                    (click)="addToWatchlist(funds[0]['id'])">
+                                <md-icon class="material-icons md-24 watchlist-icon">&#xE8F4;</md-icon><!--EYE ICON-->
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="no-padding fund-detail">
+                    <table class="fund-table">
+                        <tr *ngFor="let param of funds[0] | keys" class="fund-data">
+                            <td class="text">
+                                {{param.value}}
+                            </td>
+                        </tr>
+                    </table>
+                </md-card>
+                <button md-raised-button="" color="primary" class="cta-50" (click)="addToCart(funds[0]['id'])">
+                    Add to Cart
+                </button>
+            </div>
+            <div class="col-sm-3">
+                <md-card class="fund-2">
+                    <div class="row">
+                        <div class="col-sm-9 heading-14">ICICI Prudential saving fund</div>
+                        <div class="col-sm-3">
+                            <button md-icon-button="" class="watchlist-icon-btn"
+                                    (click)="addToWatchlist(funds[1]['id'])">
+                                <md-icon class="material-icons md-24 watchlist-icon">&#xE8F4;</md-icon><!--EYE ICON-->
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="no-padding fund-detail">
+                    <table class="fund-table">
+                        <tr *ngFor="let param of funds[0] | keys" class="fund-data">
+                            <td class="text">
+                                {{funds[1][param.key]}}
+                            </td>
+                        </tr>
+                    </table>
+                </md-card>
+                <button md-raised-button="" color="primary" class="cta-50" (click)="addToCart(funds[1]['id'])">
+                    Add to Cart
+                </button>
+            </div>
+            <div class="col-sm-3">
+                <md-card class="fund-3">
+                    <div class="row">
+                        <div class="col-sm-9 heading-14">IDBI India Top 100 Equity Fund</div>
+                        <div class="col-sm-3">
+                            <button md-icon-button="" class="watchlist-icon-btn"
+                                    (click)="addToWatchlist(funds[2]['id'])">
+                                <md-icon class="material-icons md-24 watchlist-icon">&#xE8F4;</md-icon><!--EYE ICON-->
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="no-padding fund-detail">
+                    <table class="fund-table">
+                        <tr *ngFor="let param of funds[0] | keys" class="fund-data">
+                            <td class="text">
+                                {{funds[2][param.key]}}
+                            </td>
+                        </tr>
+                    </table>
+                </md-card>
+                <button md-raised-button="" color="primary" class="cta-50" (click)="addToCart(funds[2]['id'])">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

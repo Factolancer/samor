@@ -1,0 +1,236 @@
+import {Component, OnInit, ViewContainerRef, Inject, OnDestroy} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {RedemptionModeEnum} from "../enum/redemption-mode-enum";
+// import {CheckoutFund} from "../models/checkout-fund";
+// import {Checkout} from "../models/checkout";
+import {SnackBarService} from "../core/services/snack-bar.service";
+import {disclaimers} from "../../properties/discalimers";
+import html2canvas from "html2canvas";
+// import {OrderSummary} from "../models/order-summary";
+// import {PaymentObject} from "../models/payment-object";
+import {Location, PlatformLocation} from "@angular/common";
+import {URLAccessGuard} from "../core/guards/urlAccess.guard";
+import {Http} from "@angular/http";
+import {TitleService} from "../core/services/title.service";
+import {LoginService} from "../core/services/login.service";
+import {MdDialog, MdDialogConfig, MdDialogRef} from "@angular/material";
+import {LoadingDialogComponent} from "../shared/loading-dialog.component";
+import {HeaderService} from "../core/services/header.service";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/take";
+import "rxjs/add/observable/timer";
+import {Redemption} from "./models/redemption";
+import {RedemptionFund} from "./models/redemption-fund";
+import {SummaryUserInfo} from "./models/summary-user-info";
+import {Logger} from "../core/logger/logger";
+import {RedemptionService} from "../core/services/redemption.service";
+import {APP_CONFIG, IAppConfig} from "../../environments/environment";
+import {RedemptionOrderSummary} from "./models/redemption-order-summary";
+import {isNullOrUndefined} from "util";
+import {OTPService} from "../kyc-status/otp-service";
+import {RedemptionConfirmationComponent} from "./redemption-confirmation.component";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Subscription} from "rxjs/Subscription";
+
+@Component({
+    selector: 'app-red-summary',
+    templateUrl: './redemption-summary.component.html',
+    styleUrls: ['./redemption.styles.scss']
+})
+
+export class RedemptionSummaryComponent implements OnInit, OnDestroy {
+
+    redData: Redemption;
+    swpFunds: RedemptionFund[];
+    lumpsumFunds: RedemptionFund[];
+    agreementSelected: boolean;
+    disclaimerList: string[];
+    sipDisclaimerText: string;
+    className: string;
+    summaryUserInfo: SummaryUserInfo;
+    loadingDialogRef: any;
+    hideDetails: boolean;
+    validatedOTPSubscription:Subscription;
+    imageObject:any;
+    redempConfirmDialogRef: MdDialogRef<RedemptionConfirmationComponent>;
+
+    constructor(private route: ActivatedRoute, private router: Router, private logger: Logger,
+                private redemptionService: RedemptionService, private http: Http,
+                private viewContainerRef: ViewContainerRef, private snackBarService: SnackBarService,
+                @Inject(APP_CONFIG) private config: IAppConfig, private location: Location,
+                private platformLocation: PlatformLocation, private urlAccessGuard: URLAccessGuard,
+                private headerService: HeaderService,private otpService:OTPService,
+                private titleService: TitleService, private loginService: LoginService, private dialog: MdDialog) {
+        this.agreementSelected = false;
+        this.className = "RedemptionSummary";
+        this.sipDisclaimerText = `${disclaimers.checkout_sip}`;
+        this.hideDetails = false;
+    }
+
+    ngOnInit() {
+        this.titleService.setTitle("summary");
+        this.swpFunds = [];
+        this.lumpsumFunds = [];
+        this.redemptionService.redemptionObservable.subscribe(data => {
+            this.redData = data;
+        });
+
+        this.route.data.forEach((data: { userInfo: SummaryUserInfo }) => {
+            this.summaryUserInfo = data.userInfo;
+        });
+
+
+        this.redData.fundsData.forEach(fund => {
+            if (fund.selectedRedemptionMode == RedemptionModeEnum[RedemptionModeEnum.SWP]) {
+                this.swpFunds.push(fund);
+            } else {
+                this.lumpsumFunds.push(fund);
+            }
+        });
+        this.disclaimerList = [`${disclaimers.redemption_summary}`]
+
+        this.validatedOTPSubscription = this.otpService.validatedObservable.subscribe(isValidJson =>{
+            let isValid = isValidJson['isValid'];
+            if(isValid){
+                let orderId = isValidJson['orderId'];
+                this.redempConfirmDialogRef.close();
+                this.otpService.setOTPValidated(false);
+                this.showLoadingDialog();
+                this.redemptionService.placeInExchange(this.imageObject,orderId).subscribe(exchangeResponse => {
+                    let orderSummary = exchangeResponse  as RedemptionOrderSummary;
+                    let errorFound = false;
+
+                    orderSummary.subOrderList.forEach(subOrder => {
+                        if (subOrder.orderProcessed == 1) {
+                            this.redData.fundsData.forEach(fund => {
+                                if (fund.option.soptRfnum == subOrder.soptrfnum && fund.selectedRedemptionMode == subOrder.redemptionMode) {
+                                    fund.orderPlaced = false;
+                                }
+                            });
+                            errorFound = true;
+                        } else {
+                            this.redData.fundsData.forEach(fund => {
+                                if (fund.option.soptRfnum == subOrder.soptrfnum && fund.selectedRedemptionMode == subOrder.redemptionMode) {
+                                    fund.orderPlaced = true;
+                                }
+                            })
+                        }
+                    });
+                    this.redemptionService.errorRedemptionData = this.redData.fundsData;
+                    this.urlAccessGuard.allow = true;
+                    this.redData.fundsData = [];
+                    this.redemptionService.redemptionData.next(this.redData);
+                    this.redemptionService.postRedemptionData().subscribe(data => {});
+                    this.router.navigate(['order', orderSummary.orderId], {relativeTo: this.route.parent});
+                })
+            }
+        })
+    }
+
+    proceed() {
+        if (this.agreementSelected) {
+            document.body.scrollTop = 0;
+
+            let userObject = this.loginService.getUserObject();
+            this.logger.debug(this.className, userObject);
+            this.headerService.hideHeader();
+            this.headerService.hideFooter();
+            this.hideDetails = true;
+            let timerSubscription = Observable.timer(1000).take(1).subscribe(val => {
+                html2canvas(document.body, {svgRendering: true}).then(canvas => {
+                    this.hideDetails = false;
+                    this.headerService.showHeader();
+                    this.headerService.showFooter();
+                    timerSubscription.unsubscribe();
+                    //this.showLoadingDialog();
+                    let base64String = canvas.toDataURL("image/png");
+                    this.http.post(this.config.snapshotApi, {
+                        id: userObject['userid'],
+                        type: 'order',
+                        snapshot: base64String
+                    }).subscribe(response => {
+                        let imageObject = response.json();
+
+                        if (imageObject && imageObject['success']) {
+                            this.imageObject = imageObject['uploadfile'];
+                            this.redemptionService.invest(imageObject['uploadfile']).subscribe(orderResponse => {
+
+                                if(!isNullOrUndefined(orderResponse.success) && orderResponse.success == true){
+                                    let mobNo = "+91-" + orderResponse.mob;
+                                    let orderId = orderResponse.orderId;
+
+                                    this.otpService.setOTPData(mobNo,orderId);
+                                    let config = this.getOtpConfig();
+                                    this.redempConfirmDialogRef = this.dialog.open(RedemptionConfirmationComponent, config);
+                                }
+                            })
+
+                        } else {
+                            this.snackBarService.showSnackBar("Please try again later.", "Okay", this.viewContainerRef);
+                        }
+                    })
+                });
+            });
+        }
+        else {
+            this.snackBarService.showSnackBar("Please accept the terms and conditions", "Okay", this.viewContainerRef);
+        }
+    }
+
+    getOtpConfig(){
+
+        let config = new MdDialogConfig();
+        config.role = 'dialog';
+        let device = this.headerService.deviceType();
+        if (device == 'xs' || device == 'sm'){
+            config.width = '100%';
+        }else {
+            config.width = '40%';
+        }
+        config.disableClose = true;
+        config.viewContainerRef = this.viewContainerRef;
+        return config;
+    }
+
+    back() {
+        this.urlAccessGuard.allow = true;
+        this.router.navigate(['init'], {relativeTo: this.route.parent});
+
+    }
+
+    goToTermsConditions() {
+        window.open(this.platformLocation['location'].origin + "/static/terms-conditions", "_blank");
+
+    }
+
+    showLoadingDialog() {
+        let config = new MdDialogConfig();
+        config.width = "25vw";
+        config.disableClose = true;
+        config.viewContainerRef = this.viewContainerRef;
+        let loadingConfig = {
+            text: "Processing..."
+        };
+        this.loadingDialogRef = this.dialog.open(LoadingDialogComponent, config);
+        this.loadingDialogRef.componentInstance.config = loadingConfig;
+
+    }
+
+    checkboxAgreement() {
+        if (this.agreementSelected) {
+            this.redemptionService.getSummaryInfo().subscribe(output => {
+                this.summaryUserInfo = output as SummaryUserInfo;
+            })
+        }
+    }
+
+
+    ngOnDestroy() {
+        if (this.loadingDialogRef) {
+            this.loadingDialogRef.close();
+        }
+        if(this.validatedOTPSubscription){
+            this.validatedOTPSubscription.unsubscribe()
+        }
+    }
+}

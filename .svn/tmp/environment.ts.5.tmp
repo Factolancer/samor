@@ -1,0 +1,36 @@
+import {OpaqueToken} from "@angular/core";
+export let APP_CONFIG  = new OpaqueToken('environment');
+export interface IAppConfig {
+  playAPIUrl : string;
+  defaultAfterLogin : string;
+  defaultAfterLogout : string;
+  dloginUrl : string;
+  signupUrl : string,
+  returnUrlParam : string;
+  kycReturnBaseUrl:string;
+  eKYCUrl:string;
+  eKYCAuthToken:string;
+  authToken : string,
+  cartToken : string,
+  staticImagePath:string
+}
+
+export const AppConfig : IAppConfig = {
+<<<<<<< .mine
+  playAPIUrl: "http://localhost:9000",
+=======
+  playAPIUrl: "http://10.1.0.102:9000",
+>>>>>>> .r1813
+  //playAPIUrl: "http://localhost:9000",
+  defaultAfterLogin : '/dashboard',
+  defaultAfterLogout: '/',
+  dloginUrl: '/auth/login',
+  signupUrl: '/auth/signup',
+  returnUrlParam : 'returnUrl',
+  kycReturnBaseUrl:'http://uat.fincash.com/api/kyc',
+  eKYCUrl:'https://eiscuat1.camsonline.com/ekycuat3/eKYCVal_Aadhar.aspx',
+  eKYCAuthToken:'fincash|UECH_SHEP|HzK6$g3|B|MFKYC2',
+  authToken : 'id_token',
+  cartToken : 'cartId',
+  staticImagePath:'http://localhost:3000'
+};

@@ -1,0 +1,75 @@
+<div class="wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="50">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex="80" class="center-align">
+                <div class="heading-32-dark-grey">Registration & KYC
+                </div>
+                <div class="sub-heading-16-medium-grey" style="padding-bottom: 15px;">
+                    <hr/>
+                    Registration Complete
+                </div>
+            </div>
+        </div>
+
+        <div class="grey-border pad-30">
+            <div>
+                <div fxFlex="100" fxFlexOffset="5" class="heading-24-blue">
+                    Thank you!
+                </div>
+                <br/>
+                <br/>
+                <div fxFlex="100" fxFlexOffset="5" class="heading-24-bold">
+                    Your Fincash registration is complete
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <div fxFlex="100" fxFlexOffset="5" class="heading-18-black">
+                    What Next ?
+                </div>
+            </div>
+        </div>
+        <div class="bottom-section">
+            <div>
+                <div fxFlexOffset="10">
+                    <span class="pad-lr-30">
+                    Our team will get in touch with you to activate your Fincash Account for investing
+                    </span>
+                </div>
+            </div>
+
+        </div>
+        <br/>
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button md-raised-button color="primary" (click)="completeRegistration()">Register</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="wrapper" fxLayout="column" fxLayoutAlign="center center">
+    <div fxFlex="90">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex="80" class="center-align">
+                <div class="heading-32-dark-grey">Registration & KYC
+                </div>
+                <div class="sub-heading-16-medium-grey" style="padding-bottom: 15px;">
+                    <hr/>
+                    Registration Complete
+                </div>
+            </div>
+        </div>
+        <div class="pad-lr-60" fxLayout="row">
+            <div>
+
+            </div>
+        </div>
+        <br/>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button md-raised-button color="primary" (click)="toToUpload()" >Proceed to Upload</button>
+        </div>
+    </div>
+</div>

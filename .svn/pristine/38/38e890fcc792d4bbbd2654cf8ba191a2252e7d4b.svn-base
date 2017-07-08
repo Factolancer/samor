@@ -1,0 +1,25 @@
+import {AuthGuard} from "../gaurds/auth.guard";
+import {ModuleWithProviders} from "@angular/core";
+import {RouterModule} from "@angular/router";
+import {OrderComponent} from "./order.component";
+/**
+ * Created by fincash on 20-02-2017.
+ */
+
+
+const orderRoutes = [
+
+    {
+        path: 'order',
+        children: [
+            {
+                path: ':orderId',
+                component: OrderComponent,
+                canActivate: [AuthGuard]
+            }
+        ]
+
+    }
+];
+
+export const orderRouting: ModuleWithProviders = RouterModule.forChild(orderRoutes);

@@ -1,0 +1,20 @@
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Injectable} from "@angular/core";
+import {Logger} from "../logger/logger";
+
+@Injectable()
+export class HeaderService {
+
+    private headerVisibleSubject: BehaviorSubject<boolean>;
+    headerVisibilityObservable: Observable<boolean>;
+
+    constructor(private logger: Logger) {
+        this.headerVisibleSubject = new BehaviorSubject<boolean>(false);
+        this.headerVisibilityObservable = this.headerVisibleSubject.asObservable();
+    }
+
+    allowHeaderHiding(value: boolean) {
+        this.headerVisibleSubject.next(value);
+    }
+}

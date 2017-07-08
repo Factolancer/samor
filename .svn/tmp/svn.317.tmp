@@ -1,0 +1,55 @@
+import {Component, Inject, OnDestroy, OnInit} from "@angular/core";
+import {NavigationEnd, Router} from "@angular/router";
+import {APP_CONFIG, IAppConfig} from "../environments/environment";
+import {Logger} from "./core/logger/logger";
+import {Subscription} from "rxjs/Subscription";
+import {DOCUMENT} from "@angular/platform-browser";
+import {Observable} from "rxjs/Observable";
+
+
+declare var ga: Function;
+
+@Component({
+    selector: 'fincash-app',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+})
+export class AppComponent implements OnInit, OnDestroy {
+
+    // logInDialogRef: MdDialogRef<LoginComponent>;
+    routerChangeSubscription: Subscription;
+    private className: string;
+
+
+    public constructor(public logger: Logger, private router: Router, @Inject(APP_CONFIG) private config: IAppConfig, @Inject(DOCUMENT) private _document: any) {
+        // initialize userObject from token;
+        this.className = 'AppComponent';
+    }
+
+    ngOnInit() {
+
+        this.routerChangeSubscription = this.router.events.subscribe((evt) => {
+            this.logger.debug(this.className,"event", evt);
+            if (!(evt instanceof NavigationEnd)) {
+                return;
+            }
+
+            let timerSubscription = Observable.timer(200).take(1).subscribe( () => {
+                // this._document.body.scrollTo(0,0);
+                timerSubscription.unsubscribe();
+            });
+
+            if (this.config.isGoogleAnalyticsAllowed && ga) {
+                    this.logger.debug("calling GA");
+                    ga('set', 'page', evt.urlAfterRedirects);
+                    ga('send', 'pageview');
+                }
+            });
+
+    }
+
+    ngOnDestroy() {
+        this.routerChangeSubscription.unsubscribe();
+
+    }
+}

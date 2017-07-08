@@ -1,0 +1,73 @@
+import {Component, OnInit, OnDestroy, Inject} from "@angular/core";
+import {Logger} from "../core/logger/logger";
+import {Router} from "@angular/router";
+import {IAppConfig, APP_CONFIG} from "../../environments/environment";
+import {HeaderService} from "../core/services/header.service";
+import {TitleService} from "../core/services/title.service";
+
+
+@Component({
+    selector: 'app-landingpage',
+    templateUrl: 'landingpage.component.html',
+    styleUrls: ['./landingpage.component.scss']
+})
+export class LandingpageComponent implements OnInit, OnDestroy {
+
+    constructor(private logger: Logger, private router: Router, @Inject(APP_CONFIG) private config: IAppConfig,
+                private headerService: HeaderService, private titleService: TitleService) {
+    }
+
+    minAge: number = 18;
+    maxAge: number = 60;
+    minExpns: number = 5000;
+    maxExpns: number = 200000;
+    stepExpns: number = 5000;
+    defaultExpns: number = 5000;
+
+    ngOnInit() {
+        this.headerService.autoHideHeader(true);
+        this.headerService.onDemandProgressBar();
+        this.titleService.setTitle("home");
+        this.titleService.setMetaTags("home");
+    }
+    carouselContent = [
+        { 'url': this.config.staticImagePath +'/assets/img/landingpage/earn-in-a-day-blurred.jpg'},
+        {
+            'url': this.config.staticImagePath +'/assets/img/landingpage/earn-in-a-day.jpg',
+            'content':'<p class="txt-2-5 center-align mar-b-5" ><span class="white">Invest in Mutual Funds <span class="yellow">for a <br/>couple of days & earn!</span></span></p>'
+                    +'<div class="center-align"><div class="center-align white txt-1-1">Invest in<br></div></div>',
+            'link':'cash'
+        },
+        {
+            'url': this.config.staticImagePath + '/assets/img/landingpage/fd.jpg',
+            'content':'<p class="txt-2-5 mar-b-5" ><span class="white">Beat <span class="yellow">FD return without any lock-in!</span></span></p>'
+                        +'<p class="left-align white txt-1-3">Invest in safe mutual funds and get <span class="yellow">higher returns</span></p>'
+                        +'<div class="left-align"><div class="pad-lr-50 white txt-1-1">Invest in<br> </div></div>',
+            'contentposition':'left',
+            'link':'cash'
+        },
+        {
+            'url': this.config.staticImagePath + "/assets/img/landingpage/aim-straight.jpg",
+            'content':'<div class=""><p class="txt-2-5 mar-b-5" ><span class="white">You have heard <span class="yellow">6>4,</span> but why not go <br> for<span class="yellow"> 8% *.</span></span></p>'
+                     +'<div class=""><div class="pad-lr-50 white txt-1-1">Invest in<br></div></div></div>',
+            'contentposition':'left',
+            'link':"cash",
+        },
+        {
+          'url': this.config.staticImagePath + "/assets/img/landingpage/redemption.jpg",
+          'content':'<p class="txt-2-5 mar-b-5" ><span class="white">Instant redemption in <br/> <span class="yellow">30 mins!</span></span></p>'
+                +'<div class=""><div class="pad-lr-50 white txt-1-1">Invest in<br></div></div>',
+          'contentposition':'left',
+          'link':'cash',
+        }
+    ];
+
+    calculate(age: number, expense: number) {
+        this.logger.info('age', age, 'expense', expense);
+        this.router.navigate(['/calculator/sip/goals/questions/1', {'a': age, 'e': expense}]);
+    }
+
+    ngOnDestroy() {
+        this.headerService.resetHeaderHiding()
+    }
+}

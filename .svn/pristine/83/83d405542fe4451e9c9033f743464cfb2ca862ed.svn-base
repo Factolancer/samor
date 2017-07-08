@@ -1,0 +1,82 @@
+<div class="wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="45">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex="80" class="center-align">
+                <div>
+                    <img class="md-2" src="../../assets/img/pending.svg"/>
+                </div>
+                <br/>
+                <div class="heading-24">
+                    ACCOUNT ACTIVATION PENDING
+                </div>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <md-card fxFlex="80">
+                <md-card-content>
+                    <div fxLayout="column" fxLayoutAlign="center">
+                        <div fxFlexOffset="5" class="heading-18-blue-bold">
+                            Dear {{firstName}},
+                        </div>
+                        <br/>
+                        <div fxFlexOffset="5" fxAlign="center" class="heading-18-grey-bold">
+                            Your Fincash Account activation is currently pending and would be done within three days.<br/>
+                        </div>
+                        <br/>
+                        <i fxFlexOffset="5" class="heading-14-grey">
+                            You can start investing once your account is activated.
+                        </i>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                </md-card-content>
+                <md-card-footer fxLayoutAlign="center center" class="card-footer pad-tb-20">
+                    We will intimate you through Email and SMS shortly.
+                </md-card-footer>
+            </md-card>
+        </div>
+
+        <!--<div class="grey-border">
+            <div>
+                &lt;!&ndash;<div fxFlex="100" fxFlexOffset="5" class="heading-24-blue pad-tb-15">
+                    Thank you!
+                </div>
+                <br/>
+                <div fxFlex="100" fxFlexOffset="5" class="heading-24-bold">
+                    Your Fincash registration is complete
+                </div>
+                <br/>
+                <br/>&ndash;&gt;
+                <md-card fxFlex="100">
+                    <md-card-content>
+                        <div fxLayout="column" fxLayoutAlign="center">
+                            <div fxFlex="50" class="heading-18-blue">
+                                Dear {{firstName}},<br/>
+                                Your Fincash Account activation is currently pending and would be done within three days. <br/>
+                                You can start investing once your account is activated.<br/><br/>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+                <br/>
+                <div fxFlex="100" fxFlexOffset="15" class="heading-18-blue pad-tb-10">
+                    Dear {{firstName}},<br/><br/>
+                    Your Fincash Account activation is currently pending and would be done within three days. <br/>
+                    You can start investing once your account is activated.<br/><br/>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-section">
+            <div>
+                <div fxFlexOffset="15" class="pad-tb-5 sub-heading-16-medium-grey">
+                    We will intimate you through Email and SMS shortly.
+                </div>
+            </div>
+
+        </div>
+        <br/>-->
+
+    </div>
+</div>

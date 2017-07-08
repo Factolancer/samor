@@ -1,0 +1,58 @@
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
+import {RouterModule} from "@angular/router";
+import {MaterialModule} from "@angular/material";
+import {RatingPipe} from "./rating.pipe";
+import {GoogleChart} from "./google-chart.directive";
+import {KeysPipe} from "./keys.pipe";
+import {HeatMapDirective} from "./heat-map.directive";
+import {PageNotFoundComponent} from "./page-not-found.component";
+import {ConfirmationDialogComponent} from "./confirmation-dialog.component";
+import {UserJourneyComponent} from "./user-journey.component";
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {InfoDialogComponent} from "./info-dialog.component";
+import {RiskometerPipe} from "./riskometer.pipe";
+import {ReturnsPipe} from "./retruns.pipe";
+import {SipAmountPipe} from "./sip-amount.pipe";
+import {NAVComponent} from "./nav.component";
+import {DatePipe} from "./date.pipe";
+import {RatioPipe} from "./ratio.pipe";
+import {StructurePipe} from "./structure.pipe";
+import {DEBUG_LOGGER_PROVIDERS, WARN_LOGGER_PROVIDERS, INFO_LOGGER_PROVIDERS, ERROR_LOGGER_PROVIDERS, OFF_LOGGER_PROVIDERS, LOG_LOGGER_PROVIDERS} from "./logger/providers";
+@NgModule({
+    imports: [CommonModule,
+        HttpModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MaterialModule,
+        RouterModule],
+    exports: [FormsModule,
+        ReactiveFormsModule,
+        CommonModule,
+        HttpModule,
+        RatingPipe,
+        DatePipe,
+        RiskometerPipe,
+        KeysPipe,
+        RouterModule,
+        MaterialModule,
+        FlexLayoutModule,
+        GoogleChart,
+        HeatMapDirective,
+        UserJourneyComponent,
+        ReturnsPipe,
+        SipAmountPipe,
+        NAVComponent,
+        RatioPipe,
+        StructurePipe
+    ],
+    entryComponents: [ConfirmationDialogComponent, InfoDialogComponent],
+    declarations: [RatingPipe, DatePipe, RiskometerPipe, KeysPipe, GoogleChart, HeatMapDirective,
+        PageNotFoundComponent, ConfirmationDialogComponent, UserJourneyComponent, ReturnsPipe,
+        InfoDialogComponent, SipAmountPipe, NAVComponent, RatioPipe, StructurePipe],
+    providers: [DEBUG_LOGGER_PROVIDERS]
+})
+export class SharedModule {
+}

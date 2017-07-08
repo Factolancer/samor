@@ -1,0 +1,18 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+
+@Injectable()
+export class FactsheetService {
+
+    constructor(private httpService: HttpService) {
+    }
+
+    getBasicFactsheet(id: number) {
+        return this.httpService.post('/fund/getBasicFactsheet', {"id": id});
+    }
+
+    getAdvancedFactsheet(id: number) {
+        return this.httpService.post('/fund/getAdvancedFactsheet', {"id": id});
+    }
+
+}

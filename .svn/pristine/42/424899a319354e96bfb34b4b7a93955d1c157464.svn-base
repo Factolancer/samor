@@ -1,0 +1,141 @@
+<div fxLayout="column" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80" fxFlex.xs="100">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex="60" fxFlex.xs="100">
+                <div class="heading-32-dark-grey center-align">Save over INR 46,000 under Section 80C!</div>
+                <hr/>
+                <div class=" center-align sub-heading-16-medium-grey">Invest in ELSS to save tax</div>
+            </div>
+        </div>
+        <div fxLayout="row">
+            <div fxFlex class="grey-back pad-tb-25">
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
+                    <div fxFlex="35">
+                        <md-card class="product-card">
+                            <div class="card-head">Invest in TaxSaver</div>
+                            <div>
+                                <md-list>
+                                    <md-list-item class="list-item">
+                                        <div>
+                                            <img class="list-icon" src="../../assets/img/tax/tax_saver_1.svg"
+                                                 alt="hand of healthy returns icon">
+                                        </div>
+                                        Selected after analysis across ELSS category
+                                    </md-list-item>
+                                    <md-list-item class="list-item">
+                                        <div>
+                                            <img src="../../assets/img/tax/tax_saver_2.svg"
+                                                 alt="hand of healthy returns icon" class="list-icon">
+                                        </div>
+                                        Pre-selected top 2 best Equity Linked Saving Schemes(ELSS)
+                                    </md-list-item>
+                                    <md-list-item class="list-item">
+                                        <div>
+                                            <img src="../../assets/img/tax/tax_saver_3.svg"
+                                                 alt="hand of healthy returns icon" class="list-icon">
+                                        </div>
+                                        Save tax and earn healthy returns
+                                    </md-list-item>
+                                </md-list>
+                                <div class="card-foot">
+                                    <button class="cta-40" md-raised-button="" routerLink='taxsaver' color="primary">
+                                        INVEST
+                                    </button>
+                                </div>
+                            </div>
+
+                        </md-card>
+                    </div>
+                    <div fxFlex="35" fxLayoutGap.xs="10" fxFlexOffset="10" fxFlexOffset.xs="0">
+                        <md-card class="product-card">
+                            <div class="card-head">Select on your own</div>
+                            <div>
+                                <md-list>
+                                    <md-list-item class="list-item pad-tb-20">
+                                        <div>
+                                            <img src="../../assets/img/sip/explore_1.svg"
+                                                 alt="hand of healthy returns icon" class="list-icon">
+                                        </div>
+                                        Search &amp; compare across 50 tax saving schemes
+                                    </md-list-item>
+                                    <md-list-item class="list-item pad-tb-35">
+                                        <div>
+                                            <img src="../../assets/img/sip/explore_2.svg"
+                                                 alt="hand of healthy returns icon" class="list-icon">
+                                        </div>
+                                        Do your own analysis with our Funds Explorer
+                                    </md-list-item>
+                                </md-list>
+                                <div class="card-foot">
+                                    <button class="cta-40" md-raised-button="" color="primary"
+                                            (click)="navigateToExplore()">EXPLORE FUNDS
+                                    </button>
+                                </div>
+                            </div>
+
+                        </md-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-20">
+            <div class="center-align calc-text">Calculate how much to invest in ELSS using our <a
+                    routerLink='/calculator/tax'>Tax Calculator</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class="mar-tb-10">
+    <div fxFlex="100">
+        <div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+            <div fxFlex="80" fxFlex.xs="100" class="elss-explanation">
+                <div fxLayout="row" fxLayoutAlign="center center" class="highlight pad-tb-20">
+                    <div fxFlex>
+                        WHY ELSS OVER OTHER TAX-SAVING AVENUES?
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-15">
+                    <div fxFlex="25" fxFlex.xs="30">
+                        <md-card class="no-padding feature-card">
+                            <div class="no-margin">
+                                <div class="elss-title pad-tb-25" mdTooltip="Equity Linked Savings Schemes">
+                                    ELSS
+                                </div>
+                            </div>
+                            <div class="no-margin">
+                                <div class="pad-tb-15">
+                                    <h5>3 Years Lock-in</h5>
+                                    <h3>Returns ~12-15%</h3>
+                                    <h5>Tax on Return: No</h5>
+                                </div>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div fxFlex=10 class="center-align">Vs</div>
+                    <div fxFlex="55" fxFlex.xs="60">
+                        <md-card class="no-padding feature-card">
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <div fxFlex class="no-padding  pad-tb-25 other-title" mdTooltip="Public Provident Fund">
+                                    PPF
+                                </div>
+                                <div fxFlex class="no-padding  pad-tb-25 other-title" mdTooltip="Fixed Deposit">FD</div>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <div fxFlex class="pad-tb-15" style="border-right: solid 1px #BFBFBF;">
+                                    <h5>15 Years Lock-in</h5>
+                                    <h3>Returns ~7-8%</h3>
+                                    <h5>Tax on Return: No</h5>
+                                </div>
+                                <div fxFlex class="pad-tb-15">
+                                    <h5>5 Years Lock-in</h5>
+                                    <h3>Returns ~7.5-8.5%</h3>
+                                    <h5>Tax on Return: Yes</h5>
+                                </div>
+                            </div>
+                        </md-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

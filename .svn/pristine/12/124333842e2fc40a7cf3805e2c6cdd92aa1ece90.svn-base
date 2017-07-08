@@ -1,0 +1,44 @@
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {SearchModule} from "../search.module";
+import {SearchService} from "../search.service";
+import {SearchInput} from "../search-input";
+import {AMC} from "../../fund/amc";
+import {Subscription} from "rxjs";
+
+@Component({
+    selector: 'app-amc-filter',
+    templateUrl: './amc-filter.component.html',
+    styleUrls: ['./amc-filter.component.css']
+})
+export class AmcFilterComponent implements OnDestroy,OnInit {
+
+    amcList: AMC[];
+    searchInput: SearchInput;
+    searchInputSubscription: Subscription;
+
+    constructor(private searchService: SearchService) {
+        this.searchInputSubscription = this.searchService.searchInput.subscribe(
+            si => {
+                this.searchInput = si;
+            }
+        )
+    }
+
+    searchByAMC(amcName: string) {
+
+        this.searchInput.amcCode.push(amcName)
+        this.searchService.searchFund(this.searchInput)
+    }
+
+    ngOnInit() {
+        this.searchService.getFundCategoryList().subscribe(
+            output => {
+                this.amcList = output.json() as AMC[];
+            });
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+    }
+
+}

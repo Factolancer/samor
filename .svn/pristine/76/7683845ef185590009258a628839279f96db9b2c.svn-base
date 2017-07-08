@@ -1,0 +1,67 @@
+@import '../../public/styles/partials/web-partials';
+
+//fund list styling
+
+.explore-fund-head {
+  background-color: $brand-secondary;
+  text-align: center;
+  color: $white;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 -15px;
+  padding: 12px;
+  margin-bottom: 2px;
+  border-radius: 0;
+}
+
+.fund-list {
+  font-size: 14px;
+  margin: 0 -15px;
+  text-align: center;
+  padding: 12px;
+  margin-bottom: 2px;
+  border-radius: 0;
+}
+
+//pagination styling
+.page-number-btn {
+  background-color: $white;
+  color: $brand-secondary;
+  margin: 0 0 0 0;
+  text-align: center;
+  padding: 0 20px;
+  border: 0;
+  height: 30px;
+}
+
+.blue {
+  background-color: $brand-secondary;
+  color: $white;
+}
+
+.grey {
+  color: $dark-grey;
+}
+
+table, th, td {
+  border: 1px solid #979797;
+}
+
+//search component styling
+
+.search-input {
+  background-color: $light-grey;
+  border: solid 1px $dark-grey;
+  height: 40px;
+  padding-left: 10px;
+  width: 65%;
+  font-size: 12px;
+}
+
+.search-btn {
+  background-color: $material-primary;
+  color: $white;
+  height: 40px;
+  margin: 2px 0 0 -0.5%;
+  border-radius: 0 !important;
+}

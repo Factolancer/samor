@@ -1,0 +1,33 @@
+import {Component, OnInit, ViewEncapsulation, OnDestroy} from '@angular/core';
+import {Logger} from "../shared/logger/logger";
+import {Router} from "@angular/router";
+
+@Component({
+  selector: 'app-landingpage',
+  templateUrl: 'landingpage.component.html',
+  styleUrls: ['./landingpage.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+})
+export class LandingpageComponent implements OnInit, OnDestroy {
+
+  constructor(private logger:Logger, private router:Router) { }
+  minAge:number = 18;
+  maxAge:number = 100;
+  minSal:number = 1;
+  maxSal:number = 1000000;
+
+  ngOnInit() {
+  }
+
+  calculate(age, expense){
+    this.logger.info('age', age, 'expense', expense);
+    this.router.navigate(['/sip/calculator']);
+  }
+  al(evnt){
+    this.logger.error(evnt);
+  }
+
+  ngOnDestroy(){
+
+  }
+}

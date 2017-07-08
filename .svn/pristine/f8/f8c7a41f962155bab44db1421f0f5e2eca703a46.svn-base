@@ -1,0 +1,27 @@
+import {Component, OnInit, Input} from "@angular/core";
+
+@Component({
+    selector: 'app-nav',
+    template: `
+<div class="nav">{{navValue | currency:'INR':true:'1.0-4'}}
+<span [ngClass]="{red: navValueChange<0, green:navValueChange>0}">
+ <md-icon class="md-18" *ngIf="navValueChange>0">&#xE5C7;</md-icon>
+ <md-icon class="md-18" *ngIf="navValueChange<0">&#xE5C5;</md-icon>
+ {{navValueChange | number:'1.2-2'}} ({{navPercentChange | number:'1.2-2'}}%)
+</span>
+</div>`,
+    styleUrls: ['./shared.styles.scss']
+})
+export class NAVComponent implements OnInit {
+
+    @Input() navValue: string;
+    @Input() navValueChange: string;
+    @Input() navPercentChange: string;
+
+    constructor() {
+    }
+
+    ngOnInit() {
+    }
+
+}

@@ -1,0 +1,29 @@
+/**
+ * Created by Fincash on 16-09-2016.
+ */
+import { ModuleWithProviders }  from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { RegistrationComponent } from './registration.component';
+import {AuthGuard} from "../gaurds/auth.guard";
+import {UserService} from "./userdata.service";
+import {EKycComonent} from "./ekyc.component";
+
+export const registrationRoutes: Routes = [
+    {
+        path: ':path',
+        component: RegistrationComponent
+    },
+    {
+        path: '',
+        component: RegistrationComponent,
+        canActivate: [AuthGuard],
+    },
+    /*{
+        path: 'ekyc',
+        component: EKycComonent,
+        canActivate: [AuthGuard]
+    }*/
+];
+
+export const registrationrouting: ModuleWithProviders = RouterModule.forChild(registrationRoutes);

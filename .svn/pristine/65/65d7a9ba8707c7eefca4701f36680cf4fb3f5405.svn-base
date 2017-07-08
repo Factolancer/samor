@@ -1,0 +1,228 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <div fxFlex class="report-card">
+        <div fxLayout="row" fxLayoutAlign="end center" class="right-align mar-tb-15 summary-details">
+            <div fxFlex *ngIf="transactionReport">
+                <md-icon *ngIf="transactionReport.mobileNo">&#xE324;</md-icon>{{transactionReport.mobileNo}}
+                <md-icon *ngIf="transactionReport.emailId">&#xE0BE;</md-icon> {{transactionReport.emailId}}
+            </div>
+        </div>
+    </div>
+    <div fxFlex class="report-card">
+        <md-card>
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <div fxFlex="40">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <div fxFlex="25" class="allocation-header">
+                            Start Date
+                        </div>
+                        <div fxFlex="65">
+
+                            <md-input-container>
+                                <input mdInput [mdDatepicker]="picker" [(ngModel)]="startDate">
+                                <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                            </md-input-container>
+                            <md-datepicker #picker></md-datepicker>
+
+                            <!--<input [mdDatepicker]="myDatepicker" [(ngModel)]="startDate">
+                            <md-datepicker #myDatepicker></md-datepicker>-->
+                            <!--<input type="date" [(ngModel)]="startDate">-->
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex="30">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <div fxFlex="30" class="allocation-header">
+                            End Date
+                        </div>
+                        <div fxFlex="60" >
+
+                            <md-input-container>
+                                <input mdInput [mdDatepicker]="picker2" [(ngModel)]="endDate">
+                                <button type="button" mdSuffix [mdDatepickerToggle]="picker2"></button>
+                            </md-input-container>
+                            <md-datepicker #picker2></md-datepicker>
+
+                            <!--<input type="date" [(ngModel)]="endDate">-->
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex="30">
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start" class="mar-b-10">
+                <div fxFlex>
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                        <div fxFlex class="error">
+                            {{errorMessage}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <div fxFlex>
+                    <hr>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start" class="mar-t-20">
+                <div fxFlex="40">
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                        <div fxFlex="17" class="allocation-header filter-mar">
+                            Fund
+                        </div>
+                        <div fxFlex>
+                            <md-select [(ngModel)]="selectedFundId" (onClose)="getFoliosByFund()">
+                                <md-option *ngFor="let fund of fundList; let idx = index;" [(value)]="fund.fundId">{{fund.fundName}}<span *ngIf="idx > 0"> - {{fund.divFreq}}
+                                    {{fund.plan}} - {{fund.divOption}}</span>
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex="30">
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                        <div fxFlex="30"  class="allocation-header filter-mar">
+                            Folio No.
+                        </div>
+                        <div fxFlex="70">
+                            <md-select [(ngModel)]="selectedFolioId">
+                                <md-option *ngFor="let folio of folioList" [value]="folio.folioId">
+                                    {{folio.folioNo}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex="30">
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                        <div fxFlex="40" class="allocation-header filter-mar">
+                            Transaction Type
+                        </div>
+                        <div fxFlex="60" >
+                            <md-select [(ngModel)]="selectedTransType">
+                                <md-option *ngFor="let trans of transactionTypes" [value]="trans.id">
+                                    {{trans.transType}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+    <div fxFlex>
+        <button color="primary" md-raised-button="" class="cta-50 mar-tb-20" (click)="filterTransactions()">
+            Show Transactions
+        </button>
+    </div>
+    <div fxFlex *ngIf="funds" class="report-card left-align total-allocation-details font-16">
+        Transaction Details
+    </div>
+    <div fxFlex class="report-card mar-tb-15" *ngFor="let fund of funds; let fundIdx = index;">
+        <md-card  class="no-padding">
+        <div fxLayout="row" fxLayoutAlign="space-between" class="summary-card1">
+            <!--<div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Folio No </span>
+                    <span class="summary-details mar-t-10 center-align">{{fund.folioNo}}</span>
+                </div>
+            </div>
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Mode of Holding</span>
+                    <span class="summary-details mar-t-10 center-align">{{fund.modeOfHolding}}</span>
+                </div>
+            </div>-->
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Fund Name</span>
+                    <span class="summary-details mar-t-10 center-align">{{fund.fundName}}</span>
+                </div>
+            </div>
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Plan</span>
+                    <span class="summary-details mar-t-10 center-align">{{fund.divFreq}} {{fund.plan}}</span>
+                </div>
+            </div>
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Option</span>
+                    <span class="summary-details mar-t-10 center-align">{{fund.divOption}}</span>
+                </div>
+            </div>
+        </div>
+            </md-card>
+        <md-card class="mar-t-5 no-padding">
+            <div fxLayout="row" fxLayoutAlign="start start" class="tableHeader">
+                <div fxFlex class="report-card pad-lr-30 mar-tb-20">
+                    <div fxLayout="row" fxLayoutAlign="start start" class="total-allocation-details">
+                        <div fxFlex="15">Date</div>
+                        <div fxFlex="20" class="left-align">Transaction Description</div>
+                        <div fxFlex="10" class="left-align">Folio No.</div>
+                        <div fxFlex="15" class="right-align">Amount(Rs.)</div>
+                        <div fxFlex="10" class="right-align">Price(Rs.)</div>
+                        <div fxFlex="15" class="right-align">Units</div>
+                        <div fxFlex="15" class="right-align">Value</div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <div fxFlex class="report-card">
+                    <hr class="no-margin">
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start" class="lastRow total-allocation-details">
+                <div fxFlex class="report-card pad-lr-30 mar-tb-15">
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                        <div fxFlex="15"></div>
+                        <div fxFlex="20" class="left-align">Opening Balance</div>
+                        <div fxFlex="35" class="right-align"></div>
+                        <div fxFlex="15" class="right-align">{{fund.openingUnits | reportNumber}}</div>
+                        <div fxFlex="15" class="right-align">{{fund.openingValue | reportNumber}}</div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <div fxFlex class="report-card">
+                    <hr class="no-margin">
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start" class="mar-t-10">
+                <div fxFlex class="report-card pad-lr-30">
+                    <div fxLayout="column" fxLayoutAlign="start start" *ngFor="let trans of fund.transactionList; let transIdx = index;">
+                        <div fxFlex class="width-100 mar-tb-5 md-text-col">
+                            <div fxLayout="row" fxLayoutAlign="start start">
+                                <div fxFlex="15">{{trans.transDate | date }}</div>
+                                <div fxFlex="20" class="left-align">{{trans.transDesc}}</div>
+                                <div fxFlex="10" class="left-align">{{trans.folioNo}}</div>
+                                <div fxFlex="15" class="right-align">{{trans.amount | reportNumber}}</div>
+                                <div fxFlex="10" class="right-align">{{trans.price | reportNumber}}</div>
+                                <div fxFlex="15" class="right-align">{{trans.units | reportNumber}}</div>
+                            </div>
+                        </div>
+                        <div fxFlex class="width-100" *ngIf="folioUnitsList[fundIdx][transIdx] != null">
+                            <div fxLayout="row" fxLayoutAlign="start start" class="differentiate">
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start start" class="mar-tb-10 md-text-col">
+                                <div fxFlex="15"></div>
+                                <div fxFlex="20" class="left-align individualTotal">Closing Balance</div>
+                                <div fxFlex="25" class="right-align individualTotal">{{folioAmtList[fundIdx][transIdx] | reportNumber}} (Net Inflow)</div>
+                                <div fxFlex="25" class="right-align individualTotal">{{folioUnitsList[fundIdx][transIdx] | reportNumber}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start" class="lastRow total-allocation-details">
+                <div fxFlex class="report-card pad-lr-30 mar-tb-15">
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                        <div fxFlex="15"></div>
+                        <div fxFlex="55" class="left-align">Total Closing Balance</div>
+                        <div fxFlex="15" class="right-align">{{fund.closingUnits | reportNumber}}</div>
+                        <div fxFlex="15" class="right-align">{{fund.closingValue | reportNumber}}</div>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+</div>

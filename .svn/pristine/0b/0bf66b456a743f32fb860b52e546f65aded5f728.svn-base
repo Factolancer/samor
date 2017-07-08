@@ -1,0 +1,174 @@
+<div *ngIf="basicFactSheet" class="basic-factsheet">
+    <div fxLayout="row" fxLayoutAlign="center center" class="basic-title-area" md-dialog-title>
+        <div fxFlex="88">{{basicFactSheet.name}}</div>
+        <div fxFlex="7">
+            <button md-icon-button="" class="watchlist-icon-btn">
+                <md-icon class="md-24">&#xE8F4;</md-icon><!--EYE ICON-->
+            </button>
+        </div>
+        <div fxFlex="5">
+            <md-icon class="md-18 clickable" (click)="dialogRef.close()">&#xE888;</md-icon>
+        </div>
+    </div>
+    <div md-dialog-content class="basic-body-area">
+        <div fxLayout="column" fxLayoutAlign="start start">
+            <div fxFlex class="param-key">Basic Description</div>
+            <div fxFlex class="param-value pad-tb-5">
+                {{basicFactSheet.description}}
+            </div>
+            <div fxFlex>
+                <hr/>
+            </div>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <md-card class="card">
+                <div fxLayout="row" fxLayoutAlign="center start">
+                    <div fxFlex="40">
+                        <table>
+                            <thead>
+                            <tr class="name">
+                                <td colspan="2">Basic Details</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="param-key">NAV</td>
+                                <td>{{basicFactSheet.nav | currency:'INR':true:'1.0-0'}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Fincash Rating</td>
+                                <td><span [outerHTML]="basicFactSheet.fincashRating | rating"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Inception Date</td>
+                                <td>{{basicFactSheet.inceptionDate}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Category</td>
+                                <td>{{basicFactSheet.category}} {{basicFactSheet.subCategory}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Type</td>
+                                <td>{{basicFactSheet.schemeType}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Net Assets</td>
+                                <td>{{basicFactSheet.netAssets | currency:'INR':true:'1.0-0'}} Cr.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Benchmark Name</td>
+                                <td>{{basicFactSheet.benchmarkName}}</td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div fxFlex="40" fxFlexOffset="10">
+                        <table>
+                            <thead>
+                            <tr class="name">
+                                <td colspan="2">Other Important Details</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="param-key">Min Investment Amount</td>
+                                <td>{{basicFactSheet.minInvAmt | currency:'INR':true:'1.0-0'}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Min SIP Investment</td>
+                                <td>{{basicFactSheet.minSIPAmt | currency:'INR':true:'1.0-0'}}</td>
+                            </tr>
+                            <tr *ngIf="basicFactSheet.category === 'Debt'">
+                                <td class="param-key">Yield</td>
+                                <td>{{basicFactSheet.yield}}</td>
+                            </tr>
+                            <tr *ngIf="basicFactSheet.category === 'Debt'">
+                                <td class="param-key">Maturity</td>
+                                <td>{{basicFactSheet.maturity}}</td>
+                            </tr>
+                            <tr *ngIf="basicFactSheet.category === 'Debt'">
+                                <td class="param-key">Duration</td>
+                                <td>{{basicFactSheet.duration}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Alpha</td>
+                                <td>{{basicFactSheet.alpha}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Expense Ratio</td>
+                                <td>{{basicFactSheet.expenseRatio}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Sharpe Ratio</td>
+                                <td>{{basicFactSheet.sharpeRatio}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Information Ratio</td>
+                                <td>{{basicFactSheet.infoRatio}}</td>
+                            </tr>
+                            <tr>
+                                <td class="param-key">Exit Load</td>
+                                <td>{{basicFactSheet.exitLoad}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </md-card>
+            <md-card class="card">
+                <div fxLayout="row" fxLayoutAlign="center start">
+                    <div fxFlex="40">
+                        <table>
+                            <thead>
+                            <tr class="name">
+                                <td colspan="4">Return (Compounded Annualised)</td>
+                            </tr>
+                            <tr class="cols">
+                                <td *ngIf="basicFactSheet.ret1mn">1 Month</td>
+                                <td *ngIf="basicFactSheet.ret3mn">3 Month</td>
+                                <td *ngIf="basicFactSheet.ret6mn">6 Month</td>
+                                <td *ngIf="basicFactSheet.ret1yr">1 Year</td>
+                                <td *ngIf="basicFactSheet.ret3yr">3 Year</td>
+                                <td *ngIf="basicFactSheet.ret5yr">5 Year</td>
+                                <td *ngIf="basicFactSheet.retSinceInception">Since Inception</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td *ngIf="basicFactSheet.ret1mn">{{basicFactSheet.ret1mn}}</td>
+                                <td *ngIf="basicFactSheet.ret3mn">{{basicFactSheet.ret3mn}}</td>
+                                <td *ngIf="basicFactSheet.ret6mn">{{basicFactSheet.ret6mn}}</td>
+                                <td *ngIf="basicFactSheet.ret1yr">{{basicFactSheet.ret1yr}}</td>
+                                <td *ngIf="basicFactSheet.ret3yr">{{basicFactSheet.ret3yr}}</td>
+                                <td *ngIf="basicFactSheet.ret5yr">{{basicFactSheet.ret5yr}}</td>
+                                <td *ngIf="basicFactSheet.retSinceInception">{{basicFactSheet.retSinceInception}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div fxFlex="40" fxFlexOffset="10" class="center-align">
+                        <img src="public/images/fund/riskometer.svg"
+                             alt="fund risk:{{basicFactSheet.riskometer}}" width="200"/>
+                        <p style="font-size: 8px">Investors understand that their principal will be at
+                            {{basicFactSheet.riskometer}} risk</p>
+                    </div>
+                </div>
+            </md-card>
+        </div>
+    </div>
+
+    <div md-dialog-actions>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
+            <div fxFlex="25">
+                <button md-raised-button="" color="primary" class="cta-50" (click)="showAdvancedView()">Advanced View
+                </button>
+            </div>
+            <div fxFlex="25">
+                <button md-raised-button="" color="primary" class="cta-50">Add to cart</button>
+            </div>
+        </div>
+    </div>
+</div>

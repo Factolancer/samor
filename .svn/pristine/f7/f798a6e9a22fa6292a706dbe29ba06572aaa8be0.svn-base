@@ -1,0 +1,53 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {SmartSipComponent} from "./smart-sip/smart-sip.component";
+import {SipComponent} from "./sip.component";
+import {SmartSipFundResolveService} from "./smart-sip/smart-sip-fund-resolve.service";
+import {SipCalcComponent} from "./sip-calc/sip-calc.component";
+import {GoalBasedComponent} from "./sip-calc/goal-based.component";
+import {ReturnsBasedComponent} from "./sip-calc/returns-based.component";
+
+
+const sipRoutes: Routes = [
+    {
+        path: 'sip',
+        children: [
+            {
+                path: 'smartsip',
+                component: SmartSipComponent,
+                resolve: {
+                    funds: SmartSipFundResolveService,
+                }
+            },
+            {
+                path: 'expert',
+                redirectTo: '/funds/selection/sip',
+                pathMatch: 'full'
+            },
+            {
+                path: 'calculator',
+                children: [
+                    {
+                        path: 'questions/:id',
+                        component: GoalBasedComponent
+                    },
+                    {
+                        path: 'returns',
+                        component: ReturnsBasedComponent
+                    },
+                    {
+                        path: '',
+                        component: SipCalcComponent,
+                    }
+                ]
+            },
+            {
+                path: '',
+                component: SipComponent,
+            }
+        ]
+    }
+];
+
+export const sipRouting: ModuleWithProviders = RouterModule.forChild(sipRoutes);
+

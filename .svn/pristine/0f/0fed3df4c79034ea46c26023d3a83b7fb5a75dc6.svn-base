@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-capital-gains-report',
+  templateUrl: './capital-gains-report.component.html',
+  styleUrls: ['./capital-gains-report.component.css']
+})
+export class CapitalGainsReportComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

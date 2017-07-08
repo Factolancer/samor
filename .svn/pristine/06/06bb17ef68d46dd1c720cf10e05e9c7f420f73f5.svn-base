@@ -1,0 +1,46 @@
+@import "../../styles/partials/web-partials";
+
+.fund-name {
+  font-weight: 700;
+  color: $brand-secondary;
+}
+
+.heading-36-sip {
+  @include heading(36px, 400);
+  color: $text-dark-grey;
+}
+
+.heading-16-sip {
+  @include heading(16px, 400);
+  color: $text-medium-grey;
+}
+
+.product-card {
+
+  padding: 0;
+
+  .card-head {
+    background-color: $brand-secondary;
+    font-size: 28px;
+    color: $white;
+    padding: 10px 0;
+    text-align: center;
+  }
+
+  .list-item {
+    padding: 10px 0;
+
+    .list-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      margin-right: 20px;
+    }
+  }
+
+  .card-foot {
+    text-align: center;
+    padding: 15px 25%;
+  }
+
+}

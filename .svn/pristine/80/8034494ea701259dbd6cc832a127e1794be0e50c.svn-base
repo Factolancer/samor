@@ -1,0 +1,32 @@
+<div class="row">
+    <section *ngIf="fundDisplay.totalCount>fundDisplay.rows">
+        <!--previous funds-->
+        <div class="col-md-3">
+            <span *ngIf="fundDisplay.from + 1 > fundDisplay.rows" class="float-right">
+                  <button md-button="" (click)="prev()">PREVIOUS</button>
+            </span>
+        </div>
+
+        <div class="col-md-6">
+        <span *ngFor="let page of displayPageNumbers">
+            <span *ngIf="page == currentPosition">
+                <button md-mini-fab="" color="accent" class="md-accent" ng-reflect-color="accent"
+                        (click)="gotoPage($event.target.value)" value="{{page}}">
+                {{page+1}}
+                </button>
+            </span>
+            <span *ngIf="!(page == currentPosition)">
+                <button md-icon-button="" (click)="gotoPage($event.target.value)" value="{{page}}">
+                    {{page+1}}
+                </button>
+            </span>
+        </span>
+        </div>
+        <!--Next Funds-->
+        <div class="col-md-3">
+            <span *ngIf="fundDisplay.from < (fundDisplay.totalCount- fundDisplay.rows)">
+            <button md-button="" (click)="next()">NEXT</button>
+        </span>
+        </div>
+    </section>
+</div>

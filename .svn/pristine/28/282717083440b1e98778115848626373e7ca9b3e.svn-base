@@ -1,0 +1,10 @@
+import { Injectable } from '@angular/core';
+import {Holdings} from "../holding-report/holdings";
+
+@Injectable()
+export class PortfolioReportService {
+
+  constructor() { }
+
+
+}

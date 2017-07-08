@@ -1,0 +1,22 @@
+import {Component, OnInit} from "@angular/core";
+import {Logger} from "../shared/logger/logger";
+
+@Component({
+    selector: 'app-sip',
+    templateUrl: './sip.component.html',
+    styleUrls: ['./sip.styles.scss']
+})
+export class SipComponent implements OnInit {
+
+    //  investmentMode: InvestmentType;
+
+    constructor(private logger:Logger) {
+        //  this.investmentType = InvestmentType.sip;
+    }
+
+    ngOnInit() {
+        this.logger.debug("its working!")
+        this.logger.info("its info!")
+    }
+
+}

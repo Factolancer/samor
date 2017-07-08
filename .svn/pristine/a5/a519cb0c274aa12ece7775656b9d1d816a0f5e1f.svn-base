@@ -1,0 +1,22 @@
+@import "../../../public/styles/partials/web-partials";
+
+.card {
+  background-color: $light-grey;
+  color: $text-dark-grey;
+
+  .icon-space {
+    text-align: center;
+
+    &:first-of-type {
+      border-right: 2px solid $brand-primary;
+    }
+
+    .title {
+      padding: 20px;
+      color: $brand-primary;
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+
+}

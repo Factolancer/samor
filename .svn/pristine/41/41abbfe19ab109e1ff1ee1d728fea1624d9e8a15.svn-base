@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-md-6">
+        <h3 style="margin-top:0px">{{productEnum[product.product]}}</h3>
+    </div>
+    <div class="col-md-6" *ngIf="isFincashProduct">
+        <button md-raised-button="" (click)="removeProduct(product.product)">Remove {{productEnum[product.product]}}
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table>
+            <thead class="table-header">
+            <td class=" table-element">Fund</td>
+            <td class="table-element">Risk</td>
+            <td class="table-element">Min Investment</td>
+            <td class=" table-element" *ngIf="!isFincashProduct">Action</td>
+            </thead>
+            <tbody>
+            <tr *ngFor="let fundItem of product.funds" class="table-row">
+                <td class="table-element left-align clickable">
+                    <a routerLink="/factsheet/{{fundItem.id}}">
+                        <md-icon class="material-icons factsheet-icon md-14">&#xE873;</md-icon>
+                        {{fundItem.name}}
+                    </a>
+                </td>
+                <td class="table-element">{{fundItem.risk}}</td>
+                <td class="table-element">{{fundItem.minInvestment | currency:'INR':true:'1.0-0'}}</td>
+                <td class="table-element" *ngIf="!isFincashProduct"
+                    (click)="removeFund(fundItem.id, product.investmentType)">
+                    <button md-icon-button=""><i class="material-icons">&#xE14C;</i></button><!--Clear icon-->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

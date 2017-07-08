@@ -1,0 +1,82 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper  pad-tb-35">
+    <div fxFlex="80" fxFlex.xs="100" class="calc-box">
+        <div fxLayout="row" fxLayout="start start" ngClass.gt-sm="calc-title" ngClass.lt-md="calc-title-m">
+            <div fxFlex="100">Tax Calculator</div>
+        </div>
+        <div fxLayout="row" fxLayout="start start" class="calc-sub-title pad-tb-15">
+            <div fxFlex="100">Investment Limit under Section 80C is {{150000 | currency:'INR':true:'1.0-0' }}</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="70" >
+                <div fxLayout="row" fxLayout="start start">
+                    <div fxFlex="{{completeTherm}}" class="completeTherm"></div>
+                    <div fxFlex="{{remainingTherm}}" class="remainingTherm"></div>
+                </div>
+                <div fxLayout="row" fxLayout="start start">
+                    <div fxFlex="{{completeTherm}}" *ngIf="remainingTherm!=0" class="completeThermText">
+                        {{currentInvestment | currency:'INR':true:'1.0-0'}}
+                    </div>
+                    <div fxFlex="{{completeTherm}}" *ngIf="remainingTherm==0" class="completeThermText">
+                        {{150000 | currency:'INR':true:'1.0-0'}}
+                    </div>
+                    <div fxFlex="{{remainingTherm}}" *ngIf="remainingTherm!=0" class="remainingThermText">
+                        {{150000 - currentInvestment| currency:'INR':true:'1.0-0' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="80" fxFlex.xs="100">
+                <div class="results-area" ngClass.lt-md="pad-5 mar-10" ngClass.gt-sm="pad-20 mar-20">
+                    <div class="highlight">Our Assessment</div>
+                    <div class="curr-inv" *ngIf="investmentOpportunity>0">
+                        Your Current Investments are: {{currentInvestment | currency:'INR':true:'1.0-0'}}
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start start" *ngIf="investmentOpportunity>0">
+                        <div fxFlex class="amount-area">
+                            <div class="amount-title" ngClass.lt-md="pad-5 mob" ngClass.gt-sm="pad-20">
+                               <span> Further Investment Opportunity</span>
+                            </div>
+                            <div class="amount">{{investmentOpportunity | currency:'INR':true:'1.0-0'}}</div>
+                        </div>
+                        <div fxFlex class="amount-area">
+                            <div class="amount-title" ngClass.lt-md="pad-5 mob" ngClass.gt-sm="pad-20">
+                                <span>
+                                    <md-icon class="md-16 no-select"
+                                             mdTooltip="The amount shown is estimated from the salary you have mentioned and the taxation norms of financial year 2016-17. Please consult your financial advisor for other tax-related information.">
+                                    &#xE88E;</md-icon>
+                                Tax Saved through further Investmen
+                                </span>
+                            </div>
+                            <div class="amount">{{taxSaved | currency:'INR':true:'1.0-0'}}</div>
+                        </div>
+                    </div>
+                    <div class=" grey-back center-align pad-25" *ngIf="investmentOpportunity==0">
+                        <p>You no longer need to Invest in tax-saving schemes under section 80C.
+                        </p>
+                        <p class="dark-grey-text bold">Invest in <a routerLink="/sip" class="clickable">SmartSIP</a>
+                            &amp; <a routerLink="/cash" class="clickable">SavingsPlus</a> to earn more.</p>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between start" class="pad-20">
+                    <div fxFlex="15" fxFlex.lt-md="40">
+                        <button md-raised-button="" class="hollow-cta-36" (click)="back()">Start Again
+                        </button>
+                    </div>
+                    <div fxFlex="15" fxFlex.lt-md="40">
+                        <button color="primary" md-raised-button="" class="cta-36" routerLink="/tax/taxsaver">
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" class=" wrapper">
+    <div fxFlex="80">
+        <span (click)="seeDisclaimers()" class="disclaimer-text clickable">Disclaimers: The projections and charts are based
+        upon the basic information you have provided and are simulated based on expected long term returns...<u>read more</u></span>
+    </div>
+</div>

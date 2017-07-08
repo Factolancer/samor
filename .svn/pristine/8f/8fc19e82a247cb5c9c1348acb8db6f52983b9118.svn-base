@@ -1,0 +1,47 @@
+import {Injectable} from "@angular/core";
+import {BankSearchResults} from "./search-results";
+import {BankSearchInput} from "./search-input";
+import {Subject} from "rxjs";
+import {Http} from "@angular/http";
+import {HttpService} from "../../../core/services/http-service.service";
+
+
+@Injectable()
+export class BankSearchService {
+
+
+    private searchResultsSource = new Subject<BankSearchResults>();
+    searchResults = this.searchResultsSource.asObservable();
+
+    private searchInputSource = new Subject<BankSearchInput>();
+    searchInput = this.searchInputSource.asObservable();
+
+    constructor(private httpService: HttpService, private http: Http) {
+        /*
+         this.searchInputSource.next();
+         */
+
+    }
+
+    searchBranch(searchInput: BankSearchInput) {
+        this.setSearchInput(searchInput)
+        //fundSearchInput = JSON.stringify(fundSearchInput);
+        console.log("SearchInput: " + JSON.stringify(searchInput))
+        this.httpService.post("/getbanks", searchInput).subscribe(output => {
+            console.log(output.banks);
+            this.searchResultsSource.next(output as BankSearchResults);
+            console.log("Returned from backend");
+        });
+    }
+
+
+    getFilterData(path: string) {
+        return this.httpService.get(path);
+    }
+
+    setSearchInput(searchInput: BankSearchInput) {
+        this.searchInputSource.next(searchInput);
+    }
+
+
+}

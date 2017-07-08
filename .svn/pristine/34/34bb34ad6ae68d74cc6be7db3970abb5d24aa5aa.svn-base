@@ -1,0 +1,5 @@
+<h1 md-dialog-title>{{config.infoTitle}}</h1>
+<div md-dialog-content>{{config.infoText}}</div>
+<div md-dialog-actions>
+    <button md-button (click)="dialogRef.close()">Ok</button>
+</div>

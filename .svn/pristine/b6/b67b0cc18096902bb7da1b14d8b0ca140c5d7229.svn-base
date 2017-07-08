@@ -1,0 +1,5 @@
+<accordion class="ng-binding">
+    <div class="panel-group">
+        <ng-content></ng-content>
+    </div>
+</accordion>

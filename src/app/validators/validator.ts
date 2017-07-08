@@ -1,0 +1,210 @@
+import {FormControl, ValidatorFn, AbstractControl} from "@angular/forms";
+import {isNullOrUndefined} from "util";
+
+export class EmailValidator {
+
+    static isValidMailFormat(control: FormControl) {
+        let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]{2,}([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+
+        if (control.value != "" && (control.value.length <= 5 || !EMAIL_REGEXP.test(control.value))) {
+            return {"inValidMailFormat": control.value};
+        }
+        return null;
+    }
+}
+
+export class DateValidator {
+    static isInvestorAdult(control: FormControl) {
+        var now = new Date();
+        var dobDate = now.setFullYear(now.getFullYear() - 18);
+        if (new Date(control.value) >= new Date(dobDate)) {
+            return {"isInvestorAdult": control.value}
+        }
+        return null;
+    }
+
+    static isInvestorTooOld(control: FormControl) {
+        if (new Date(control.value) <= new Date(1900, 1, 1)) {
+            return {"isInvestorTooOld": control.value}
+        }
+        return null;
+    }
+
+    static isNomieeBorn(control: FormControl) {
+        var now = new Date;
+        if (new Date(control.value) >= now){
+            return {"isNomieeBorn": control.value}
+        }
+        return null;
+    }
+
+    static minDate(control: FormControl): ValidatorFn {
+
+        return (control: AbstractControl): { [key: string]: any } => {
+            // if (isPresent(Validators.required(control))) return null;
+
+            var d = new Date(control.value);
+            var now = new Date()
+            var dobDate = now.setFullYear(now.getFullYear() - 18)
+
+            // if (!isDate(d)) return {minDate: true};
+            // if (minDate instanceof Function) minDate = minDate();
+
+            return d >= new Date(dobDate) ? null : {minDate: true};
+        };
+    };
+}
+
+export class PANValidator {
+    static maxLength = 10;
+
+    static isValidPANFormat(control: FormControl) {
+        let PAN_REGEXP = /^[a-zA-Z]{3}([ABCFGHLJPTK]{1})([a-zA-Z]{1})([0-9]{4})([a-zA-Z]{1})$/i;
+        if (control.value != "" && (control.value.length != 10 || !PAN_REGEXP.test(control.value))) {
+            return {"inValidPANFormat": control.value};
+        }
+        return null;
+    }
+}
+
+export class AadharValidator {
+    static maxLength = 12;
+
+    static isValidAadhaarFormat(control: FormControl) {
+        let Aadhaar_REGEXP = /^[0-9]{12}$/;
+        if (control.value != "" && (control.value.length != 12 || !Aadhaar_REGEXP.test(control.value))) {
+            return {"inValidAadhaarFormat": control.value};
+        }
+        return null;
+    }
+}
+
+export class PasswordValidator {
+    static minLength = 8;
+
+    static isValidPassword(control: FormControl) {
+        let Pass_REGEXP = /^.{8}$/;
+        if (control.value != "" && (control.value.length != 8 || !Pass_REGEXP.test(control.value))) {
+            return {"inValidPasswordFormat": control.value};
+        }
+        return null;
+    }
+}
+
+
+export class NumberValidator {
+
+    /**
+     * Validator that requires controls to have a minimum value.
+     */
+    static minValue(minValue: number): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } => {
+            const val = control.value; //typeof control.value.length > 0 ? control.value : 0;
+            return val < minValue ?
+                {'minValue': {'requiredValue': minValue, 'actualValue': val}} :
+                null;
+        };
+    }
+
+    /**
+     * Validator that requires controls to have a value multiple of 100.
+     */
+    static isHundredMultiple(): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } => {
+            const val = control.value; //typeof control.value.length > 0 ? control.value : 0;
+            return val % 100 ?
+                {'hundredMultiple': {'actualValue': val}} :
+                null;
+        };
+    }
+
+    /**
+     * Validator that requires controls to have a value multiple of provided number.
+     */
+    static isMultipleOf(multipleVal: number): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } => {
+            const val = control.value; //typeof control.value.length > 0 ? control.value : 0;
+            return floatSafeRemainder(val, multipleVal) ?
+                {'isMultiple': {'multipleVal': multipleVal, 'actualValue': val}} :
+                null;
+        };
+    }
+
+    /**
+     * Validator that requires controls to have a value multiple of provided number.
+     */
+    static isMultipleOfUnits(multipleVal: number): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } => {
+            const val = control.value; //typeof control.value.length > 0 ? control.value : 0;
+            return floatSafeRemainder(val, multipleVal) ?
+                {'isMultiple': {'multipleVal': multipleVal, 'actualValue': val}} :
+                null;
+        };
+    }
+
+    /**
+     * Validator that requires controls to have a minimum value.
+     */
+    static maxValue(maxValue: number): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } => {
+            const val = control.value; //typeof control.value.length > 0 ? control.value : 0;
+            return val > maxValue ?
+                {'maxValue': {'requiredValue': maxValue, 'actualValue': val}} :
+                null;
+        };
+    }
+
+    /**
+     *
+     * @param maxUnits
+     * @returns {(control:AbstractControl)=>{[p: string]: any}}
+     */
+    static maxUnits(maxUnits: number): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } => {
+            const val = control.value; //typeof control.value.length > 0 ? control.value : 0;
+            return val > maxUnits ?
+                {'maxValue': {'requiredValue': maxUnits, 'actualValue': val}} :
+                null;
+        };
+    }
+
+    /**
+     *
+     * @param minUnits
+     * @returns {(control:AbstractControl)=>{[p: string]: any}}
+     */
+    static minUnits(minUnits: number): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } => {
+            const val = control.value; //typeof control.value.length > 0 ? control.value : 0;
+            return val < minUnits ?
+                {'minValue': {'requiredValue': minUnits, 'actualValue': val}} :
+                null;
+        };
+    }
+}
+
+function floatSafeRemainder(valStr, step) {
+    if (!isNullOrUndefined(valStr) && !isNullOrUndefined(step) && typeof step === 'number'){
+        var val;
+        if(typeof valStr === 'string'){
+            try {
+                val = parseFloat(valStr);
+            }catch (e){
+                return 1;
+            }
+        }else if(typeof valStr === 'number'){
+            val = valStr;
+        }
+
+        var valDecCount = (val.toString().split('.')[1] || '').length;
+        var stepDecCount = (step.toString().split('.')[1] || '').length;
+        var decCount = valDecCount > stepDecCount ? valDecCount : stepDecCount;
+        var valInt = parseInt(val.toFixed(decCount).replace('.', ''));
+        var stepInt = parseInt(step.toFixed(decCount).replace('.', ''));
+        return (valInt % stepInt) / Math.pow(10, decCount);
+    }
+    else {
+        return 1;
+    }
+
+}

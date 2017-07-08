@@ -1,0 +1,24 @@
+/**
+ * Created by Fincash on 22-02-2017.
+ */
+import {NgModule} from '@angular/core';
+import {SharedModule} from "../shared/shared.module";
+import {DashboardModule} from "../dashboard/dashboard.module";
+
+import {productgpageRouting} from "./product.routes";
+import {ProductComponent} from "./product.component";
+
+
+
+
+@NgModule({
+    imports: [
+        SharedModule,
+        DashboardModule,
+        productgpageRouting
+    ],
+
+    declarations: [ProductComponent]
+})
+export class ProductModule {
+}

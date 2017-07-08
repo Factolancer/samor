@@ -1,0 +1,11 @@
+export interface CheckoutFund {
+    id: number;
+    name: string;
+    risk: string;
+    minInvestment: number;
+    investmentAmount?: number;
+    subOptionList?: string[];
+    selectedSubOption?: string;
+    deductionDateList?: number[];
+    selectedDeductionDate?: number;
+}

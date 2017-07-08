@@ -1,0 +1,62 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {SearchResults} from "./search-results";
+import {SearchInput} from "./search-input";
+import {Subject} from "rxjs";
+
+
+@Injectable()
+export class SearchService {
+
+
+    private searchResultsSource = new Subject<SearchResults>();
+    searchResults = this.searchResultsSource.asObservable();
+
+    private searchInputSource = new Subject<SearchInput>();
+    searchInput = this.searchInputSource.asObservable();
+
+    constructor(private httpService: HttpService) {
+        /*
+         this.searchInputSource.next();
+         */
+
+
+    }
+
+    searchFund(searchInput: SearchInput) {
+        searchInput.from = 0;
+        searchInput.sortElement = "drating";
+        searchInput.sortOrder = "desc";
+        this.setSearchInput(searchInput)
+        this.httpService.post("/searchFund", searchInput).subscribe(output => {
+            this.searchResultsSource.next(output.json() as SearchResults);
+        });
+    }
+
+
+    sort(searchInput: SearchInput) {
+        searchInput.from = 0;
+        this.setSearchInput(searchInput)
+        this.httpService.post("/searchFund", searchInput).subscribe(output => {
+            this.searchResultsSource.next(output.json() as SearchResults);
+        });
+    }
+
+    changePage(searchInput: SearchInput) {
+        this.setSearchInput(searchInput)
+        this.httpService.post("/searchFund", searchInput).subscribe(output => {
+            this.searchResultsSource.next(output.json() as SearchResults);
+        });
+    }
+
+
+    getFilterData(path: string) {
+        return this.httpService.get(path);
+    }
+
+    setSearchInput(searchInput: SearchInput) {
+        this.searchInputSource.next(searchInput);
+    }
+
+
+}

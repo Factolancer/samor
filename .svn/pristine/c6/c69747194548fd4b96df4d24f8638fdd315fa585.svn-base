@@ -1,0 +1,72 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {SearchService} from "./search.service";
+import {SearchInput} from "./search-input";
+import {AMC} from "../fund/models/amc";
+import {Subscription} from "rxjs/Subscription";
+
+@Component({
+    selector: 'app-search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.css'],
+})
+export class SearchComponent implements OnInit,OnDestroy {
+
+    amcList: AMC[];
+    searchInput: SearchInput = {
+        amcCode: [],
+        keyword: '',
+        from: 0,
+        rows: 10,
+        age: 0,
+        rating: [],
+        category: "",
+        sortElement: "drating",
+        sortOrder: "desc",
+        aumRange: "[* TO *]"
+    };
+    searchInputSubscription: Subscription;
+
+    constructor(private searchService: SearchService) {
+        this.searchService.setSearchInput(this.searchInput);
+        this.searchInputSubscription = this.searchService.searchInput.subscribe(
+            si => {
+                this.searchInput = si;
+            }
+        )
+    }
+
+    searchByAMC(amc: any) {
+        if (amc.length > 0) {
+            this.searchInput.amcCode = []
+            this.searchInput.amcCode.push(amc)
+        } else {
+            this.searchInput.amcCode = []
+        }
+        this.searchService.searchFund(this.searchInput)
+    }
+
+    searchForKeyword(value: any) {
+        if (value.length > 3) {
+            this.searchInput.keyword = value
+        } else {
+            this.searchInput.keyword = ""
+        }
+        this.searchService.searchFund(this.searchInput)
+    }
+
+    search() {
+        this.searchService.searchFund(this.searchInput)
+    }
+
+    ngOnInit() {
+        this.searchService.getFilterData("/sip/getAmcList").subscribe(
+            output => {
+                this.amcList = output as AMC[];
+            });
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+    }
+
+}

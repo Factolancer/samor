@@ -1,0 +1,92 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {Subject, Observable} from "rxjs";
+
+import {User} from '../models/user';
+import {Resolve, ActivatedRouteSnapshot} from "@angular/router";
+import {Http} from "@angular/http";
+
+@Injectable()
+export class UserService{
+
+    user: User
+
+    private userSource = new Subject<User>();
+    currentUser = this.userSource.asObservable();
+
+    constructor(private fchttpservice: HttpService) {
+        this.user = new User({firstName: '', lastName: '',  pan: '', panName: '', fatherName: '', motherName: '', contact: {}, dob: '', gender: '' },
+            {currentAddress: {}, permanentAddress: {}},
+            [{
+                holder_name: '', account_type: 'Savings Account',
+                bank: {bank_name: '', branch: '', city: '', ifsc: ''},
+                account_number: '',
+            }],
+            {
+                income: '',
+                occupation: '',
+                nationality: 'India',
+                birthCountry: 'India',
+                birthCity: '',
+                taxCountry: 'India',
+                politicallyExposed: 'No',
+                politicallyRelated: 'No'
+            },
+            {}
+        );
+    }
+
+    /*resolve(route: ActivatedRouteSnapshot){
+        return this.http.get('/getUserData')
+            .map(output => {
+                console.log("IN RESOLVE. OUTPUT = ");
+                console.log(output as User);
+                return output as User;
+            })
+    }*/
+
+    updateBasicData(userdata: any){
+        console.log("In UpdateBasicData")
+        this.user.userBasic = userdata;
+        console.log(this.user)
+        this.updateData(this.user);
+    }
+    updateKYCData(userdata:any){
+        this.user.userAddress = userdata;
+        console.log(this.user);
+        this.updateData(this.user);
+    }
+    updateBankData(userdata: any){
+        this.user.userBank = userdata;
+        console.log(this.user);
+        this.updateData(this.user);
+    }
+    updateOtherData(userdata: any){
+        this.user.userFatca = userdata;
+        if (userdata.controls['tax_country_india'].value == 'Yes') {
+            this.user.userFatca.taxCountry = 'India';
+        }
+        else {
+            this.user.userFatca.taxCountry = userdata.controls['tax_country'].value;
+        }
+        if (userdata.controls['investorType'].value == 'Resident Indian') {
+            this.user.userFatca.nationality = 'India';
+        }
+        else {
+            this.user.userFatca.nationality = userdata.controls['country'].value;
+        }
+        console.log(this.user);
+        this.updateData(this.user);
+    }
+
+    updateData(user) {
+        console.log("In Update Data");
+        this.fchttpservice.post('/user/postUserData', user)
+            .subscribe(output => {
+                console.log(output);
+            },
+            error => {
+                console.log(error);
+            })
+    }
+}

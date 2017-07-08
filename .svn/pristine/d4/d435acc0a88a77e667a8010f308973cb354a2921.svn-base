@@ -1,0 +1,20 @@
+import {Injectable} from '@angular/core';
+import {Holdings} from "./holdings";
+
+@Injectable()
+export class HoldingReportService {
+    funds: Holdings[];
+
+    constructor() {
+    }
+
+    getHoldings() {
+
+        this.funds = [new Holdings(1, "HDFC Tax Saver - Growth"),
+            new Holdings(2, "Birla Sun Life Frontline Equity Fund - Dividend"),
+            new Holdings(3, "IDFC Arbitrage - Regular"),
+            new Holdings(4, "DHFL Pramerica Arbitrage Fund"),
+            new Holdings(5, "Principal Arbitrage Fund - Regular")];
+        return this.funds;
+    }
+}

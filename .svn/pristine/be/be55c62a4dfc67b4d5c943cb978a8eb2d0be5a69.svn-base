@@ -1,0 +1,24 @@
+<div fxLayout="column" fxLayoutAlign="center center ">
+    <md-card class="mar-tb-5 report-card no-padding">
+        <div fxLayout="row" fxLayoutAlign="center center" class="allocation-header  allocation-heading ">
+            <div fxFlex="30" class="center-align">Folio</div>
+            <div fxFlex="50" class="center-align">Fund</div>
+            <div fxFlex="20" class="center-align">
+                IRR<br/>
+                <span class="font-10 dark-grey-text">(As on last NAV date of funds)</span>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex><hr></div>
+        </div>
+        <div *ngFor="let data of irrData; let i = index" fxLayout="row" fxLayoutAlign="center center" class="allocation-details " [ngClass]="{tableHeader: i==irrData.length-1, iir_total:i==irrData.length-1}">
+            <span fxFlex="30" class="asset-class-details center-align">{{data.folioNo}}</span>
+            <span fxFlex="50" class="asset-class-details center-align">{{data.fundName}}<br><i *ngIf="i < irrData.length - 1">Plan-{{data.divFreq}}
+                    {{data.plan}}, Option-{{data.divOption}}</i></span>
+            <span fxFlex="20" class="asset-class-details center-align">{{data.xirr | reportNumber}}%</span>
+        </div>
+    </md-card>
+    <!--<div class="col-md-2 text-right">
+        <span (click)="download()" class="clickable"><i class="material-icons">&#xE2C4;</i></span>
+    </div>-->
+</div>

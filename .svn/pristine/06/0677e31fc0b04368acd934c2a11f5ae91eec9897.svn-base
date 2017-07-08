@@ -1,0 +1,16 @@
+export class Plan {
+
+    planId:number;
+    planFreqName:string;
+    schemePlanType:string;
+    divFreqType:string;
+}
+
+export class DivOption{
+    divOptionType:string;
+    divOptionName:string;
+}
+export class DivOptionList{
+
+    divOptionList:DivOption[];
+}

@@ -1,0 +1,10 @@
+export class Product {
+    constructor(public soptRfnumArray: number[],
+                public soptIsDefaultArray: string[],
+                public soptIsWeightage: number[],
+                public smtRfnum: number,
+                public productName: string,
+                public productRfnum: number) {
+    }
+
+}

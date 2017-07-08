@@ -1,0 +1,133 @@
+<div class="login-dialog mar-t-70">
+    <div fxFlex="60" fxFlex.xs="90" fxFlexOffset="20" fxFlexOffset.xs="5">
+        <div fxLayout="row" fxLayoutAlign="center center" class="login-header" md-dialog-title>
+            <div fxFlex>
+                <span *ngIf="selectedTab==0"> LOG IN </span>
+                <span *ngIf="selectedTab==1"> SIGN UP</span>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutWrap fxLayoutAlign="center center" class="login-content grey-border">
+            <div fxFlex="55" fxFlex.xs="100" fxAlign="center" style="border-right: 0.5px solid lightgray">
+                <div fxFlex="90" fxFlexOffset="5">
+                    <md-tab-group [(selectedIndex)]="selectedTab"> <!--(selectChange)="loadTab()"-->
+                        <md-tab label="Log in">
+                            <div>
+                                <form [formGroup]="LoginForm" (ngSubmit)="onLogIn()" novalidate>
+                                    <div fxLayout="column">
+                                        <br/>
+                                        <md-input-container fxFlex>
+                                            <input mdInput required formControlName="email" placeholder="Email Id">
+                                            <md-hint align="end" class="error" *ngIf="(LoginForm.controls['email'].touched || signInSubmitted)&&LoginForm.controls['email'].invalid">
+                                                <span *ngIf="LoginForm.controls['email'].hasError('required')">Email is required</span>
+                                                <span *ngIf="LoginForm.controls['email'].hasError('inValidMailFormat')">Please enter valid email</span>
+                                            </md-hint>
+                                        </md-input-container>
+                                        <md-input-container fxFlex>
+                                            <input mdInput required type="password" formControlName="password"
+                                                   placeholder="Password">
+                                            <md-hint align="end" class="error" *ngIf="(LoginForm.controls['password'].touched|| signInSubmitted)&&LoginForm.controls['password'].invalid">
+                                                <span *ngIf="LoginForm.controls['password'].hasError('required')">Password is required</span>
+                                            </md-hint>
+                                        </md-input-container>
+                                        <!--<div>
+                                          <re-captcha (captchaResponse)="captchaResponse = $event" site_key="<6Lf5ZigTAAAAAPOhSyDkbLv4JGbKLHCMgmlwQm5L>"></re-captcha>
+                                        </div>-->
+                                        <br/>
+                                        <label class="errorMessage">{{errormessage}}</label>
+                                        <br/>
+                                        <div fxFlex fxAlign="center">
+                                            <button type="submit" md-raised-button color="primary" class="login-button"
+                                                    (click)="validateSignIn(LoginForm.valid)"
+                                                [ngClass]="{'resLoading':loginResLoading}" [disabled]=loginResLoading >
+                                                <span [ngClass]="{'vis-hidden':loginResLoading}">LOGIN</span>
+                                            </button>
+                                            <div fxFlex="100" (click)="forgotPassword()" class="forgot-password center-align">
+                                                Forgot password?
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </md-tab>
+                        <md-tab label="Sign up">
+                            <div>
+                                <form [formGroup]="signUpForm" (ngSubmit)="onSignUp()">
+                                    <div fxLayout="column">
+                                        <br/>
+                                        <md-input-container fxFlex>
+                                            <input mdInput required formControlName="email" placeholder="Email Id">
+                                            <md-hint align="end" class="error" *ngIf="(signUpForm.controls['email'].touched|| signUpSubmitted)&&signUpForm.controls['email'].invalid">
+                                                <!--<span *ngIf="signUpForm.controls['email'].value.length">Please enter valid email</span>-->
+                                                <span *ngIf="signUpForm.controls['email'].hasError('required')">Email is required</span>
+                                                <span *ngIf="signUpForm.controls['email'].hasError('minlength') || signUpForm.controls['email'].hasError('maxlength')">Email length should be 5-60 characters</span>
+                                                <span *ngIf="signUpForm.controls['email'].hasError('inValidMailFormat')">Please enter valid email</span>
+                                                <span *ngIf="signUpForm.controls['email'].hasError('inValid')">Email already in use</span>
+                                            </md-hint>
+
+                                        </md-input-container>
+                                        <div formGroupName="password" fxLayout="column">
+                                            <md-input-container fxFlex>
+                                                <input mdInput required type={{typePass}} formControlName="enter_password"
+                                                       placeholder="Password" #signUpPass>
+                                                <span class="clickable showPass" md-suffix (click)="typePass = typePass =='password'?'text':'password'"><i class="material-icons">remove_red_eye</i> </span>
+                                                <md-hint align="end" class="error" *ngIf="(signUpForm.controls['password']['controls']['enter_password'].touched|| signUpSubmitted)&&signUpForm.controls['password']['controls']['enter_password'].invalid">
+                                                    <span *ngIf="signUpForm.controls['password']['controls']['enter_password'].hasError('required')">Password is required</span>
+                                                    <span *ngIf="signUpForm.controls['password']['controls']['enter_password'].hasError('minlength') || signUpForm.controls['password']['controls']['enter_password'].hasError('maxlength')">Password length should be 8-20 characters</span>
+                                                </md-hint>
+                                            </md-input-container>
+                                            <md-input-container fxFlex>
+
+                                                <input mdInput required type="password" formControlName="confirm_password"
+                                                       placeholder="Confirm Password"
+                                                       onpaste="return false">
+                                                <md-hint align="end" class="error" *ngIf="signUpForm.controls['password'].invalid">
+                                                    <span *ngIf="(signUpForm.controls['password']['controls']['confirm_password'].valid ||signUpSubmitted) && signUpForm.controls['password']['controls']['enter_password'].valid
+                                                    &&signUpForm.controls['password'].invalid">
+                                                        Passwords don't match </span>
+                                                </md-hint>
+
+                                            </md-input-container>
+                                        </div>
+                                        <br/>
+                                        <label class="errorMessage">{{errormessage2}}</label>
+                                        <br/>
+                                        <div fxFlex fxAlign="center">
+                                            <button type="submit" md-raised-button color="primary" class="login-button"
+                                            (click)="validateSignUp(signUpForm.valid)"
+                                                    [ngClass]="{'resLoading':signupResLoading}" [disabled]=signupResLoading >
+                                                <span [ngClass]="{'vis-hidden':signupResLoading}">SIGNUP</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </md-tab>
+                    </md-tab-group>
+                </div>
+            </div>
+            <div fxFlex="45" fxFlex.xs="100" fxAlign="center">
+                <div fxFlex="90" fxFlexOffset="5">
+                    <a href="/api/auth/google">
+                        <button type="button" md-raised-button class="google-fb-button login-google">
+                            <span *ngIf="selectedTab==0"> Log In </span>
+                            <span *ngIf="selectedTab==1"> Sign Up </span> with Google
+                        </button>
+                    </a>
+                    <br/>
+                    <br/>
+                    <a href="/api/auth/facebook">
+                        <button type="button" md-raised-button class="google-fb-button login-facebook">
+                            <span *ngIf="selectedTab==0"> Log In </span>
+                            <span *ngIf="selectedTab==1"> Sign Up</span> with Facebook
+                        </button>
+                    </a>
+               </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

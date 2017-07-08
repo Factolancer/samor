@@ -1,0 +1,40 @@
+'use strict';
+// Development specific configuration
+// ==================================
+module.exports = {
+    dist : 'dist',
+    DOMAIN: 'http://'+this.ip+':'+this.port,
+    // Server IP
+    ip: process.env.IP || 'localhost',
+    // Server port
+    port: process.env.PORT || '3000',
+    // MongoDB connection options
+    mongo: {
+        uri: process.env.MONGOLAB_URI ||
+        'mongodb://10.1.0.2/fincash'
+    },
+    playServer : {
+        ip :  '10.1.0.2',
+        port : 2930
+    },
+    bsePanel : {
+        url :  'http://bsestarmfdemo.bseindia.com',
+        usename : '1023001',
+        memberid : '10230',
+        passwd : '123456$'
+    },
+    document : {
+       rootPath : 'documents',
+       pdfPath : 'app-pdfs',
+       imagePath : 'app-images',
+       upload : 'app-uploads',
+       snapshot :  'snapshot'
+    },
+    NODEMAILER: {
+        service: 'Gmail',
+        auth: {
+            user: 'taiga@fincash.com',
+            pass: 'finc@$h'
+        }
+    }
+};

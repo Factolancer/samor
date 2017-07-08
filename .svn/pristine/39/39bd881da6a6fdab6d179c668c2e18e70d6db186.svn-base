@@ -1,0 +1,20 @@
+<div class="row">
+    <app-filter-title [filterTitle]="filterTitle" [showFilterContent]="true" #title></app-filter-title>
+    <div class="col-md-12 filter-content" *ngIf="title.showFilterContent">
+        <div>
+            <button md-button="" (click)="clearFilter()" class="float-right filter-clear"
+                    *ngIf="selectedArray.length > 0">Clear
+            </button>
+        </div>
+        <span *ngFor="let selectedItem of selectedArray;">
+            <md-checkbox (change)="filter($event.checked, selectedItem)" value="selectedItem.id" [checked]="true">
+                <span [outerHTML]="selectedItem.displayVal | rating"></span>
+            </md-checkbox><br>
+        </span>
+        <span *ngFor="let item of ratingFilterData">
+            <md-checkbox (change)="filter($event.checked, item)" value="item.id" [disabled]="item.count == 0">
+                <span [outerHTML]="item.displayVal | rating"></span><span *ngIf="item.count!=0">({{item.count}})</span>
+            </md-checkbox><br>
+        </span>
+    </div>
+</div>

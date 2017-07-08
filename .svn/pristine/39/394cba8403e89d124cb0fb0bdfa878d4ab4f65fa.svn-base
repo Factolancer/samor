@@ -1,0 +1,37 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {Checkout} from "./checkout";
+import {Summary} from "./summary";
+import {SummaryFund} from "./summary-fund";
+
+@Injectable()
+export class CheckoutService {
+
+    checkoutData: Checkout;
+
+    constructor(private httpService: HttpService) {
+    }
+
+    getCheckoutData() {
+        return this.httpService.get("/checkout/getCheckoutData");
+    }
+
+    getSummaryData() {
+        return this.httpService.get("checkout/getSummaryInfo");
+    }
+
+    invest() {
+        return this.httpService.post("/checkout/invest", this.prepareSummary());
+    }
+
+    prepareSummary(): any {
+        let summaryFunds: SummaryFund[] = [];
+        this.checkoutData.fundsData.forEach(fund => {
+            summaryFunds.push(new SummaryFund(fund.selectedSoptRfnum, fund.fund.basicFactsheet.name, fund.selectedPlan,
+                fund.selectedOption, fund.selectedInvestmentMode, fund.selectedAIPFrequency, +fund.selectedDeductionDate,
+                +fund.noOfInstallment, +fund.amount));
+        })
+        return new Summary(summaryFunds, this.checkoutData.selectedBank.id, this.checkoutData.totalInvestmentAmount);
+    }
+
+}

@@ -1,0 +1,85 @@
+<div [formGroup]="productFormGroup">
+    <div class="row">
+        <div class="col-md-6">
+            <h3 style="margin-top:0px">{{productEnum[product.product]}}</h3>
+        </div>
+        <div class="col-md-6" *ngIf="isFincashProduct">
+            <button md-raised-button="" class="pull-right" (click)="removeProduct(product.product)">Remove
+                {{productEnum[product.product]}}
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <md-input placeholder="{{productEnum[product.product]}} Investment Amount" type="number"
+                      formControlName="investmentAmount" min="{{minInvProduct}}" step="100"
+                      (change)="distributeTotalInvestmentAmount()">
+                <span md-prefix>&#x20B9;</span><!--Rupee icon-->
+            </md-input>
+        </div>
+        <div class="col-md-4">
+            <md-checkbox align="start" *ngIf="isSIP"
+                         formControlName="startPaymentToday" required>Make First Payment Today
+            </md-checkbox>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table>
+                <thead class="table-header">
+                <td class=" table-element">Fund</td>
+                <td class="table-element">Sub Option</td>
+                <td class="table-element" *ngIf="isSIP">Monthly Deduction Date</td>
+                <td class="table-element" *ngIf="isSIP">Duration (in months)</td>
+                <td class="table-element">Investment Amount</td>
+                <td class=" table-element" *ngIf="!isFincashProduct">Action</td>
+                </thead>
+                <tbody>
+                <tr *ngFor="let fundGroup of productFormGroup.controls.funds.controls; let index=index;"
+                    class="table-row">
+                    <td class="table-element left-align">
+                        <md-icon class="material-icons md-14 clickable">&#xE88E;</md-icon> <!--Info Icon-->
+                        {{product.funds[index].name}}
+                    </td>
+                    <td class="table-element">
+                        <select [formControl]="fundGroup.controls.selectedSubOption">
+                            <option *ngFor="let subOption of product.funds[index].subOptionList" [value]="subOption">
+                                {{subOption}}
+                            </option>
+                        </select>
+                    </td>
+                    <td class="table-element" *ngIf="isSIP">
+                        <select [formControl]="fundGroup.controls.selectedDeductionDate">
+                            <option *ngFor="let deductionDate of product.funds[index].deductionDateList"
+                                    [value]="deductionDate">
+                                {{deductionDate}}
+                            </option>
+                        </select>
+                    </td>
+                    <td class="table-element" *ngIf="isSIP">
+                        <md-input placeholder="{{productEnum[product.product]}} Investment Period" type="number"
+                                  [formControl]="fundGroup.controls.investmentDuration"></md-input>
+                    </td>
+                    <td class="table-element">
+                        <md-input type="number" required [formControl]="fundGroup.controls.investmentAmount"
+                                  min="{{product.funds[index].minInvestment}}"
+                                  step="100"
+                                  (change)="calculateTotalInvestmentAmount()">
+                            <span md-prefix>&#x20B9;</span><!--Rupee icon-->
+                        </md-input>
+                    </td>
+                    <td class="table-element" *ngIf="!isFincashProduct"
+                        (click)="removeFund(product.funds[index].id, product.investmentType)">
+                        <button md-icon-button=""><i class="material-icons">&#xE14C;</i></button><!--Clear icon-->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6 pull-right" *ngIf="!isFincashProduct">
+            <button md-raised-button="" class="pull-right" routerLink="/explore/{{productEnum[product.product]}}">Add
+                Funds
+            </button>
+        </div>
+    </div>
+</div>

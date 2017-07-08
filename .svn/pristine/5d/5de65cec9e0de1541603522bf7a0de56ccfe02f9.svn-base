@@ -1,0 +1,55 @@
+import { Observable } from 'rxjs/Rx';
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { Injectable, ViewContainerRef } from '@angular/core';
+import {LoginComponent} from "./login.component";
+import {ForgotPasswordComponent} from "./forgot-password.component"; // brath added 12th jan 8pm
+import {CheckKYCComponent} from "./check-kyc.component"; // brath added 116th jan
+
+
+import {SignupComponent} from "./signup.component";
+import {Router} from "@angular/router";
+
+@Injectable()
+export class LoginService {
+
+    constructor(private dialog: MdDialog, public router: Router) { }
+
+    public loginUser(viewContainerRef: ViewContainerRef): Observable<any> {
+
+        let dialogRef: MdDialogRef<LoginComponent>;
+        let config = new MdDialogConfig();
+        config.viewContainerRef = viewContainerRef;
+        config.role = 'dialog';
+        config.width = '50%';
+        config.height = '60%';
+        dialogRef = this.dialog.open(LoginComponent, config);
+        return dialogRef.afterClosed();
+    }
+    public checkKYC(viewContainerRef: ViewContainerRef): Observable<any> {
+
+        let dialogRef: MdDialogRef<CheckKYCComponent>;
+        let config = new MdDialogConfig();
+        config.viewContainerRef = viewContainerRef;
+        config.role = 'dialog';
+        config.width = '40%';
+        dialogRef = this.dialog.open(CheckKYCComponent, config);
+        return dialogRef.afterClosed();
+    }
+
+
+
+    public signUpUser(viewContainerRef: ViewContainerRef): Observable<any> {
+        let dialogRef: MdDialogRef<SignupComponent>;
+        let config = new MdDialogConfig();
+        config.viewContainerRef = viewContainerRef;
+        config.role = 'dialog';
+        config.width = '50%';
+        dialogRef = this.dialog.open(SignupComponent, config);
+        return dialogRef.afterClosed();
+    }
+
+    public logOutUser(){
+        localStorage.removeItem('id_token');
+        this.router.navigate(['/']);
+    }
+}

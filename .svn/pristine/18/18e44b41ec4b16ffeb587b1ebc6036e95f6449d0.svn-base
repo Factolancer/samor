@@ -1,0 +1,11 @@
+/**
+ * Created by Fincash on 23-01-2017.
+ */
+
+
+exports.index = function (app, req, res) {
+    console.log("request @ default controller");
+    console.log(app.get("distPath"));
+    res.sendFile('index.html', { root: app.get("distPath") });
+}
+

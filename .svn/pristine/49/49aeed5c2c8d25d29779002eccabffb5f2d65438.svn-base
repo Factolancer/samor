@@ -1,0 +1,13 @@
+<div class="row filter-more-data-data">
+    <div class="col-md-12">
+        <span class="filter-more-data-title">{{title}}</span>
+        <md-input placeholder="Search Category" [(ngModel)]="pattern" (input)="searchDataList()" style="width: 100%"></md-input>
+    </div>
+    <div class="col-md-12  filter-more-data-content">
+        <span *ngFor="let item of currentDataList;">
+             <md-checkbox (change)="addToFilter($event.target.value)">
+                {{item.name}}</md-checkbox><br>
+        </span>
+        <!--<button (click)="">Apply Filter</button>-->
+    </div>
+</div>

@@ -1,0 +1,81 @@
+@import "../../styles/partials/web-partials";
+
+.check-kyc-dialog {
+  margin: -24px;
+
+  .check-kyc-header {
+    background-color: $brand-secondary;
+    color: $white;
+    @include heading(24px, 400);
+    width: 100%;
+    line-height: 80px;
+    text-align: center;
+    margin-bottom: 0;
+    letter-spacing: 1.8px;
+  }
+  .kyc-non-compliant.active {
+
+    md-card{
+      background-color: $error;
+      padding:15px;
+      color:white;
+    }
+    .material-icons{
+      color:$error;
+    }
+  }
+  .kyc-non-compliant.disabled {
+    md-card{
+      background-color: $medium-grey;
+      padding:15px;
+      color:white;
+    }
+    .material-icons{
+      color:black;
+    }
+  }
+  .kyc-compliant{
+   md-card{
+     background-color: $success;
+     padding:15px;
+     color:white;
+   }
+    .material-icons{
+      color:$success;
+    }
+  }
+
+  .validPhone{
+    display: none;
+  }
+
+  .check-pan-button, .submit-otp-button, .send-otp-button{
+    background-color: $brand-secondary;
+    color: $white;
+    text-align: center;
+  }
+
+  .adhaar-enquiry-box{
+    background-color: $light-grey;
+    margin-bottom: 0;
+    padding: 15px;
+    .adhaar-enquiry-text{
+      color: black;
+      font-size: 16px;
+      font-weight:bold;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    .yes-button{
+      background-color: $brand-secondary;
+      border: solid 0.5px #979797;
+      padding: 5px 25px;
+      font-size: 14px;
+    }
+    .no-button{
+      background-color: $medium-grey;
+      @extend .yes-button;
+    }
+  }
+
+}

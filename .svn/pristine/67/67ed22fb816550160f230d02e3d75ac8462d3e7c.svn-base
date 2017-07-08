@@ -1,0 +1,27 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Your Watchlist</h1>
+        </div>
+    </section>
+    <section class="data-body">
+        <div class="row" *ngIf="watchlistProducts.length==0">
+            <div class="col-md-12">
+                <h3 class="center-align">You don't have any funds in Watchlist</h3>
+                <button md-raised-button="" routerLink="/explore/sip" class="center-align">Explore</button>
+            </div>
+        </div>
+        <app-watchlist-view *ngFor="let item of watchlistProducts" [_product]="item" class="watchlist-product"
+                            (onFundSelected)="fundSelected($event)" (remove)="removeProduct($event)"></app-watchlist-view>
+    </section>
+    <section class="data-foot" *ngIf="watchlistProducts.length!=0">
+        <div class="row">
+            <div class="col-md-12">
+                <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                        routerLink="/checkout/init">Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+

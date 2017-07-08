@@ -1,0 +1,18 @@
+import {Injectable, ViewContainerRef, Inject} from "@angular/core";
+import {MdSnackBarConfig, MdSnackBar} from "@angular/material";
+import {IAppConfig, APP_CONFIG} from "../../environments/environment";
+
+@Injectable()
+export class SnackBarService {
+
+
+    constructor(private mdSnackBar: MdSnackBar, @Inject(APP_CONFIG) private config: IAppConfig,) {
+    }
+
+    showSnackBar(message: string, action: any, viewContainerRef: ViewContainerRef) {
+        let config = new MdSnackBarConfig();
+        config.duration = this.config.snackBarTime;
+        config.viewContainerRef = viewContainerRef;
+        this.mdSnackBar.open(message, action, config);
+    }
+}

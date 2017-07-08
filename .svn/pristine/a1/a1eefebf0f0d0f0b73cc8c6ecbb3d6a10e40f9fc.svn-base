@@ -1,0 +1,25 @@
+export class BasicFactSheet {
+    constructor(public fundId: string,
+                public name: string,
+                public description: string,
+                public nav: string,
+                public inceptionDate: string,
+                public category: string,
+                public schemeType: string,
+                public netAssets: string,
+                public expenseRatio: string,
+                public fincashRating: string,
+                public exitLoad: string,
+                public benchmarkName: string,
+                public minInvAmt: string,
+                public minSIPAmt: string,
+                public alpha: string,
+                public sharpeRatio: string,
+                public infoRatio: string,
+                public retSinceInception: string,
+                public ret1: string,
+                public ret3: string,
+                public ret5: string,
+                public riskometer: string) {
+    }
+}

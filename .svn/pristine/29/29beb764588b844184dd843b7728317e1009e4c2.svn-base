@@ -1,0 +1,219 @@
+import {Component, OnInit, ViewContainerRef, Inject, OnDestroy} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {CheckoutService} from "../../core/services/checkout.service";
+import {InvestmentModeEnum} from "../../enum/investment-mode-enum";
+import {CheckoutFund} from "../models/checkout-fund";
+import {Checkout} from "../models/checkout";
+import {SnackBarService} from "../../core/services/snack-bar.service";
+import {disclaimers} from "../../../properties/discalimers";
+import html2canvas from "html2canvas";
+import {Logger} from "../../core/logger/logger";
+import {SummaryUserInfo} from "../models/summary-user-info";
+import {OrderSummary} from "../models/order-summary";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {PaymentObject} from "../models/payment-object";
+import {Location, PlatformLocation} from "@angular/common";
+import {URLAccessGuard} from "../../core/guards/urlAccess.guard";
+import {Http} from "@angular/http";
+import {TitleService} from "../../core/services/title.service";
+import {LoginService} from "../../core/services/login.service";
+import {MdDialog, MdDialogConfig} from "@angular/material";
+import {LoadingDialogComponent} from "../../shared/loading-dialog.component";
+import {HeaderService} from "../../core/services/header.service";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/take";
+import "rxjs/add/observable/timer";
+import {isNullOrUndefined} from "util";
+import {BseBank} from "../models/bse-bank";
+
+@Component({
+    selector: 'app-summary',
+    templateUrl: './summary.component.html',
+    styleUrls: ['../checkout.styles.scss']
+})
+export class SummaryComponent implements OnInit, OnDestroy {
+
+    checkoutData: Checkout;
+    sipFunds: CheckoutFund[];
+    lumpsumFunds: CheckoutFund[];
+    agreementSelected: boolean;
+    disclaimerList: string[];
+    sipDisclaimerText: string;
+    bankDetailsList: BseBank[];
+    className: string;
+    summaryUserInfo: SummaryUserInfo;
+    loadingDialogRef: any;
+    hideDetails: boolean;
+    additionalPurchaseExists: boolean;
+
+    constructor(private route: ActivatedRoute, private router: Router, private logger: Logger,
+                private checkoutService: CheckoutService, private http: Http,
+                private viewContainerRef: ViewContainerRef, private snackBarService: SnackBarService,
+                @Inject(APP_CONFIG) private config: IAppConfig, private location: Location,
+                private platformLocation: PlatformLocation, private urlAccessGuard: URLAccessGuard,
+                private headerService: HeaderService,
+                private titleService: TitleService, private loginService: LoginService, private dialog: MdDialog) {
+        this.agreementSelected = false;
+        this.className = "SummaryComponent";
+        this.sipDisclaimerText = `${disclaimers.checkout_sip}`;
+        this.hideDetails = false;
+    }
+
+    ngOnInit() {
+        this.titleService.setTitle("summary");
+        this.sipFunds = [];
+        this.lumpsumFunds = [];
+        this.checkoutData = this.checkoutService.checkoutData;
+
+        this.route.data.forEach((data: { userInfo: SummaryUserInfo }) => {
+            this.summaryUserInfo = data.userInfo;
+        });
+
+
+        this.checkoutData.fundsData.forEach(fund => {
+            if (fund.selectedInvestmentMode == InvestmentModeEnum[InvestmentModeEnum.SIP]) {
+                this.sipFunds.push(fund);
+            } else {
+                this.lumpsumFunds.push(fund);
+            }
+        });
+        this.setBSEBankDetails();
+        this.checkAdditionalPurchase();
+        this.disclaimerList = [`${disclaimers.summary_1}`, `${disclaimers.summary_2}`, `${disclaimers.summary_3}`, `${disclaimers.summary_4}`, `${disclaimers.summary_5}`]
+
+    }
+
+    setBSEBankDetails(){
+        let bankType = this.checkoutData.selectedBank.bankType;
+        if(isNullOrUndefined(bankType) || bankType.length == 0){
+            this.bankDetailsList = this.checkoutData.bseBankDetails;
+        }
+    }
+
+    checkAdditionalPurchase(){
+        for(let fund of this.lumpsumFunds){
+            if(!isNullOrUndefined(fund.folioNo) && fund.folioNo.length > 0){
+                this.additionalPurchaseExists = true;
+            }
+        }
+    }
+    proceed() {
+        if (this.agreementSelected) {
+            document.body.scrollTop = 0;
+
+            let userObject = this.loginService.getUserObject();
+            this.logger.debug(this.className, userObject);
+            this.headerService.hideHeader();
+            this.headerService.hideFooter();
+            this.hideDetails = true;
+            let timerSubscription = Observable.timer(1000).take(1).subscribe(val => {
+                html2canvas(document.body, {svgRendering: true}).then(canvas => {
+                    this.hideDetails = false;
+                    this.headerService.showHeader();
+                    this.headerService.showFooter();
+                    timerSubscription.unsubscribe();
+                    this.showLoadingDialog();
+                    let base64String = canvas.toDataURL("image/png");
+                    this.http.post(this.config.snapshotApi, {
+                        id: userObject['userid'],
+                        type: 'order',
+                        snapshot: base64String
+                    }).subscribe(response => {
+                        let imageObject = response.json();
+
+                        if (imageObject && imageObject['success']) {
+                            this.checkoutService.invest(imageObject['uploadfile']).subscribe(orderResponse => {
+                                let orderSummary = orderResponse  as OrderSummary;
+                                let errorFound = false;
+
+                                orderSummary.subOrderList.forEach(subOrder => {
+                                    if (subOrder.orderProcessed == 1) {
+                                        this.checkoutData.fundsData.forEach(fund => {
+                                            if (fund.selectedSoptRfnum == subOrder.soptrfnum && fund.selectedInvestmentMode == subOrder.investmentMode) {
+                                                fund.orderPlaced = false;
+                                            }
+                                        });
+                                        errorFound = true;
+                                    } else {
+                                        this.checkoutData.fundsData.forEach(fund => {
+                                            if (fund.selectedSoptRfnum == subOrder.soptrfnum && fund.selectedInvestmentMode == subOrder.investmentMode) {
+                                                fund.orderPlaced = true;
+                                            }
+                                        })
+                                    }
+                                });
+
+                                if (errorFound) {
+                                    this.checkoutService.errorCheckoutData = this.checkoutData.fundsData;
+                                    this.urlAccessGuard.allow = true;
+                                    this.router.navigate(['confirm', orderSummary.orderId], {relativeTo: this.route.parent});
+
+                                } else {
+                                    this.logger.debug(this.className, this.route);
+                                    let paymentUrl = this.platformLocation['location'].origin + this.config.paymentFallbackUrl;
+                                    this.checkoutService.getPaymentLink(new PaymentObject(orderSummary.orderId, paymentUrl)).subscribe(paymentResponse => {
+                                        let responsePaymentObj = paymentResponse as PaymentObject;
+                                        this.logger.debug(this.className, responsePaymentObj);
+                                        window.location.replace(responsePaymentObj.bseUrl);
+                                    })
+                                }
+                            })
+
+                        } else {
+                            this.snackBarService.showSnackBar("Please try again later.", "Okay", this.viewContainerRef);
+                        }
+                    })
+                });
+            });
+        }
+        else {
+            this.snackBarService.showSnackBar("Please accept the terms and conditions", "Okay", this.viewContainerRef);
+        }
+
+
+    }
+
+    back() {
+        this.urlAccessGuard.allow = true;
+        this.router.navigate(['init'], {relativeTo: this.route.parent});
+
+    }
+
+    goToTermsConditions() {
+        window.open(this.platformLocation['location'].origin + "/static/terms-conditions", "_blank");
+
+    }
+
+    showLoadingDialog() {
+        let config = new MdDialogConfig();
+        let device = this.headerService.deviceType();
+        if (device === 'xs' || device === 'sm') {
+            config.width = '100%';
+        }else {
+            config.width = '25vw';
+        }
+        config.disableClose = true;
+        config.viewContainerRef = this.viewContainerRef;
+        let loadingConfig = {
+            text: "Processing..."
+        };
+        this.loadingDialogRef = this.dialog.open(LoadingDialogComponent, config);
+        this.loadingDialogRef.componentInstance.config = loadingConfig;
+
+    }
+
+    checkboxAgreement() {
+        if (this.agreementSelected) {
+            this.checkoutService.getSummaryInfo().subscribe(output => {
+                this.summaryUserInfo = output as SummaryUserInfo;
+            })
+        }
+    }
+
+
+    ngOnDestroy() {
+        if (this.loadingDialogRef) {
+            this.loadingDialogRef.close();
+        }
+    }
+}

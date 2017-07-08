@@ -1,0 +1,133 @@
+import { Component, OnInit } from '@angular/core';
+import {NgForm, FormGroup, Validators, FormControl, FormBuilder, Validator, FormControlName} from '@angular/forms';
+import {Subscription} from "rxjs";
+
+import {User} from "../../../models/user";
+import {UserService} from '../../user.service';
+import {Banks} from "../../../bank-list";
+import {Bank} from "../../../models/bank";
+import {BankSearchInput} from "../../../search/search-input";
+import {BankSearchService} from "../../../search/search.service";
+
+@Component({
+  selector: 'bank-section',
+  templateUrl: './bank-section.component.html',
+  styleUrls: ['../../registration.component.css']
+})
+export class BankSectionComponent implements OnInit {
+  bankForm: FormGroup;
+  account: FormGroup;
+  public banks = Banks;
+  public bank: Bank;
+  public bankList: Bank[];
+  user: User
+
+  banksaved = false;
+  bankcollapsed = true;
+
+  usersubscription: Subscription;
+  resultsubscription: Subscription
+  searchInput: BankSearchInput = {
+    bank_name: '',
+    keyword: '',
+    branch: '',
+    city: '',
+    IFSC: '',
+    address: ''
+  };
+
+  constructor(private fb: FormBuilder, public userService: UserService, public  searchService: BankSearchService) {
+    this.user = new User({pan: '', name: '', dob: '', gender: '', contact: {}},
+        {job: '', income: '', father_spouse: '', address_proof: '', current_address: {}, permanent_address: {}},
+        {holder_name: '', account_type: 'Savings Account', account_number: '',
+          bank: {bank_name:'', ifsc: '', city:'', state:''}},
+        {
+          investor_type: 'Resident Indian',
+          birth_country: 'India',
+          country: 'India',
+          tax_country: 'India',
+          politically_exposed: 'No',
+          politically_related: 'No'
+        });
+
+    this.usersubscription = this.userService.currentUser.subscribe(
+        result => {
+          this.user = result
+        }
+    )
+  }
+
+  ngOnInit() {
+    this.bankForm = this.fb.group({
+          holder_name: ['', Validators.compose([Validators.required])],
+          bank: this.fb.group({
+            bank_name: [''],
+            ifsc: ['', Validators.compose([Validators.required, Validators.pattern('[0-9a-zA-Z]{11}')])],
+            city: [''],
+            state: [''],
+            branch: [''],
+            district: [''],
+            address: ['']
+          }),
+          account_type: [''],
+          account: this.fb.group({
+            account_number: ['', Validators.compose([Validators.required])],
+            confirm_account_number: ['', Validators.compose([Validators.required])]
+          }) //this.isAccountNumberSame('account_number', 'confirm_account_number'))
+        }, //);
+
+        this.isAccountNumberSame('account_number', 'confirm_account_number')
+    );
+  }
+
+  searchForBranch(value: any) {
+    if (value.length >= 3) {
+      this.searchInput.keyword = value;
+    } else {
+      this.searchInput.keyword = "";
+    }
+    this.searchService.searchBranch(this.searchInput)
+  }
+
+  setBankName() {
+    this.searchInput.bank_name = this.bankForm.controls['bank'].get('bank_name').value;
+  }
+
+  select(item: Bank) {
+    this.user.Bank.bank = item;
+    // console.log(this.user.Bank.bank.city);
+    //console.log(this.bank.IFSC);
+    // this.bankForm.controls['bank'].get('city').setValue(item.city);
+  }
+
+  isAccountNumberSame(acc: string, confirmAcc: string) {
+    return (group: FormGroup): {[key: string]: any} => {
+      let account = group.controls[acc];
+      let confirmAccount = group.controls[confirmAcc];
+
+      console.log(account, confirmAccount);
+
+      if (account.value !== confirmAccount.value) {
+        return {
+          mismatchedPasswords: true
+        };
+      }
+      else {
+        return null;
+      }
+    }
+  }
+
+  onBankSubmit() {
+    this.banksaved = true;
+    this.userService.updateBankData(this.bankForm.value);
+    // this.user.Bank = this.bankForm.value;
+    // console.log(this.user);
+    this.toggleBank();
+  }
+
+  toggleBank() {
+    if (this.bankcollapsed == true) this.bankcollapsed = false;
+    else this.bankcollapsed = true;
+  }
+}

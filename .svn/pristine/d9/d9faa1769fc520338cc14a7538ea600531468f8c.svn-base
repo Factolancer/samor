@@ -1,0 +1,61 @@
+import { Component, OnInit, Inject } from '@angular/core';
+import {APP_CONFIG, IAppConfig} from "../../environments/environment";
+import {Founder,Team} from "../models/teamMember";
+import {TeamMembers, TeamFounders } from "./team";
+
+@Component({
+  selector: 'app-about-us-team',
+  templateUrl: './team.component.html',
+  styleUrls: ['./about-us.component.scss']
+})
+export class TeamComponent implements OnInit {
+  founders : any[] = [];
+  team : any[] = [];
+  salutationTxt:string = 'We are here to bridge the gap between the complex investment world and your wealth creation.';
+  footerSalutationTxt:string = 'Fincash.com enables individuals to seamlessly transact online in top performing mutual funds in India';
+
+  aboutUsTxt:string ='We, at Fincash, create a personalised investment experience and bring in the best investment plans ' +
+      'for our investors. Our investment and wealth management products are a smart blend of technology and financial knowledge.' +
+      ' Making investment simplified and available for all is our ultimate goal. We bring you some of the best ' +
+      'investment products designed by our experienced team. Our products are easily understandable, more accessible and ' +
+      'quick to invest. At Fincash, investors can transact and monitor all their investments hassle-free in just a few clicks.';
+  ourGoal:string = 'We aspire to be India’s finest and most user-friendly online investment platform.';
+
+  teamMembers:any;
+  teamFounders:any;
+  constructor(@Inject(APP_CONFIG) private config: IAppConfig) {
+    this.teamMembers = TeamMembers;
+    this.teamFounders = TeamFounders;
+
+  }
+  ngOnInit() {
+    this.initFounders();
+    this.initTeam();
+  }
+
+
+  initFounders(){
+
+    for(let i=0;i<this.teamFounders.length;i++) {
+      let teamF = new Team();
+      teamF.name = this.teamFounders[i].name;
+      teamF.role = this.teamFounders[i].role;
+      teamF.image = this.config.staticImagePath+this.teamFounders[i].image;
+      teamF.bio = this.teamFounders[i].bio;
+      this.founders.push(new Founder(teamF));
+    }
+  }
+
+  initTeam(){
+    for(let i=0;i<this.teamMembers.length;i++) {
+      let team = new Team();
+      team.name = this.teamMembers[i].name;
+      team.role = this.teamMembers[i].role;
+      team.image = this.config.staticImagePath+this.teamMembers[i].image;
+      team.bio = this.teamMembers[i].bio;
+      team.profNetLink = this.teamMembers[i].profNetLink;
+      this.team.push(team);
+    }
+  }
+
+}

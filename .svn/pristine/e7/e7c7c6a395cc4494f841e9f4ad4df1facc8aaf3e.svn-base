@@ -1,0 +1,40 @@
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {CartProduct} from "./cart-product";
+import {ActivatedRoute} from "@angular/router";
+import {MdDialogRef, MdDialogConfig, MdDialog} from "@angular/material";
+import {LoginComponent} from "../login/login.component";
+
+@Component({
+    selector: 'app-cart',
+    templateUrl: './cart.component.html',
+    styleUrls: ['./cart.component.css']
+})
+export class CartComponent implements OnInit {
+
+    cartProducts: CartProduct[];
+
+    logInDialogRef: MdDialogRef<LoginComponent>;
+
+    constructor(private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, public dialog: MdDialog) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: { cartProducts: CartProduct[] }) => {
+            this.cartProducts = data.cartProducts;
+        });
+    }
+
+    loginUser(){
+        let config = new MdDialogConfig();
+        config.viewContainerRef = this.viewContainerRef;
+        config.role = 'dialog';
+        config.width = '40%';
+        this.logInDialogRef = this.dialog.open(LoginComponent, config);
+    }
+
+    removeProduct(value: any) {
+        this.cartProducts = this.cartProducts.filter(product => product.product != value);
+    }
+
+
+}

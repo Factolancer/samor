@@ -1,0 +1,38 @@
+import {NgModule} from "@angular/core";
+import {FundPaginationPanelComponent} from "../explore-funds/fund-pagination-panel.component";
+import {FundViewPanelComponent} from "../explore-funds/fund-view-panel.component";
+import {FundComponent} from "../explore-funds/fund.component";
+import {SharedModule} from "../shared/shared.module";
+import {FactsheetModule} from "../factsheet/factsheet.module";
+import {CartModule} from "../cart/cart.module";
+import {RedeemFundSearchBarComponent} from "./redeem-fund-search-bar.component";
+/*import {AgeFilterComponent} from "./filters/age-filter.component";
+import {AmcFilterComponent} from "./filters/amc-filter.component";
+import {AumFilterComponent} from "./filters/aum-filter.component";
+import {CategoryFilterComponent} from "./filters/category-filter.component";
+import {MoreDataComponent} from "./filters/more-data.component";
+import {RatingFilterComponent} from "./filters/rating-filter.component";
+import {FilterTitleComponent} from "./filters/filter-title.component";
+import {FilterMasterComponent} from "./filters/filter-master.component";
+import {ChipsComponent} from "./filters/chips.component";
+import {SubCategoryFilterComponent} from "./filters/sub-category-filter.component";*/
+import {redemptionRouting} from "./redemption.routes";
+import {RedemptionComponent} from "./redemption.component";
+import {RedemptionService} from "./redemption.service";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        redemptionRouting,
+        FactsheetModule,
+        CartModule
+    ],
+    providers: [RedemptionService],
+    declarations: [RedemptionComponent, FundComponent, FundViewPanelComponent,
+        FundPaginationPanelComponent, RedeemFundSearchBarComponent, /*AgeFilterComponent,
+        AmcFilterComponent, AumFilterComponent, CategoryFilterComponent, MoreDataComponent,
+        RatingFilterComponent, FilterTitleComponent, FilterMasterComponent, ChipsComponent,
+        SubCategoryFilterComponent*/]
+})
+export class RedemptionModule {
+}

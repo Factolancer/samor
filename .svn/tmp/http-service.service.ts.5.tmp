@@ -1,0 +1,56 @@
+import {Injectable} from "@angular/core";
+import {Http, Response, Headers} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+
+
+@Injectable()
+export class HttpService {
+
+    constructor(private http: Http) {
+    }
+
+    baseUrl: string = "http://10.1.0.101:9000";
+
+    get(path: string): Observable<any> {
+        let headers = new Headers();
+        this.setHeader(headers);
+        return this.http.get(this.baseUrl + path, {headers: headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    post(path: string, data: any): Observable<any> {
+        let headers = new Headers();
+        this.setHeader(headers);
+        return this.http.post(this.baseUrl + path, data, {headers: headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    private setHeader(headers: Headers){
+        var token = localStorage.getItem('id_token') ? localStorage.getItem('id_token') : "";
+        return headers.append('Authorization', `Bearer ${token}`);
+    }
+
+    private extractData(res: Response) {
+        console.log(res);
+        let body = res.json();
+<<<<<<< .mine
+        let header = res.headers;
+        localStorage.setItem('id_token', header.get("id_token"));
+=======
+        ///localStorage.setItem('id_token', body.id_token);
+>>>>>>> .r853
+        return body || {};
+    }
+
+    private handleError(error: any) {
+        // In a real world app, we might use a remote logging infrastructure
+        // We'd also dig deeper into the error to get a better message
+        let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Observable.throw(errMsg);
+    }
+}
+

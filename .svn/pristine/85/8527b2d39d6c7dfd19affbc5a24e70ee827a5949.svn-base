@@ -1,0 +1,100 @@
+<!--
+<div fxLayout="row" fxLayoutAlign="center stretch" class="pad-tb-50" *ngIf="!searchResults">
+    <div fxFlex="20">
+        <md-progress-circle class="loading" color="primary" mode="indeterminate"></md-progress-circle>
+    </div>
+</div>
+-->
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="95">
+        <!--<div class="row">
+            <h1 class="center-align">{{pageHeading}}</h1>
+            &lt;!&ndash;  <h4 class="center-align">SIP type > Fund Selection > Investment Portfolio > Summary &amp; Checkout</h4>&ndash;&gt;
+        </div>-->
+
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" class="search-bar" *ngIf="searchResults">
+            <div fxFlex="60">
+                <app-fund-search-bar></app-fund-search-bar>
+            </div>
+        </div>
+
+
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px"
+             *ngIf="searchResults && searchResults.numFound == 0" class="no-result-found">
+            <div fxFlex="60">
+                <div fxLayout="row" fxLayoutAlign="space-around center" class="body">
+                    <div fxFlex="60">
+                        <div class="line-1 bold">SORRY!</div>
+                        <div class="line-1">NO RESULT FOUND</div>
+                        <hr>
+                        <div class="line-2">Please update your search and try again</div>
+                    </div>
+                    <div fxFlex="30" class="image">
+                        <img src="../../assets/img/fund/no-data-found.svg" width="150">
+                    </div>
+                </div>
+                <div class="grey-foot"></div>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-10"
+             *ngIf="searchResults && searchResults.numFound>0">
+            <div fxFlex="75">
+                <app-chips></app-chips>
+            </div>
+            <div fxFlex="25">
+                <app-fund-view-panel [allowViewChange]="false"></app-fund-view-panel>
+            </div>
+        </div>
+
+
+        <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="10px"
+             *ngIf="searchResults && searchResults.numFound>0">
+            <div fxFlex="15">
+                <app-filter-master></app-filter-master>
+            </div>
+            <div fxFlex="85">
+                <app-fund [showListView]="true"></app-fund>
+                <div fxLayout="row" fxLayoutWrap="" fxLayoutAlign="center center" fxLayoutGap="10px" class="pad-tb-20">
+                    <div fxFlex="100">
+                        <app-fund-pagination-panel></app-fund-pagination-panel>
+                    </div>
+                    <div fxFlex="100">
+                        <p class="disclaimer-text no-margin pad-tb-5">Note: To see the calculation dates of Rating, Returns, Fund Age & AUM please refer fund's Factsheet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--<div class="cart-button">
+    <button color="primary" md-mini-fab=""
+            [routerLink]="['/cart']">
+        <md-icon>&#xE8CC;</md-icon>
+    </button>
+</div>-->
+
+<div *ngIf="compareFundList.length>0">
+    <button md-raised-button="" color="accent" class="comparison-button"
+            (click)="compare()" (mouseover)="showComparisonList=true">Compare
+        {{compareFundList.length}}
+    </button>
+    <div *ngIf="showComparisonList" class="comparison-list"
+         (mouseleave)="showComparisonList=false">
+        <div *ngFor="let fund of compareFundList;let index = index; let last= last;">
+            <div fxLayout="row" fxLayoutAlign="start start" class="list-text">
+                <div fxFlex="95">{{fund.name}}</div>
+                <div fxFlex="5" class="clickable" (click)="removeCompareFund(fund)">
+                    <md-icon class="md-14">&#xE888;</md-icon>
+                </div>
+            </div>
+            <md-divider *ngIf="!last"></md-divider>
+        </div>
+        <div class="top-bar">
+            <button md-button="" class="remove-button" (click)="emptyCompare()">Remove All</button>
+        </div>
+    </div>
+</div>
+

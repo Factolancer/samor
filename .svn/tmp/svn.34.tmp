@@ -1,0 +1,41 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {BehaviorSubject} from "rxjs";
+import {FundDisplay} from "./fund-display";
+import {SearchService} from "../search/search.service";
+import {FundSearchInput} from "../search/fund-search-input";
+
+@Injectable()
+export class ExploreFundsService {
+
+    private fundDisplaySource = new BehaviorSubject<FundDisplay>(new FundDisplay());
+    fundDisplay = this.fundDisplaySource.asObservable();
+
+    constructor(private httpService: HttpService, private searchService: SearchService) {
+    }
+
+
+    getPage(from: number) {
+        let searchInput = this.searchService.getFundSearchInput();
+        searchInput.from = from;
+        this.searchService.setFundSearchInput(searchInput);
+    }
+
+    setDisplayRows(rows: number) {
+        let searchInput: FundSearchInput = this.searchService.getFundSearchInput();
+        searchInput.rows = rows;
+        console.log(rows);
+        console.log(searchInput);
+        this.searchService.setFundSearchInput(searchInput);
+    }
+
+    getFundDisplay() {
+        return this.fundDisplaySource.getValue();
+    }
+
+    setFundDisplay(fundDisplay: FundDisplay) {
+        this.fundDisplaySource.next(fundDisplay);
+    }
+
+
+}

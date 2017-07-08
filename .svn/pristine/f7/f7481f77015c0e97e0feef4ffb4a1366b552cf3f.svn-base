@@ -1,0 +1,54 @@
+import {Component, OnInit, ViewContainerRef, OnDestroy} from "@angular/core";
+import {Router} from "@angular/router";
+import {LoginService} from "../../core/services/login.service";
+import {Subscription} from "rxjs";
+import {KycStatusService} from "../../core/services/kycstatus.service";
+import {KYCGroup} from "../../constants/KYCGroup";
+
+@Component({
+    selector: 'app-navigation-panel',
+    templateUrl: './navigation-panel.component.html',
+    styleUrls: ['./navigation-panel.component.scss'],
+})
+export class NavigationPanelComponent implements OnInit, OnDestroy {
+    invested: boolean;
+    showEkycLink: boolean;
+    result: any;
+    investedSub:Subscription;
+
+    constructor(public router: Router, public loginService: LoginService, private kycStatusService: KycStatusService) {
+        this.showEkycLink = false;
+    }
+
+    ngOnInit() {
+        this.ifInvested();
+        this.kycStatusService.checkKycStatus().subscribe(response => {
+            if (response['kycstatus']){
+                let kycStatus = response['kycstatus'];
+                if (kycStatus != KYCGroup.KYC_Done && kycStatus != KYCGroup.KYC_EXTERNALLYDONE){
+                    this.showEkycLink = true;
+                }
+            }
+        })
+    }
+
+    ngOnDestroy() {
+        this.investedSub.unsubscribe();
+    }
+
+    ifInvested() {
+        this.investedSub = this.loginService.userObservable.subscribe(userObject =>{
+            if (userObject && userObject.foliocount && userObject.foliocount > 0) {
+                this.invested = true;
+            } else {
+                this.invested = false;
+            }
+        })
+    }
+
+    goTo(link) {
+        this.router.navigateByUrl(link);
+    }
+
+
+}

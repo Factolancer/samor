@@ -1,0 +1,55 @@
+import {Component, OnInit, Input, OnDestroy} from "@angular/core";
+import {Subject, Observable} from "rxjs";
+import {Fund} from "../models/fund";
+import {ExploreFundsService} from "./explore-funds.service";
+
+@Component({
+    selector: 'app-fund-search-bar',
+    templateUrl: './fund-search-bar.component.html',
+    styleUrls: ['./explore-funds.styles.scss']
+})
+export class FundSearchBarComponent implements OnInit, OnDestroy {
+
+
+    searchSuggestions: Observable<Fund[]>;
+    private searchTermStream = new Subject<string>();
+
+    @Input() searchType: string;
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+        this.subscribeToAutoComplete();
+    }
+
+    subscribeToAutoComplete() {
+        this.searchSuggestions = this.searchTermStream
+            .debounceTime(300)
+            .distinctUntilChanged()
+            .switchMap((term: string) => this.exploreFundsService.getFundAutoCompleteData(term));
+    }
+
+    searchBarInput(event: any, query: string) {
+        if (event.keyCode == 13 || event.type == "click") {
+            this.searchForKeyword(query);
+        } else if (query.length > 2) {
+                this.searchTermStream.next(query);
+        }
+    }
+
+
+    searchForKeyword(query: string) {
+        let defaultSearchInput = this.exploreFundsService.getDefaultFundSearchInput();
+        let searchInput = this.exploreFundsService.getFundSearchInput();
+        defaultSearchInput.keyword = query;
+        defaultSearchInput.searchType = this.searchType;
+        defaultSearchInput.rows = searchInput.rows;
+        this.exploreFundsService.setFundSearchInput(defaultSearchInput);
+    }
+
+    ngOnInit() {
+    }
+
+    ngOnDestroy() {
+        this.searchTermStream.unsubscribe();
+    }
+
+}

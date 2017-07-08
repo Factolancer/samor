@@ -1,0 +1,154 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80" fxFlex.xs="95" *ngIf="notemptyCartObservable | async">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <div fxFlex class="heading-32-dark-grey pad-tb-25">Your Cart</div>
+<<<<<<< .mine
+            <div fxFlex class="grey-back pad-30">
+                <md-card class="cart-product-head">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="45">
+                            Fund Name
+                        </div>
+                        <div fxFlex="20">
+                            Investment Mode
+                        </div>
+                        <div fxFlex="15">
+                            Risk
+                        </div>
+                        <div fxFlex="15">
+                            Min Investment
+                        </div>
+                        <div fxFlex="5">
+                            Action
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="cart-product-item">
+                    <div *ngFor="let fundItem of cartItems; let index=index;" fxLayout="row" fxLayoutAlign="start start">
+                        <!--Show for fincash product-->
+                        <div fxFlex="45" class="fund">
+=======
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div  fxFlex class="grey-back pad-30">
+                <md-card class="cart-product-head">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="45">
+                            Fund Name
+                        </div>
+                        <div fxFlex="20">
+                            Investment Mode
+                        </div>
+                        <div fxFlex="15">
+                            Risk
+                        </div>
+                        <div fxFlex="15">
+                            Min Investment
+                        </div>
+                        <div fxFlex="5">
+                            Action
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="cart-product-item">
+                    <div *ngFor="let fundItem of cartItems; let index=index;" fxLayout="row" fxLayoutAlign="start start">
+                        <!--Show for fincash product-->
+                        <div fxFlex="45" class="fund">
+>>>>>>> .r3657
+                        <span (click)="viewFactSheet(fundItem)" class="clickable">
+                            {{fundItem.name}}
+                        </span><br/>
+                            <span class="product-tag" fxAlign="start"
+                                  *ngIf="(fundItem.productObj &&((!fundItem.productObj.productOptions[0].investmentMode) ||
+                            (fundItem.productObj.productOptions[0].investmentMode == fundItem.investmentMode)))"
+                                  mdTooltip="This fund is a part of {{fundItem.productObj.productName}} bundle">
+                            <md-icon class="md-10">&#xE88E;</md-icon>
+                            {{fundItem.productObj.productName}}
+                        </span>
+<<<<<<< .mine
+                        </div>
+                        <div fxFlex="20">
+                            <md-select (onClose)="investmentModeUpdate(fundItem,index)"
+                                       [(ngModel)]="fundItem.investmentMode">
+                                <md-option [value]="investmentMode[investmentMode.SIP]" *ngIf="fundItem.sipAllowed">
+                                    {{investmentMode[investmentMode.SIP]}}
+                                </md-option>
+                                <md-option [value]="investmentMode[investmentMode.LUMPSUM]">
+                                    {{investmentMode[investmentMode.LUMPSUM]}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <div fxFlex="15">{{fundItem.risk | riskometer}}</div>
+                        <!--<div class="col-sm-2">{{fundItem.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}</div>-->
+                        <div fxFlex="15">
+                            <span *ngIf="fundItem.investmentMode == investmentMode[investmentMode.SIP]">{{fundItem.basicFactsheet.minSIPAmt | currency:'INR':true:'1.0-0'}}</span>
+                            <span *ngIf="fundItem.investmentMode == investmentMode[investmentMode.LUMPSUM]">{{fundItem.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}</span>
+                        </div>
+                        <div fxFlex="5">
+                            <button class="remove-btn clickable" (click)="removeFund(fundItem,index)">
+                                <md-icon class="md-16">&#xE888;</md-icon><!--highlight off icon-->
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+=======
+                        </div>
+                        <div fxFlex="20">
+                            <md-select (onClose)="investmentModeUpdate(fundItem,index)"
+                                       [(ngModel)]="fundItem.investmentMode">
+                                <md-option [value]="investmentMode[investmentMode.SIP]" *ngIf="fundItem.sipAllowed">
+                                    {{investmentMode[investmentMode.SIP]}}
+                                </md-option>
+                                <md-option [value]="investmentMode[investmentMode.LUMPSUM]">
+                                    {{investmentMode[investmentMode.LUMPSUM]}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <div fxFlex="15">{{fundItem.risk | riskometer}}</div>
+                        <!--<div class="col-sm-2">{{fundItem.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}</div>-->
+                        <div fxFlex="15">
+                            <span *ngIf="fundItem.investmentMode == investmentMode[investmentMode.SIP]">{{fundItem.basicFactsheet.minSIPAmt | currency:'INR':true:'1.0-0'}}</span>
+                            <span *ngIf="fundItem.investmentMode == investmentMode[investmentMode.LUMPSUM]">{{fundItem.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}</span>
+                        </div>
+                        <div fxFlex="5">
+                            <button class="remove-btn clickable" (click)="removeFund(fundItem,index)">
+                                <md-icon class="md-16">&#xE888;</md-icon><!--highlight off icon-->
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+>>>>>>> .r3657
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-20" *ngIf="notemptyCartObservable | async">
+            <div fxFlex="20" fxFlex.xs="45" class="add-funds">
+                <button md-button="" routerLink="/explore">
+                    <md-icon class="md-18">&#xE147;</md-icon>
+                    Add Funds
+                </button>
+            </div>
+            <div fxFlex="20" fxFlex.xs="45" fxFlexOffset="60" fxFlexOffset.xs="0">
+                <button color="primary" md-raised-button="" class="cta-50"
+                        (click)="validate()">INVEST NOW
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div fxFlex="40" fxFlex.xs="100" *ngIf="emptyCartObservable | async" class="mar-tb-45">
+        <div class="center-align"><img src="../../assets/img/empty-cart.svg"></div>
+        <div class="no-funds pad-tb-10"><span>No Funds</span> In your cart!</div>
+        <hr/>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="pad-tb-20">
+            <div fxFlex="35" fxFlex.xs="45">
+                <button md-button="" class="hollow-cta-40" routerLink="/explore">Explore Funds</button>
+            </div>
+            <div fxFlex="35" fxFlex="45">
+                <button md-raised-button="" color="primary" class="cta-40" routerLink="/products">Product Solutions
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

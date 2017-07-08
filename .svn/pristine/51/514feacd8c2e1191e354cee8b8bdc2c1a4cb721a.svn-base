@@ -1,0 +1,18 @@
+import {Injectable} from '@angular/core';
+import {Subject} from "rxjs";
+import {Fund} from "./fund";
+
+@Injectable()
+export class ReportService {
+
+    private fundIndexSource = new Subject<number>();
+    fundIndexResult = this.fundIndexSource.asObservable();
+
+    constructor() {
+    }
+
+
+    setFundIndexResult(fundIndexResult: number) {
+        this.fundIndexSource.next(fundIndexResult);
+    }
+}

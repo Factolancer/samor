@@ -1,0 +1,44 @@
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {HttpService} from "../core/services/http-service.service";
+import {PortfolioAssetAllocation} from "./portfolio-asset";
+import {AssetAllocationDetails} from "./asset-allocation";
+import {AssetClassFund} from "./asset-funds";
+import {Logger} from "../core/logger/logger";
+
+@Injectable()
+export class DashboardDataService {
+    className : string;
+    constructor(private httpservice: HttpService, private logger: Logger) {
+        this.className = "DashboardDataService";
+    }
+
+    getPortfolio(): Observable<any> {
+        return this.httpservice.secureGet('/report/summaryReport')
+            .map(res => res as PortfolioAssetAllocation)
+    }
+
+    getTransaction(): Observable<any> {
+        //TO BE CHANGED  AS PER LOGIC TO GET TRANSACTIONS
+        return this.httpservice.secureGet('/report/getUserTransactions');
+    }
+
+    getInvestmentDetails(): Observable<AssetAllocationDetails> {
+        return this.httpservice.secureGet('/report/getAssetAllocationReport')
+            .map(res => res as AssetAllocationDetails)
+    }
+
+    getInvestedFundDetails(): Observable<AssetClassFund> {
+        return this.httpservice.secureGet('/report/getAssetClassFundDetails')
+            .map(res => res as AssetClassFund)
+    }
+
+    getPendingDetails(): Observable<Array<any>> {
+        //TO BE CHANGED  AS PER LOGIC TO GET REAL NOTIFICATIONS
+        return this.httpservice.secureGet('/report/getAssetAllocationReport');
+    }
+
+    getTopPerformers(): Observable<Array<any>> {
+        return this.httpservice.secureGet('/report/getTopFunds');
+    }
+}

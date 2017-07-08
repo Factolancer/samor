@@ -1,0 +1,35 @@
+/**
+ * Created by Fincash on 23-01-2017.
+ */
+
+
+var config = require('../../config/environment'),
+    express = require('express'),
+    multer  = require('multer'),
+    upload = multer({ dest : config.document.upload}),
+    fs = require('fs'),
+    AWS = require('aws-sdk');
+
+
+
+exports.index = function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    //var userid = res.body.userid;
+    //console.log(userid);
+    console.log(req.body);
+    var uploadFile = upload.array('photo', 12); //upload.single('photo');
+    uploadFile(req, res, function (err) {
+        if (err) {
+            console.log("error");
+            res.json({success: false, msg: err});
+            return
+        }
+        console.log("Everything went fine");
+        res.json({success: true, msg: "Everything went fine"});
+    })
+};
+
+
+
+//module.exports = router;

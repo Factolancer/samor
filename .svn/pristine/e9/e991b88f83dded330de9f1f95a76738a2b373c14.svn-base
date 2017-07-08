@@ -1,0 +1,47 @@
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {SearchService} from "../search.service";
+import {Subscription} from "rxjs";
+import {SearchInput} from "../search-input";
+import {Category} from "../../fund/models/category";
+
+@Component({
+    selector: 'app-category-filter',
+    templateUrl: './category-filter.component.html',
+    styleUrls: ['./filters.css']
+})
+export class CategoryFilterComponent implements OnDestroy, OnInit {
+
+    searchInput: SearchInput;
+    searchInputSubscription: Subscription;
+    categoryList: Category[];
+
+    constructor(private searchService: SearchService) {
+        this.searchInputSubscription = this.searchService.searchInput.subscribe(
+            si => {
+                this.searchInput = si;
+            }
+        )
+    }
+
+    filter(value: any) {
+        this.searchInput.category = value;
+        this.searchService.searchFund(this.searchInput);
+    }
+
+    clearFilter() {
+        this.searchInput.category = "";
+        this.searchService.searchFund(this.searchInput);
+    }
+
+    ngOnInit() {
+        this.searchService.getFilterData("/sip/getCategoryList").subscribe(
+            output => {
+                this.categoryList = output.json() as Category[];
+            });
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+    }
+
+}

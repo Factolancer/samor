@@ -1,0 +1,53 @@
+import {Component, OnInit} from "@angular/core";
+import {TaxSaverFunds} from "./tax-saver-funds";
+import {ProductEnum} from "../../enum/product-enum";
+import {CartItem} from "../../models/cart-item";
+import {InvestmentTypeEnum} from "../../enum/investment-type-enum";
+import {CartService} from "../../cart/cart.service";
+import {ActivatedRoute} from "@angular/router";
+
+@Component({
+    selector: 'app-tax-saver',
+    templateUrl: './tax-saver.component.html',
+    styleUrls: ['./tax-saver.component.css']
+})
+export class TaxSaverComponent implements OnInit {
+
+    taxSaverFunds: TaxSaverFunds[];
+    investmentType = "SIP";
+
+    proceed(selectedFunds: any) {
+        let productType;
+        let fundIdArray = [];
+
+        if (selectedFunds.length < 3) {
+            productType = ProductEnum[ProductEnum.SIP];
+        } else {
+            productType = ProductEnum[ProductEnum.TAX_SAVER];
+        }
+
+        selectedFunds.forEach(fund => fundIdArray.push(fund.id));
+
+        let cartItem = <CartItem>{
+            product: productType,
+            investmentType: InvestmentTypeEnum[InvestmentTypeEnum.SIP],
+            fundIds: fundIdArray
+        };
+
+        this.cartService.addToCart(cartItem).subscribe(output=> {
+            alert(output.response);
+        });
+    }
+
+
+    constructor(private route: ActivatedRoute, private cartService: CartService) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: { funds: TaxSaverFunds[] }) => {
+            this.taxSaverFunds = data.funds;
+        });
+    }
+
+}
+

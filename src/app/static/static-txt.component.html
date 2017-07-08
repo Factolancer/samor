@@ -1,0 +1,22 @@
+<div class="wrapper">
+
+    <div fxFlex fxLayoutWrap="wrap" class="static" *ngIf="content">
+
+        <div fxFlex="100" class="title">
+            {{content.title}}
+        </div>
+
+        <div fxFlex="100" fxLayoutAlign="center" class="content">
+            <div fxFlex="80" fxFlex.xs="95">
+                <hr width="100%"/>
+                <div *ngFor="let item of content.content" class="mar-t-20">
+                    <div class="heading" [innerHTML]="item.heading"></div>
+                    <p class="text" *ngFor="let txt of item.text" [ngClass]="{bold:txt.split('@')[0]=='b'}" [innerHTML]="txt.split('@@')[1] || txt">
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

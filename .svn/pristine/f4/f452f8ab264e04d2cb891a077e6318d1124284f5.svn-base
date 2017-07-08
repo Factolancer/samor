@@ -1,0 +1,88 @@
+<div class="my-account" fxLayout="row">
+  <table width="100%" fxFlex="100">
+    <th class="highlight">My Account</th>
+    <tbody>
+    <tr>
+      <td>
+        <a (click)="goTo('registration/kyc')"  class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/kyc.svg" fxFlex="20">
+          <span fxFlex="70">KYC/Registration</span>
+        </a>
+      </td>
+    </tr>
+   <!-- <tr>
+      <td>
+        <a (click)="goTo('registration')"  class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/registration.svg" fxFlex="20">
+          <span fxFlex="70">Registration</span>
+        </a>
+      </td>
+    </tr>-->
+    <!--<tr>
+      <td>
+        <a (click)="goTo('my-account')" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/account.svg" fxFlex="20">
+          <span fxFlex="70">My Account</span>
+        </a>
+      </td>
+    </tr>-->
+    <tr *ngIf="invested">
+      <td>
+        <a (click)="goTo('dashboard/report/1')"  class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/holding-report.svg" fxFlex="20">
+          <span fxFlex="70">Holding Report</span>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a (click)="goTo('products')" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/invest.svg" fxFlex="20">
+          <span fxFlex="70">Invest <i>Now</i></span>
+        </a>
+      </td>
+    </tr>
+   <!-- <tr *ngIf="invested">
+      <td>
+        <a (click)="goTo('redeem-funds')" target="_blank" class="links" fxFlexLayout="row" fxLayoutAlign="center">
+          <img src="../../../assets/img/dashboard/navigation-panel/redeem.svg" fxFlex="20">
+          <span fxFlex="70">Redeem Funds</span>
+        </a>
+      </td>
+    </tr>-->
+    </tbody>
+  </table>
+</div>
+
+<div class="quick-links" fxLayout="row">
+  <table width="100%" fxFlex="100">
+    <th class="highlight">Quick Links</th>
+    <tbody>
+    <tr>
+      <td><a (click)="goTo('/calculator/sip')" class="links">SIP Calculator</a></td>
+    </tr>
+    <tr>
+      <td><a (click)="goTo('/calculator/tax')" class="links">Tax Calculator</a></td>
+    </tr>
+    <tr>
+      <td><a (click)="goTo('/explore')"  class="links">Explore Funds</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div *ngIf="invested" class="report" fxLayout="row">
+  <table width="100%" fxFlex="100">
+    <th  class="highlight">Reports</th>
+    <tbody>
+    <tr>
+      <td><a (click)="goTo('dashboard/report/3')" class="links">Capital Gains</a></td>
+    </tr>
+    <tr>
+      <td><a (click)="goTo('dashboard/report/2')" class="links">Transaction Report</a> </td>
+    </tr>
+    <tr>
+      <td><a (click)="goTo('dashboard/report/5')" class="links">IRR</a> </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

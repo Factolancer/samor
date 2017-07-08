@@ -1,0 +1,10 @@
+<div class="col-md-2">
+    <h4 style="font-weight: bold">Filters</h4>
+    <app-fund-age-filter></app-fund-age-filter>
+    <app-fund-rating-filter></app-fund-rating-filter>
+   <!-- <app-amc-filter></app-amc-filter>-->
+</div>
+<div class="col-md-10">
+    <app-search></app-search>
+    <app-fund></app-fund>
+</div>

@@ -1,0 +1,26 @@
+import {Component, OnInit} from "@angular/core";
+import {Router, ActivatedRoute} from "@angular/router";
+import {Logger} from "../../core/logger/logger";
+import {TitleService} from "../../core/services/title.service";
+
+@Component({
+    selector: 'app-sip-calc',
+    templateUrl: './sip-calc.component.html',
+    styleUrls: ['./sip-calc.styles.scss']
+})
+export class SipCalcComponent implements OnInit {
+
+    constructor(private router: Router, private route: ActivatedRoute, private logger: Logger,
+                private titleService: TitleService) {
+    }
+
+
+    ngOnInit() {
+        this.titleService.setTitle("sip_calculator");
+        this.titleService.setMetaTags("sip_calculator");
+    }
+
+    showGoalOptions() {
+        this.router.navigate(['goals'], {relativeTo: this.route})
+    }
+}

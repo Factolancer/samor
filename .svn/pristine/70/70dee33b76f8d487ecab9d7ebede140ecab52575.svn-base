@@ -1,0 +1,23 @@
+import { Component, OnInit } from '@angular/core';
+import {OrderService} from "./order.service";
+import {ActivatedRoute, Params} from "@angular/router";
+
+@Component({
+  selector: 'app-order',
+  templateUrl: './order.component.html',
+  styleUrls: ['./order.component.scss']
+})
+export class OrderComponent implements OnInit {
+
+    orderId:number;
+
+    constructor(private orderService:OrderService,private activatedRoute: ActivatedRoute) { }
+
+    ngOnInit() {
+        this.activatedRoute.params.subscribe((params: Params) => {
+            this.orderId = params['orderId'];
+            this.orderService.getOrderStatus(this.orderId).subscribe();
+        });
+    }
+
+}

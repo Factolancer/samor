@@ -1,0 +1,17 @@
+<div class="chart-container">
+  <figure (click)="back()" *ngIf = "isDrilled" (click)="back()" class="backButton">
+   <i class="material-icons">arrow_back</i>
+   <figcaption>Back</figcaption>
+  </figure>
+
+  <div *ngIf="!serverError['assetAllocation']" [hidden]="investmentDataAvailable" class="loading">
+      <img src="../../../assets/img/loading.gif" align="center">
+  </div>
+  <span *ngIf="noData" >No data to display</span>
+  <chart [options]="options" class="clickable" *ngIf="investmentDataAvailable" (load)="createChartInstance($event.context)">
+   <series>
+    <point (click)="onPointSelect($event)"></point>
+   </series>
+  </chart>
+
+</div>

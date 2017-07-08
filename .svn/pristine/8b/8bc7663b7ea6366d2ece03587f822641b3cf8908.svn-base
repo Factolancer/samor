@@ -1,0 +1,12 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CashfundsComponent } from './cashfunds.component';
+import {SharedModule} from "../../shared/shared.module";
+
+@NgModule({
+  imports: [
+    CommonModule, SharedModule
+  ],
+  declarations: [CashfundsComponent]
+})
+export class CashfundsModule { }

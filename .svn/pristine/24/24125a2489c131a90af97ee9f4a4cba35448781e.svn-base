@@ -1,0 +1,18 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {HomeComponent} from "./home";
+import {LoginComponent} from "./login";
+import {AuthGuard} from "./gaurds/auth.guard";
+import {PageNotFoundComponent} from "./shared/page-not-found.component";
+import {LandingpageComponent} from "./landingpage/landingpage.component";
+
+const appRoutes: Routes = [
+    {path: '',  component: LandingpageComponent },
+    {path: '**', component: PageNotFoundComponent},
+];
+
+export const routes: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+
+export const appRoutingProviders: any[] = [];
+
+export const routedComponents = [HomeComponent, PageNotFoundComponent];

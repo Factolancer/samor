@@ -1,0 +1,47 @@
+<md-toolbar _ngcontent-tuk-17="" class="header">
+    <div class="md-toolbar-layout">
+        <md-toolbar-row>
+            <span>Fincash Logo</span>
+            <span flex=""></span>
+            <span class="demo-fill-remaining"></span>
+            <button md-button=""><span class="md-button-wrapper">Solution</span>
+            </button>
+            <button md-button=""><span class="md-button-wrapper">user</span>
+            </button>
+            <button md-button=""><span class="md-button-wrapper"><a
+                    routerLink="/sip">Sip</a></span>
+            </button>
+            <a routerLink="/cart">
+                <button md-fab="">
+                    <span class="md-button-wrapper">
+                        <md-icon class="md-24 material-icons" role="img" aria-label="cart">&#xE8CC;</md-icon>
+                    </span>
+                </button>
+
+            </a>
+
+        </md-toolbar-row>
+    </div>
+</md-toolbar>
+<div class="col-md-10 col-md-offset-1 data-area">
+    <router-outlet></router-outlet>
+</div>
+<div class="footer">
+    <md-toolbar _ngcontent-tuk-17="" class="footer-top">
+        <div class="md-toolbar-layout">
+            <md-toolbar-row>
+                <span _ngcontent-tuk-17="">Have any queries call us!</span>
+
+            </md-toolbar-row>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar _ngcontent-tuk-17="" class="footer-bottom">
+        <div class="md-toolbar-layout">
+            <md-toolbar-row>
+                <span _ngcontent-tuk-17="">Site map, social links etc!</span>
+
+            </md-toolbar-row>
+        </div>
+    </md-toolbar>
+</div>

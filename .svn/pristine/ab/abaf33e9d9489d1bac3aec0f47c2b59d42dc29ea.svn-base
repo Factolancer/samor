@@ -1,0 +1,120 @@
+import {Component, OnInit, EventEmitter} from "@angular/core";
+import {Input, Output} from "@angular/core/src/metadata/directives";
+import {CheckoutProduct} from "../checkout-product";
+import {ProductEnum} from "../../enum/product-enum";
+import {InvestmentTypeEnum} from "../../enum/investment-type-enum";
+import {CheckoutService} from "../checkout.service";
+import {FormGroup} from "@angular/forms";
+
+@Component({
+    selector: 'app-checkout-product-view',
+    templateUrl: './checkout-product-view.component.html',
+    styleUrls: ['./checkout-product-view.component.css']
+})
+export class CheckoutProductViewComponent implements OnInit {
+
+    @Input() set _product(value: CheckoutProduct) {
+        this.product = value;
+        if (value.product == this.productEnum.SIP || value.product == this.productEnum.LUMPSUM) {
+            this.isFincashProduct = false;
+        }
+
+        if (value.investmentType == this.investmentTypeEnum.LUMPSUM) {
+            this.isSIP = false;
+        }
+
+        this.preProcessProduct();
+    }
+
+    @Input() set _formGroup(value: FormGroup) {
+        this.productFormGroup = value;
+        console.log(this.productFormGroup);
+    }
+
+    @Output() remove = new EventEmitter();
+    @Output() update = new EventEmitter();
+
+    product: CheckoutProduct;
+    productEnum = ProductEnum;
+    investmentTypeEnum = InvestmentTypeEnum;
+    isFincashProduct = true;
+    isSIP = true;
+    minInvProduct = 0;
+    productFormGroup: FormGroup;
+
+
+    preProcessProduct() {
+        this.product.startPaymentToday = true;
+        this.product.funds.forEach(fund => {
+            fund.selectedSubOption = fund.subOptionList[0];
+            fund.selectedDeductionDate = fund.deductionDateList[0];
+            fund.investmentAmount = fund.minInvestment;
+            this.minInvProduct += fund.minInvestment;
+        });
+
+        this.product.investmentAmount = this.minInvProduct;
+        this.update.emit();
+    }
+
+    calculateTotalInvestmentAmount() {
+        let sum = 0;
+        this.product.funds.forEach(fund => {
+            sum += fund.investmentAmount;
+        });
+        this.product.investmentAmount = sum;
+        this.update.emit();
+
+    }
+
+    distributeTotalInvestmentAmount() {
+
+        let val = this.product.investmentAmount;
+        val -= this.minInvProduct;
+        val /= 100;
+        let addVal = Math.floor(val / this.product.funds.length);
+        let modVal = val % this.product.funds.length;
+        this.product.funds.forEach(fund => {
+            if (modVal > 0) {
+                fund.investmentAmount = fund.minInvestment + (addVal * 100) + 100;
+            } else {
+                fund.investmentAmount = fund.minInvestment + (addVal * 100);
+            }
+            modVal--;
+        });
+        this.update.emit();
+    }
+
+    removeProduct(productEnumId: number) {
+        this.checkoutService.removeProductFromCheckout(productEnumId).subscribe(
+            output=>alert(output.response)
+        )
+        this.remove.emit(productEnumId);
+    }
+
+    removeFund(fundId: number, investmentTypeEnumId: number) {
+        this.checkoutService.removeFundFromCheckout(fundId, investmentTypeEnumId).subscribe(
+            output=>alert(output.response)
+        )
+
+        if (this.product.funds.length > 1) {
+            this.product.funds = this.product.funds.filter(fund => +fund.id != fundId);
+            this.calculateTotalInvestmentAmount();
+        } else {
+            this.remove.emit(this.product.product);
+        }
+    }
+
+    constructor(private checkoutService: CheckoutService) {
+
+    }
+
+    ngOnInit() {
+
+    }
+
+
+    preProcessCheckoutData() {
+
+    }
+
+}

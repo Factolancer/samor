@@ -1,0 +1,55 @@
+export const ValidationMessages =
+    {
+        'panName': {
+            'required': 'Please enter your name',
+            'pattern': 'Name is invalid'
+        },
+        'fatherName': {
+            'required': 'Please enter father/spouse name',
+            'pattern': 'invalid'
+        },
+        'motherName': {
+            'required': 'Please enter mother name',
+            'pattern': 'invalid'
+        },
+        'pan':{
+            'required': 'PAN number is required',
+            'pattern': 'Please enter valid PAN number'
+        },
+        'email':{
+            'required': 'Email id is required',
+            'isValidMailFormat': 'Please enter valid email id'
+        },
+        'mob':{
+            'required': 'Mobile number is required',
+            'pattern': 'Invalid number'
+        },
+        'dob':{
+            'required': 'Please provide date of birth'
+        },
+        'gender':{
+            'required': 'Please select gender'
+        },
+        'maritalStatus':{
+            'required': 'Please select marital status'
+        },
+        'tel':{
+            'pattern': 'Invalid number'
+        },
+        'fax':{
+            'pattern': 'Invalid number'
+        },
+
+        'holderName': {
+            'required': 'Please enter account holder\'s name'
+        },
+        'accountType': {
+            'required': 'Please select account type'
+        },
+        'accountNumber': {
+            'required': 'Please enter correct account number'
+        },
+        'birthCity': {
+            'required': 'Please enter birth city'
+        }
+    }

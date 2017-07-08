@@ -1,0 +1,29 @@
+import {Injectable} from "@angular/core";
+import {Router, Resolve, ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
+import {Checkout} from "./models/checkout";
+import {CheckoutService} from "../core/services/checkout.service";
+import {Observable} from "rxjs/Observable";
+import {CheckoutFund} from "./models/checkout-fund";
+import {isNullOrUndefined} from "util";
+
+
+@Injectable()
+export class CheckoutResolveService implements Resolve<Checkout> {
+
+
+    constructor(private router: Router, private checkoutService: CheckoutService) {
+    }
+
+    resolve(route: ActivatedRouteSnapshot,state: RouterStateSnapshot): Observable<Checkout> {
+
+        return this.checkoutService.getCheckoutData().map(output => {
+            if (!isNullOrUndefined(output)) {
+                return output as Checkout;
+            } else {
+                this.router.navigate(['/login']);
+                return new  Checkout(null,null,null,null,null,null,null,null);
+            }
+        });
+    }
+
+}

@@ -1,0 +1,10 @@
+<md-chip-list>
+    <md-basic-chip class="fc-remove-all-chip" (click)="removeAllFilter()" *ngIf="chipsDisplayList.length>0">
+        Clear All
+    </md-basic-chip>
+    <md-basic-chip fxHide.lt-md="true" class="fc-chip" *ngFor="let data of chipsDisplayList; let index=index;"
+                   (click)="removeFilter(data,index)">
+        <md-icon class="md-12">&#xE14C;</md-icon>
+        {{data[2]}}
+    </md-basic-chip>
+</md-chip-list>

@@ -1,0 +1,49 @@
+<div class="col-sm-10 col-sm-offset-1 ">
+    <div class="row">
+        <div class="col-sm-12 center-align heading-32 pad-tb-15">Enter your investment details</div>
+    </div>
+    <form [formGroup]="checkoutFormGroup" (ngSubmit)="onCheckoutSubmit()">
+        <app-checkout-product-view *ngFor="let item of checkoutData.products; let index=index;"
+                                   class="checkout-product"
+                                   (remove)="remove(index)"
+                                   (update)="update()"
+                                   [_product]="item"
+                                   [_formGroup]="checkoutFormGroup.controls.products.at(index)"
+                                   [_formErrors]="checkoutFormErrors.products[index]"></app-checkout-product-view>
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Total Investment Amount:</label>
+                <label>{{totalInvestmentAmount | currency:'INR':true:'1.0-0'}}</label>
+            </div>
+            <div class="col-sm-4">
+                <label>Nominee:</label>
+                <select formControlName="selectedNominee"><!--required-->
+                    <option *ngFor="let nominee of checkoutData.nomineeList" value="{{nominee}}">{{nominee}}
+                    </option>
+                </select>
+                <md-hint *ngIf="checkoutFormErrors.selectedNominee" class="errorMessage">
+                    {{checkoutFormErrors.selectedNominee}}
+                </md-hint>
+            </div>
+            <div class="col-sm-4">
+                <label>Bank Account:</label>
+                <select formControlName="selectedBank"><!--required-->
+                    <option *ngFor="let bank of checkoutData.bankList" value="{{bank}}">{{bank}}</option>
+                </select>
+                <md-hint *ngIf="checkoutFormErrors.selectedNominee" class="errorMessage">
+                    {{checkoutFormErrors.selectedNominee}}
+                </md-hint>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a routerLink="/explore/all">
+                    <i class="material-icons">&#xE147;<!--Add icon--></i> Add Funds
+                </a>
+                <button type="submit" color="primary" md-raised-button=""
+                        class="md-primary float-right">Continue Checkout
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

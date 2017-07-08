@@ -1,0 +1,45 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Set up monthly investment plan(SIPs)</h1>
+        </div>
+    </section>
+    <section class="data-body">
+        <div class="row">
+            <div class="col-md-12 grey-back pad-10">
+                <md-grid-list cols="3" gutterSize="20px" rowHeight="200px">
+                    <md-grid-tile class="light-back">
+                        Selected after analysis of 20000 schemes
+                    </md-grid-tile>
+                    <md-grid-tile class="light-back">
+                        Top-3 best performing schemes
+                    </md-grid-tile>
+                    <md-grid-tile class="light-back">
+                        Earn Healthy Returns
+                    </md-grid-tile>
+                </md-grid-list>
+                <div class="col-md-12 pad-10">
+                    <!--<img src="public/images/sip/smart-sip.png">-->
+                    <button class="pull-right" md-raised-button="" routerLink='smartsip' color="primary">Invest quickly
+                        through SmartSIP
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 pad-10">
+                <h4 class="text-center"> - OR - </h4>
+                <md-grid-list cols="2" gutterSize="20px" rowHeight="100px">
+                    <md-grid-tile routerLink='/explore/tax' class="clickable grey-back">
+                        <!--<img src="public/images/sip/expert.png">--> Choose from all schemes
+                    </md-grid-tile>
+                    <md-grid-tile routerLink='calculator' class="clickable grey-back">
+                        Use SIP Calculator
+                    </md-grid-tile>
+                </md-grid-list>
+            </div>
+        </div>
+
+    </section>
+
+</div>

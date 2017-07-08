@@ -1,0 +1,41 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-risk-profiling',
+  templateUrl: './risk-profiling.component.html',
+  styleUrls: ['./risk-profiling.component.scss']
+})
+export class RiskProfilingComponent implements OnInit {
+
+  constructor() { }
+  qaSet:Object;
+  ngOnInit() {
+    this.qaSet ={
+      question:'From the below  mentioned investment products which are the ones that you have invested in the past ?',
+      hint: 'Select all the options you have invested in',
+      options:[
+        {
+          priority:1,
+          option: 'I have never invested before'
+        },
+        {
+          priority:2,
+          option: 'Fixed Deposit'
+        },
+        {
+          priority:3,
+          option: 'Bonds, Debt & Mutual Funds',
+        },
+        {
+          priority:4,
+          option: ' Equity Mutual Funds'
+        },
+        {
+          priority:5,
+          option:'Stocks/Shares/Equity, Sector Mutual Funds or Futures'
+        }
+      ]
+    }
+  }
+
+}

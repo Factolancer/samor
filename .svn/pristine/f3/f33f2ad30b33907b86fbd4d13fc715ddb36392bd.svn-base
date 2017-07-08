@@ -1,0 +1,21 @@
+import { Component, OnInit } from '@angular/core';
+import {CashFunds} from "./cashfunds-list";
+
+@Component({
+  selector: 'app-cashfunds',
+  templateUrl: './cashfunds.component.html',
+  styleUrls: ['./cashfunds.component.css']
+})
+export class CashfundsComponent implements OnInit {
+  fund: CashFunds
+  fundlist: CashFunds[];
+
+  constructor() { }
+
+  ngOnInit() {
+    this.fundlist = [
+
+    ]
+  }
+
+}

@@ -1,0 +1,63 @@
+import {Component, OnInit} from '@angular/core';
+import {TaxCalcQuestions} from "./questions";
+
+@Component({
+    selector: 'app-tax-calc',
+    templateUrl: './tax-calc.component.html',
+    styleUrls: ['./tax-calc.component.css']
+})
+export class TaxCalcComponent implements OnInit {
+
+    investmentOpportunity = 0;
+    currentInvestment = 0;
+    taxSaved = 0;
+    askAmounts = true;
+    showResults = false;
+    showPromotions = false;
+    taxCalcQuestions = TaxCalcQuestions;
+    annualSalary = 0;
+
+    back() {
+        this.askAmounts = true;
+        this.showResults = false;
+        this.showPromotions = false;
+    }
+
+    calculate() {
+        this.currentInvestment = 0;
+        this.askAmounts = false;
+
+        this.taxCalcQuestions.forEach(question => this.currentInvestment += +question.answer);
+        if (this.annualSalary <= 250000) {
+            this.taxSaved = 0;
+            this.showPromotions = true;
+        }
+        else if (this.currentInvestment >= 150000) {
+            if (this.annualSalary > 1000000) {
+                this.taxSaved = 150000 * 30 / 100;
+            } else if (this.annualSalary > 500000) {
+                this.taxSaved = 150000 * 20 / 100;
+            } else if (this.annualSalary > 250000) {
+                this.taxSaved = 150000 * 10 / 100;
+            }
+            this.showPromotions = true;
+        } else {
+            this.investmentOpportunity = 150000 - this.currentInvestment;
+            if (this.annualSalary > 1000000) {
+                this.taxSaved = this.investmentOpportunity * 30 / 100;
+            } else if (this.annualSalary > 500000) {
+                this.taxSaved = this.investmentOpportunity * 20 / 100;
+            } else if (this.annualSalary > 250000) {
+                this.taxSaved = this.investmentOpportunity * 10 / 100;
+            }
+            this.showResults = true;
+        }
+    }
+
+    constructor() {
+    }
+
+    ngOnInit() {
+    }
+
+}

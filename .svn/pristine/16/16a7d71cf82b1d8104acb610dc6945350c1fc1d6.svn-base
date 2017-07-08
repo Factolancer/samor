@@ -1,0 +1,84 @@
+<div class="col-sm-10 col-sm-offset-1">
+    <div class="row">
+        <div class="col-sm-12 center-align heading-32 pad-tb-15">Your Cart</div>
+    </div>
+    <div class="row  grey-back pad-tb-20 mar-tb-20" *ngIf="cartItems.length>0">
+        <div class="col-sm-12">
+            <md-card class="cart-product-head">
+                <div class="row">
+                    <div class="col-sm-4 left-align">
+                        Fund
+                    </div>
+                    <div class="col-sm-2">
+                        Investment Mode
+                    </div>
+                    <div class="col-sm-2">
+                        Risk
+                    </div>
+                    <div class="col-sm-2">
+                        Min Investment
+                    </div>
+                    <div class="col-sm-2">
+                        Action
+                    </div>
+                </div>
+            </md-card>
+        </div>
+        <div class="col-sm-12">
+            <md-card class="cart-product-item">
+                <div *ngFor="let fundItem of cartItems">
+                    <!--Show for fincash product-->
+                    <div class="row fund">
+                        <div class="col-sm-4 left-align">
+                            <span routerLink="/factsheet/{{fundItem.id}}" class="clickable">
+                                <!--<md-icon class="material-icons factsheet-icon md-14">&#xE873;</md-icon>-->
+                                {{fundItem.name}}
+                            </span><br/>
+                            <span class="product-tag">
+                                <md-icon class="material-icons md-10">&#xE88E;</md-icon>
+                                SmartSIP
+                            </span>
+                        </div>
+                        <div class="col-sm-2">
+                            <select (change)="investmentModeUpdate(fundItem)">
+                                <option value="investmentMode.SIP">SIP</option>
+                                <option value="investmentMode.LUMPSUM">LUMPSUM</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">{{fundItem.risk}}</div>
+                        <!--<div class="col-sm-2">{{fundItem.minInvestment | currency:'INR':true:'1.0-0'}}</div>-->
+                        <div class="col-sm-2">{{500 | currency:'INR':true:'1.0-0'}}</div>
+                        <div class="col-sm-2">
+                            <button class="remove-btn" (click)="removeFund(fundItem)">
+                                <md-icon class="md-24">&#xE888;</md-icon><!--highlight off icon-->
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </md-card>
+
+
+            <!--<app-cart-product-view *ngFor="let item of cartSipProducts" [_product]="item"
+                                   (remove)="removeFund($event)"></app-cart-product-view>-->
+        </div>
+    </div>
+    <div class="row grey-back" *ngIf="cartItems.length==0">
+        <div class="col-sm-12">
+            <h3 class="center-align">Your Cart is empty!</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 add-funds">
+            <button md-button="" routerLink="/explore/all">
+                <md-icon class="material-icons md-18">&#xE147;</md-icon>
+                Add Funds
+            </button>
+        </div>
+        <div class="col-sm-3 pull-right">
+            <button color="primary" md-raised-button="" class="cta-50"
+                    routerLink="/checkout/init">Proceed to Checkout
+            </button>
+        </div>
+    </div>
+</div>

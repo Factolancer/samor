@@ -1,0 +1,31 @@
+import {Injectable} from "@angular/core";
+import {Logger} from "../shared/logger/logger";
+import {Observable} from "rxjs";
+import {HttpService} from "./http-service.service";
+import {KYCGroup} from "../constants/KYCGroup";
+
+@Injectable()
+export class KycStatusService {
+
+    kycstatus: string;
+    className: string;
+    constructor(public logger: Logger, public httpService: HttpService) {
+        this.className = "KycStatusService"
+    }
+
+    public checkKycStatus() : Observable<boolean>{
+        return this.httpService.get('/user/checkKycStatus')
+            .map(response => {
+                this.logger.debug(this.className, response.kycstatus)
+                this.kycstatus = response.kycstatus;
+
+                this.logger.debug(this.className, (this.kycstatus === KYCGroup.KYC_Done || this.kycstatus === KYCGroup.KYC_EXTERNALLYDONE))
+
+                if(this.kycstatus === KYCGroup.KYC_Done || this.kycstatus === KYCGroup.KYC_EXTERNALLYDONE)
+                    return true;
+                else
+                    return false;
+            });
+
+    }
+}

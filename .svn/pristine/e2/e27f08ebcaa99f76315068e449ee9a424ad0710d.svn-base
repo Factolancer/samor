@@ -1,0 +1,182 @@
+@import "../../styles/partials/web-partials";
+
+.section-header-expanded {
+  background-color: $brand-secondary;
+  color: $white;
+  @include heading(18px, 500);
+  width: 100%;
+  line-height: 50px;
+}
+
+.section-header-collapsed {
+  background-color: $light-grey;
+  color: $dark-grey;
+  @include heading(16px, 500);
+  width: 100%;
+  line-height: 50px;
+}
+
+.column-heading{
+  background-color: $light-grey;
+  line-height: 40px;
+  text-align: center;
+  @include heading(16px, 700);
+  border: 0.5px solid $medium-grey;
+}
+
+md-icon{
+  cursor: pointer;
+  font-size: 28px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.section-content {
+  background-color: $white;
+  width: 100%;
+  border: 0.5px solid $medium-grey;
+}
+
+.bottom-section {
+  background-color: $light-grey;
+  line-height: 30px;
+  //text-align: center;
+  @include heading(16px, 400);
+  border: 0.5px solid $medium-grey;
+}
+
+.upload_explanation{
+  @include heading(10px, 400);
+  color: $dark-grey
+}
+
+md-input-container{
+  width: 90%;
+}
+
+md-radio-button {
+  //color: $medium-grey;
+  padding-right: 5px;
+  padding-left: 2px;
+  //font-size: 12px;
+  //align-items: center;
+}
+
+md-radio-label {
+  align-items: center;
+}
+
+md-radio-outer-cicle {
+  height: 15px;
+  width: 15px;
+}
+
+
+.errorMessage {
+  float: right;
+  margin-top: 1px;
+  font-size: 0.7em;
+  color: $error;
+}
+
+.errorMessage span {
+  position: absolute;
+  color: red;
+  top: -10px;
+  font-size:0.63em;
+}
+
+.grey-italic {
+  color: $text-dark-grey; font-style: italic;
+}
+.font-12 {
+  font-size: 12px !important;
+}
+.field_label{
+  color: rgba(0, 0, 0, 0.38);
+  display: block;
+  text-align: left;
+  @include heading(11px, 300);
+  line-height: 20px;
+  position: absolute;
+  text-align: left;
+  margin-bottom: 5px;
+  //margin-left: -105px;
+  margin-top: -20px;
+  padding-bottom: 5px;
+}
+
+.address-header{
+  color: $dark-grey;
+  @include heading(16px, 400);
+  //margin-left: 50px;
+}
+
+
+/deep/ .mat-autocomplete-panel {
+  max-height: 80vh;
+  max-width: 1024px;
+
+  md-option {
+    &.mat-option {
+      padding: 0 10px;
+      line-height: 24px;
+      height: 24px;
+      font-size: 12px;
+    }
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
+
+mat-select {
+  width: 100%;
+}
+
+md-radio-group {
+  /deep/ md-radio-button {
+
+    padding: 2px;
+
+    .mat-radio-container {
+      box-sizing: border-box;
+      display: inline-block;
+      height: 16px;
+      position: relative;
+      width: 18px;
+      top: 0;
+      align-items: center;
+
+      .mat-radio-inner-circle, .mat-radio-outer-circle {
+        box-sizing: border-box;
+        height: 15px;
+        left: 0;
+        top: 5px;
+        width: 15px;
+        position: absolute;
+      }
+    }
+
+    .mat-radio-label-content {
+      padding-left: 3px;
+    }
+
+  }
+}
+
+.resLoading{
+  background: url('../../assets/img/loading.gif');
+  background-size: 25px 25px;
+  background-repeat: no-repeat;
+  background-position-x: 50%;
+  background-position-y: 50%;
+}
+
+.vis-hidden{
+  visibility: hidden;
+}
+

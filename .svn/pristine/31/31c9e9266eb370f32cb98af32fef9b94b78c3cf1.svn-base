@@ -1,0 +1,47 @@
+<div class="col-md-10 col-md-offset-1 ">
+  <section class="data-head">
+    <div class="row">
+      <h1 class="center-align">Choose best performing funds across all categories</h1>
+      <h4 class="center-align">SIP type > Fund Selection > Investment Portfolio > Summary &amp; Checkout</h4>
+    </div>
+  </section>
+  <section class="data-body">
+    <!-- <div class="row" *ngIf="!searchResults">
+         <md-progress-circle mode="indeterminate" color="primary"></md-progress-circle>
+     </div>-->
+    <div class="row" *ngIf="searchResults">
+      <div class="col-md-2">
+        <h4 style="font-weight: bold">Filters</h4>
+        <hr>
+        <app-category-filter [categoryFilterData]="searchResults.categoryFilterData"></app-category-filter>
+        <hr>
+        <app-amc-filter [amcFilterData] = "searchResults.amcFilterData"></app-amc-filter>
+        <hr>
+        <app-aum-filter></app-aum-filter>
+        <hr>
+        <app-age-filter [ageFilterData]="searchResults.ageFilterData"></app-age-filter>
+        <hr>
+        <app-rating-filter [ratingFilterData]="searchResults.ratingFilterData"></app-rating-filter>
+        <!-- <app-amc-filter></app-amc-filter>-->
+      </div>
+      <div class="col-md-10">
+        <app-fund-search></app-fund-search>
+        <app-fund-view-panel></app-fund-view-panel>
+        <app-fund [showListView]="true" [funds]="searchResults.funds"></app-fund>
+        <app-fund-pagination-panel></app-fund-pagination-panel>
+      </div>
+    </div>
+  </section>
+  <section class="data-foot">
+    <div class="row">
+      <div class="col-md-12">
+        <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                (click)="proceed()">Proceed to Invest
+        </button>
+        <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                (click)="compare()">Compare Funds
+        </button>
+      </div>
+    </div>
+  </section>
+</div>

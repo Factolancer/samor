@@ -1,0 +1,28 @@
+import {NgModule} from "@angular/core";
+import {SipComponent} from "./sip.component";
+import {CartModule} from "../cart/cart.module";
+import {sipRouting} from "./sip.routes";
+import {SmartSipComponent} from "./smart-sip/smart-sip.component";
+import {SharedModule} from "../shared/shared.module";
+import {HttpService} from "../services/http-service.service";
+import {SmartSipFundResolveService} from "./smart-sip/smart-sip-fund-resolve.service";
+import {SipService} from "./sip.service";
+import {SipCalcComponent} from "./sip-calc/sip-calc.component";
+import {GoalBasedComponent} from "./sip-calc/goal-based.component";
+import {ReturnsBasedComponent} from "./sip-calc/returns-based.component";
+import {SmartSipCardComponent} from "./smart-sip/smart-sip-card.component";
+import {FactsheetModule} from "../factsheet/factsheet.module";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        CartModule,
+        sipRouting,
+        FactsheetModule
+    ],
+    providers: [SmartSipFundResolveService, HttpService, SipService],
+    declarations: [SipComponent, SmartSipComponent, SipCalcComponent, GoalBasedComponent, ReturnsBasedComponent, SmartSipCardComponent],
+})
+
+export class SipModule {
+}

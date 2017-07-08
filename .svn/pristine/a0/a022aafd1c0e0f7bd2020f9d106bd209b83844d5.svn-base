@@ -1,0 +1,71 @@
+import {Component, OnInit, trigger, transition, state, animate, style} from '@angular/core';
+import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+import {GoogleChart} from "../../shared/google-chart.directive";
+
+// google.load("visualization", "1.1", {packages:["corechart"]});
+
+@Component({
+    selector: 'demo',
+    templateUrl: './demo.component.html',
+    styleUrls: ['./../cash.styles.scss'],
+    //styleUrls: ['./../cash.styles.scss', './../cash.styles.scss'],
+    providers: [GoogleChart],
+    animations: [
+        trigger('flyInOut', [
+            state('in', style({transform: 'translateX(0)'})),
+            transition('void => *', [
+                style({transform: 'translateX(-100%)'}),
+                animate(100)
+            ]),
+            transition('* => void', [
+                animate(100, style({transform: 'translateX(100%)'}))
+            ])
+        ])
+    ]
+})
+export class DemoComponent implements OnInit {
+
+    heading = 'invisible';
+    mystate = 'in';
+    screen2 = 'out';
+    index: number = 0 ;
+
+    constructor(private router: Router) {
+        Observable.interval(2000)
+            .subscribe(x => {
+                //console.log(x);
+                //this.headingvisible = !this.headingvisible;
+                this.heading = (this.heading == 'visible') ? 'invisible' : 'visible';
+                if (x % 2 == 0)
+                    this.index = (x/2)%3
+            })
+    }
+
+    headingarray = [
+        "Earn more by investing in SavingsPlus",
+        "Double your savings from SavingsPlus",
+        "Benefits of bank account.. with more returns - SavingsPlus"
+    ]
+    url = this.router.url;
+
+    toDemo(){
+        this.url = this.url + '/demo';
+        this.router.navigate([this.url]);
+    }
+
+    toFunds(){
+        this.url = this.url + '/demoa'
+        this.router.navigate([this.url]);
+    }
+
+    NextScreen(){
+        this.mystate = 'out';
+        this.screen2 = 'in';
+        console.log(this.mystate)
+    }
+
+    ngOnInit() {
+    }
+
+}

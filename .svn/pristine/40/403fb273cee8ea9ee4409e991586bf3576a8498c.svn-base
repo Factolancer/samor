@@ -1,0 +1,33 @@
+import {Component, OnInit, EventEmitter} from '@angular/core';
+import {Input, Output} from "@angular/core/src/metadata/directives";
+import {ReportService} from "./report.service";
+import {Subscription} from "rxjs";
+import {Fund} from "./fund";
+
+@Component({
+    selector: 'app-report',
+    templateUrl: './report.component.html',
+    styleUrls: ['./report.component.css']
+})
+export class ReportComponent implements OnInit {
+
+    selectedTab: number;
+    //@Output() changeFund = new EventEmitter();
+    fundIndexSubscription:Subscription;
+    constructor(private reportService: ReportService) {
+        this.selectedTab = 0;
+        this.fundIndexSubscription=this.reportService.fundIndexResult.subscribe((fund:number)=>{
+            this.selectedTab = 2;
+        });
+    }
+
+    ngOnInit() {
+    }
+
+    changeTabIndex($event) {
+        this.selectedTab = 2;
+        //this.changeFund.emit($event);
+    }
+
+
+}

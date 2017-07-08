@@ -1,0 +1,92 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {FilterData} from "./filter-data";
+import {ExploreFundsService} from "../explore-funds.service";
+import {Subscription} from "rxjs";
+import {ExploreFundConstants} from "../explore-funds.constants";
+import {FundSearchInput} from "../fund-search-input";
+
+@Component({
+    selector: 'app-amc-filter',
+    templateUrl: './amc-filter.component.html',
+    styleUrls: ['./filters.styles.scss']
+})
+export class AmcFilterComponent implements OnInit, OnDestroy {
+
+    amcFilterData: FilterData[] = [];
+    filterTitle: string;
+    checkedCount = 0;
+    currentArray: string[] = [];
+    searchResultSubscription: Subscription;
+    searchInputSubscription: Subscription;
+    searchInput: FundSearchInput;
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+
+
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput
+            .subscribe(searchInput => {
+                this.searchInput = searchInput;
+                this.currentArray = this.currentArray.filter(item => {
+                    let add = false;
+                    this.searchInput.amc.forEach(currentFilters => {
+                        if (currentFilters === item) {
+                            add = true;
+                        }
+                    })
+                    return add;
+                });
+                this.checkedCount = this.currentArray.length;
+                if (searchInput.queryType == ExploreFundConstants.SEARCH_QUERY) {
+                    this.checkedCount = 0;
+                    this.searchInput.amc = [];
+                }
+            });
+
+        this.searchResultSubscription = this.exploreFundsService.fundSearchResult.subscribe(searchResults => {
+
+
+            if (searchResults.amcFilterData) {
+                searchResults.amcFilterData.forEach(listItem => {
+                    if (this.currentArray.indexOf(listItem.id) > -1)
+                        listItem.selected = true
+                });
+                this.amcFilterData = searchResults.amcFilterData;
+            }
+        })
+    }
+
+    filter(checked: any, item: FilterData) {
+        if (checked) {
+            this.checkedCount += 1;
+            this.currentArray.push(item.id);
+        } else {
+            //deselecting the item.
+            this.checkedCount -= 1;
+            let newArray: string[] = [];
+            this.currentArray.forEach(elm => {
+                if (elm != item.id)
+                    newArray.push(elm)
+            });
+            this.currentArray = newArray;
+        }
+        this.searchInput.amc = this.currentArray;
+        this.exploreFundsService.filterFunds(this.searchInput);
+
+    }
+
+    clearFilter() {
+        this.checkedCount = 0;
+        this.currentArray = [];
+        this.searchInput.amc = [];
+        this.exploreFundsService.filterFunds(this.searchInput);
+    }
+
+    ngOnInit() {
+        this.filterTitle = "Fund House";
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+        this.searchResultSubscription.unsubscribe();
+    }
+}

@@ -1,0 +1,79 @@
+import {Injectable, Inject} from "@angular/core";
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from "@angular/router";
+import {Observable} from "rxjs/Observable";
+import {KycStatusService} from "../services/kycstatus.service";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {Logger} from "../logger/logger";
+import {LocalStorageService} from "angular-2-local-storage";
+import {SnackBarService} from "../services/snack-bar.service";
+import {KYCGroup} from "../../constants/KYCGroup";
+import {HttpService} from "../services/http-service.service";
+import {UploadService} from "../services/upload.service";
+
+
+@Injectable()
+export class KycGuard implements CanActivate {
+    docUploaded: boolean;
+    className: string;
+
+    constructor(public kycstatusService: KycStatusService, @Inject(APP_CONFIG) private config: IAppConfig, public router: Router,
+                public logger: Logger, public localStorageService: LocalStorageService, private snackBarService: SnackBarService,
+                public httpService: HttpService, public uploadService: UploadService) {
+        this.className = "KYCGuard";
+    }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+        /*this.logger.debug(this.className, route.params);
+         this.logger.debug(this.className, state.url);*/
+
+        return this.kycstatusService.checkKycStatus().map(response => {
+             /*this.httpService.get('/user/getDmtIds')
+             .subscribe(response => {*/
+            if (response['photodmtid'] && response['photodmtid'].length > 0 &&
+                response['pandmtid'] && response['pandmtid'].length > 0 &&
+                response['addressdmtid'] && response['addressdmtid'].length > 0 &&
+                response['bankdmtid'] && response['bankdmtid'].length > 0 &&
+                response['signaturedmtid'] && response['signaturedmtid'].length > 0){
+             this.docUploaded = true
+             }
+             else
+             this.docUploaded = false;
+
+            // KYC done and doc uploaded, user through
+            if (response['kycstatus'] && (response['kycstatus'] === KYCGroup.KYC_Done || response['kycstatus'] === KYCGroup.KYC_EXTERNALLYDONE) &&
+                response['bankdmtid'] && response['bankdmtid'].length>0 && response['signaturedmtid'] && response['signaturedmtid'].length>0){
+                return true;
+            }
+            // KYC done but doc not uploaded, Go to uploads
+            else if (response['kycstatus'] && (response['kycstatus'] === KYCGroup.KYC_Done || response['kycstatus'] === KYCGroup.KYC_EXTERNALLYDONE)) {
+                this.localStorageService.set(this.config.kycGuard.storagekey, state.url);
+                this.snackBarService.setGuardMessage("Please upload documents first");
+                this.router.navigate([this.config.uploadGuard.navigate]);
+                return false;
+            }
+            // KYC not done, go to Registration
+            else if (response['kycstatus'] && (response['kycstatus'] === KYCGroup.KYC_NOTDONE)) {
+                this.localStorageService.set(this.config.kycGuard.storagekey, state.url);
+                this.snackBarService.setGuardMessage("KYC is not done");
+                this.router.navigate([this.config.kycGuard.navigate]);
+                return false;
+            }
+            // KYC UnderProcess, doc uploaded, Please wait page
+            else if (this.docUploaded) {
+                this.localStorageService.set(this.config.kycGuard.storagekey, state.url);
+                this.router.navigate([this.config.kycWaitUrl]);
+                return false;
+            }
+            // KYC UnderProcess, doc not uploaded, go to Uploads
+            else {
+                this.localStorageService.set(this.config.kycGuard.storagekey, state.url);
+                this.snackBarService.setGuardMessage("Please upload documents first");
+                this.router.navigate([this.config.uploadGuard.navigate]);
+                return false;
+            }
+        }, err => {
+            return false;
+        })
+    }
+
+}

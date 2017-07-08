@@ -1,0 +1,28 @@
+import {Injectable} from "@angular/core";
+import {Router, Resolve, ActivatedRouteSnapshot} from "@angular/router";
+import {Observable} from "rxjs/Observable";
+import {SummaryUserInfo} from "./models/summary-user-info";
+import {RedemptionService} from "../core/services/redemption.service";
+
+
+@Injectable()
+export class RedSummaryResolveService implements Resolve<SummaryUserInfo> {
+
+
+    constructor(private router: Router, private redemptionService: RedemptionService) {
+    }
+
+    resolve(route: ActivatedRouteSnapshot): Observable<boolean | SummaryUserInfo> {
+
+        return this.redemptionService.getSummaryInfo().map(output => {
+            return output as SummaryUserInfo;
+            /*if (output) {
+                return output as SummaryUserInfo;
+            } else {
+                this.router.navigate(['/cart']);
+                return false;
+            }*/
+        });
+    }
+
+}

@@ -1,0 +1,215 @@
+<div class="wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex.gt-sm="74" fxFlex.lt-md="100">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex="100" class="center-align">
+                <div ngClass.gt-sm="heading-32-dark-grey" ngClass.lt-md="heading-24-dark-grey">
+                    Instant Redemption
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex fxFlex.lt-md="100" class="grey-back" ngClass.gt-sm="pad-lr-60 pad-tb-40" ngClass.lt-md="pad-b-10">
+                <div fxLayout="column">
+                    <div fxFlex="100" class="medium-grey-back center-align pad-tb-30">
+                        <div fxLayout="column">
+                            <div fxFlex="100" ngClass.gt-sm="heading-32" ngClass.lt-md="heading-24">
+                                <span ngClass.gt-sm="heading-32-dark-grey" ngClass.lt-md="heading-24-dark-grey">Funds would be credited</span> <span class="bold">within 30 minutes</span>
+                            </div>
+                            <div fxFlex="100" class="pad-t-10">
+                                <div><span class="material-warn bold">Upto Rs. 50,000 or 90%</span> <span class="italic">of the market value per fund house</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <md-card fxFlex="100" fxHide.lt-md="true" class="blue pad-tb-15">
+                        <div fxLayout="row">
+                            <div fxFlex.gt-sm="35" fxFlex.lt-md="" align="center" class="bold pad-lr-10">Funds</div>
+                            <div fxFlex.gt-sm="15" fxFlex.lt-md=""  class="bold pad-lr-2">Market Value</div>
+                            <div fxFlex.gt-sm="15" fxFlex.lt-md=""  class="bold pad-lr-10">Folio Detail</div>
+                            <div fxFlex.gt-sm="25" fxFlex.lt-md="" class="bold pad-lr-10">Redeemable Balance*</div>
+                            <div fxFlex.gt-sm="10" fxFlex.lt-md="" class="bold pad-lr-10">Select</div>
+                        </div>
+                    </md-card>
+                    <form fxLayoutWrap *ngIf="instaFormGroup" [formGroup]="instaFormGroup" (ngSubmit)="onProceed()">
+                        <md-card fxFlex="100" class="no-padding mar-tb-5" *ngFor="let fundGroup of instaFormGroup.get('birlaFunds')['controls']; let index = index">
+                            <div fxLayout="column">
+                                <div fxFlex="100">
+                                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" class="pad-t-5">
+                                        <div fxFlex="10" fxHide.gt-sm="true" class="pad-t-5 pad-lr-10">
+                                            <md-checkbox class="float-right" [formControl]="fundGroup.get('selected')"
+                                                         (change)="changeBirlaComposition($event.checked, fundGroup, birlaInstaFunds[index])"
+                                                         [disabled]="birlaInstaFunds[index].redeemableUnits==0"></md-checkbox>
+                                        </div>
+
+                                        <div fxFlex="35" class="pad-lr-10 pad-b-5" ngClass.gt-sm="pad-t-10">
+                                            <div fxFlex="50" fxHide.gt-sm="true" class="bold">Fund</div>
+                                            <div fxFlex.gt-sm="100" fxFlex.lt-md="50">
+                                                <div fxLayout="column">
+                                                    <div fxFlex="100"  class="dark-grey-text bold">
+                                                        {{birlaInstaFunds[index].fundName}}
+                                                    </div>
+                                                    <div fxFlex="100" class="medium-grey-text italic pad-tb-5">
+                                                        Plan: {{birlaInstaFunds[index].plan}}, Option: {{birlaInstaFunds[index].option.dividendOption}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="15" class="pad-lr-10 pad-b-5" ngClass.gt-sm="pad-t-10">
+                                            <div fxFlex="50" fxHide.gt-sm="true" class="bold">Market Value</div>
+                                            <div fxFlex.gt-sm="100" fxFlex.lt-md="50">
+                                                {{birlaInstaFunds[index].currValue | round | currency:'INR':true:'1.0-0' }}
+                                                <md-icon class="md-12 no-select" mdTooltip="NAV {{birlaInstaFunds[index].currNav | round2}}
+                                                 as on {{birlaInstaFunds[index].navDate | date:'d mmm yyyy'}}"> &#xE88E;</md-icon>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="15" class="pad-lr-10 pad-b-5" ngClass.gt-sm="pad-t-10">
+                                            <div fxFlex="50" fxHide.gt-sm="true" class="bold">Folio Details</div>
+                                            <div fxFlex.gt-sm="100" fxFlex.lt-md="50">
+                                                <div fxLayout="column">
+                                                    <div fxFlex="100">
+                                                        {{birlaInstaFunds[index].folioNo}}
+                                                    </div>
+                                                    <div fxFlex="100">
+                                                        {{birlaInstaFunds[index].holdingMode}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="25" class="pad-lr-10 pad-b-5" ngClass.gt-sm="pad-t-10">
+                                            <div fxFlex="50" fxHide.gt-sm="true" class="bold">Redeemable Balance*</div>
+                                            <div fxFlex.gt-sm="100" fxFlex.lt-md="50">
+                                                {{(birlaInstaFunds[index].redeemableUnits * birlaInstaFunds[index].currNav) | round | currency:'INR':true:'1.0-0' }}
+                                            </div>
+                                        </div>
+                                        <div fxFlex="10" fxHide.lt-md="true" class="pad-t-10 pad-lr-10 pad-b-5">
+                                            <md-checkbox [formControl]="fundGroup.get('selected')"
+                                                         (change)="changeBirlaComposition($event.checked, fundGroup, birlaInstaFunds[index])"
+                                                         [disabled]="birlaInstaFunds[index].redeemableUnits==0"></md-checkbox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div fxFlex="100" class="medium-grey-back right-align">
+                                    <div fxLayout="row" fxLayoutAlign="end center">
+                                        <div fxFlex.gt-sm="25" fxFlex.lt-md="50" class="pad-lr-5">
+                                            <div>Redemption Amount : </div>
+                                        </div>
+                                        <div>
+                                            <md-input-container>
+                                                <span mdPrefix>&#x20b9;&nbsp;</span>
+                                                <input mdInput type="number"
+                                                       [formControl]="fundGroup.get('redemptionAmount')"
+                                                       [readonly]="!fundGroup.get('selected').value"
+                                                       [ngClass]="{'medium-grey-text': !fundGroup.get('selected').value}">
+                                                <md-hint *ngIf="instaFormErrors.birlaFunds[index].redemptionAmount" class="errorMessage">
+                                                    {{instaFormErrors['birlaFunds'][index].redemptionAmount}}
+                                                </md-hint>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-card>
+                        <md-card fxFlex="100" class="no-padding mar-tb-5" *ngFor="let fundGroup of instaFormGroup.get('relianceFunds')['controls']; let index = index">
+                            <div fxLayout="column" >
+                                <div fxFlex="100">
+                                    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" class="pad-t-5">
+                                        <div fxFlex="10" fxHide.gt-sm="true" class="pad-t-5 pad-lr-10 pad-b-5">
+                                            <md-checkbox class="float-right" [formControl]="fundGroup.get('selected')"
+                                                         (change)="changeRelComposition($event.checked, fundGroup, relianceInstaFunds[index])"
+                                                         [disabled]="relianceInstaFunds[index].redeemableUnits==0"></md-checkbox>
+                                        </div>
+                                        <div fxFlex="35" class="pad-lr-10 pad-b-5" ngClass.gt-sm="pad-t-10">
+                                            <div fxFlex="50" fxHide.gt-sm="true" class="bold">Fund</div>
+                                            <div fxFlex.gt-sm="100" fxFlex.lt-md="50">
+                                                <div fxLayout="column">
+                                                    <div fxFlex="100"  class="dark-grey-text bold">
+                                                        {{relianceInstaFunds[index].fundName}}
+                                                    </div>
+                                                    <div fxFlex="100" class="medium-grey-text italic pad-tb-5">
+                                                        Plan: {{relianceInstaFunds[index].plan}}, Option: {{relianceInstaFunds[index].option.dividendOption}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="15" class="pad-lr-10 pad-b-5" ngClass.gt-sm="pad-t-10">
+                                            <div fxFlex="50" fxHide.gt-sm="true" class="bold">Market Value</div>
+                                            <div fxFlex.gt-sm="100" fxFlex.lt-md="50">
+                                                {{relianceInstaFunds[index].currValue | round | currency:'INR':true:'1.0-0' }}
+                                                <md-icon class="md-12 no-select" mdTooltip="NAV {{relianceInstaFunds[index].currNav | round2}} as on {{relianceInstaFunds[index].navDate | date:'d mmm yyyy'}}"> &#xE88E;</md-icon>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="15" class="pad-lr-10 pad-b-5" ngClass.gt-sm="pad-t-10">
+                                            <div fxFlex="50" fxHide.gt-sm="true" class="bold">Folio Details</div>
+                                            <div fxFlex.gt-sm="100" fxFlex.lt-md="50">
+                                            <div fxLayout="column">
+                                                <div fxFlex="100">
+                                                    {{relianceInstaFunds[index].folioNo}}
+                                                </div>
+                                                <div fxFlex="100">
+                                                    {{relianceInstaFunds[index].holdingMode}}
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="25" class="pad-lr-10 pad-b-5" ngClass.gt-sm="pad-t-10">
+                                            <div fxFlex="50" fxHide.gt-sm="true" class="bold">Redeemable Balance*</div>
+                                            <div fxFlex.gt-sm="100" fxFlex.lt-md="50">
+                                                {{(relianceInstaFunds[index].redeemableUnits * relianceInstaFunds[index].currNav) | round | currency:'INR':true:'1.0-0' }}
+                                            </div>
+                                        </div>
+                                        <div fxFlex="10" fxHide.lt-md="true" class="pad-t-10 pad-lr-10 pad-b-5">
+                                            <md-checkbox [formControl]="fundGroup.get('selected')"
+                                                         (change)="changeRelComposition($event.checked, fundGroup, relianceInstaFunds[index])"
+                                                         [disabled]="relianceInstaFunds[index].redeemableUnits==0"></md-checkbox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div fxFlex="100" class="medium-grey-back right-align">
+                                    <div fxLayout="row" fxLayoutAlign="end center">
+                                        <div fxFlex.gt-sm="25" fxFlex.lt-md="50" class="pad-lr-5">
+                                            <div>Redemption Amount : </div>
+                                        </div>
+                                        <div>
+                                            <md-input-container>
+                                                <span mdPrefix>&#x20b9;&nbsp;</span>
+                                                <input mdInput type="number"
+                                                       [formControl]="fundGroup.get('redemptionAmount')"
+                                                       [readonly]="!fundGroup.get('selected').value"
+                                                       [ngClass]="{'medium-grey-text': !fundGroup.get('selected').value}">
+                                                <md-hint *ngIf="instaFormErrors.relianceFunds[index].redemptionAmount" class="errorMessage">
+                                                    {{instaFormErrors['relianceFunds'][index].redemptionAmount}}
+                                                </md-hint>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-card>
+                        <div fxFlex="100">
+                            <div fxLayout="row" class="pad-tb-5">
+                                <div fxFlex="40" class="left-align italic"> For higher amounts go to <a class="md-brand-secondary" routerLink="/redeem/init">Normal Redemption</a></div>
+                                <div fxFlex="60" class="right-align italic"><span class="bold">For failed requests</span> amount gets credited on the next working day</div>
+                            </div>
+                        </div>
+                        <div fxFlex="100">
+                            <div fxLayout="row" fxLayoutAlign.gt-sm="end center" fxLayoutAlign.lt-md="center center" class="pad-t-15">
+                                <div fxFlex="20" fxFlex.lt-md="90">
+                                    <button type="submit" color="primary" md-raised-button="" class="right-align cta-50">REDEEM</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row">
+            <div fxFlex fxFlex.lt-md="100" class="medium-grey-back italic font-12" ngClass.gt-sm="pad-lr-60 pad-tb-10" ngClass.lt-md="pad-10">
+                <div fxLayout="column">
+                    <div class="bold">Note*</div>
+                    <div>Your actual redeemable balance can be lower if you have made redemptions through other sources</div>
+                    <div>Only available for Growth plan for Reliance Liquid Fund - Treasury Plan</div>
+                    <div>Available for all options for Birla Sun Life Cash Plus Fund</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

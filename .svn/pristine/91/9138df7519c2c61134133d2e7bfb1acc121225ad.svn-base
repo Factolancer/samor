@@ -1,0 +1,17 @@
+{
+  "minify": true,
+  "options": [
+    "setClasses"
+  ],
+  "feature-detects": [
+    "css/flexbox",
+    "css/mediaqueries",
+    "svg",
+    "canvas",
+    "canvas/todataurl",
+    "css/flexwrap",
+    "touchevents",
+    "websockets",
+    "storage/localstorage"
+  ]
+}

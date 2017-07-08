@@ -1,0 +1,93 @@
+<md-card class="explore-fund-head">
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <div fxFlex="27" class="clickable" #fund (click)="sort('dname')">Fund Name
+            <span *ngIf="currentSortElement === 'dname' ">
+                <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="10" class="clickable" #rating (click)="sort('drat')" mdTooltip={{ratingDisclaimerText}}>
+            Fincash Rating
+            <span *ngIf="currentSortElement === 'drat' ">
+                <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="8" class="clickable" #ret1 (click)="sort('dret1yr')" mdTooltip="Absolute Growth Rate.">1Y
+            Return
+            <span *ngIf="currentSortElement === 'dret1yr' ">
+                <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="8" class="clickable" #ret3 (click)="sort('dret3yr')"
+             mdTooltip="Compound Annual Growth Rate (CAGR).">3Y Return
+            <span *ngIf="currentSortElement === 'dret3yr' ">
+               <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="12" class="clickable" #risk (click)="sort('drisk')" mdTooltip="Risk Associated with fund.">
+            Riskometer
+            <span *ngIf="currentSortElement === 'drisk' ">
+               <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="7" class="clickable" #age (click)="sort('dage')" mdTooltip="Age of the fund since inception.">
+            Age
+            <span *ngIf="currentSortElement ==='dage' ">
+                <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="10" class="clickable" #aum (click)="sort('daum')"
+             mdTooltip="Asset under Management of the Fund in Crore.">AUM (Cr)
+            <span *ngIf="currentSortElement === 'daum'">
+                <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+        <div fxFlex="18">Actions</div>
+    </div>
+</md-card>
+<md-card *ngFor="let fundItem of funds" class="fund-list">
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <div class="left-align clickable" fxFlex="27" (click)="viewFactSheet(fundItem)">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <div fxFlex="8">
+                    <md-icon class="medium-grey-text md-16">&#xE873;</md-icon>
+                </div>
+                <div fxFlex="92">{{fundItem.name}}</div>
+            </div>
+        </div>
+        <div fxFlex="10">
+            <span [innerHTML]="fundItem.rating | rating" class="star"></span>
+        </div>
+        <div fxFlex="8">{{fundItem.basicFactsheet.ret1yr | returns:true}}</div>
+        <div fxFlex="8">{{fundItem.basicFactsheet.ret3yr | returns:true}}</div>
+        <div fxFlex="12">{{fundItem.basicFactsheet.riskometer | riskometer}}</div>
+        <div fxFlex="7">{{fundItem.age}} yr</div>
+        <div fxFlex="10">{{fundItem.aum | currency:'INR':true:'1.0-0' }}</div>
+        <div fxFlex="10">
+            <app-add-to-cart-icon-button [btnText]="'&#xE854;'"
+                                         [fund]="fundItem"
+                                         [_investmentMode]="defaultInvestmentMode"></app-add-to-cart-icon-button>
+        </div>
+        <div fxFlex="7">
+            <md-checkbox [checked]="fundItem.selected"
+                         (change)="addToCompare(fundItem)">Add to Compare
+            </md-checkbox>
+        </div>
+    </div>
+</md-card>
+
+
+
+

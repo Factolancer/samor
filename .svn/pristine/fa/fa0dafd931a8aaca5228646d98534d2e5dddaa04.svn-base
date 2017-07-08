@@ -1,0 +1,134 @@
+import { Component, OnInit, AfterViewInit, Input, ViewChild, ViewChildren } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
+import { Occupation } from './occupation';
+import { AddressProof } from './addressproof';
+import { User } from './user';
+
+@Component({
+  selector: 'app-registration',
+  templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.css']
+})
+export class RegistrationComponent implements OnInit {
+
+  public occupations = Occupation;
+  public addressprooofs = AddressProof;
+  user: User;
+
+  basicsaved = false;
+
+  onBasicSubmit(){
+    this.basicsaved = true;
+    console.log(this.user);
+  }
+
+  basicForm: NgForm;
+  kycForm: NgForm;
+  bankForm: NgForm;
+
+  @ViewChild('basicForm') currentBasicForm: NgForm;
+  @ViewChild('kycForm') currentKycForm: NgForm;
+  @ViewChild('bankForm') currentBankForm: NgForm;
+
+
+  ngAfterViewChecked() {
+    this.basicformChanged();
+    this.kycformChanged();
+    this.bankformChanged();
+    console.log("In after view checked");
+  }
+
+  basicformChanged() {
+    // if (this.currentBasicForm === this.basicForm) {console.log("current basic = basic"); return; }
+    this.basicForm = this.currentBasicForm;
+    if (this.basicForm) {
+      console.log("in basic form");
+      this.basicForm.valueChanges
+          .subscribe(data => this.onValueChanged(data));
+    }
+  }
+  kycformChanged() {
+    if (this.currentKycForm === this.kycForm) { return; }
+    this.kycForm = this.currentKycForm;
+    if (this.kycForm) {
+      this.kycForm.valueChanges
+          .subscribe(data => this.onValueChanged(data));
+    }
+  }
+  bankformChanged() {
+    if (this.currentBankForm === this.bankForm) { return; }
+    this.bankForm = this.currentBankForm;
+    if (this.kycForm) {
+      this.kycForm.valueChanges
+          .subscribe(data => this.onValueChanged(data));
+    }
+  }
+
+  onValueChanged(data?: any) {
+    if (!this.basicForm || !this.kycForm || !this.bankForm) { return; }
+    const basicform = this.basicForm.form;
+    const kycform = this.kycForm.form;
+    const bankform = this.bankForm.form;
+
+    for (const field in this.formErrors) {
+      // clear previous error message (if any)
+      this.formErrors[field] = '';
+      const basiccontrol = basicform.get(field);
+      const kyccontrol = kycform.get(field);
+      const bankcontrol = bankform.get(field);
+
+      if (basiccontrol && basiccontrol.dirty && !basiccontrol.valid) {
+        console.log("basic dirty & not valid");
+        const messages = this.validationMessages[field];
+        for (const key in basiccontrol.errors) {
+          this.formErrors[field] += messages[key] + ' ';
+        }
+        console.log(this.formErrors['pan']);
+      }
+      if (kyccontrol && kyccontrol.dirty && !kyccontrol.valid){
+        const messages = this.validationMessages[field];
+        for (const key in kyccontrol.errors) {
+          this.formErrors[field] += messages[key] + ' ';
+        }
+      }
+      if (bankcontrol && bankcontrol.dirty && !bankcontrol.valid){
+        const messages = this.validationMessages[field];
+        for (const key in bankcontrol.errors) {
+          this.formErrors[field] += messages[key] + ' ';
+        }
+      }
+    }
+  }
+
+  formErrors = {
+    'name': '',
+    'pan': '',
+    'mobile':'',
+    'email': '',
+    'dob':''
+  };
+
+  validationMessages = {
+    'name': {
+      'required':      'Name is required.',
+      'minlength':     'Name must be at least 4 characters long.',
+      'maxlength':     'Name cannot be more than 24 characters long.',
+      'forbiddenName': 'Someone named "Bob" cannot be a hero.'
+    },
+    'pan': {
+      'required': 'PAN number is required.',
+      'minlength': 'PAN number is incorrect, please enter valid PAN number',
+      'maxlength': 'PAN number is incorrect, please enter valid PAN number'
+    }
+  };
+
+
+  constructor() {
+    this.user = new User({pan:'', mob: '', email:'', name:'', dob:'', gender:''},{})
+  }
+
+  ngOnInit() {
+  }
+
+}

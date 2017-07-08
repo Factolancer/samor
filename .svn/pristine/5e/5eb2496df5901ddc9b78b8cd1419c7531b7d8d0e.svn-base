@@ -1,0 +1,30 @@
+/*
+import {AbstractControl, AsyncValidatorFn} from "@angular/forms";
+import {Http} from "@angular/http";
+
+export class AsyncValidator {
+
+    static isEmailCorrect(http: Http): AsyncValidatorFn {
+        return (control: AbstractControl): {[key: string]: any} => {
+            const val = control.value; //typeof control.value.length > 0 ? control.value : 0;
+            let url = 'https://api.mailgun.net/v2/address/validate?address=' + val;
+            url = url + '&api_key=pubkey-b492fb4e9e8ad8f2ce0c2ae87e12272c';
+            http.get(url).subscribe(response => {
+                    console.log("mailgun response >>>" + response.json().is_valid)
+                    if (!response.json().is_valid) {
+                        return {"Please provide a valid email": true};
+                    } else {
+                        return null;
+                    }
+                },
+                error => {
+                    console.error("Error Occured! :( " + error.error);
+                }
+            )
+
+        };
+    }
+
+}
+
+*/

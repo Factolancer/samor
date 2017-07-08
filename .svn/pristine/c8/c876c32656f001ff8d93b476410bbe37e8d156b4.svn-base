@@ -1,0 +1,19 @@
+import { Injectable } from '@angular/core';
+import {Http} from "@angular/http";
+
+@Injectable()
+export class PrintReportService {
+
+  constructor(private httpService: Http) { }
+
+  generateReport(){
+
+      this.httpService.get('http://localhost:9000/getPortfolioReport').subscribe(result=>{
+          var mediaType = 'application/pdf';
+          //var blob = new Blob([result._body], {type: mediaType});
+          var filename = 'test.pdf';
+          //saveAs(blob, filename);
+      });
+
+  }
+}

@@ -1,0 +1,117 @@
+<div class="wrapper" fxLayout="column" fxLayoutAlign="center center">
+    <div fxFlex="90">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex="80" fxFlex="100" class="center-align">
+                <div ngClass.gt-sm="heading-32-dark-grey" ngClass.lt-md="heading-24-dark-grey">Earn more by investing in SavingsPlus
+                    <hr/>
+                </div>
+                <div ngClass.gt-sm="sub-heading-16-medium-grey" ngClass.lt-md="txt-14" style="padding-bottom: 15px;"><i>"How many millionaires do you
+                    know
+                    who have
+                    become wealthy by investing in savings accounts? I rest my case." - Robert G. Allen
+                </i></div>
+            </div>
+        </div>
+        <div fxLayout="row">
+            <div fxFlex fxFlex.lt-md="100vw" class="grey-back" ngClass.gt-sm="pad-30" ngClass.lt-md="pad-10" >
+                <div fxLayout="row" fxLayoutAlign="center center" ngClass.lt-md="scroll-x" #scrollCenter>
+                    <div fxFlex="30" fxFlex.xs="75vw" fxFlex.sm="55vw" fxFlexFill class="no-padding display-inline-block">
+                        <md-card class="no-padding mar-tb-20 ">
+                            <md-card-content>
+                                <div class="other-header">
+                                    <div>Savings Account</div>
+                                </div>
+                                <div class="other-content">
+                                    <div>Low interest rate (~4%)</div>
+                                </div>
+                                <div class="other-content">
+                                    <div>Instant withdrawal</div>
+                                </div>
+                                <div class="other-content">
+                                    <div>Account maintenance charges</div>
+                                </div>
+                                <div class="other-content">
+                                    <div>Offline account opening process</div>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                    <div fxFlex="35" fxFlex.xs="80vw" fxFlex.sm="60vw"  fxFlexFill class="no-padding display-inline-block">
+                        <md-card class="no-padding highlightBox">
+                            <md-card-content >
+                                <div class="main-header">
+                                    <div>SAVINGS PLUS</div>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center" class="main-content">
+                                    <div fxFlex="15" fxFlexOffset="5">
+                                        <div class="light-grey-small-circle">
+                                            <md-icon class="md-24 md-brand-secondary">trending_up</md-icon>
+                                        </div>
+                                    </div>
+                                    <div fxFlex="75" fxFlexOffset="5" fxAlign="start">Higher returns(~7-9%)</div>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center" class="main-content">
+                                    <div fxFlex="15" fxFlexOffset="5">
+                                        <div class="light-grey-small-circle">
+                                            <md-icon class="md-24 md-brand-secondary">update</md-icon>
+                                        </div>
+                                    </div>
+                                    <div fxFlex="75" fxFlexOffset="5" fxAlign="start">Instant redemption</div>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center" class="main-content">
+                                    <div fxFlex="15" fxFlexOffset="5">
+                                        <div class="light-grey-small-circle">
+                                            <md-icon class="md-24 md-brand-secondary">lock_open</md-icon>
+                                        </div>
+                                    </div>
+                                    <div fxFlex="75" fxFlexOffset="5" fxAlign="start">No lock-in or exit load</div>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center" class="main-content">
+                                    <div fxFlex="15" fxFlexOffset="5">
+                                        <div class="light-grey-small-circle">
+                                            <md-icon class="md-24 md-brand-secondary">&#xE876;</md-icon>
+                                        </div>
+                                    </div>
+                                    <div fxFlex="75" fxFlexOffset="5" fxAlign="start">Invest and redeem on a click</div>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                    <div fxFlex="30" fxFlex.xs="75vw" fxFlex.sm="55vw" fxFlexFill class="no-padding display-inline-block">
+                        <md-card class="no-padding mar-tb-20">
+                            <md-card-content>
+                                <div class="row other-header">
+                                    <div>Fixed Deposit</div>
+                                </div>
+                                <div class="row other-content">
+                                    <div md-tooltip="Low FD rates for less than 1 year" mdTooltipPosition="above">Low short
+                                        term
+                                        rates
+                                    </div>
+                                </div>
+                                <div class="row other-content">
+                                    <div class="col-sm-12">Early withdrawal penalty</div>
+                                </div>
+                                <div class="row other-content">
+                                    <div class="col-sm-12"> Tax deducted at source by bank</div>
+                                </div>
+                                <div class="row other-content">
+                                    <div class="col-sm-12">Subsequent renewals required</div>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutAlign="center center" fxLayoutAlign.lt-md="stretch stretch" class="pad-tb-30">
+                    <div fxFlex="30">
+                        <button md-raised-button color="primary" class="cta-50" routerLink="demo">SEE HOW IT WORKS</button>
+                    </div>
+                    <div fxFlex="30">
+                        <button md-raised-button color="primary" class="cta-50" routerLink="funds">INVEST</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

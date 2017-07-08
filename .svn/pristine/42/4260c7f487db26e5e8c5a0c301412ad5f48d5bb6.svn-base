@@ -1,0 +1,25 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "./http-service.service";
+
+
+export class Search {
+  constructor(public keyword: any, public amc: string, public from: number, public rows: number) {
+  }
+}
+
+@Injectable()
+export class SearchService {
+
+  constructor(private httpService: HttpService) {
+  }
+
+  searchFund(path: string, data: any) {
+    return this.httpService.post(path, data)
+  }
+
+  getSearch() {
+    let searchObj = new Search("", "", 0, 10)
+    console.log(searchObj)
+    return searchObj
+  }
+}

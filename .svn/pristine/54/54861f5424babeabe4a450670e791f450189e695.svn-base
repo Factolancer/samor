@@ -1,0 +1,73 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <!--<div fxFlex="10" class="pad-tb-25" *ngIf="!orderSummary">
+        <md-progress-spinner color="primary" mode="indeterminate"></md-progress-spinner>
+    </div>-->
+    <div fxFlex="65" fxFlex.lt-md="98" class="heading-32-dark-grey center-align pad-tb-25" *ngIf="orderSummary && !hideDetails">
+        Your redemption has been initiated!
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper" *ngIf="orderSummary">
+    <div fxFlex="60" fxFlex.lt-md="98" class="order-ack">
+        <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="!hideDetails">
+            <div fxFlex="30" class="title">
+                Order Details
+            </div>
+            <div fxFlex="20" class="print clickable" (click)="print()">
+                <md-icon class="md-14">&#xE8AD;</md-icon>
+                Print
+            </div>
+        </div>
+        <md-card class="no-padding">
+            <div [ngClass]="{'head':!hideDetails}"  fxLayout="row" fxLayoutAlign="start center">
+                <div fxFlex>Order Id: {{orderId}}</div>
+                <div fxFlex class="right-align">Order Time: {{orderSummary.orderTime}}</div>
+            </div>
+            <div class="body">
+                <div fxLayout="row" fxLayoutAlign="center center" class="table-head">
+                    <div fxFlex="50" class="left-align">Fund</div>
+                    <div fxFlex="25">Redemption Mode</div>
+                    <div fxFlex="25">Status</div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center"
+                     *ngFor="let fund of orderSummary.subOrderList; let index = index"
+                     class="table-body">
+                    <div fxFlex="50">
+                        <div class="dark-grey-text bold">{{fund.schemeDisplayName}}</div>
+                        <div class="plan-option">Plan-<span>{{fund.schemePlan}}</span> Option-<span>{{fund.schemeOption}}</span>
+                        </div>
+                    </div>
+                    <div fxFlex="25" class="center-align">
+                        <div>{{fund.investmentMode}}<span
+                                *ngIf="fund.investmentMode == investmentMode[investmentMode.SIP]"> - {{fund.sipFrequency}}</span>
+                        </div>
+                        <div *ngIf="fund.investmentMode == investmentMode[investmentMode.SIP]">
+                            {{fund.sipNoOfInstallments}} Installments
+                        </div>
+                    </div>
+                    <div fxFlex="25" class="center-align">
+                        <div *ngIf="fund.buySellType.toLowerCase().startsWith('f')" class="dark-grey-text bold">Full Redemption</div>
+                        <div *ngIf="fund.buySellType.toLowerCase().startsWith('p')" class="dark-grey-text bold">Partial Redemption</div>
+                        <div *ngIf="fund.amount && fund.amount>0" class="dark-grey-text bold">Amount: {{fund.amount}}</div>
+                        <div *ngIf="fund.quantity && fund.quantity>0" class="dark-grey-text bold">Units: {{fund.quantity}}</div>
+                        <div *ngIf="!subOrderPaymentStatus[index] || !subOrderPaymentStatus[index].statusCode"><img
+                                src="../../../assets/img/loading.gif" width="20">
+                        </div>
+                        <div *ngIf="subOrderPaymentStatus[index] && subOrderPaymentStatus[index].status"
+                             [ngClass]="{'success-msg': subOrderPaymentStatus[index].statusCode == 2 ||
+                              subOrderPaymentStatus[index].statusCode == 3 ||
+                              subOrderPaymentStatus[index].statusCode == 4 ||
+                              subOrderPaymentStatus[index].statusCode == 6 ||
+                              subOrderPaymentStatus[index].statusCode == 10 ,
+                               'failed-msg':subOrderPaymentStatus[index].statusCode == 1 ||
+                              subOrderPaymentStatus[index].statusCode == 5 ||
+                              subOrderPaymentStatus[index].statusCode == 7 ||
+                              subOrderPaymentStatus[index].statusCode == 13  }">
+                            {{subOrderPaymentStatus[index].status}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+        <div class="disclaimer">Disclaimer: {{disclaimer}}</div>
+    </div>
+</div>

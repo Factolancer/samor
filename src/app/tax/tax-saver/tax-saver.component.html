@@ -1,0 +1,19 @@
+<app-user-journey fxHide.xs="true" [position]=1></app-user-journey>
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80" fxFlex.lt-md="100">
+        <div fxLayout="column" fxLayoutAlign="center center" class="pad-tb-15">
+            <div fxFlex class="center-align" ngClass.gt-sm="heading-32-dark-grey" ngClass.lt-md="heading-24-dark-grey">Invest in TaxSaver ELSS Schemes</div>
+        </div>
+        <div ngClass.gt-sm="grey-back pad-30" ngClass.lt-md="pad-10">
+            <app-tax-saver-card fxLayout="column" fxLayoutAlign="center center" #taxSaverFundsComp
+                                [funds]="taxSaverFunds"></app-tax-saver-card>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-20">
+            <div fxFlex="20" fxFlex.lt-md="90">
+                <button color="primary" md-raised-button="" class="cta-50"
+                        (click)="proceed(taxSaverFundsComp.selectedFunds)">PROCEED
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

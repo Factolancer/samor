@@ -1,0 +1,246 @@
+import {Component, Inject, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
+import {DashboardDataService} from "../../core/services/dashboard-data.service";
+import {TransactionSummary} from "../models";
+import {Logger} from "../../core/logger/logger";
+import {MdDialog, MdDialogConfig, MdDialogRef} from "@angular/material";
+import {ConfirmationDialogComponent} from "../../shared/confirmation-dialog.component";
+import {SnackBarService} from "../../core/services/snack-bar.service";
+import {CurrencyPipe, PlatformLocation} from "@angular/common";
+import {LoadingDialogComponent} from "../../shared/loading-dialog.component";
+import {isNullOrUndefined} from "util";
+import {PaymentObject} from "../../checkout/models/payment-object";
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+import {HeaderService} from "../../core/services/header.service";
+import {Observable} from "rxjs/Observable";
+import {Subscription} from "rxjs/Subscription";
+
+@Component({
+    selector: 'app-transaction',
+    templateUrl: './transaction.component.html',
+    styleUrls: ['./transaction.component.scss'],
+})
+export class TransactionComponent implements OnInit, OnDestroy{
+
+    transactionDataAvailable: boolean = false;
+    className: string;
+    from = 0;
+    to = 5;  // set number of items per page
+    perPage = 5;   // set number of items per page
+    paginationSize = 3;  //set max number of pages to choose from in a screen
+    startIndex: number = 1;
+    endIndex: number = this.paginationSize;
+    pages: Array<number>;
+    totalLength: number;
+    totalPages: number;
+    currentPage: number;
+
+    noNext: boolean = false;
+    noPrev: boolean = false;
+    noNextSeries: boolean = false;
+    noPrevSeries: boolean = false;
+
+    /*----pagiantion---**/
+    arr: Array<number>;
+
+    //options: Object;
+    transactions: TransactionSummary[];
+    loadingDialogRef: any;
+    loadingCloseSubscription: Subscription;
+
+    constructor(private dataService: DashboardDataService, public headerService: HeaderService, private platformLocation: PlatformLocation,
+                @Inject(APP_CONFIG) private config: IAppConfig, public viewContainerRef: ViewContainerRef,
+                public snackBarService: SnackBarService, public dialog: MdDialog, private logger: Logger) {
+        this.className = 'TransactionComponent';
+    }
+
+    fillArray(start: number, end: number) {
+        this.arr = [];
+        for (var x = start; x <= end; x++)
+            this.arr.push(x);
+        return this.arr;
+    };
+
+    goto(page) {
+        if (page <= this.totalPages && page > 0) {
+            this.from = (page - 1) * this.perPage;
+            this.to = this.from + this.perPage;
+            this.currentPage = page;
+
+            this.noNext = this.currentPage == this.totalPages ? true : false;
+            this.noPrev = this.currentPage == 1 ? true : false;
+        }
+
+    }
+
+    openOrderCancelConfirmationDialog(fundName: string, dividendFreq: string, schemePlan: string, option: string, amount: number) {
+        let message = "Are you sure you want to cancel the order for ";
+        message += fundName + " - ";
+        message += dividendFreq + " " + schemePlan + " Plan ";
+        message += option + " Option ";
+        message += " for amount " + new CurrencyPipe("en-US").transform(amount, 'INR', true, '1.0-0') + " ?";
+        return this.openDialog("Confirm Cancel", message)
+    }
+
+    openDialog(title?: string, message?: string) {
+        let config = new MdDialogConfig();
+        let device = this.headerService.deviceType();
+        if (device === 'xs' || device === 'sm') {
+            config.width = '100%';
+        }else {
+            config.width = '30vw';
+        }
+        config.disableClose = true;
+        config.viewContainerRef = this.viewContainerRef;
+
+        let confirmationConfig = {
+            confirmationTitle: title,
+            confirmationText: message,
+            confirmationActions: [['Y', "Yes", "hollow-cta-36"], ['N', "No", "hollow-cta-36"]]
+        };
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, config);
+        dialogRef.componentInstance.config = confirmationConfig;
+        return dialogRef.afterClosed().map(result => {
+            if (result[0] == 'Y') {
+                return true
+            } else {
+                return false
+            }
+        });
+
+    }
+
+    cancelOrder(transaction: TransactionSummary) {
+
+        this.openOrderCancelConfirmationDialog(transaction.fundName, transaction.dividendFreq, transaction.schemePlan, transaction.dividendOption, transaction.subOrderAmount).subscribe(value => {
+            if (value) {
+                this.showLoadingDialog();
+                this.dataService.cancelOrder(transaction.subOrderId).subscribe(res => {
+                    if(!isNullOrUndefined(res.success) && res.success == true){
+                        Observable.timer(2000).subscribe(() => {
+                            this.getTransactions();
+                            this.snackBarService.showSnackBar("Order successfully cancelled", "OKAY", this.viewContainerRef);
+                        });
+                    } else{
+                        this.closeLoadingDialog();
+                        this.loadingCloseSubscription = this.loadingDialogRef.afterClosed().subscribe(value => {
+                            this.snackBarService.showSnackBar("Unable to cancel order", "OKAY", this.viewContainerRef);
+                        });
+                        this.snackBarService.showSnackBar("Unable to cancel order", "OKAY", this.viewContainerRef);
+                    }
+                })
+            }
+        })
+
+    }
+
+    payOrder(transaction: TransactionSummary){
+        let paymentUrl = this.platformLocation['location'].origin + this.config.paymentFallbackUrl;
+        this.dataService.getPaymentLink(new PaymentObject(+transaction.orderId, paymentUrl)).subscribe(paymentResponse => {
+            let responsePaymentObj = paymentResponse as PaymentObject;
+            this.logger.debug(this.className, responsePaymentObj);
+            window.location.replace(responsePaymentObj.bseUrl);
+        })
+    }
+    nextSeries() {
+        this.noPrevSeries = false;
+        this.startIndex = Math.min(this.totalPages, this.endIndex + 1);
+        this.endIndex = Math.min(this.totalPages, this.startIndex + this.paginationSize - 1);
+        this.pages = this.fillArray(this.startIndex, this.endIndex);
+        this.goto(this.startIndex);
+        if (this.endIndex == this.totalPages)
+            this.noNextSeries = true;
+
+    }
+
+    prevSeries() {
+        this.noNextSeries = false;
+        this.startIndex = Math.max(1, this.startIndex - this.paginationSize);
+        this.endIndex = Math.min(this.totalPages, this.startIndex + this.paginationSize - 1);
+        this.pages = this.fillArray(this.startIndex, this.endIndex);
+        this.goto(this.endIndex);
+        if (this.startIndex == 1)
+            this.noPrevSeries = true;
+    }
+
+    prev() {
+        if (this.startIndex == this.currentPage)
+            this.prevSeries();
+        else
+            this.goto(this.currentPage - 1);
+    }
+
+    next() {
+        if (this.endIndex == this.currentPage)
+            this.nextSeries();
+        else
+            this.goto(this.currentPage + 1);
+    }
+
+    /*----pagiantion---**/
+
+    ngOnInit() {
+        this.getTransactions();
+    }
+
+    getTransactions() {
+        this.transactions = [];
+        this.dataService.getTransaction()
+            .subscribe(res => {
+                    this.logger.debug(this.className, res);
+                    this.transactions = res as TransactionSummary[];
+                    if (this.transactions.length > 0) {
+                        this.transactionDataAvailable = true;
+                    }
+
+                    /* --pagination */
+                    this.totalLength = this.transactions.length;
+                    this.totalPages = Math.ceil(this.totalLength / this.perPage);
+                    this.currentPage = 1;
+                    this.endIndex = Math.min(this.paginationSize, this.totalPages);
+                    this.pages = this.fillArray(1, this.endIndex);
+                    this.noNextSeries = this.totalPages <= this.paginationSize ? true : false;
+                    this.noPrevSeries = this.totalPages <= this.paginationSize ? true : false;
+
+                    /*---paginatio---*/
+                    this.closeLoadingDialog();
+                    this.loadingCloseSubscription = this.loadingDialogRef.afterClosed().subscribe(value => {
+                    });
+                },
+                err => {
+                    this.logger.error(this.className, "an error occured", err);
+                }
+            )
+
+    }
+
+    showLoadingDialog() {
+        let config = new MdDialogConfig();
+        let device = this.headerService.deviceType();
+        if (device === 'xs' || device === 'sm') {
+            config.width = '100%';
+        }else {
+            config.width = '25vw';
+        }
+        config.disableClose = true;
+        config.viewContainerRef = this.viewContainerRef;
+        let loadingConfig = {
+            text: "Processing..."
+        };
+        this.loadingDialogRef = this.dialog.open(LoadingDialogComponent, config);
+        this.loadingDialogRef.componentInstance.config = loadingConfig;
+
+    }
+
+    closeLoadingDialog() {
+        if (this.loadingDialogRef) {
+            this.loadingDialogRef.close();
+        }
+    }
+
+    ngOnDestroy() {
+        if(this.loadingCloseSubscription){
+            this.loadingCloseSubscription.unsubscribe();
+        }
+    }
+
+}

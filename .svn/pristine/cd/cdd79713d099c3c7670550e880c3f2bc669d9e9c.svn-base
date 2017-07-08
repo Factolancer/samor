@@ -1,0 +1,14 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DemobComponent } from './demob.component';
+
+import {SharedModule} from "../../shared/shared.module";
+import {ChartModule} from "angular2-highcharts";
+
+@NgModule({
+  imports: [
+    CommonModule, SharedModule, ChartModule
+  ],
+  declarations: [DemobComponent]
+})
+export class DemobModule { }

@@ -1,0 +1,16 @@
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {HttpService} from "../../core/services/http-service.service";
+import {CapitalGains} from "./capital-gains";
+
+@Injectable()
+export class CapitalGainsReportService {
+
+  constructor(private http:HttpService) { }
+
+
+  getFundsCapitalGains(finYear:number): Observable<CapitalGains>{
+    return this.http.secureGet('/report/getCapitalGainsReport/'+finYear)
+        .map(res => res as CapitalGains)
+  }
+}

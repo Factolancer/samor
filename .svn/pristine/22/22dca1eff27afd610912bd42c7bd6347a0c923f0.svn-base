@@ -1,0 +1,97 @@
+<div class="check-kyc-dialog">
+    <div fxLayout="row" fxLayoutAlign="center center" class="check-kyc-header" md-dialog-title>
+        <div fxFlex="95">
+            CHECK YOUR KYC STATUS HERE
+        </div>
+        <div fxFlex="5" class="close-dialog">
+            <md-icon class="md-18 clickable" (click)="closeClicked()">&#xE888;</md-icon>
+        </div>
+    </div>
+   <!-- <div *ngIf="!isEmailValid" fxFlex="50%" fxFlexOffset="25%" fxLayoutAlign="center center" class="error">Invalid email-id</div>-->
+    <div *ngIf="!otpSent && !validPhone" fxLayout="row" fxLayoutAlign="center center" class="forgot-pass-content">
+        <div fxFlex="50" fxAlign="center">
+            <div fxFlex="90" fxFlexOffset="5">
+                <form [formGroup]="PhoneValidationForm" (ngSubmit)="onSendOTP()">
+                    <div fxLayout="column">
+                        <br/><br/><br/><br/>
+                        <md-input-container fxFlex="100">
+                            <span md-prefix>+91</span>
+                            <input md-input type="tel" formControlName="mob" required  placeholder="Enter your mobile number">
+                        </md-input-container>
+                        <br/>
+                        <div fxLayout="row" fxLayoutAlign="end">
+                            <button fxFlex="50" fxAlign="center" md-raised-button class="send-otp-button" [disabled]="!PhoneValidationForm.valid">
+                                SEND OTP
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="otpSent && !validPhone" fxLayout="row" fxLayoutAlign="center center" class="otp-validateOTP-content">
+        <div fxFlex="50" fxAlign="center">
+            <div fxFlex="90" fxFlexOffset="5">
+                <form [formGroup]="OTPValidationForm" (ngSubmit)="onValidateOTP()">
+                    <div fxLayout="column">
+                        <br/><br/><br/><br/>
+                        <md-input-container fxFlex="100">
+                            <input md-input  required formControlName="otp" placeholder="Enter OTP">
+                        </md-input-container>
+                        <br/>
+                        <div fxLayout="row" fxLayoutAlign="center">
+                            <button fxFlex="50" fxAlign="center" md-raised-button color="primary"  class="submit-otp-button" >
+                                SUBMIT
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div  fxLayout="row" fxLayoutAlign="center center" class="pan-card-content">
+        <div fxFlex="50" fxAlign="center">
+            <div fxFlex="90" fxFlexOffset="5">
+                <form [formGroup]="KYCStatusForm" (ngSubmit)="checkPAN()">
+                    <div fxLayout="column">
+                        <br/><br/><br/><br/>
+                        <md-input-container fxFlex="100">
+                            <input md-input formControlName="pan" required  placeholder="Enter your Pan number" #pan
+                                   [value]="pan.value.toUpperCase()">
+                        </md-input-container>
+                        <br/>
+                        <div fxLayout="row" fxLayoutAlign="center">
+                            <button fxFlex="50" fxAlign="center" md-raised-button class="check-pan-button" [disabled]="!KYCStatusForm.valid">
+                                SUBMIT
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        <br/><br/>
+
+    <div *ngIf="kycCompliant" fxLayout="row" fxLayoutAlign="center center" class="kyc-compliant">
+        <md-card fxFlex="30" align="center">KYC</md-card>
+        <i class="material-icons" fxFlexOffset="5px">check_circle</i>
+    </div>
+    <div *ngIf="!kycCompliant" [ngClass]="{active: panGiven, disabled: !panGiven}" fxLayout="row" fxLayoutAlign="center center" class="kyc-non-compliant">
+        <md-card fxFlex="30" align="center">KYC</md-card>
+        <i *ngIf="panGiven" class="material-icons" fxFlexOffset="5px">highlight_off</i>
+    </div>
+        <br/><br/>
+
+    <div *ngIf="!kycCompliant && panGiven" fxLayout="row" fxLayoutAlign="center center" class="adhaar-enquiry-box" md-dialog-title>
+        <div fxFlex="30" align="center">
+                <div fxFlex="100" class="adhaar-enquiry-text">Do you have Adhaar ?</div>
+            <div fxLayout="row">
+                <div fxFlex align="start" (click)="closeClicked()" ><a routerLink="/registration/ekyc" class="yes-button">YES</a></div>
+                <div fxFlex align="end" (click)="closeClicked()" ><a routerLink="/registration" class="no-button">NO</a></div>
+            </div>
+        </div>
+    </div>
+<!--    <md-progress-spinner mode="indeterminate"></md-progress-spinner>-->
+
+
+</div>

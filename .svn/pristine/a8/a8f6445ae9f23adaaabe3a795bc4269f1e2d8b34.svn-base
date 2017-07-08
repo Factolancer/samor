@@ -1,0 +1,18 @@
+<div class="col-md-8 col-md-offset-2">
+    <section class="data-head">
+        <div class="row">
+            <div class="col-md-6"><h2>{{advancedFactsheet.basicFactsheet.name}}</h2></div>
+            <div class="col-md-6">
+                <button md-raised-button="" class="pull-right">Add to WatchList</button>
+                <button md-raised-button="" class="pull-right">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+    <section class="grey-back">
+        <app-equity-view [_advancedFactsheet]="advancedFactsheet"
+                         *ngIf="advancedFactsheet.basicFactsheet.category === 'Equity'"></app-equity-view>
+
+        <app-debt-view [_advancedFactsheet]="advancedFactsheet"
+                         *ngIf="advancedFactsheet.basicFactsheet.category === 'Debt'"></app-debt-view>
+    </section>
+</div>

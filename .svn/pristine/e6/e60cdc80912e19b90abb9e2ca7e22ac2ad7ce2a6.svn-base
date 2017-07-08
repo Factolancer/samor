@@ -1,0 +1,54 @@
+var passport = require('passport');
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var config = require('../../config/environment');
+var httpRequest = require('request');
+
+exports.setup = function () {
+
+    var strategyConfig = {};
+    strategyConfig['clientID'] = config.passport.google.CLIENT_ID;
+    strategyConfig['clientSecret'] = config.passport.google.CLIENT_SECRET;
+    strategyConfig['callbackURL'] = config.DOMAIN + config.passport.google.CALLBACK;
+    //console.log(strategyConfig);
+    passport.use(new GoogleStrategy(strategyConfig,
+        function (accessToken, refreshToken, profile, done) {
+            /*console.log("token >>> " + accessToken);
+             console.log("refresh token >>> " + refreshToken);
+             console.log(profile);*/
+            var userObject = {};
+            userObject['name'] = profile.displayName;
+            userObject['email'] = profile.emails[0].value;
+            userObject['provider'] = 'google';
+            userObject['id'] = profile.id;
+            userObject['facebook'] = profile._json;
+            //console.log(userObject)
+            httpRequest(
+                {
+                    method: 'POST',
+                    uri: config.playServer.ip + ':' + config.playServer.http_port + '/server/sociallogin',
+                    multipart: [
+                        {
+                            'Content-Type': 'application/json',
+                            body: JSON.stringify(userObject)
+                        }
+                    ]
+                },
+                function (error, response, body) {
+                    if (error) {
+                        console.error('upload failed: @  /server/sociallogin ', error);
+                        return done(error, userObject);
+                    }
+                    console.log('Upload successful! @  /server/sociallogin Server responded with:', body);
+                    return done(body, userObject);
+                }
+            )
+        }
+    ));
+};
+
+
+exports.processCallback = function (req, res) {
+    console.log(" success case handling processcallback for google redirecting home page");
+    console.log(req);
+    res.redirect('/');
+}

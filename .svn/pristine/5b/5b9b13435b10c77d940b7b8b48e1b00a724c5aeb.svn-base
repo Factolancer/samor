@@ -1,0 +1,99 @@
+import {Component, OnInit, OnDestroy, Inject, HostListener} from "@angular/core";
+import {Subscription} from "rxjs";
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+import {Router, ActivatedRoute} from "@angular/router";
+import {LoginService} from "../services/login.service";
+import {Logger} from "../logger/logger";
+import {CartService} from "../services/cart.service";
+import {HeaderService} from "../services/header.service";
+import {URLAccessGuard} from "../guards/urlAccess.guard";
+import {CustomerNameService} from "../services/customer-name.service";
+
+@Component({
+    selector: 'fincash-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss']
+})
+export class HeaderComponent implements OnInit, OnDestroy {
+
+    private loginSubscription: Subscription;
+    private headerVisibilitySubscription: Subscription;
+
+    isLoggedIn: boolean;
+    private className: string;
+    state: boolean ;
+    allowStateChange: boolean;
+    customerName: string;
+
+    constructor(private logger: Logger, private loginService: LoginService, private cartService: CartService,
+                private router: Router, private route: ActivatedRoute, @Inject(APP_CONFIG) private config: IAppConfig,
+                private headerService: HeaderService, private urlAccessGuard: URLAccessGuard, public customerNameService: CustomerNameService) {
+        this.isLoggedIn = false;
+        this.allowStateChange = false;
+        this.className = 'HeaderComponent';
+    }
+
+    @HostListener("window:scroll", ['$event'])
+    onWindowScroll(evnt) {
+        if (document.body.scrollTop == 0 && this.allowStateChange)
+            this.state = false;
+    }
+
+    onScroll(event : any) {
+        if (this.allowStateChange) {
+            this.state = true;
+        }
+    }
+
+    onScrollUp(event : any) {
+        if (this.allowStateChange) {
+            this.state = false;
+        }
+    }
+
+    logUserIn() {
+        this.router.navigate([this.config.dloginUrl]);
+    }
+
+    userSignUp() {
+        this.router.navigate([this.config.signupUrl]);
+    }
+
+    logUserOut() {
+        this.loginService.logOutUser();
+        /* @pawan
+         do not clear cart in case of logout. As it is still the same user having the saved localstorage.
+         */
+        //this.cartService.resetCart();
+    }
+
+
+    ngOnInit() {
+        this.loginSubscription = this.loginService.loginObservable.subscribe((isLoggedIn: boolean) => {
+            this.isLoggedIn = isLoggedIn;
+        });
+
+        this.headerVisibilitySubscription = this.headerService.headerVisibilityObservable.subscribe(value => {
+            this.allowStateChange = value;
+            if(!value){
+                this.state = false;
+            }
+        });
+
+        this.customerNameService.getNameOfUser()
+            .subscribe(name => {
+                let firstName = name['firstname'];
+                this.customerName = (firstName.length>0)? "Hello " + firstName + "!" : this.loginService.getUserObject().username;
+            })
+    }
+
+    changePassword() {
+        this.urlAccessGuard.allow = true;
+        this.router.navigate(['/auth/password-assistance/forgot']);
+    }
+
+    ngOnDestroy() {
+        this.loginSubscription.unsubscribe();
+        this.headerVisibilitySubscription.unsubscribe();
+    }
+}

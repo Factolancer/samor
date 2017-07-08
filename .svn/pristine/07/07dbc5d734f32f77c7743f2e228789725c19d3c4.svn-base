@@ -1,0 +1,49 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {FundSearchInput} from "./fund-search-input";
+import {Observable, BehaviorSubject} from "rxjs";
+
+
+@Injectable()
+export class SearchService {
+    private fundSearchInputSource = new BehaviorSubject<FundSearchInput>(new FundSearchInput());
+    searchInput = this.fundSearchInputSource.asObservable();
+    searchResults: Observable<any> = this.searchInput.switchMap(
+        (searchInput: FundSearchInput) => {
+            return this.httpService.post("/searchFund", searchInput);
+        });
+
+    constructor(private httpService: HttpService) {
+    }
+
+    searchFund(searchInput: FundSearchInput) {
+        searchInput.from = 0;
+        searchInput.sortElement = "drat";
+        searchInput.sortOrder = "desc";
+        this.setSearchInput(searchInput);
+    }
+
+
+    sort(searchInput: FundSearchInput) {
+        searchInput.from = 0;
+        this.setSearchInput(searchInput);
+    }
+
+    changePage(searchInput: FundSearchInput) {
+        this.setSearchInput(searchInput);
+    }
+
+    getFilterData(path: string) {
+        return this.httpService.get(path);
+    }
+
+    setSearchInput(searchInput: FundSearchInput) {
+        this.fundSearchInputSource.next(searchInput);
+    }
+
+    getSearchInput() {
+        return this.fundSearchInputSource.value;
+    }
+
+
+}

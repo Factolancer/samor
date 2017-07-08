@@ -1,0 +1,18 @@
+export const KYCGroup = {
+    KYCTYPE_CKYC: "CKYC",
+    KYCTYPE_PAN: "PAN BASED",
+    KYCTYPE_AADHAR: "AADHAR KYC",
+
+    KYC_Done: "D",
+    KYC_NOTDONE: "ND",
+    KYC_UNDERPROCESS: "UP",
+    KYC_EXTERNALLYDONE: "ED"
+};
+
+export const KYCConstants = {
+    CND_COUNTRY_INDIA: "115",
+
+    CND_DOCTYPE_PHOTOGRAPH: "1058",
+    CND_DOCTYPE_SIGNATURE: "1059",
+    CND_DOCTYPE_PANCARD: "1052"
+};

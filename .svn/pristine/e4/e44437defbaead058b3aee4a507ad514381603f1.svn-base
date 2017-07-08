@@ -1,0 +1,13 @@
+
+export class Address {
+    constructor(
+        line1: string,
+        line2: string,
+        pin: string,
+        city: string,
+        district: string,
+        state: string,
+        country: string,
+        landmark?: string
+    ) {}
+}

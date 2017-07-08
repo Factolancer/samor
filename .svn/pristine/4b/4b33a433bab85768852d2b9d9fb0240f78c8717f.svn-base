@@ -1,0 +1,47 @@
+import {Component, ViewContainerRef} from "@angular/core";
+import {Headers, Http} from "@angular/http";
+import {tokenNotExpired} from 'angular2-jwt';
+import * as html2canvas from "html2canvas";
+import {MdDialogConfig, MdDialog, MdDialogRef} from "@angular/material";
+import {LoginComponent} from "./login/login.component";
+import {LoginService} from "./login/login.service";
+
+
+@Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+
+    // logInDialogRef: MdDialogRef<LoginComponent>;
+    result: any
+
+    public constructor(public http: Http, private viewContainerRef: ViewContainerRef, public dialog: MdDialog,
+                       public loginService: LoginService) {
+    }
+
+    logUserIn(){
+        this.loginService
+            .loginUser(this.viewContainerRef)
+            .subscribe(res => {this.result = res;},
+                error => {console.log(error)});
+    }
+
+    signUserUp() {
+        this.loginService
+            .signUpUser(this.viewContainerRef)
+            .subscribe(res => {this.result = res;},
+                error => {console.log(error);})
+    }
+
+    logoutUser(){
+        localStorage.removeItem('id_token');
+    }
+
+    userLoggedIn(){
+        return tokenNotExpired();
+    }
+
+
+}

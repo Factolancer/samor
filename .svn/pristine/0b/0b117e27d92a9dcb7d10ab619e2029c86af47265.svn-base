@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "noEmit": true,
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "strictNullChecks": false,
+    "lib": [
+      "dom",
+      "es5"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "hammerjs",
+      "jasmine",
+      "node",
+      "source-map",
+      "uglify-js",
+      "webpack",
+      "html2canvas",
+      "highcharts",
+      "jspdf"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "server",
+    "documents",
+    "dll"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "forkChecker": true,
+    "useWebpackText": true
+  },
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}
+
+/*
+"files": ["src/app/app.module.ts", "src/main.browser.aot.ts"],
+,"types": ["hammerjs", "jasmine", "node", "source-map", "uglify-js", "webpack"]
+*/

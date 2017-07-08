@@ -1,0 +1,58 @@
+import {Component, OnInit, Input, ViewContainerRef, OnDestroy} from "@angular/core";
+import {CartService} from "../services/cart.service";
+import {InvestmentModeEnum} from "../enum/investment-mode-enum";
+import {MdSnackBar, MdSnackBarConfig} from "@angular/material";
+import {Fund} from "../models/fund";
+import {Subscription} from "rxjs";
+import {LoginService} from "../services/login.service";
+import {Cart} from "../models/cart";
+import {Logger} from "../shared/logger/logger";
+
+@Component({
+    selector: 'app-cart-navigation-icon',
+    templateUrl: './cart-navigation-icon.component.html',
+    styleUrls: ['./cart.styles.scss']
+})
+export class CartNavigationIconComponent implements OnInit, OnDestroy {
+
+    private loginSubscription: Subscription;
+    private cartSubscription: Subscription;
+    private cartItemsCount: number;
+    @Input() cssClass: string;
+
+    constructor(private cartService: CartService, private loginService: LoginService, private logger: Logger) {
+    }
+
+
+    ngOnInit() {
+        this.loginSubscription = this.loginService.loginObservable.subscribe((isLoggedIn: boolean) => {
+            if (isLoggedIn) {
+                this.cartService.mergeCart();
+            } else {
+                this.cartService.resetCart();
+                this.cartItemsCount = 0;
+            }
+        });
+
+        if (this.cartService.isCartPresent()) {
+            this.cartService.getCartData().subscribe(res => {
+                let cart = res as Cart;
+                this.cartService.setCartSubjectState(cart);
+            });
+        } else {
+            this.cartService.setCartSubjectState(new Cart);
+        }
+
+        this.cartSubscription = this.cartService.cartObservable.subscribe(cart => {
+            this.cartItemsCount = cart.funds.length;
+        });
+
+
+    }
+
+    ngOnDestroy() {
+        this.loginSubscription.unsubscribe();
+        this.cartSubscription.unsubscribe();
+    }
+
+}

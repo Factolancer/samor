@@ -1,0 +1,109 @@
+import {Component, OnDestroy} from "@angular/core";
+import {ExploreFundsService} from "./explore-funds.service";
+import {FundSearchResults} from "./fund-search-results";
+import {Subscription} from "rxjs";
+import {ExploreFundConstants} from "./explore-funds.constants";
+
+@Component({
+    selector: 'app-fund-pagination-panel',
+    templateUrl: './fund-pagination-panel.component.html',
+    styleUrls: ['explore-funds.styles.scss']
+})
+export class FundPaginationPanelComponent implements OnDestroy {
+
+    displayPageNumbers: number[] = [];
+    currentPosition: number;
+    totalPages: number;
+    paginationSize: number = 4;
+    searchResultsSubscription: Subscription;
+    searchInputFrom: number;
+    searchInputRows: number;
+    totalNumFound: number;
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+        this.searchResultsSubscription = this.exploreFundsService.fundSearchResult.subscribe(
+            (searchResults: FundSearchResults) => {
+                let searchInput = exploreFundsService.getFundSearchInput();
+                this.searchInputFrom = searchInput.from;
+                this.searchInputRows = searchInput.rows;
+                this.totalNumFound = searchResults.numFound;
+                this.currentPosition = Math.floor(searchInput.from / searchInput.rows);
+                this.totalPages = Math.ceil(searchResults.numFound / searchInput.rows);
+                this.setDisplayPageNumbers();
+            });
+    }
+
+
+//used for moving to next page on the searchBarInput reults
+    next() {
+        let searchInput = this.exploreFundsService.getFundSearchInput();
+        searchInput.from = searchInput.from + searchInput.rows;
+        searchInput.queryType = ExploreFundConstants.PAGE_QUERY;
+        this.exploreFundsService.setFundSearchInput(searchInput);
+    }
+
+//used for moving to previous page on searchBarInput results
+    prev() {
+        let searchInput = this.exploreFundsService.getFundSearchInput();
+        searchInput.from = searchInput.from - searchInput.rows;
+        searchInput.queryType = ExploreFundConstants.PAGE_QUERY;
+        this.exploreFundsService.setFundSearchInput(searchInput);
+    }
+
+    setDisplayPageNumbers() {
+        let start = 0;
+        let end = this.paginationSize;
+        let middle = this.paginationSize / 2;
+
+        this.displayPageNumbers = [];
+
+        if (this.currentPosition <= middle) {
+            //case when current position < middle
+            if (this.totalPages - this.paginationSize > 0)
+                start = this.min(0, this.totalPages - this.paginationSize);
+            end = this.min(this.totalPages, this.paginationSize);
+        } else if ((middle < this.currentPosition ) &&
+            (this.currentPosition < (this.totalPages - middle))) {
+            //case when current position in in between
+            start = this.currentPosition - middle;
+            end = this.currentPosition + middle;
+        } else if (this.currentPosition >= (this.totalPages - middle)) {
+            //case when current position belongs to somewhere towards the end
+            start = this.max(0, this.totalPages - this.paginationSize);
+            end = this.totalPages;
+        }
+
+        for (let i = start; i < end; i++) {
+            this.displayPageNumbers.push(i);
+        }
+
+    }
+
+    max(a: number, b: number) {
+        if (a >= b)
+            return a;
+        else
+            return b;
+    }
+
+    min(a: number, b: number) {
+        if (a <= b)
+            return a;
+        else
+            return b;
+    }
+
+    gotoPage(value: number) {
+        console.log(value);
+
+        let searchInput = this.exploreFundsService.getFundSearchInput();
+        searchInput.from = searchInput.rows * value;
+        searchInput.queryType = ExploreFundConstants.PAGE_QUERY;
+        this.exploreFundsService.setFundSearchInput(searchInput);
+    }
+
+    ngOnDestroy() {
+        this.searchResultsSubscription.unsubscribe();
+    }
+
+}

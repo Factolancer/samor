@@ -1,0 +1,9 @@
+import {Bank} from "./bank";
+
+export class UserBanks {
+    constructor(public holder_name: string,
+                public bank: Bank,
+                public account_type: string,
+                public account_number: string) {
+    }
+}

@@ -1,0 +1,161 @@
+var path = require('path');
+
+var User = require('../models/user');
+//const kyc = require('./kyc');
+
+module.exports = function(app, passport) {
+  app.get('/api', function(req, res){           
+      var sessionData = req.session.passport ||''; 
+      req.headers['x-access-token'] = sessionData.user;
+      var token = req.headers['x-access-token'];
+      res.send(token);
+   });
+    //app.use('/kyc', kyc);
+
+    var delay = 2000;
+    /***Dummy API for testing****/
+
+    app.get('/api/invested', function(req, res){
+
+       res.json(false);
+
+    });
+
+  // investment
+  app.get('/api/investments', function(req, res){
+        var data = {
+            0:[
+                {name:'equity', value:12000000},
+                {name:'debt', value:  1000000},
+                {name:'gold', value:  5000000}
+            ],
+            1:{
+                'equity':[
+                  {name:'f1', value:1},
+                  {name:'f2', value:2},
+                  {name:'f3', value:3}
+                ],
+                'debt':[
+                    {name:'f4', value:1},
+                    {name:'f5', value:30000000},
+                    {name:'f6', value:6}
+                ],
+                'gold':[
+                    {name:'f7', value:10000000000},
+                    {name:'f8', value:6},
+                    {name:'f9', value:12}
+                ]
+            }
+
+        };
+      setTimeout(function () {
+          res.json(data);
+      }, delay);
+    });
+
+  //user portfolio
+    app.get('/api/portfolio', function(req, res){
+        var data = {
+            currentValue:120000000,
+            costValue: 10000,
+            realisedGain: 4000,
+            unrealisedGain: 7000,
+            date:'20/12/2016'
+        };
+        setTimeout(function () {
+            res.json(data);
+        }, delay);
+
+    });
+
+    // transaction report
+    app.get('/api/transactions', function(req, res){
+        var data = [
+        {name:'Birla Sun LIfe Tax Relief Fund', date:'11/02/2011',amount:'100000', status:'In progress'},
+        {name:'Axis Equity Fund', date:'11/02/2016',amount:'150000', status:'In progress'},
+        {name:'SBI Dynamic Bond Fund', date:'10/12/2016',amount:'160000', status:'In progress'},
+        {name:'ICICI Magnum Fund', date:'01/02/2017',amount:'106700', status:'In progress'},
+        {name:'BNP Tax Saver Fund Top 26', date:'01/02/2017',amount:'200000', status:'In progress'},
+        {name:'Kotak Money Market Fund', date:'01/02/2017',amount:'300000', status:'In progress'},
+        {name:'abcd7', date:'01/02/2017',amount:'100000', status:'In progress'},
+        {name:'abcd8', date:'01/02/2017',amount:'100000', status:'In progress'},
+        {name:'abcd9', date:'01/02/2017',amount:'100000', status:'In progress'},
+        {name:'abcd10', date:'11/09/2017',amount:'100000', status:'In progress'},
+        ];
+        setTimeout(function () {
+            res.json(data);
+        }, delay);
+    });
+    app.get('/api/top-performers', function(req, res){
+        var data = [
+            {name:'Birla Sun LIfe Tax Relief Fund', rating:'4',category:'ELSS', return:'9'},
+            {name:'BNP Paribas Mid Cap Div Apple Orange Guava', rating:'5',category:'Mid Cap', return:'10'},
+            {name:'Bharti AXA', rating:'3.5',category:'Life Insurance', return:'8'},
+            {name:'Kotak Mutual Fund', rating:'2',category:'Mid Cap', return:'9.6'},
+        ];
+        setTimeout(function () {
+            res.json(data);
+        }, delay);
+    });
+
+    app.get('/api/pending-details', function(req, res){
+        var data = [
+        {title:'Registration incomplete ', details:'Doc not uploaded/Details not specified'},
+        {title:'Risk Profiling', details:'Doc not uploaded/Details not specified'}
+        ];
+        setTimeout(function () {
+            res.json(data);
+        }, delay);
+    });
+            /**** dummy API ends ***/
+
+
+// facebook
+  app.get('/auth/facebook', notLoggedIn, passport.authenticate('facebook',{authType: 'rerequest', scope: ['email']}));
+
+  app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', {failureRedirect: '/api' }), function (req,res) {
+      res.redirect('/dashboard');
+      });
+
+//google
+  app.get('/auth/google', notLoggedIn, passport.authenticate('google',{authType: 'rerequest', scope: ['email']}));
+  app.get('/auth/google/callback',
+  passport.authenticate('google', { /*successRedirect: '/',*/
+                                      failureRedirect: '/' }), function (req, res) {
+          res.redirect('/dashboard');
+      });
+
+//logout
+  app.get('/auth/logout', isLoggedIn, function(req, res){
+    req.logout();  
+    res.status(200).send('loggedout successfully');
+  }); 
+
+
+//route for undefined routed
+  app.get('*', function(req, res) {
+     res.sendFile(path.join(__dirname, '../','../dist', 'index.html'));
+      //res.redirect('/');
+
+  });
+};
+//check if loggedin
+  var isLoggedIn = function(req, res, next) {
+    if(req.isAuthenticated()){
+      next();
+    }     
+    else
+     res.redirect('/api');
+  }
+
+//check if logged out
+  var notLoggedIn = function(req, res, next) {
+    if(req.isAuthenticated()){
+      res.redirect('/api');
+    }     
+    else
+     next();
+  }
+
+  

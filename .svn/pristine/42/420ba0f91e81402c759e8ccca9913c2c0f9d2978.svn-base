@@ -1,0 +1,61 @@
+var path = require('path');
+
+var User = require('../models/user');
+const kyc = require('./kyc');
+
+module.exports = function(app, passport) {
+//random api to check current session details 
+  app.get('/api', function(req, res){           
+      var sessionData = req.session.passport ||''; 
+      req.headers['x-access-token'] = sessionData.user;
+      var token = req.headers['x-access-token'];
+      res.send(token);
+   });
+    app.use('/kyc', kyc);
+
+// facebook
+  app.get('/auth/facebook', notLoggedIn, passport.authenticate('facebook',{authType: 'rerequest', scope: ['email']}));
+
+  app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { successRedirect: '/',
+                                      failureRedirect: '/api' }));
+
+//google
+  app.get('/auth/google', notLoggedIn, passport.authenticate('google',{authType: 'rerequest', scope: ['email']}));
+  app.get('/auth/google/callback',
+  passport.authenticate('google', { successRedirect: '/',
+                                      failureRedirect: '/' }));
+
+//logout
+  app.get('/auth/logout', isLoggedIn, function(req, res){
+    req.logout();  
+    res.status(200).send('loggedout successfully');
+  }); 
+
+
+//route for undefined routed
+  app.get('*', function(req, res) {
+     res.sendFile(path.join(__dirname, '../','../dist', 'index.html'));
+      //res.redirect('/');
+
+  });
+};
+//check if loggedin
+  var isLoggedIn = function(req, res, next) {
+    if(req.isAuthenticated()){
+      next();
+    }     
+    else
+     res.redirect('/api');
+  }
+
+//check if logged out
+  var notLoggedIn = function(req, res, next) {
+    if(req.isAuthenticated()){
+      res.redirect('/api');
+    }     
+    else
+     next();
+  }
+
+  

@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>FincashFrontend</title>
+    <base href="/">
+    <!-- styles -->
+    <link href="public/styles/bootstrap.min.css" rel="stylesheet">
+    <link href="node-modules/@angular2-material/core/overlay/overlay.css" rel="stylesheet">
+    <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+    <script src="public/javascript/jspdf.min.js"></script>
+    <script src="public/javascript/jspdf.plugin.autotable.src.js"></script>
+    <!--<script src="public/javascript/jspdf.plugin.addhtml.js"></script>-->
+    <script src="public/javascript/jspdf.plugin.text_align.js"></script>
+
+    <!-- captcha -->
+    <!--<script src='https://www.google.com/recaptcha/api.js'></script>-->
+
+
+    <!--{{#unless environment.production}}-->
+    <!--<script src="/ember-cli-live-reload.js" investementType="text/javascript"></script>-->
+    <!--{{/unless}}-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<app-root>Loading...</app-root>
+
+<!--{{#each scripts.polyfills}}-->
+<!--<script src="{{.}}"></script>-->
+<!--{{/each}}-->
+<!--<script>-->
+<!--System.import('system-config.js').then(function () {-->
+<!--System.import('main');-->
+<!--}).catch(console.error.bind(console));-->
+<!--</script>-->
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script>
+    var googleLoaded = false;
+</script>
+</body>
+</html>

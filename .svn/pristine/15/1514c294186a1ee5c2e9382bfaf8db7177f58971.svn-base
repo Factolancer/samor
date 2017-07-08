@@ -1,0 +1,26 @@
+import {NgModule} from "@angular/core";
+import {FundComponent} from "./fund.component";
+import {SearchModule} from "../search/search.module";
+import {RatingPipe} from "./rating.pipe";
+import {CompareFundsComponent} from "./compare/compare-funds.component";
+import {FundService} from "./fund.service";
+import {HttpService} from "../services/http-service.service";
+import {BasicFactsheetComponent} from "./factsheet/basic-factsheet.component";
+import {AdvancedFactsheetComponent} from "./factsheet/advanced-factsheet.component";
+import {fundRouting} from "./fund.routes";
+import {FundSelectionComponent} from "./fund-selection.component";
+import {SharedModule} from "../shared/shared.module";
+
+
+@NgModule({
+    imports: [
+        SearchModule,
+        SharedModule,
+        fundRouting,
+    ],
+    exports: [FundComponent, FundSelectionComponent],
+    providers: [FundService, HttpService],
+    declarations: [FundComponent, RatingPipe, FundSelectionComponent, CompareFundsComponent, BasicFactsheetComponent, AdvancedFactsheetComponent],
+})
+export class FundModule {
+}

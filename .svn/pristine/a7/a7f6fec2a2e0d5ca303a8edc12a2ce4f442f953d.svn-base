@@ -1,0 +1,83 @@
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {ReportService} from "./report.service";
+import {Subscription} from "rxjs/Subscription";
+import {ActivatedRoute, Params} from "@angular/router";
+import { MdDialogConfig, MdDialog } from "@angular/material";
+import {InfoDialogComponent} from "../shared/info-dialog.component";
+import {disclaimers} from "../../properties/discalimers";
+import {TitleService} from "../core/services/title.service";
+
+@Component({
+    selector: 'app-report',
+    templateUrl: './report.component.html',
+    styleUrls: ['./report.styles.scss']
+})
+export class ReportComponent implements OnInit,OnDestroy {
+
+    selectedTab: number;
+    fundIndexSubscription: Subscription;
+    id: number;
+    tabIndexSubscription: Subscription;
+    tabDataSubscription: Subscription;
+
+
+    constructor(private reportService: ReportService, private activatedRoute: ActivatedRoute,
+                private viewContainerRef: ViewContainerRef, private dialog: MdDialog, private titleService: TitleService) {
+        this.selectedTab = 0;
+    }
+
+    ngOnInit() {
+        this.titleService.setTitle("report");
+
+        this.tabIndexSubscription = this.activatedRoute.params.subscribe((params: Params) => {
+            this.id = params['id'];
+        });
+        if (this.id) {
+            this.selectedTab = this.id;
+            this.loadTab();
+        }
+        this.fundIndexSubscription = this.reportService.fundIndexResult.subscribe((fund: number) => {
+            this.selectedTab = 2;
+        });
+
+    }
+
+    loadTab() {
+        if (this.selectedTab == 1 && this.reportService.getHoldingTabResult() != true) {
+            this.reportService.setHoldingTabResult(true);
+        }
+        if (this.selectedTab == 2 && this.reportService.getTransactionTabResult() != true) {
+            this.reportService.setTransactionTabResult(true);
+        }
+        if (this.selectedTab == 3 && this.reportService.getCapitalGainsTabInit() != true) {
+            this.reportService.setCapitalGainsTabInit(true);
+        }
+        if (this.selectedTab == 4 && this.reportService.geAssetAllocationTabInit() != true) {
+            this.reportService.setAssetAllocationTabInit(true);
+        }
+        if (this.selectedTab == 5 && this.reportService.getIrrTabInit() != true) {
+            this.reportService.setIrrTabInit(true);
+        }
+    }
+
+    seeDisclaimers() {
+        let config = new MdDialogConfig();
+        config.width = "60vw";
+        config.height = "80vh";
+        config.viewContainerRef = this.viewContainerRef;
+
+        let infoDialogConfig = {
+            infoTitle: "Disclaimers",
+            infoText: [`${disclaimers.report_1}`, `${disclaimers.report_2}`]
+        }
+
+        let dialogRef = this.dialog.open(InfoDialogComponent, config);
+        dialogRef.componentInstance.config = infoDialogConfig;
+    }
+
+    ngOnDestroy() {
+        this.fundIndexSubscription.unsubscribe();
+        this.tabIndexSubscription.unsubscribe();
+    }
+
+}

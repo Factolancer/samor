@@ -1,0 +1,92 @@
+<md-card class="fund-card" fxHide.lt-md="true" *ngFor="let fundItem of _funds">
+    <div fxLayout="row" fxLayoutWrap fxLayoutAlign="start center">
+        <div fxFlex="5" fxFlex.xs="10">
+            <md-checkbox [(ngModel)]="fundItem.selected"
+                         (change)="changeFundComposition($event.checked, fundItem)">
+            </md-checkbox>
+        </div>
+        <div fxFlex="35" fxFlex.xs="80">
+            <div>
+                <span (click)="viewFactSheet(fundItem)" class="fund-name clickable">
+                    <md-icon class="md-16 medium-grey-text">&#xE873;</md-icon>{{fundItem.basicFactsheet.name}}
+                </span>
+            </div>
+            <div>
+                <span class="medium-grey-text no-select" mdTooltip={{ratingDisclaimerText}}>Fincash Rating: </span>
+                <span [outerHTML]="fundItem.rating | rating"></span>
+            </div>
+            <div>
+                <span class="medium-grey-text">Riskometer: </span>
+                <span class="dark-grey-text">{{fundItem.basicFactsheet.riskometer | riskometer}}</span>
+            </div>
+        </div>
+        <div fxFlex="15" fxFlex.xs="80" fxFlexOffset.xs="6%" class="fund-card-item">
+            <span class="dark-grey-text bold">Fund Age
+                <md-icon class="md-12 no-select" mdTooltip="Inception Date : {{ fundItem.basicFactsheet.inceptionDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+            </span><span [fxHide.xs]="true"><br /></span>
+            <span class="dark-grey-text" ngClass.xs="float-right">{{fundItem.age}} years</span>
+        </div>
+        <div fxFlex="15" fxFlex.xs="80" fxFlexOffset.xs="6%" class="fund-card-item">
+            <span class="dark-grey-text bold">3 yr. Return
+                <md-icon class="md-12 no-select" mdTooltip="As on : {{ fundItem.basicFactsheet.retAsOfDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+            </span><span [fxHide.xs]="true"><br /></span>
+            <span class="dark-grey-text" ngClass.xs="float-right">{{fundItem.basicFactsheet.ret3yr | returns:true}}</span>
+        </div>
+        <div fxFlex="15" fxFlex.xs="80" fxFlexOffset.xs="6%" class="fund-card-item">
+            <span class="dark-grey-text bold">AUM
+                <md-icon class="md-12 no-select" mdTooltip="As on : {{ fundItem.basicFactsheet.aumAsOfDate| date:'d mmm yyyy' }}"> &#xE88E;</md-icon>
+            </span><span [fxHide.xs]="true"><br /></span>
+            <span class="dark-grey-text" ngClass.xs="float-right">{{fundItem.basicFactsheet.aum | currency:'INR':true:'1.0-0' }} Cr.</span>
+        </div>
+        <div fxFlex="15" fxFlex.xs="80" fxFlexOffset.xs="6%" class="fund-card-item">
+            <span class="dark-grey-text bold">Min. Investment</span><span [fxHide.xs]="true"><br /></span>
+            <span class="dark-grey-text" ngClass.xs="float-right">{{fundItem.basicFactsheet.minSIPAmt | sipAmount}}</span>
+        </div>
+    </div>
+</md-card>
+
+
+<md-card fxHide.gt-sm="true" *ngFor="let fundItem of _funds" class="mar-b-15 no-padding width-100">
+    <div fxLayout="row" class="pad-lr-10 pad-tb-5 md-brand-secondary-back">
+        <div fxFlex="8">
+            <md-checkbox [(ngModel)]="fundItem.selected"
+                         (change)="changeFundComposition($event.checked, fundItem)">
+            </md-checkbox>
+        </div>
+        <div  fxFlex="92">
+            <p class="left-align no-margin white-txt mar-b-5" (click)="viewFactSheet(fundItem)">{{fundItem.basicFactsheet.name}}
+                <span [innerHTML]="fundItem.rating | rating" class="star txt-10 no-margin float-right no-select"
+                      mdTooltip={{ratingDisclaimerText}}></span>
+            </p>
+            <p class="left-align no-margin">Risk: <i class="lm-grey-txt sharp-txt">{{fundItem.basicFactsheet.riskometer | riskometer}}</i>
+            </p>
+        </div>
+    </div>
+    <div fxLayout="row" class="center-align pad-tb-15">
+        <div fxFlex="33" fxLayout="column">
+            <b>3 Year</b>
+            <div fxFlex="" class="medium-grey-text  sharp-txt pad-tb-10">{{fundItem.basicFactsheet.ret3yr | returns:true}}</div>
+        </div>
+        <div fxFlex="33" fxLayout="column">
+            <b>1 Year</b>
+            <div fxFlex="" class="grey pad-tb-10">{{fundItem.basicFactsheet.ret1yr | returns:true}}</div>
+        </div>
+        <div fxFlex="33" fxLayout="column">
+            <b>Fund Age</b>
+            <div fxFlex="" class=" medium-grey-text sharp-txt pad-tb-10">{{fundItem.age}} yr</div>
+        </div>
+        <!--<div fxFlex="34" fxLayout="column">
+            <b>Min. Investment</b>
+            <div fxFlex="" class="medium-grey-text sharp-txt pad-tb-10">{{fundItem.basicFactsheet.minSIPAmt | sipAmount}}</div>
+        </div>-->
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap class="bg-lgray pad-tb-10 pad-lr-5">
+        <div fxFlex="40" class="left-align">AUM (Cr) </div>
+        <div fxFlex="60" class="right-align">
+            <span class="pad-lr-10 txt-16">{{fundItem.aum | currency:'INR':true:'1.0-0' }}</span>
+        </div>
+        <div fxFlex="100">
+            <i class="txt-10 pad-tb-10 medium-grey-text">Exit Load: {{fundItem.basicFactsheet.exitLoad}}</i>
+        </div>
+    </div>
+</md-card>

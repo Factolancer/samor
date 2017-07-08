@@ -1,0 +1,37 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {ActivatedRoute, Params} from "@angular/router";
+import {InvestmentType} from "./models/investment-type";
+import {SearchService} from "../search/search.service";
+import {SearchResults} from "../search/search-results";
+import {Subscription} from "rxjs";
+
+
+@Component({
+    selector: 'app-fund-selection',
+    templateUrl: 'fund-selection.component.html',
+    styleUrls: ['fund-selection.component.css']
+})
+export class FundSelectionComponent implements OnInit, OnDestroy {
+
+    investmentType: InvestmentType;
+    searchResults: SearchResults;
+    searchResultsSubscription: Subscription;
+
+
+    constructor(private route: ActivatedRoute, private searchService: SearchService) {
+
+        this.searchResultsSubscription = searchService.searchResults.subscribe(resultSet => {
+            this.searchResults = resultSet;
+        });
+    }
+
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            this.investmentType = params['investmentType'];
+        });
+    }
+
+    ngOnDestroy() {
+        this.searchResultsSubscription.unsubscribe();
+    }
+}

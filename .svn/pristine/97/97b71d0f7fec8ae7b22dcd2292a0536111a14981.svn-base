@@ -1,0 +1,77 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {GoogleChart} from "../../shared/google-chart.directive";
+import {ViewChild} from "@angular/core/src/metadata/di";
+import {LogoImdData} from "../constants";
+import {Subscription} from "rxjs";
+import {ReportService} from "../report.service";
+
+declare let jsPDF;
+
+@Component({
+    selector: 'app-asset-allocation',
+    templateUrl: './asset-allocation.component.html',
+    providers: [GoogleChart],
+    styleUrls: ['./asset-allocation.component.css']
+})
+export class AssetAllocationComponent implements OnInit,OnDestroy {
+
+    @ViewChild(GoogleChart) chartDirective;
+    assetTabSubscription:Subscription;
+    constructor(private googlechart: GoogleChart,private reportService: ReportService) {
+        this.assetTabSubscription = this.reportService.assetAllocationTabResult.subscribe((loadTab: boolean)=> {
+            if(loadTab == true){
+
+            }
+
+        });
+    }
+
+    ngOnInit() {
+    }
+    ngOnDestroy() {
+        this.assetTabSubscription.unsubscribe();
+    }
+    public data = [
+        ['Category', 'Amount'],
+        ['ELSS', 15000],
+        ['Equity Large Cap',     8000],
+        ['Gilt Short Term',      3000],
+        ['Liquid',  10000],
+        ['Gold ETF', 5000]];
+
+    public pieChartOptions = {
+        title: 'Scheme Category vs Amount',
+        is3D: true,
+    };
+
+    download(){
+        var pdf = new jsPDF('p', 'pt');
+        var totalPagesExp = "{total_pages_count_string}";
+        var pageContent = function (data) {
+            // HEADER
+            pdf.setFontSize(20);
+            pdf.setFontStyle('normal');
+            pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+
+            // FOOTER
+            var str = "Page " + data.pageCount;
+            // Total page number plugin only available in jspdf v1.0+
+            if (typeof pdf.putTotalPages === 'function') {
+                str = str + " of " + totalPagesExp;
+            }
+            pdf.setFontSize(10);
+            pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 30);
+        };
+        pdf.setFontSize(12);
+        pdf.myText("Asset Allocation", {align: "center"}, 0, 100);
+        var imgData = this.chartDirective.imageUri;
+        pdf.addImage(imgData, 'JPEG', 15, 150, 300, 180);
+        var tableStyle = {startY:490,addPageContent:pageContent};
+        pdf.autoTable([], [], tableStyle);
+        if (typeof pdf.putTotalPages === 'function') {
+            pdf.putTotalPages(totalPagesExp);
+        }
+        pdf.save('Asset Allocation Report.pdf');
+    }
+
+}

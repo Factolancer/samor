@@ -1,0 +1,34 @@
+<app-filter-title [filterTitle]="filterTitle" #title></app-filter-title>
+<div class="filter-content" *ngIf="title.showFilterContent">
+    <div (click)="clearFilter()" class="filter-clear clickable"
+         *ngIf="selectedMin!=minAUM || selectedMax!=maxAUM">
+        <md-icon class="md-14 icon-align clear-icon">&#xE14C;</md-icon>
+        Clear
+    </div>
+    <div>
+        <div>Minimum ({{min.value | currency:'INR':true:'1.0-0'}} Cr.)</div>
+        <md-slider [max]="maxAUM" [min]="minAUM" [step]="100" [(ngModel)]="selectedMin" #min
+                   (change)="filter()"></md-slider>
+        <div>Maximum ({{max.value | currency:'INR':true:'1.0-0'}} Cr.)</div>
+        <md-slider [min]="min.value" [max]="maxAUM" [step]="100" [(ngModel)]="selectedMax"
+                   (change)="filter()" #max></md-slider>
+    </div>
+    <!--<div>
+        <md-input-container floatingPlaceholder="false" align="end">
+            <input md-input [(ngModel)]="minAUM" size="5" [value]="min.value" #minInput>
+            <span md-prefix>&#x20B9;</span>&lt;!&ndash;Rupee icon&ndash;&gt;
+        </md-input-container>
+        <span class="pad-5">to</span>
+        <md-input-container floatingPlaceholder="false" align="end">
+            <input md-input [(ngModel)]="maxAUM" [value]="max.value" size="5" #maxInput>
+            <span md-prefix>&#x20B9;</span>&lt;!&ndash;Rupee icon&ndash;&gt;
+        </md-input-container>
+
+        <button color="accent" md-icon-button="" class="md-accent" ng-reflect-color="accent"
+                (click)="filter()">
+                <span class=" md-button-wrapper">
+                    <md-icon class="md-18" role="img" aria-label="favorite">&#xE8B6;</md-icon>
+                </span>
+        </button>
+    </div>-->
+</div>

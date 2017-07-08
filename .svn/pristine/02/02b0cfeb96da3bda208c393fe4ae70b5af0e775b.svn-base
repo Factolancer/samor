@@ -1,0 +1,195 @@
+<div class="col-md-8 col-md-offset-2">
+    <div>
+        <md-grid-list cols="24" rowHeight="80px">
+            <md-grid-tile [colspan]="24">
+                Product Details >> Fund Selection >> Investment Portfolio >> Summary & Checkout
+            </md-grid-tile>
+
+            <md-grid-tile [colspan]="24" [@showhide]="balance">
+                {{headingarray[index]}}
+            </md-grid-tile>  - {{i}}
+            <!--[ngClass]="{'screenheading': headingvisible, 'step': !headingvisible}"-->
+            <md-grid-tile [rowspan]="4"></md-grid-tile>
+
+            <md-grid-tile [colspan]="12" [rowspan]="4">
+                <md-card>
+                    <md-card-content>
+                        <div style="text-align: center; background-color: #0081c9; color: white;">
+                            <h4 style="padding: 5px; margin-bottom: 0;">Example of an account statement</h4>
+                        </div>
+
+                        <table style="width: 100%">
+                            <colgroup>
+                                <col width="25%">
+                                <col width="25%">
+                                <col width="25%">
+                                <col width="25%">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Cash flow</th>
+                                <th>Amount</th>
+                                <th>Account Balance</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td>{{'1 Jan' | date:'d MMM'}}</td>
+                                <td class="green" style="text-align: center">Salary</td>
+                                <td class="green" style="text-align: center">70,000</td>
+                                <td class="darkblue" style="text-align: right">70,000</td>
+                            </tr>
+                            <tr>
+                                <td>9 Jan</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 1</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-20,000</td>
+                                <td class="darkblue" style="text-align: right">50,000</td>
+                            </tr>
+                            <tr>
+                                <td>{{'15 Jan' | date:'d-MMM'}}</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 2</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-10,000</td>
+                                <td class="darkblue" style="text-align: right">40,000</td>
+                            </tr>
+                            </tbody>
+
+                            <tbody style="background-color: #ffffff">
+                            <tr>
+                                <td>1 Feb</td>
+                                <td class="green" style="text-align: center">Salary</td>
+                                <td class="green" style="text-align: center">70,000</td>
+                                <td class="darkblue" style="text-align: right">1,10,000</td>
+                            </tr>
+                            <tr>
+                                <td>10 Feb</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 1</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-7,000</td>
+                                <td class="darkblue" style="text-align: right">1,03,000</td>
+                            </tr>
+                            <tr>
+                                <td>20 Feb</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 2</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-15,000</td>
+                                <td class="darkblue" style="text-align: right">88,000</td>
+                            </tr>
+                            </tbody>
+
+                            <tbody>
+                            <tr>
+                                <td>1 Mar</td>
+                                <td class="green" style="text-align: center">Salary</td>
+                                <td class="green" style="text-align: center">70,000</td>
+                                <td class="darkblue" style="text-align: right">1,58,000</td>
+                            </tr>
+                            <tr>
+                                <td>11 Mar</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 1</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-10,000</td>
+                                <td class="darkblue" style="text-align: right">1,48,000</td>
+                            </tr>
+                            <tr>
+                                <td>29 Mar</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-Expense 2</td>
+                                <td class="red" style="text-align: right">&nbsp;&nbsp;-15,000</td>
+                                <td class="darkblue" style="text-align: right">1,33,000</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-card-content>
+                </md-card>
+            </md-grid-tile>
+
+            <md-grid-tile [rowspan]="4">
+                <i class="material-icons" style="font-size: xx-large">forward</i>
+            </md-grid-tile>
+
+            <md-grid-tile [colspan]="3" [rowspan]="4" >
+                <div>
+                    <button *ngIf="!balanceVisible" (click)="showBalance()">Show Average Monthly Balance</button>
+                    <avgbal *ngIf="balanceVisible"></avgbal>
+                </div>
+            </md-grid-tile>
+
+            <md-grid-tile [colspan]="3" [rowspan]="4" >
+                <div>
+                    <button *ngIf="!savningsEarningVisible && balanceVisible" (click)="showSavingAcc()">
+                        How much you get from Bank?
+                    </button>
+                    <accearning *ngIf="savningsEarningVisible"></accearning>
+                </div>
+            </md-grid-tile>
+
+            <md-grid-tile [colspan]="3" [rowspan]="4" >
+                <div>
+                    <button *ngIf="!cashMagEarningVisible && savningsEarningVisible" (click)="showCashMag()">
+                        And here's how much you'll get from SavingsPlus
+                    </button>
+                    <cashearning *ngIf="cashMagEarningVisible"></cashearning>
+                </div>
+            </md-grid-tile>
+
+            <md-grid-tile [rowspan]="4"></md-grid-tile>
+
+            <md-grid-tile [colspan]="13" [rowspan]="4">
+                <div *ngIf="differenceVisible" id="line_chart" [chartData]="data" [chartOptions]="line_ChartOptions"
+                     chartType="LineChart" GoogleChart>
+                </div>
+            </md-grid-tile>
+
+            <md-grid-tile [rowspan]="4">
+                <button *ngIf="cashMagEarningVisible" (click)="showGraph()"><i class="material-icons"
+                                                                               style="font-size: xx-large">arrow_back</i>
+                </button>
+            </md-grid-tile>
+
+            <md-grid-tile [colspan]="9" [rowspan]="3">
+                <md-card *ngIf="cashMagEarningVisible">
+                    <md-card-content>
+                        <table style="width: 100%">
+                            <colgroup>
+                                <col width="34%">
+                                <col width="33%">
+                                <col width="33%">
+                            </colgroup>
+                            <tbody style="border: 0">
+                            <tr style="background-color: white">
+                                <td></td>
+                                <td><i class="material-icons" style="font-size: xx-large" *ngIf="cashMagEarningVisible">arrow_downward</i>
+                                </td>
+                                <td><i class="material-icons" style="font-size: xx-large" *ngIf="cashMagEarningVisible">arrow_downward</i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Earnings for quarter</td>
+                                <td>&#x20B9; 1000</td>
+                                <td>&#x20B9; 2000</td>
+                            </tr>
+                            <tr>
+                                <td>Earnings for year</td>
+                                <td>&#x20B9; 13000</td>
+                                <td>&#x20B9; 26000</td>
+                            </tr>
+                            <tr style="background-color: white">
+                                <td colspan="2">
+                                    <b>Extra earning from SavingsPlus</b>
+                                </td>
+                                <td style="font-size: x-large">&#x20B9; 13000</td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </md-card-content>
+                </md-card>
+            </md-grid-tile>
+
+            <md-grid-tile [colspan]="24">
+                <button md-raised-button (click)="toFunds()" style="float: right" color="primary">Click to Invest !
+                </button>
+            </md-grid-tile>
+
+        </md-grid-list>
+    </div>
+</div>
+

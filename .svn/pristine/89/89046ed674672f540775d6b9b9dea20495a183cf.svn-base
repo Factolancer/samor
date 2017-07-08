@@ -1,0 +1,43 @@
+<div fxLayout="row">
+    <md-input-container fxFlex="75" class="search-input">
+        <input mdInput type="text" #query (input)="searchBarInput()"
+               [(ngModel)]="queryString"
+               [mdAutocomplete]="auto"
+               placeholder="Search funds for redemption"
+               (change)="addToRedemptionList($event)" [formControl]="fundControl">
+    </md-input-container>
+    <div fxFlex="2"></div>
+    <button fxFlex="23" md-raised-button="" class="hollow-cta-36" (click)="gotoHolding()">
+        View Your Holding
+    </button>
+</div>
+
+<!--<md-icon class="md-14">&#xE8B6;</md-icon>-->
+
+<md-autocomplete #auto="mdAutocomplete">
+    <md-option *ngFor="let suggestion of redeemSuggestions | async" [value]="suggestion"
+               class="grey-border pad-10">
+        <div *ngIf="suggestion.redemptionAllowed" fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="75">
+                <div fxLayout="column">
+                    <div fxFlex="100" class="dark-grey-text bold no-padding">
+                        {{suggestion.fundName}} - {{suggestion.currValue | currency:'INR':true:'1.0-0'}}
+                    </div>
+                    <div fxFlex="100" class="medium-grey-text italic no-padding">
+                        Plan: {{suggestion.plan}} | Option: {{suggestion.option.dividendOption}}
+                    </div>
+                    <div fxFlex="100" class="medium-grey-text bold">
+                        Folio: {{suggestion.folioNo}} | Redeemable Units: {{suggestion.redeemableUnits}} | Total Units:
+                        {{suggestion.totalUnits}}
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="25" *ngIf="suggestion.redeemableUnits>0">
+                Add to Redeem
+            </div>
+            <div fxFlex="25" *ngIf="suggestion.redeemableUnits==0">
+                Redemption not allowed
+            </div>
+        </div>
+    </md-option>
+</md-autocomplete>

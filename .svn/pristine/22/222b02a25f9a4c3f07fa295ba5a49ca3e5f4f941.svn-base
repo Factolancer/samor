@@ -1,0 +1,19 @@
+@import "../../../styles/partials/web-partials";
+.product-feature-container{
+  background-color: $white;
+}
+
+.prod-feature{
+  opacity: 0.8;
+  &:hover{opacity:1};
+  text-align: center;
+  img{
+    padding-bottom: 10px;
+    border-bottom: 2px solid $dark-grey;
+  }
+  p{
+    margin-top:2px;
+    text-align:center;
+    color: $dark-grey;
+  }
+}

@@ -1,0 +1,13 @@
+<figure (click)="back()" *ngIf = "isDrilled" (click)="back()" class="backButton">
+ <img src="../../../public/images/dashboard/back.svg">
+ <figcaption>Back</figcaption>
+</figure>
+
+<div [hidden]="investmentDataAvailable" class="loading">
+    <img src="../../../public/images/loading.gif" align="center">
+</div>
+<chart [options]="options" class="clickable" *ngIf="investmentDataAvailable" >
+ <series>
+  <point (select)="onPointSelect($event)"></point>
+ </series>
+</chart>

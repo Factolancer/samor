@@ -1,0 +1,55 @@
+import {Component, OnInit, EventEmitter} from '@angular/core';
+import {CartProduct} from "../../models/cart-product";
+import {Input, Output} from "@angular/core/src/metadata/directives";
+import {ProductEnum} from "../../enum/product-enum";
+import {CartService} from "../cart.service";
+
+@Component({
+    selector: 'app-cart-product-view',
+    templateUrl: './cart-product-view.component.html',
+    styleUrls: ['./cart-product-view.component.css']
+})
+export class CartProductViewComponent implements OnInit {
+
+    @Input() set _product(value: CartProduct) {
+        this.product = value;
+        if (value.product == this.productEnum.SIP || value.product == this.productEnum.LUMPSUM) {
+            this.isFincashProduct = false;
+        }
+    }
+
+    @Output() remove = new EventEmitter();
+
+
+    product: CartProduct;
+    isFincashProduct: boolean = true;
+    productEnum = ProductEnum;
+
+    constructor(private cartService: CartService) {
+    }
+
+    removeProduct(productEnumId: number) {
+        this.cartService.removeProductFromCart(productEnumId).subscribe(
+            output=>alert(output.response)
+        )
+
+        this.remove.emit(productEnumId);
+    }
+
+    removeFund(fundId: number, investmentTypeEnumId: number) {
+        this.cartService.removeFundFromCart(fundId, investmentTypeEnumId).subscribe(
+            output=>alert(output.response)
+        )
+
+        if(this.product.funds.length > 1){
+            this.product.funds = this.product.funds.filter(fund => +fund.id != fundId);
+        } else {
+            this.remove.emit(this.product.product);
+        }
+    }
+
+    ngOnInit() {
+
+    }
+
+}

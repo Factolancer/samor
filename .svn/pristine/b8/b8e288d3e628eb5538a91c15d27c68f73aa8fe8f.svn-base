@@ -1,0 +1,71 @@
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {Router} from "@angular/router";
+import {FormBuilder, FormGroup, Validators, AbstractControl} from "@angular/forms";
+import {HttpService} from "../services/http-service.service";
+import {EmailValidator} from "../validators/validator";
+import {Logger} from "../shared/logger/logger";
+import {MdSnackBarConfig, MdSnackBar} from "@angular/material";
+
+@Component({
+  selector: 'app-forgot-pass',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss']
+})
+
+export class ForgotPasswordComponent implements OnInit, OnDestroy {
+
+    constructor(public viewContainerRef:ViewContainerRef, public router: Router, private http: HttpService, private fb: FormBuilder, private logger:Logger, public snackBar: MdSnackBar) { }
+
+    forgotPasswordForm: FormGroup;
+    emailSent:boolean;
+    notRegistered:boolean;
+    forgotPassSubmitted:boolean;
+
+    ngOnInit() {
+      this.forgotPasswordForm = this.fb.group({
+          email: ['', Validators.compose([Validators.required, EmailValidator.isValidMailFormat])]
+      })
+    }
+
+    openSnackBar(message, duration) {
+        let config = new MdSnackBarConfig();
+        config.duration = duration;
+        config.viewContainerRef = this.viewContainerRef;
+        this.snackBar.open(message, "Ok", config);
+    }
+
+    validateForgotPa(isValid){
+        if(!isValid){
+            this.forgotPassSubmitted = true;
+        }
+        return isValid;
+
+    }
+
+    onForgotPassword(){
+        let mailSentMessage = "An Email has been sent to you. Please follow the instructions in the email to reset your password.";
+        this.logger.debug("forget password would be taken care of!");
+        let userData = this.forgotPasswordForm.value;
+        let email = userData.email.trim();
+        this.http.upost('/forgotPasswordMail',{email:email}).subscribe(
+            res=>{
+                this.logger.info(res);
+                if(res.exists){
+                        this.emailSent = true;
+                 } else{
+                    this.openSnackBar(mailSentMessage, 4000);
+                    this.notRegistered = true;
+                }
+            },
+            err=>{
+                this.logger.error(err);
+            }
+
+        )
+
+    }
+
+    ngOnDestroy(){
+
+    }
+  }

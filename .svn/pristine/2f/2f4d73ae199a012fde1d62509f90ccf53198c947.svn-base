@@ -1,0 +1,50 @@
+@import "../../public/styles/partials/web-partials";
+
+.forgot-pass-dialog {
+  margin: -24px;
+
+  .forgot-pass-header {
+    background-color: $brand-secondary;
+    color: $white;
+    @include heading(24px, 400);
+    width: 100%;
+    line-height: 80px;
+    text-align: center;
+    margin-bottom:0;
+    letter-spacing:2.8px;
+  }
+
+  .forgot-pass-text{
+    background-color: $light-grey;
+    color: $text-medium-grey;
+    font-size: 16px;
+    font-weight:bold;
+    width: 100%;
+    line-height: 75px;
+    text-align: center;
+  }
+
+  .forgot-pass-content {
+    margin: 0 24px;
+  }
+  .forgot-pass-button{
+  @include cta(70px);
+  }
+ 
+  .close-dialog {
+    margin-top: -50px;
+  }
+
+  md-dialog-title {
+    padding: 0px !important;
+  }
+  md-dialog-container{
+  max-width:100vw !important;
+  }
+
+  .error{
+    background-color:#e6aeae;
+     color: $text-medium-grey;
+     line-height: 20px;
+  }
+}

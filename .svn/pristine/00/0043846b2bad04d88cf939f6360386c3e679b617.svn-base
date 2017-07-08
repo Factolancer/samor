@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-irr-report',
+  templateUrl: './irr-report.component.html',
+  styleUrls: ['./irr-report.component.css']
+})
+export class IrrReportComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

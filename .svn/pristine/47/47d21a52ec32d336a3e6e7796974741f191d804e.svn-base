@@ -1,0 +1,10 @@
+import {Fund} from "../models/fund";
+export interface CheckoutFund {
+    fund: Fund;
+    investmentModeList?: string[];
+    optionList?: string[];
+    frequency?: string[];
+    subOptionList?: string[];
+    deductionDateList?: number[];
+    durationList?: string[];
+}

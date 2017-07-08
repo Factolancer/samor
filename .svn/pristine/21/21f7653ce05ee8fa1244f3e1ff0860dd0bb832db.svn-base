@@ -1,0 +1,24 @@
+import {Injectable} from "@angular/core";
+import {Router, Resolve, ActivatedRouteSnapshot} from "@angular/router";
+import {Observable} from "rxjs";
+import {CartService} from "./cart.service";
+import {Fund} from "../models/fund";
+
+
+@Injectable()
+export class CartResolveService implements Resolve<Fund[]> {
+    constructor(private router: Router, private cartService: CartService) {
+    }
+
+    resolve(route: ActivatedRouteSnapshot): Observable<boolean | Fund[]> {
+
+        return this.cartService.getCartData().map(output => {
+            if (output) {
+                return output.funds as Fund[];
+            } else {
+                this.router.navigate(['/login']);
+                return false;
+            }
+        });
+    }
+}

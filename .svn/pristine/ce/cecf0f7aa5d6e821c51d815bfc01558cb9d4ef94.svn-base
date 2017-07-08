@@ -1,0 +1,96 @@
+import {Component, OnInit, ViewEncapsulation, OnDestroy} from "@angular/core";
+import {DashboardDataService} from "./dashboard-data.service";
+import {Router} from "@angular/router";
+import {LoginService} from "../core/services/login.service";
+import {Subscription} from "rxjs/Subscription";
+import {TitleService} from "../core/services/title.service";
+import {HeaderService} from "../core/services/header.service";
+import {Logger} from "../core/logger/logger";
+
+@Component({
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+})
+
+export class DashboardComponent implements OnInit, OnDestroy {
+    public invested: Boolean;
+    private pf: Object;
+    portfolioDataAvailable: boolean = false;
+    pendingDataAvailable: boolean = false;
+    investedSub: Subscription ;
+
+    pfsubcription: Subscription;
+
+    serverError = {
+        pf: false,
+        assetAllocation: false
+    }
+
+    className  : string
+    private pendings: Array<Object> = [];
+
+    constructor(public dataService: DashboardDataService, private router: Router, private loginService: LoginService, private headerService: HeaderService, private titleService: TitleService,private logger: Logger) {
+        this.className = "DashboardComponent";
+    };
+
+    goTo(link) {
+        this.router.navigateByUrl(link);
+    }
+
+    ngOnInit() {
+        this.ifInvested();
+        this.titleService.setTitle("dashboard");
+        this.titleService.setMetaTags("dashboard");
+
+    }
+
+    ngOnDestroy() {
+        if (this.pfsubcription) {
+            this.pfsubcription.unsubscribe()
+        }
+        this.investedSub.unsubscribe();
+    }
+
+    ifInvested() {
+        this.investedSub = this.loginService.userObservable.subscribe(userObject =>{
+            if (userObject && userObject.foliocount && userObject.foliocount > 0) {
+                this.invested = true;
+                this.getPortfolio();
+            } else {
+                this.invested = false;
+                this.getPendingDetails();
+            }
+        })
+    }
+
+    getPortfolio() {
+        this.pfsubcription = this.dataService.getPortfolio()
+            .subscribe(
+                res => {
+                    this.pf = res;
+                    this.portfolioDataAvailable = true;
+                },
+                err => {
+                    this.logger.debug(this.className,"an error occured");
+                    this.serverError.pf = true;
+                }
+            )
+    }
+
+    getPendingDetails() {
+        /*this.dataService.getPendingDetails()
+         .subscribe(
+         res=>{
+         this.pendings = res;
+         this.pendingDataAvailable = true;
+         },
+         err=>{console.log('an error occured')}
+         )*/
+    }
+
+
+}
+
+

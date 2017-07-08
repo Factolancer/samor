@@ -1,0 +1,11 @@
+import {ProductEnum} from "../enum/product-enum";
+import {InvestmentTypeEnum} from "../enum/investment-type-enum";
+import {FundDetails} from "../cart/fund-details";
+import {Scheme} from "./scheme";
+
+export interface WatchlistProduct {
+   /* product: ProductEnum,
+    investmentType: InvestmentTypeEnum,*/
+    funds: Scheme[];
+}
+

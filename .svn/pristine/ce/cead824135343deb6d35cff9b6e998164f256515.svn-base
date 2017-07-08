@@ -1,0 +1,177 @@
+<div>
+    <div fxFlex="100" [ngClass]="{'section-header-expanded': !nomineecollapsed, 'section-header-collapsed': nomineecollapsed}">
+        <div fxLayout="row" class="cursor-pointer" (click)="toggleNominee()">
+            <div fxFlex="8" fxFlexOffset="2">
+                <md-icon *ngIf="nomineesaved"
+                         [ngClass]="{'material-icons.md-2': true, 'md-brand-secondary': true}">
+                    check_circle
+                </md-icon>
+            </div>
+            <div fxFlex="83">
+                <span>{{heading.nomineeSectionHeading}}</span>
+            </div>
+            <div fxFlex="7">
+                <md-icon *ngIf="nomineecollapsed">expand_more</md-icon>
+                <md-icon *ngIf="!nomineecollapsed">expand_less</md-icon>
+            </div>
+
+        </div>
+    </div>
+
+    <div fxFlex="100" class="section-content">
+        <form [formGroup]="nomineeForm" (ngSubmit)="onNomineeSubmit()" [@ShowHide]="state" novalidate>
+            <br/>
+            <br/>
+            <div>
+                <div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput required type="text" formControlName="nomineeName"
+                                       placeholder="Nominee Name">
+                                <md-hint *ngIf="formErrors.nomineeName" class="errorMessage">{{formErrors.nomineeName}}</md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40">
+                            <md-select required formControlName="nomineeRelation" placeholder="Relationship to you">
+                                <md-option *ngFor="let item of relations" [value]="item.cndrfnum">{{item.cndname}}</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput required type="date" formControlName="nomineeDob"
+                                       placeholder="Date of Birth of Nominee">
+                                <md-hint *ngIf="formErrors.nomineeDob" class="errorMessage">{{formErrors.nomineeDob}}</md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40">
+                            <!--<md-select reqired [(ngModel)]="nominee_address_type" [ngModelOptions]="{standalone: true}"
+                                       placeholder="Nominee Address">
+                                <md-option *ngFor="let address of addressType" [value]="address.id">{{address.value}}</md-option>
+
+                            </md-select>-->
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="nomineeAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <label class="address-header">Nominee Address</label>
+                        </div>
+                        <input type="hidden" formControlName="amtid"/>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40" fxAlign="end">
+                            <md-select required formControlName="addressType" placeholder="Address Type">
+                                <md-option *ngFor="let add of addtypes" [value]="add.cndrfnum">
+                                    {{add.cndname}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="nomineeAddress">
+                        <div fxFlex="90" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput type="text" required formControlName="address1" #curadd1
+                                       placeholder="Address line 1">
+                                <md-hint
+                                        *ngIf="!nomineeForm.controls['nomineeAddress'].get('address1').valid && (nomineeForm.controls['nomineeAddress'].get('address1').touched)"
+                                        class="errorMessage">
+                                    Please enter communication address
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="nomineeAddress">
+                        <div fxFlex="80" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput type="text" formControlName="address2" #curadd2
+                                       placeholder="Address line 2">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="nomineeAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput required formControlName="pin" placeholder="Pin Code">
+                                <md-hint
+                                        *ngIf="!nomineeForm.controls['nomineeAddress'].get('pin').valid && (nomineeForm.controls['nomineeAddress'].get('pin').touched)"
+                                        class="errorMessage">
+                                    Please enter valid 6 digit Pin Code
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input mdInput formControlName="landmark" placeholder="Near landmark">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="nomineeAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <md-input-container>
+                                <input mdInput required type="text" formControlName="city" placeholder="City">
+                                <md-hint
+                                        *ngIf="!nomineeForm.controls['nomineeAddress'].get('city').valid && (nomineeForm.controls['nomineeAddress'].get('city').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40">
+                            <md-input-container>
+                                <input mdInput required type="text" formControlName="district" placeholder="District">
+                                <md-hint
+                                        *ngIf="!nomineeForm.controls['nomineeAddress'].get('district').valid && (nomineeForm.controls['nomineeAddress'].get('district').touched)"
+                                        class="errorMessage">
+                                    Required
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <br/>
+                    <div fxLayout="row" fxLayoutAlign="start center" formGroupName="nomineeAddress">
+                        <div fxFlex="40" fxFlexOffset="8">
+                            <md-select required formControlName="state" placeholder="State">
+                                <md-option *ngFor="let state of states" [value]="state.cndrfnum">
+                                    {{state.cndname}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="40">
+                            <md-select required formControlName="country" placeholder="Country">
+                                <md-option *ngFor="let country of countries" [value]="country.cndrfnum">
+                                    {{country.cndname}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <button md-raised-button color="primary" type="submit" [disabled]="!nomineeForm.valid" [ngClass]="{'resLoading':nomineeInProcess}">
+                            <span [ngClass]="{'vis-hidden':nomineeInProcess}">Save</span>
+                        </button>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="end center">
+                        <label md-button class="mar-lr-20 sub-heading-16-medium-grey" (click)="toggleNominee()">Skip</label>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </form>
+    </div>
+</div>

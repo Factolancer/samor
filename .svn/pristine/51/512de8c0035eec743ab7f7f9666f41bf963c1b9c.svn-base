@@ -1,0 +1,32 @@
+import {Injectable, Inject} from "@angular/core";
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from "@angular/router";
+import {Observable} from "rxjs/Observable";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {Logger} from "../logger/logger";
+import {LocalStorageService} from "angular-2-local-storage";
+import {SnackBarService} from "../services/snack-bar.service";
+import {BSEService} from "../services/bse.service";
+
+
+@Injectable()
+export class BSEGuard implements CanActivate {
+    className: string;
+
+    constructor(public bseService: BSEService, @Inject(APP_CONFIG) private config: IAppConfig, public router: Router,
+                public logger: Logger, public localStorageService: LocalStorageService, private snackBarService: SnackBarService){
+        this.className = "BSEGuard";
+    }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Observable<boolean> | boolean{
+
+        return this.bseService.IsBseAndFatcaDone().map( value =>{
+            if(!value){
+                this.localStorageService.set(this.config.kycGuard.storagekey,state.url);
+                this.router.navigate([this.config.kycGuard.navigate]);
+                return false;
+            }else{
+                return true;
+            }
+        });
+    }
+}

@@ -1,0 +1,154 @@
+<section>
+    <!--<md-card _ngcontent-pxi-6>-->
+    <md-toolbar color="lightgray" class="sectiontitle">
+        <div style="width: 100%">
+            <i [ngClass]="{'material-icons': true, 'md-dark': !banksaved, 'md-inactive': !banksaved, 'blue600': banksaved}">check</i>
+            <a (click)="toggleBank()" role="button">Bank Details</a>
+            <i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="bankcollapsed">expand_more</i>
+            <i [ngClass]="{'material-icons': true, 'downarrow': true}" *ngIf="!bankcollapsed">expand_less</i>
+        </div>
+        <md-toolbar-row *ngIf="banksaved">
+            <div class="info-div">
+                <div>
+                    <span class="info-label">Account Holder's Name</span>
+                    <span>{{bankForm.controls['holder_name'].value}} &nbsp;&nbsp;</span>
+                </div>
+                <div>
+                    <span class="info-label">Account Number</span>
+                    <span>{{bankForm.controls['account'].get('account_number').value}}</span>
+                </div>
+            </div>
+        </md-toolbar-row>
+    </md-toolbar>
+    <!--<br/>-->
+    <!--<md-card-content>-->
+    <form [formGroup]="bankForm" (ngSubmit)="onBankSubmit()" [hidden]="bankcollapsed" novalidate class="kycform">
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input required formControlName="holder_name" placeholder="Name as on Cheque Book" #holder_name
+                          [value]="holder_name.value.toUpperCase()">
+                    <md-hint
+                            *ngIf="!bankForm.controls['holder_name'].valid && (bankForm.controls['holder_name'].touched)"
+                            class="errorMessage">
+                        Name is Required
+                    </md-hint>
+                </md-input>
+            </md-grid-tile>
+            <md-grid-tile>
+                <label class="field_label">Account Type</label>
+                <select required formControlName="account_type">
+                    <option>Savings Account</option>
+                    <option>Current Account</option>
+                </select>
+                <md-hint *ngIf="!bankForm.controls['account_type'].valid && (bankForm.controls['account_type'].touched)"
+                         class="errorMessage">
+                    Select account type
+                </md-hint>
+            </md-grid-tile>
+        </md-grid-list>
+
+        <div formGroupName="bank">
+            <md-grid-list cols="2" rowHeight="100px">
+                <md-grid-tile>
+                    <label class="field_label">Bank Name</label>
+                    <select required formControlName="bank_name" #bank_name
+                            (blur)="setBankName()">
+                        <option *ngFor="let item of banks" [value]="item.id">{{item.name}}</option>
+                    </select>
+                    <md-hint
+                            *ngIf="(!bankForm.controls['bank'].get('bank_name').valid) && (bankForm.controls['bank'].get('bank_name').touched)"
+                            class="errorMessage">
+                        Please select bank name
+                    </md-hint>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input required formControlName="branch" placeholder="Branch" #branch
+                              [value]="branch.value.toUpperCase()"
+                              (keyup)="searchForBranch($event.target.value)">
+                        <!--<md-hint-->
+                        <!--*ngIf="!bankForm.controls['bank'].get('branch').valid && (bankForm.controls['bank'].get('branch').touched)"-->
+                        <!--class="errorMessage">-->
+                        <!--Please select your branch-->
+                        <!--</md-hint>-->
+                        <md-hint *ngIf="showbanklist" class="dropdown">
+                            <ul *ngFor="let item of bankList" class="bankslist">
+                                <li>
+                                    <a (click)="select(item)">{{item.branch}}-{{item.city}}-{{item.IFSC}}</a>
+                                </li>
+                            </ul>
+                        </md-hint>
+                    </md-input>
+                    <!--<div class="dropdown">-->
+                    <!--<ul *ngFor="let item of bankList" class="result">-->
+                    <!--<li>-->
+                    <!--<a (click)="select(item)">{{item.branch}}-{{item.city}}-{{item.IFSC}}</a>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                    <!--</div>-->
+                </md-grid-tile>
+            </md-grid-list>
+            <md-grid-list cols="2" rowHeight="100px">
+                <md-grid-tile>
+                    <md-input required formControlName="city" placeholder="City"
+                              [(ngModel)]="user.Bank.bank.city">
+                        <md-hint
+                                *ngIf="!bankForm.controls['bank'].get('city').valid && (bankForm.controls['bank'].get('city').touched)"
+                                class="errorMessage">
+                            City is required
+                        </md-hint>
+                    </md-input>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input required formControlName="ifsc" placeholder="IFSC Code"
+                              [(ngModel)]="user.Bank.bank.IFSC">
+                        <md-hint
+                                *ngIf="!bankForm.controls['bank'].get('ifsc').valid && (bankForm.controls['bank'].get('ifsc').touched)"
+                                class="errorMessage">
+                            IFSC code is required
+                        </md-hint>
+                    </md-input>
+                </md-grid-tile>
+            </md-grid-list>
+        </div>
+
+        <div formGroupName="account">
+            <md-grid-list cols="2" rowHeight="100px">
+                <md-grid-tile>
+                    <md-input required formControlName="account_number" placeholder="Bank Account Number"
+                              [(ngModel)]="acnumber">
+                        <md-hint
+                                *ngIf="(!bankForm.controls['account'].get('account_number').valid) && (bankForm.controls['account'].get('account_number').touched)"
+                                class="errorMessage">
+                            Account Number is incorrect
+                        </md-hint>
+                    </md-input>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input required formControlName="confirm_account_number" onpaste="return false"
+                              placeholder="Confirm Bank Account Number">
+                        <!--<md-hint-->
+                        <!--*ngIf="(!bankForm.controls['account'].get('confirm_account_number').valid || !bankForm.controls['account'].valid) && (bankForm.controls['account'].get('confirm_account_number').touched)"-->
+                        <!--class="errorMessage">-->
+                        <!--Account Numbers do not match-->
+                        <!--</md-hint>-->
+
+                        <md-hint *ngIf="(!bankForm.controls['account'].get('confirm_account_number').valid || (bankForm.controls['account'].get('confirm_account_number').value != bankForm.controls['account'].get('account_number').value))
+                                 && (bankForm.controls['account'].get('confirm_account_number').touched)"
+                                 class="errorMessage">
+                            Please confirm your account number
+                        </md-hint>
+                    </md-input>
+
+                </md-grid-tile>
+            </md-grid-list>
+        </div>
+
+        <md-grid-list cols="1" rowHeight="50px" class="button-list-margins">
+            <md-grid-tile>
+                <button md-raised-button color="primary" [disabled]="!bankForm.valid">Save</button>
+            </md-grid-tile>
+        </md-grid-list>
+    </form>
+    <!--</md-card-content>-->
+    <!--</md-card>-->
+</section>

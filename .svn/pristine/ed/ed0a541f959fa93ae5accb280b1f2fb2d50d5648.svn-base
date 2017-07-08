@@ -1,0 +1,34 @@
+
+<div class="product-container pad-tb-10 pad-lr-20"  >
+
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div fxFlex="30" *ngFor="let product of productSolutions, let i=index">
+      <md-card  align="center" (click)="invest(i)">
+        <md-card-title>
+          <img src={{product.image}}><br/>
+          {{product.title}}
+        </md-card-title>
+        <md-card-content>
+          <table>
+            <tr>
+              <td><img src="{{product.content[0]['image']}}"></td>
+              <td><p>{{product.content[0]['text']}}</p></td>
+            </tr>
+            <tr>
+              <td><img src="{{product.content[1]['image']}}"></td>
+              <td><p>{{product.content[1]['text']}}</p></td>
+            </tr>
+            <tr>
+              <td><img src="{{product.content[2]['image']}}"></td>
+              <td><p>{{product.content[2]['text']}}</p> </td>
+            </tr>
+          </table>
+
+        </md-card-content>
+      </md-card>
+      <div class="btn-box center-align">
+        <button class="invest-button" (click)="invest(i)">Invest</button>
+      </div>
+    </div>
+  </div>
+</div>

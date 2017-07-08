@@ -1,0 +1,124 @@
+import {Component, OnInit, trigger, transition, state, animate, style} from '@angular/core';
+import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+
+// google.load("visualization", "1.1", {packages:["corechart"]});
+
+@Component({
+  selector: 'demob',
+
+  templateUrl: './demob.component.html',
+  styleUrls: ['./../cash.styles.scss'],
+  //styleUrls: ['./../cash.styles.scss', './../cash.styles.scss'],
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({transform: 'translateX(0)'})),
+      transition('void => *', [
+        style({transform: 'translateX(-100%)'}),
+        animate(100)
+      ]),
+      transition('* => void', [
+        animate(100, style({transform: 'translateX(100%)'}))
+      ])
+    ])
+  ]
+})
+export class DemobComponent implements OnInit {
+
+  heading = 'invisible';
+  mystate = 'in';
+  screen2 = 'out';
+  index: number = 0 ;
+
+  constructor(private router: Router) {
+    Observable.interval(2000)
+        .subscribe(x => {
+          //console.log(x);
+          //this.headingvisible = !this.headingvisible;
+          this.heading = (this.heading == 'visible') ? 'invisible' : 'visible';
+          if (x % 2 == 0)
+            this.index = (x/2)%3
+        })
+  }
+
+  headingarray = [
+    "Earn more by investing in SavingsPlus",
+    "Double your savings from SavingsPlus",
+    "Benefits of bank account.. with more returns - SavingsPlus"
+  ]
+  url = this.router.url;
+
+  toDemo(){
+    this.url = this.url + '/demo';
+    this.router.navigate([this.url]);
+  }
+
+  toFunds(){
+    this.url = this.url + '/demoa'
+    this.router.navigate([this.url]);
+  }
+
+  NextScreen(){
+    this.mystate = 'out';
+    this.screen2 = 'in';
+    console.log(this.mystate)
+  }
+
+  options: Object;
+
+  ngOnInit() {
+
+    let date= new Date();
+    let cYear = date.getFullYear();
+    this.options = {
+      title : { text : 'Savings Account Vs SavingsPlus',
+        style:{'font-size':'12px'}
+      },
+      credits: {enabled: false},
+      chart:{
+        width: 420,
+        height: 260
+      },
+      plotOptions: {
+        line: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      xAxis: {
+        categories: [cYear, cYear+1, cYear+2]
+      },
+      colors:["#77ba78", "#BF3235"],
+      yAxis: {
+        title: {
+          text: 'Amount (in Thousands)'
+        },
+        labels: {
+          formatter: function () {
+            var val = this.value;
+            if (val >= 10000000) val = (val / 10000000).toFixed(1) + 'Cr';
+            else if (val >= 100000) val = (val / 100000).toFixed(1) + 'Lac';
+            else if (val >= 1000) val = (val / 1000).toFixed(1) + 'k';
+            return val;
+          }
+        }
+      },
+      tooltip: {
+        valuePrefix: 'INR '
+      },
+      legend: {
+        layout: 'horizontal',
+        verticalAlign: 'bottom',
+        borderWidth:0
+      },
+      series: [{
+        name: 'Savings Plus',
+        data: [26646, 105303, 240285]
+      }, {
+        name: 'Savings Account',
+        data: [13160,  51301, 115441]
+      }]
+    };
+  }
+}

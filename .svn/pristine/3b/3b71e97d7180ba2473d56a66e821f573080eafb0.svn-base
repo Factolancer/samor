@@ -1,0 +1,205 @@
+import {
+    Component,
+    OnInit,
+    style,
+    state,
+    animate,
+    transition,
+    trigger,
+    OnDestroy,
+    Input,
+    Output,
+    EventEmitter
+} from "@angular/core";
+import {FormGroup, Validators, FormBuilder} from "@angular/forms";
+import {Subscription} from "rxjs/Subscription";
+import {User} from "../../../models/user";
+import {UserService} from "../../userdata.service";
+import {HttpService} from "../../../core/services/http-service.service";
+import {Heading} from "../../constants/headings";
+import {ValidationMessages} from "../../constants/validationmessages";
+import {ActivatedRoute} from "@angular/router";
+import {LookUpService} from "../../../core/services/lookup.service";
+import {Logger} from "../../../core/logger/logger";
+import {CNDGroup, YES_NO_ARRAY} from "../../../constants/CNDGroup";
+import {KYCConstants} from "../../../constants/KYCGroup";
+
+@Component({
+    selector: 'other-section',
+    templateUrl: './other-section.component.html',
+    styleUrls: ['../../registration.styles.scss'],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({opacity: '1', height: '*', visibility: 'visible'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ])
+        ])
+    ]
+})
+export class OtherSectionComponent implements OnInit, OnDestroy {
+
+    otherForm: FormGroup;
+    public countries: any
+    public heading = Heading;
+    public YesNoArray = YES_NO_ARRAY;
+    public kycConstants = KYCConstants;
+    public incomerange: any;
+    public occupations: any;
+    public wealthsource: any;
+
+    fatcaInProcess: boolean = false;
+    @Input() state: string = 'hide';
+    othersaved = false;
+    @Input() othercollapsed = true;
+    @Output() makeVisible: EventEmitter<boolean>= new EventEmitter();
+    isNRI = false;
+    indiantaxpayer = 'Yes';
+
+    user: User
+    usersubscription: Subscription;
+
+    validationMessages = ValidationMessages;
+    className: string
+    constructor(private fb: FormBuilder, public userService: UserService, public http: HttpService, private route: ActivatedRoute,
+                public lookupService: LookUpService, private logger: Logger) {
+        this.className = "FatcaSection";
+    }
+
+    ngOnInit() {
+        /*this.route.data.forEach((data: {user: User}) => {
+            this.user = data.user;
+        });*/
+        this.lookupService.getByGroup(CNDGroup.OCCUPATION).subscribe(response =>{
+            this.occupations = response
+        });
+        this.lookupService.getByGroup(CNDGroup.COUNTRY).subscribe(response => {
+            this.countries = response
+        });
+        this.lookupService.getByGroup(CNDGroup.INCOME_SLAB).subscribe(response => {
+            this.incomerange = response
+        });
+        this.lookupService.getByGroup(CNDGroup.WEALTH_SOURCE).subscribe(response => {
+            this.wealthsource = response
+        });
+        this.userService.getUserFatcaData();
+        this.usersubscription = this.userService.currentUser.subscribe(
+            result => {
+                this.logger.debug(this.className,result);
+                this.user = result;
+                this.buildform(this.user);
+                this.othersaved = (this.user.userFatca.futid.length > 0 &&
+                                    this.user.userFatca.income.length > 0 &&
+                                    this.user.userFatca.occupation.length > 0 &&
+                                    this.user.userFatca.birthCity.length > 0 &&
+                                    this.user.userFatca.sourceOfWealth.length > 0);
+                if (this.othersaved){
+                    this.othercollapsed = this.othersaved;
+                    this.state = this.othercollapsed ? 'hide' : 'show'
+                }
+            }
+        );
+        this.buildform(this.user);
+    }
+
+    buildform(result): void {
+        this.otherForm = this.fb.group({
+            futid: [result.userFatca.futid || ''],
+            income: [result.userFatca.income || '', Validators.compose([Validators.required])],
+            occupation: [result.userFatca.occupation || '', Validators.required],
+            sourceOfWealth: [result.userFatca.sourceOfWealth || '', Validators.required],
+            nationality: [result.userFatca.nationality || this.kycConstants.CND_COUNTRY_INDIA, Validators.required],
+            birthCountry: [result.userFatca.birthCountry || this.kycConstants.CND_COUNTRY_INDIA, Validators.compose([Validators.required])],
+            birthCity: [result.userFatca.birthCity || '', Validators.required],
+            isIndianTaxPayer: [this.YesNoArray[0].value],
+            taxCountry: [result.userFatca.taxCountry || this.kycConstants.CND_COUNTRY_INDIA],
+            tin: [result.userFatca.tin || ''],
+            politicallyExposed: [result.userFatca.politicallyExposed || this.YesNoArray[1].value],
+            politicallyRelated: [result.userFatca.politicallyRelated || this.YesNoArray[1].value],
+        });
+
+        this.otherForm.statusChanges.subscribe(data => this.onValueChanged(data));
+        // this.onValueChanged();
+    }
+
+    onValueChanged(data?: any) {
+        if (!this.otherForm) {
+            return;
+        }
+        const otherform = this.otherForm;
+        if (otherform.pristine) {
+            return;
+        }
+        if (!otherform.dirty) {
+            return;
+        }
+        for (const field in this.formErrors) {
+            // clear previous error message (if any)
+            this.formErrors[field] = '';
+            const control = otherform.controls[field];
+            this.logger.debug(this.className,control + typeof control);
+            if (!control.valid && control.touched) {
+                this.logger.debug(this.className,control.errors);
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrors[field] += messages[key] + ' ';
+                }
+            }
+        }
+
+    }
+
+    formErrors = {
+        'income': '',
+        'occupation': '',
+        'sourceOfWealth': '',
+        'nationality': '',
+        'birthCountry': '',
+        'birthCity': '',
+        "taxCountry": '',
+        'politicallyExposed': '',
+        'politicallyRelated': ''
+    };
+
+    onOtherSubmit() {
+        this.fatcaInProcess = true
+        if (this.otherForm.controls['taxCountry'].value == this.kycConstants.CND_COUNTRY_INDIA){
+            this.otherForm.controls['isIndianTaxPayer'].setValue('Y')
+        }
+        else {
+            this.otherForm.controls['isIndianTaxPayer'].setValue('N')
+        }
+        this.userService.updateFatcaData(this.otherForm.value)
+            .map(value => {
+                this.fatcaInProcess = false;
+                return value
+            })
+            .subscribe(result => {
+                    this.logger.debug(this.className, result);
+                    if (!result['futid'].isEmpty){
+                        this.otherForm.controls['futid'].setValue(result['futid']);
+                        this.user.userFatca.futid = result['futid'];
+                        this.othersaved = true
+                        this.toggleOther();
+                        this.makeVisible.emit();
+                    }
+                },
+                err => {
+                    this.logger.debug(this.className, err);
+                    this.othersaved = false;
+                }
+            )
+    }
+
+    toggleOther() {
+        if (this.othercollapsed == true) this.othercollapsed = false;
+        else this.othercollapsed = true;
+
+        this.state = (this.state === 'hide' ? 'show' : 'hide')
+    }
+
+    ngOnDestroy() {
+
+    }
+}

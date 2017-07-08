@@ -1,0 +1,23 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Tax Planning</h1>
+            <h3 class="center-align">Save up to INR 46350 on your taxes under section 80c upon investing in ELSS schemes
+                you can get healthy tax-free returns on your investments.</h3>
+        </div>
+    </section>
+    <section class="data-body">
+        <md-grid-list cols="3" gutterSize="20px" rowHeight="250px">
+            <md-grid-tile routerLink='/explore/tax' class="clickable">
+                I Know where to invest
+            </md-grid-tile>
+            <md-grid-tile routerLink='taxsaver' class="clickable">
+                Go For a Tax Saver
+            </md-grid-tile>
+            <md-grid-tile routerLink='calculator' class="clickable">
+                Use Tax Saver Calculator
+            </md-grid-tile>
+        </md-grid-list>
+    </section>
+
+</div>

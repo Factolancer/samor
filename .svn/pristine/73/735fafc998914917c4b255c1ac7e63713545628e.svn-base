@@ -1,0 +1,19 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper mar-tb-10">
+    <div class="journey" fxFlex="65">
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="68" class="line">
+                <hr/>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex="5" fxFlexOffset="{{cartOffset}}" [ngClass]="{'cart':true,'blue': _position>1}">
+                <md-icon class="md-18">&#xE8CC;</md-icon>
+            </div>
+        </div>
+        <div class="text" fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex [ngClass]="{'blue': _position>1}">Select Funds</div>
+            <div fxFlex [ngClass]="{'blue': _position>=2}">Investment Portfolio</div>
+            <div fxFlex [ngClass]="{'blue': _position>=3}">Investment Summary</div>
+        </div>
+    </div>
+</div>

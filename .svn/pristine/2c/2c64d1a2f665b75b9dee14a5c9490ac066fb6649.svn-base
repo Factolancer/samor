@@ -1,0 +1,25 @@
+import {Component, OnInit} from "@angular/core";
+import {FundDetails} from "../../fund/models/fund-details";
+import {Router, ActivatedRoute} from "@angular/router";
+
+@Component({
+
+    selector: 'quick-sip',
+    templateUrl: 'quick-sip.component.html',
+    styleUrls: ['quick-sip.component.css']
+})
+export class QuickSipComponent implements OnInit {
+
+    quickSipFunds: FundDetails[];
+
+
+    constructor(private route: ActivatedRoute) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: { funds: FundDetails[] }) => {
+            this.quickSipFunds = data.funds;
+        });
+    }
+
+}

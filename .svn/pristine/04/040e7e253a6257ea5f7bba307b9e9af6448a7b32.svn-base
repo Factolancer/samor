@@ -1,0 +1,81 @@
+<div>
+    <div fxFlex="100" [ngClass]="{'section-header-expanded': !bankcollapsed, 'section-header-collapsed': bankcollapsed}">
+        <div fxLayout="row" class="cursor-pointer" (click)="toggleBank()">
+            <div fxFlex="8" fxFlexOffset="2">
+                <md-icon *ngIf="banksaved"
+                        [ngClass]="{'material-icons': true, 'md-8': true, 'md-brand-secondary': true}">
+                    check_circle
+                </md-icon>
+            </div>
+            <div fxFlex="83">
+                <span>{{heading.bankSectionHeading}}</span>
+            </div>
+            <div fxFlex="7">
+                <md-icon *ngIf="bankcollapsed">expand_more</md-icon>
+                <md-icon *ngIf="!bankcollapsed">expand_less</md-icon>
+            </div>
+        </div>
+    </div>
+
+    <div fxFlex="100" class="section-content">
+        <form [formGroup]="bankForm" (ngSubmit)="onBankSubmit()" [@ShowHide]="state" novalidate>
+            <br/>
+            <br/>
+            <div>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <md-input-container>
+                            <input mdInput required formControlName="holderName" placeholder="Name as on Cheque Book"
+                                   #holderName [value]="holderName.value.toUpperCase()">
+                            <md-hint *ngIf="formErrors.holderName" class="errorMessage">{{formErrors.holderName}}</md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+                        <md-select required formControlName="accountType" placeholder="Account Type">
+                            <md-option *ngFor="let actype of accountType" [value]="actype.cndrfnum">{{actype.cndname}}</md-option>
+                        </md-select>
+                        <md-hint *ngIf="formErrors.accountType" class="errorMessage">{{formErrors.accountType}}</md-hint>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="90" fxFlexOffset="8">
+                        <md-input-container>
+                            <input mdInput required placeholder="Enter IFSC or Bank or Branch name" [mdAutocomplete]="auto" [formControl]="bankControl" (keydown)="selectBank($event)"
+                                   (input)="searchBarInput()" [(ngModel)]="queryString">
+                        </md-input-container>
+                        <md-autocomplete #auto="mdAutocomplete" [displayWith]="displayAutoSuggestion">
+                            <md-option *ngFor="let suggestion of bankSuggestions | async" [value]="suggestion">
+                                {{suggestion.bmtbankname}} - {{suggestion.bbtbranchname}} - {{suggestion.bbtifsccode}}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="start center" formGroupName="account">
+                    <div fxFlex="40" fxFlexOffset="8">
+                        <md-input-container>
+                            <input mdInput required formControlName="accountNumber" placeholder="Bank Account Number"
+                                   [(ngModel)]="acnumber">
+                            <md-hint *ngIf="formErrorsAccount.accountNumber" class="errorMessage">{{formErrorsAccount.accountNumber}}</md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="6"></div>
+                    <div fxFlex="40">
+                        <md-input-container>
+                            <input mdInput required formControlName="confirmAccountNumber" onpaste="return false"
+                                   placeholder="Confirm Bank Account Number">
+                            <md-hint *ngIf="formErrors.account" class="errorMessage">{{formErrors.account}}</md-hint>
+                        </md-input-container>
+                    </div>
+                </div>
+                <br/>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button md-raised-button color="primary" type="submit" [disabled]="!bankForm.valid">Save</button>
+                </div>
+                <br/>
+            </div>
+        </form>
+    </div>
+</div>

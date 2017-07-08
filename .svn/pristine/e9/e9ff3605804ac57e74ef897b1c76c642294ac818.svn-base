@@ -1,0 +1,15 @@
+<div class="row">
+    <app-filter-title [filterTitle]="filterTitle" #title></app-filter-title>
+    <div class="col-md-12 filter-content" *ngIf="title.showFilterContent">
+        <div (click)="clearFilter()" class="filter-clear clickable" *ngIf="selectedAge!=0">
+            <md-icon class="material-icons md-14 clear-icon">&#xE14C;</md-icon>
+            Clear
+        </div>
+        <md-radio-group [(ngModel)]="selectedAge" (change)="filter()">
+            <md-radio-button *ngFor="let ageItem of ageFilterData" [value]="ageItem.id">
+                <span>{{ageItem.displayVal}} years &amp; Up ({{ageItem.count}})</span>
+            </md-radio-button>
+            <br/>
+        </md-radio-group>
+    </div>
+</div>

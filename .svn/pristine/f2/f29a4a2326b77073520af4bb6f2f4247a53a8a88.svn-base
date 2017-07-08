@@ -1,0 +1,36 @@
+import {Component, OnInit} from "@angular/core";
+import {CartService} from "../../cart/cart.service";
+import {Fund} from "../../models/fund";
+import {ActivatedRoute} from "@angular/router";
+import {InvestmentModeEnum} from "../../enum/investment-mode-enum";
+
+@Component({
+
+    selector: 'app-smart-sip',
+    templateUrl: './smart-sip.component.html',
+    styleUrls: ['../sip.styles.scss']
+})
+export class SmartSipComponent implements OnInit {
+
+    quickSipFunds: Fund[];
+
+
+    proceed(selectedFunds: any) {
+        selectedFunds.forEach(fund => fund.investmentMode = InvestmentModeEnum.SIP);
+
+        this.cartService.addFundsToCart(selectedFunds).subscribe(output => {
+            alert(output.response);
+        });
+    }
+
+
+    constructor(private route: ActivatedRoute, private cartService: CartService) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: {funds: Fund[]}) => {
+            this.quickSipFunds = data.funds;
+        });
+    }
+
+}

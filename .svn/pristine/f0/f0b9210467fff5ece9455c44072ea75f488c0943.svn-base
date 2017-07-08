@@ -1,0 +1,50 @@
+@import "../../../styles/partials/web-partials";
+
+.top-performer-container{
+  border: solid 1px #d6d6d6;
+  .highlight{
+    background-color: $light-grey;
+    padding: 10px;font-size: 16px;
+  }
+  .content{
+    padding: 15px 5px;
+    table{
+      width:100%;
+      border-collapse:collapse;
+      td{text-align: start; font-size: 12px}
+      tbody  {
+        tr{height: 30px;}
+        tr:nth-child(odd){background-color: $light-grey;}
+      }
+    }
+  }
+}
+.truncate{
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+.clickable{
+  cursor: pointer;
+}
+
+.increase{
+  color:green;
+  font-weight: bold;
+}
+.decrease{
+  color:red;
+  font-weight: bold;
+}
+.upArrow{
+  color:green;
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  font-weight: 700;
+}
+.downArrow{
+  @extend .upArrow;
+  color:red;
+}

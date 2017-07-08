@@ -1,0 +1,20 @@
+import {NgModule} from "@angular/core";
+import {CartComponent} from "./cart.component";
+import {CartService} from "./cart.service";
+import {cartRouting} from "./cart.routes";
+import {SharedModule} from "../shared/shared.module";
+import {SipTableComponent} from "./sip-table/sip-table.component";
+import {LumpsumTableComponent} from "./lumpsum-table/lumpsum-table.component";
+import {ProductViewComponent} from "./product-view/product-view.component";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        cartRouting,
+
+    ],
+    providers: [CartComponent, CartService],
+    declarations: [CartComponent, SipTableComponent, LumpsumTableComponent, ProductViewComponent]
+})
+export class CartModule {
+}

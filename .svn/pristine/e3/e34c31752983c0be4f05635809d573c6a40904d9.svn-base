@@ -1,0 +1,58 @@
+import {Directive, ElementRef, Input, OnInit, SimpleChanges, OnChanges} from "@angular/core";
+declare var google: any;
+declare var googleLoaded: any;
+@Directive({
+    selector: '[GoogleChart]',
+    // properties: [
+    //     'chartType',
+    //     'chartOptions',
+    //     'chartData'
+    //   ]
+})
+export class GoogleChart implements OnInit,OnChanges {
+    public _element: any;
+    @Input('chartType') public chartType: string;
+    @Input('chartOptions') public chartOptions: Object;
+    @Input('chartData') public chartData: Object;
+
+    imageUri: string;
+
+    constructor(public element: ElementRef) {
+        this._element = this.element.nativeElement;
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (!googleLoaded) {
+            googleLoaded = true;
+            google.charts.load('current', {'packages': ['corechart', 'gauge']});
+        }
+        this.drawGraph(this.chartOptions, this.chartType, this.chartData, this._element,this);
+    }
+
+    ngOnInit() {
+
+    }
+
+    drawGraph(chartOptions, chartType, chartData, ele,obj) {
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var wrapper;
+            wrapper = new google.visualization.ChartWrapper({
+                chartType: chartType,
+                dataTable: chartData,
+                options: chartOptions || {},
+                containerId: ele.id,
+            });
+            google.visualization.events.addListener(wrapper, 'ready', function () {
+                obj.imageUri = wrapper.getChart().getImageURI();
+            });
+            wrapper.draw();
+        }
+
+    }
+
+    createDataTable(array: any[]): any {
+        return google.visualization.arrayToDataTable(array);
+    }
+
+}

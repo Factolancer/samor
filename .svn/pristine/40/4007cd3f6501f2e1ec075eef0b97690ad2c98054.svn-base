@@ -1,0 +1,12 @@
+/**
+ * Created by Fincash on 23-01-2017.
+ */
+
+var config = require('./environment');
+var path = require('path');
+exports.index = function (req, res) {
+    console.log("request @ default controller");
+    console.log(config.root);
+    res.sendFile('index.html', {root : config.root + '/server/dist' });
+}
+

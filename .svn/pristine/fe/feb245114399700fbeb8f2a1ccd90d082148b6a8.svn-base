@@ -1,0 +1,43 @@
+import {Injectable, Inject} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {HttpService} from "../services/http-service.service";
+import {PortfolioAssetAllocation} from "./portfolio-asset";
+import {AssetAllocationDetails} from "./asset-allocation";
+import {AssetClassFund} from "./asset-funds";
+import {IAppConfig, APP_CONFIG} from "../../environments/environment";
+import {LoginService} from "../services/login.service";
+import {Logger} from "../shared/logger/logger";
+
+@Injectable()
+export class DashboardDataService {
+
+    constructor(private httpservice:HttpService, private loginService: LoginService,@Inject(APP_CONFIG) private config: IAppConfig, private logger: Logger) { };
+    
+    getPortfolio (): Observable<any> {
+        return this.httpservice.get('/report/summaryReport')
+            .map(res => res as PortfolioAssetAllocation)
+    }
+
+    getTransaction():Observable<Array<any>> {
+        //TO BE CHANGED  AS PER LOGIC TO GET TRANSACTIONS
+        return this.httpservice.get('/report/getAssetAllocationReport');
+    }
+
+    getInvestmentDetails():Observable<AssetAllocationDetails>{
+        return this.httpservice.get('/report/getAssetAllocationReport')
+            .map(res => res as AssetAllocationDetails)
+    }
+    getInvestedFundDetails():Observable<AssetClassFund>{
+        return this.httpservice.get('/report/getAssetClassFundDetails')
+            .map(res => res as AssetClassFund)
+    }
+
+    getPendingDetails():Observable<Array<any>>{
+        //TO BE CHANGED  AS PER LOGIC TO GET REAL NOTIFICATIONS
+        return this.httpservice.get('/report/getAssetAllocationReport');
+    }
+
+    getTopPerformers():Observable<Array<any>>{
+        return this.httpservice.get('/report/getTopFunds');
+    }
+}

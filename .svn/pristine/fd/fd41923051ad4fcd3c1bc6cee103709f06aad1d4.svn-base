@@ -1,0 +1,101 @@
+@import "../../../public/styles/partials/web-partials";
+
+.card {
+  background-color: $light-grey;
+  color: $text-dark-grey;
+  padding: 0;
+
+  .icon-space {
+    text-align: center;
+
+    &:first-of-type {
+      border-right: 2px solid $brand-primary;
+    }
+
+    .title {
+      padding: 20px;
+      color: $brand-primary;
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+
+  .question {
+    padding: 25px 10px;
+  }
+
+  .left-pane {
+    background-color: $brand-primary;
+    color: $white;
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 2px;
+
+    .icon {
+      background-color: $light-grey;
+      height: 150px;
+      width: 150px;
+      border: solid 5px $brand-secondary;
+      border-radius: 50%;
+      margin: 35px auto;
+
+      img {
+        margin: 12%;
+      }
+    }
+  }
+
+  .right-pane {
+    padding: 24px;
+
+    .title {
+      border: solid 1px $medium-grey;
+      border-radius: 2px;
+      color: $text-dark-grey;
+      padding: 5px 20px;
+    }
+
+    .result-text {
+      //background-color: $medium-grey;
+      color: $text-dark-grey;
+      letter-spacing: 1px;
+      font-size: 16px;
+      font-weight: 700;
+
+      .focus-text {
+        color: $brand-primary;
+      }
+    }
+
+    /*.question {
+      font-size: 14px;
+      color: $text-dark-grey;
+      letter-spacing: 1px;
+      border-bottom: solid 1px $dark-grey;
+
+      &:last-of-type {
+        border: none;
+      }
+    }*/
+  }
+
+}
+
+.goal-card {
+  background-color: $light-grey;
+  color: $text-dark-grey;
+  margin: 10px;
+
+  .goal-title {
+    padding: 16px 0;
+    color: $brand-primary;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 700;
+  }
+
+}
+
+
+
+

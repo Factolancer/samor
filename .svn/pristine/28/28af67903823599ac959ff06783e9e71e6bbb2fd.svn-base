@@ -1,0 +1,34 @@
+import {Component, OnInit, EventEmitter} from "@angular/core";
+import {HoldingReportService} from "./holding-report.service";
+import {Holdings} from "./holdings";
+import {Output} from "@angular/core/src/metadata/directives";
+import {Subscription} from "rxjs";
+import {ReportService} from "../report.service";
+
+@Component({
+  selector: 'app-holding-report',
+  templateUrl: './holding-report.component.html',
+  styleUrls: ['./holding-report.component.css'],
+    providers:[HoldingReportService]
+})
+export class HoldingReportComponent implements OnInit {
+    funds:Holdings[];
+    currentDate:Date;
+    @Output() changeTab = new EventEmitter();
+
+  constructor(private holdingReportService:HoldingReportService,private reportService:ReportService) {
+
+  }
+
+  ngOnInit() {
+      this.currentDate = new Date();
+      this.funds = this.holdingReportService.getHoldings()
+  }
+
+    showTransactionDetails(fundId:number){
+
+        //this.changeTab.emit({fundIndex:fundId});
+        this.reportService.setFundIndexResult(fundId);
+    }
+
+}

@@ -1,0 +1,15 @@
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class CartService {
+
+  private cartSource = new Subject<SearchResults>();
+  searchResults = this.searchResultsSource.asObservable();
+
+  constructor() { }
+
+  addToCart(Fund: fund) {
+
+  }
+
+}

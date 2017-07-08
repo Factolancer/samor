@@ -1,0 +1,9 @@
+<input class="search-input" type="text" #query (keyup)="searchBarInput($event,query.value)" list="searchSuggestions"
+       placeholder="Type your search query here">
+<button md-button="" class="search-btn" (click)="searchBarInput($event,query.value)">
+    <md-icon class="md-14">&#xE8B6;</md-icon>
+    SEARCH
+</button>
+<datalist id="searchSuggestions">
+    <option *ngFor="let suggestion of searchSuggestions | async" value="{{suggestion.name}}">
+</datalist>

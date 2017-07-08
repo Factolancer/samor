@@ -1,0 +1,156 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../core/services/http-service.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
+import {Subscription} from "rxjs/Subscription";
+import {User, UserBasic, UserBank, UserFatca, UserAddress, UserNominee} from "../models/user";
+import {Contact} from "../models/contact";
+import {Address} from "../models/address";
+import {Bank} from "../models/bank";
+import {Logger} from "../core/logger/logger";
+
+@Injectable()
+export class UserService {
+
+    private userSubject: BehaviorSubject<User>;
+    currentUser: Observable<User>;
+    sectionSubscription: Subscription;
+
+    className: string;
+
+    constructor(private fchttpservice: HttpService, private logger: Logger) {
+        let user = new User(new UserBasic('', '', '', '', '', '', '', new Contact('', '', '', ''), '', '', ''),
+            new UserAddress(new Address('', '', '', '', '', '', '', '', ''), new Address('', '', '', '', '', '', '', '', ''), true),
+            new UserBank('', '', '', new Bank('', '', '', '', '', '', '', ''), ''),
+            new UserFatca('', '', '', '', '', '', '', '', '', ''),
+            new UserNominee('', '', '', '', new Address('', '', '', '', '', '', '', '', '')),
+            {}
+        );
+        this.className = "UserSerice"
+        this.userSubject = new BehaviorSubject<User>(user);
+        this.currentUser = this.userSubject.asObservable();
+    }
+
+    public setUserSubject(user: User) {
+        this.userSubject.next(user);
+    }
+
+    public getUserSubject() {
+        return this.userSubject.getValue();
+    }
+
+    getUserBasicData() {
+        this.fchttpservice.get('/user/getUserBasicData')
+            .subscribe(output => {
+                console.log(output)
+                let user = this.getUserSubject();
+                user.userBasic = output as UserBasic;
+                this.setUserSubject(user);
+            })
+    }
+
+    getUserFatcaData() {
+        this.fchttpservice.get('/user/getUserFatcaData')
+            .subscribe(output => {
+                console.log(output)
+                let user = this.getUserSubject();
+                user.userFatca = output as UserFatca;
+                this.setUserSubject(user);
+                // if (user.userFatca.futid.length>0)
+            })
+    }
+
+    getUserBankData() {
+        this.fchttpservice.get('/user/getUserBankData')
+            .subscribe(output => {
+                console.log(output)
+                let user = this.getUserSubject();
+                user.userBank = output as UserBank;
+                this.setUserSubject(user);
+            })
+    }
+
+    getUserAddressData() {
+        this.fchttpservice.get('/user/getUserAddressData')
+            .subscribe(output => {
+                this.logger.debug(this.className, output)
+                let user = this.getUserSubject();
+                user.userAddress = output as UserAddress;
+                this.setUserSubject(user);
+            })
+    }
+
+    getUserNomineeData() {
+        this.fchttpservice.get('/user/getUserNomineeData')
+            .subscribe(output => {
+                this.logger.debug(this.className, output)
+                let user = this.getUserSubject();
+                user.userNominee = output as UserNominee;
+                this.setUserSubject(user);
+            })
+    }
+
+    updateBasicData(userdata: any, firstName: string, middleName: string, lastName: string) {
+        console.log("In UpdateBasicData")
+        let user = this.getUserSubject();
+        user.userBasic = userdata;
+        user.userBasic.firstName = firstName;
+        user.userBasic.lastName = lastName;
+        user.userBasic.middleName = middleName;
+        return this.fchttpservice.post('/user/postUserBasicData', user.userBasic);
+        // this.updateData(user);
+    }
+
+    updateBankData(userdata: any, accountNumber: string) {
+        let user = this.getUserSubject();
+        user.userBank = userdata;
+        user.userBank.accountNumber = accountNumber
+        return this.fchttpservice.post('/user/postUserBankData', user.userBank);
+    }
+
+    updateFatcaData(userdata: any) {
+        let user = this.getUserSubject();
+        user.userFatca = userdata;
+
+        /*if (user.userFatca.isIndianTaxPayer == YES_NO_ARRAY[0].value) {
+         user.userFatca.taxCountry = KYCConstants.CND_COUNTRY_INDIA;
+         }
+         else {
+         user.userFatca.taxCountry = userdata.controls['taxCountry'].value;
+         }*/
+        console.log(user);
+        return this.fchttpservice.post('/user/postUserFatcaData', user.userFatca);
+    }
+
+    updateAddressData(userdata: any) {
+        let user = this.getUserSubject();
+        user.userAddress = userdata;
+
+        return this.fchttpservice.post('/user/postUserAddressData', user);
+    }
+
+    updateNomineeData(userdata: any) {
+        let user = this.getUserSubject();
+        user.userNominee = userdata;
+
+        return this.fchttpservice.post('/user/postUserNomineeData', user.userNominee);
+    }
+
+    /*updateKYCData(userdata:any){
+     let user = this.getUserSubject();
+     user.userAddress = userdata;
+     this.fchttpservice.post('/user/postUserAddressData', user)
+     .subscribe(output => {
+     console.log(output);
+     },
+     error => {
+     console.log(error);
+     })
+     console.log(user);
+     // this.updateData(user);
+     }*/
+
+    getBankAutoCompleteData(term: string) {
+        return this.fchttpservice.post("/lookup/getBankSuggestions", {term: term});
+    }
+}

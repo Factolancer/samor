@@ -1,0 +1,224 @@
+
+<!--for mobile view -->
+<div fxHide.gt-sm="true" class="mar-b-15">
+    <div fxFlex fxLayout.lt-md="row" fxHide.gt-sm="true" class="center-align">
+        <div fxFlex.lt-md="49" class="pad-tb-15 pad-lr-5 bg-lgray" [ngClass]="{'tabactive':sortActive}" (click)="activeTab(0)">
+            <img class="filter-icon" src="../../assets/img/sort.svg"/>
+            Sort</div>
+        <div fxFlex.lt-md="49" class="pad-tb-15 pad-lr-5 bg-lgray"  [ngClass]="{'tabactive':filterActive}" (click)="activeTab(1)">
+            <img class="filter-icon" src="../../assets/img/funnel.svg"/>
+            Filter
+        </div>
+    </div>
+</div>
+<div fxHide.gt-sm="true">
+    <span *ngIf="sortActive==true">
+        <md-card class="explore-fund-head-m">
+                <div fxLayout="column" fxLayoutAlign="start center" fxFlex class="names">
+                    <div class="title"><b>SORT</b></div>
+                    <div class="clickable" #fund (click)="sort('dname')"
+                         [ngClass]="{'active-sort': currentSortElement === 'dname'}">Fund Name
+                        <span *ngIf="currentSortElement === 'dname' ">
+                            <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                            <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+                        </span>
+                    </div>
+
+                    <hr/>
+                    <div class="clickable no-select" #rating (click)="sort('drat')"
+                         mdTooltip={{ratingDisclaimerText}}
+                         [ngClass]="{'active-sort': currentSortElement === 'drat'}">
+                        Fincash Rating
+                        <span *ngIf="currentSortElement === 'drat' ">
+                            <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                            <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+                        </span>
+                    </div>
+                    <hr/>
+                    <div class="clickable no-select" #ret1 (click)="sort('dret1yr')" mdTooltip="Last 1 year return"
+                         [ngClass]="{'active-sort': currentSortElement === 'dret1yr'}">1Y
+                        Return
+                        <span *ngIf="currentSortElement === 'dret1yr' ">
+                            <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                            <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+                        </span>
+                    </div>
+                    <hr/>
+                    <div class="clickable no-select" #ret3 (click)="sort('dret3yr')"
+                         mdTooltip="Compound Annual Growth Rate for last 3 years."
+                         [ngClass]="{'active-sort': currentSortElement === 'dret3yr'}">3Y Return
+                        <span *ngIf="currentSortElement === 'dret3yr' ">
+                           <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                            <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+                        </span>
+                    </div>
+                    <hr/>
+                    <div class="clickable no-select" #risk (click)="sort('drisk')"
+                         mdTooltip="Risk Associated with fund."
+                         [ngClass]="{'active-sort': currentSortElement === 'drisk'}">
+                        Riskometer
+                        <span *ngIf="currentSortElement === 'drisk' ">
+                           <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                            <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+                        </span>
+                    </div>
+                    <hr/>
+                    <div class="clickable no-select" #age (click)="sort('dage')"
+                         mdTooltip="Age of the fund since inception."
+                         [ngClass]="{'active-sort': currentSortElement === 'dage'}">
+                        Age
+                        <span *ngIf="currentSortElement ==='dage' ">
+                            <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                            <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+                        </span>
+                    </div>
+                    <hr/>
+                    <div class="clickable no-select" #aum (click)="sort('daum')"
+                         mdTooltip="Assets under Management of the Fund in Crore."
+                         [ngClass]="{'active-sort': currentSortElement === 'daum'}">AUM (Cr)
+                        <span *ngIf="currentSortElement === 'daum'">
+                            <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                            <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+                        </span>
+                    </div>
+    </div>
+        </md-card>
+    </span>
+    <span *ngIf="filterActive==true"><app-filter-master></app-filter-master></span>
+</div>
+
+
+<md-card class="explore-fund-head" ngClass.lt-md="display-none">
+    <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutAlign="center center">
+        <div fxFlex="27" class="clickable" #fund (click)="sort('dname')">Fund Name
+            <span *ngIf="currentSortElement === 'dname' ">
+                <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="12" class="clickable no-select" #rating (click)="sort('drat')" mdTooltip={{ratingDisclaimerText}}>
+            Fincash Rating
+            <span *ngIf="currentSortElement === 'drat' ">
+                <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="8" class="clickable no-select" #ret1 (click)="sort('dret1yr')" mdTooltip="Last 1 year return">1Y
+            Return
+            <span *ngIf="currentSortElement === 'dret1yr' ">
+                <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="8" class="clickable no-select" #ret3 (click)="sort('dret3yr')"
+             mdTooltip="Compound Annual Growth Rate for last 3 years.">3Y Return
+            <span *ngIf="currentSortElement === 'dret3yr' ">
+               <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="12" class="clickable no-select" #risk (click)="sort('drisk')"
+             mdTooltip="Risk Associated with fund.">
+            Riskometer
+            <span *ngIf="currentSortElement === 'drisk' ">
+               <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="7" class="clickable no-select" #age (click)="sort('dage')"
+             mdTooltip="Age of the fund since inception.">
+            Age
+            <span *ngIf="currentSortElement ==='dage' ">
+                <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+
+        <div fxFlex="8" class="clickable no-select" #aum (click)="sort('daum')"
+             mdTooltip="Assets under Management of the Fund in Crore.">AUM (Cr)
+            <span *ngIf="currentSortElement === 'daum'">
+                <md-icon *ngIf="sortState == 'desc'" class="md-14">&#xE5C5;</md-icon>
+                <md-icon *ngIf="sortState == 'asc'" class="md-14">&#xE5C7;</md-icon>
+            </span>
+        </div>
+        <div fxFlex="18" fxHide.lt-md="">Actions</div>
+    </div>
+</md-card>
+<md-card *ngFor="let fundItem of funds" class="fund-list" ngClass.lt-md="display-none">
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <div class="left-align clickable" fxFlex="27" (click)="viewFactSheet(fundItem)">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <div fxFlex="8">
+                    <md-icon class="medium-grey-text md-16">&#xE873;</md-icon>
+                </div>
+                <div fxFlex="92">{{fundItem.name}}</div>
+            </div>
+        </div>
+        <div fxFlex="12">
+            <span [innerHTML]="fundItem.rating | rating" class="star"></span>
+        </div>
+        <div fxFlex="8">{{fundItem.basicFactsheet.ret1yr | returns:true}}</div>
+        <div fxFlex="8">{{fundItem.basicFactsheet.ret3yr | returns:true}}</div>
+        <div fxFlex="12">{{fundItem.basicFactsheet.riskometer | riskometer}}</div>
+        <div fxFlex="7">{{fundItem.age}} yr</div>
+        <div fxFlex="8">{{fundItem.aum | currency:'INR':true:'1.0-0' }}</div>
+        <div fxFlex="10">
+            <app-add-to-cart-icon-button [btnText]="'&#xE854;'"
+                                         [fund]="fundItem"
+                                         [_investmentMode]="defaultInvestmentMode"></app-add-to-cart-icon-button>
+        </div>
+        <div fxFlex="7">
+            <md-checkbox [checked]="fundItem.selected"
+                         (change)="addToCompare(fundItem)">Add to Compare
+            </md-checkbox>
+        </div>
+    </div>
+</md-card>
+
+
+<!--fund listing mobile view-->
+<md-card fxHide.gt-sm="true" *ngFor="let fundItem of funds" class="fund-list-m no-padding">
+    <div class="pad-lr-10 pad-tb-5 bg-bs">
+        <p class="left-align no-margin white mar-b-5" (click)="viewFactSheet(fundItem)">{{fundItem.name}}
+            <span [innerHTML]="fundItem.rating | rating" class="star txt-0-8 right-align no-margin float-right"></span>
+        </p>
+        <p class="left-align no-margin">Risk: <i class="mgray">{{fundItem.basicFactsheet.riskometer | riskometer}}</i>
+        </p>
+    </div>
+    <div fxLayout="row" class="center-align pad-tb-15">
+        <div fxFlex="30" fxLayout="column">
+            <b>3 Year</b>
+            <div fxFlex="" class="grey pad-tb-10">{{fundItem.basicFactsheet.ret3yr | returns:true}}</div>
+        </div>
+        <div fxFlex="30" fxLayout="column" style="border-right: 1px solid darkgray; border-left:1px solid darkgray;">
+            <b>1 Year</b>
+            <div fxFlex="" class="grey pad-tb-10">{{fundItem.basicFactsheet.ret1yr | returns:true}}</div>
+        </div>
+        <div fxFlex="30" fxLayout="column">
+            <b>Fund Age</b>
+            <div fxFlex="" class="grey pad-tb-10">{{fundItem.age}} yr</div>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="bg-lgray pad-tb-10 pad-lr-5">
+        <div fxFlex="60">AUM (Cr) <span class="grey pad-lr-10">{{fundItem.aum | currency:'INR':true:'1.0-0' }}</span>
+        </div>
+        <div fxFlex="40">
+            <app-add-to-cart-icon-button [btnText]="'&#xE854;'" [fund]="fundItem"
+                                         [_investmentMode]="defaultInvestmentMode"></app-add-to-cart-icon-button>
+        </div>
+    </div>
+</md-card>
+
+
+
+
+
+
+
+
+

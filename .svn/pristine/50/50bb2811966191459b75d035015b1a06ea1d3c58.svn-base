@@ -1,0 +1,13 @@
+  @import "../../styles/partials/web-partials";
+
+
+
+
+*{letter-spacing: 0.5px;}
+.bold{
+  font-weight: 600;
+}
+
+.bg-lgray{
+  background-color: #f7f6f6;
+}

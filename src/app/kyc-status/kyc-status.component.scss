@@ -1,0 +1,156 @@
+@import "../../styles/partials/web-partials";
+
+
+.container {
+  @include fadeInElement(1.5s);
+  margin: 40px auto;
+  border: solid 0.5px $medium-grey;
+}
+.otp-kyc-header{
+  background-color: $brand-secondary;
+  color: $white;
+  @include heading(24px, 400);
+  line-height: 80px;
+  text-align: center;
+  margin-bottom: 0;
+    letter-spacing: 1px;
+}.otp-kyc-header-m{
+  background-color: $brand-secondary;
+  color: $white;
+  padding: 10px;
+  @include heading(18px, 400);
+  text-align: center;
+  margin-bottom: 0;
+}
+.otp-container, .pan-kyc-container{
+  border: solid 0.5px $medium-grey;
+  margin-bottom: 20px;
+  .heading{
+    background-color: $light-grey;
+    border-bottom: solid 0.5px $medium-grey;
+    text-align: center;
+    padding: 10px 0;
+  }
+}
+.otp-kyc-content{
+  .otp-container{
+    height: 200px;
+    padding-bottom: 10px;}
+  .pan-kyc-container{
+    padding-bottom: 10px;}
+}
+.otp-validateOTP-content{
+  @include fadeInElement(1.5s);
+}
+button{
+  background-color: $brand-secondary;
+  color: $white;
+}
+.kyc-status{
+  @include dropElement(1s, ease-out, 0s, 1, -50%, 0);
+  background-color: $light-grey;
+  padding-top:20px;
+  padding-bottom: 10px;
+  .text{color:$dark-grey}
+}
+
+.adhaar-enquiry-box{
+
+  @include dropElement(1s, ease-out, 0s, 1, -50%, 0);
+  background-color: $light-grey;
+  margin-bottom: 0;
+  padding: 15px;
+  .adhaar-enquiry-text{
+    color: black;
+    font-size: 16px;
+    font-weight:bold;
+    margin-bottom: 20px;
+    .disclaimer {
+      height: 13px;
+      font-size: 11px;
+      font-weight: normal;
+      line-height: normal;
+      letter-spacing: 1.2px;
+      color: $dark-grey;
+    }
+  }
+  .yes-button{
+    background-color: $brand-secondary;
+    border: solid 0.5px #979797;
+    padding: 5px 25px;
+    font-size: 14px;
+    color:$white;
+    cursor: pointer;
+  }
+  .no-button{
+    background-color: $medium-grey;
+    @extend .yes-button;
+  }
+
+  .dont-know-button {
+    background-color: $white;
+    border: solid 0.5px $brand-secondary;
+    padding: 5px 25px;
+    font-size: 14px;
+    color:$brand-secondary;
+    cursor: pointer;
+  }
+}
+.resendOTP{
+  background-color: white;
+  width: 7%;
+  color:$brand-secondary;
+  font-size: 12px;
+  padding: 3px 0;
+  background-color: transparent;
+  cursor: pointer;
+  border: 0;
+  position: absolute;
+  margin-top: -10px;
+  right: 41%;
+  outline: none;
+  &.disabled{
+    color: $medium-grey;
+    cursor: default;
+  }
+}
+.msgDeliveryStatus{
+  display: block;
+  position: absolute;
+  font-size: 85%;
+  right:0;
+  top:5px;
+  &.sent{
+    color:orange;
+  }
+  &.delivered{
+    color: $success;
+  }
+}
+.otp-timer{
+  @include fadeInElement(0.5s);
+  position: absolute;
+  left: 50%;
+  margin-top: -8px;
+}
+.otp-success-box, .mobile-registered-box, .pan-registered-box{
+  @include fadeInElement(0.5s);
+  .content{
+    padding: 20px;
+    text-align: center;
+    .highlight{font-size: 1.5em; margin: 10px 0 5px;}
+    .mobile-icon{
+      color: $success;
+      font-size: 50px;
+    }
+    .check-icon{color: $success;}
+  }
+}
+
+.next-step{margin-top:20px;}
+
+.resLoading{
+  background: url('../../assets/img/loading.gif')  no-repeat 50% 50%;
+  background-size: 25px 25px;
+}
+

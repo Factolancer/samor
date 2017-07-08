@@ -1,0 +1,7 @@
+<h1 md-dialog-title>{{config.infoTitle}}</h1>
+<div md-dialog-content style="text-align: justify">
+    <div *ngFor="let text of config.infoText;"><p>{{text}}</p></div>
+</div>
+<div md-dialog-actions>
+    <button md-button class="right-align" (click)="dialogRef.close()">Ok</button>
+</div>

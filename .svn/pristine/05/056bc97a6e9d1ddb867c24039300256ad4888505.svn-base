@@ -1,0 +1,83 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {GoogleChart} from "../../shared/google-chart.directive";
+import {ViewChild} from "@angular/core/src/metadata/di";
+import {LogoImdData} from "../constants";
+import {Subscription} from "rxjs";
+import {ReportService} from "../report.service";
+import {Input} from "@angular/core/src/metadata/directives";
+import {AssetAllocationService} from "./asset-allocation.service";
+import {AssetAllocation} from "./asset-allocation";
+
+declare let jsPDF;
+
+@Component({
+    selector: 'app-asset-allocation',
+    templateUrl: './asset-allocation.component.html',
+    providers: [GoogleChart],
+    styleUrls: ['../report.styles.scss']
+})
+export class AssetAllocationComponent implements OnInit,OnDestroy {
+
+    @ViewChild(GoogleChart) chartDirective;
+    @Input() currentTab;
+    assetTabSubscription: Subscription;
+    assetAllocationData: any;
+
+    constructor(private googlechart: GoogleChart, private reportService: ReportService, private assetAllocationService: AssetAllocationService) {
+        this.assetTabSubscription = this.reportService.assetAllocationTabResult.subscribe((loadTab: boolean)=> {
+            if (loadTab == true) {
+                this.assetAllocationData = [['Category', 'Amount']];
+                this.assetAllocationService.getAssetAllocation()
+                    .subscribe(assetAllocationDetails => {
+                        let assetAllocationDetailsList = assetAllocationDetails as AssetAllocation[];
+                        for (let assetAllocation of assetAllocationDetailsList) {
+                            this.assetAllocationData.push([assetAllocation.assetClass, assetAllocation.investedAmt]);
+                        }
+                    });
+            }
+        });
+    }
+
+    ngOnInit() {
+    }
+
+    ngOnDestroy() {
+        this.assetTabSubscription.unsubscribe();
+    }
+
+    public pieChartOptions = {
+        //title: 'Scheme Category vs Amount',
+        is3D: true,
+    };
+
+    download() {
+        var pdf = new jsPDF('p', 'pt');
+        var totalPagesExp = "{total_pages_count_string}";
+        var pageContent = function (data) {
+            // HEADER
+            pdf.setFontSize(20);
+            pdf.setFontStyle('normal');
+            pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+
+            // FOOTER
+            var str = "Page " + data.pageCount;
+            // Total page number plugin only available in jspdf v1.0+
+            if (typeof pdf.putTotalPages === 'function') {
+                str = str + " of " + totalPagesExp;
+            }
+            pdf.setFontSize(10);
+            pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 30);
+        };
+        pdf.setFontSize(12);
+        pdf.myText("Asset Allocation", {align: "center"}, 0, 100);
+        var imgData = this.chartDirective.imageUri;
+        pdf.addImage(imgData, 'JPEG', 15, 150, 600, 220);
+        var tableStyle = {startY: 490, addPageContent: pageContent};
+        pdf.autoTable([], [], tableStyle);
+        if (typeof pdf.putTotalPages === 'function') {
+            pdf.putTotalPages(totalPagesExp);
+        }
+        pdf.save('Asset Allocation Report.pdf');
+    }
+
+}

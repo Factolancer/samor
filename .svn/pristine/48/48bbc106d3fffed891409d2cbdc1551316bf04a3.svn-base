@@ -1,0 +1,283 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-35">
+    <div fxFlex="70" class="calc-box">
+        <div fxLayout="row" fxLayout="start start" class="calc-title">
+            <div fxFlex="100">Tax Calculator</div>
+        </div>
+        <div fxLayout="row" fxLayout="start start" class="calc-sub-title pad-tb-15">
+            <div fxFlex="100">Investment limit under section 80C is {{150000 | currency:'INR':true:'1.0-0' }}</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="70">
+                <div fxLayout="row" fxLayout="start start">
+                    <div fxFlex="{{completeTherm}}" class="completeTherm"></div>
+                    <div fxFlex="{{remainingTherm}}" class="remainingTherm"></div>
+                </div>
+                <div fxLayout="row" fxLayout="start start">
+                    <div fxFlex="{{completeTherm}}" *ngIf="remainingTherm!=0" class="completeThermText">
+                        {{currentInvestment | currency:'INR':true:'1.0-0'}}
+                    </div>
+                    <div fxFlex="{{completeTherm}}" *ngIf="remainingTherm==0" class="completeThermText">
+                        {{150000 | currency:'INR':true:'1.0-0'}}
+                    </div>
+                    <div fxFlex="{{remainingTherm}}" *ngIf="remainingTherm!=0" class="remainingThermText">
+                        {{150000 - currentInvestment| currency:'INR':true:'1.0-0' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="question-area" *ngIf="!showResults">
+            <div class="title pad-tb-10">
+                How much are you investing annually in the following avenues?
+            </div>
+            <div class="pad-tb-10" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                <div fxFlex>
+                    <md-card class="card">
+                        <md-card-header>
+                            <div md-card-avatar class="elss-img"></div>
+                            <md-card-title>ELSS
+                                <md-icon class="md-14"
+                                         mdTooltip="Tax benefits upto 1.5lacs. Lock-in: 3 Years.">
+                                    &#xE88E;</md-icon>
+                            </md-card-title>
+                            <md-card-subtitle class="sub-title">Equity Linked Saving Scheme</md-card-subtitle>
+                        </md-card-header>
+                        <md-divider></md-divider>
+                        <md-card-content>
+                            <p>ELSSs have Tax-free gains. It has the lowest lock-in among all the tax-saving
+                                avenues.</p>
+                        </md-card-content>
+                        <md-card-footer class="center-align">
+                            <md-input-container align="end">
+                                <input type="number" md-input [(ngModel)]="elssAmt" (keyup)="thermometer()"/>
+                                <span md-prefix>&#x20B9;</span>
+                            </md-input-container>
+                        </md-card-footer>
+                    </md-card>
+                </div>
+                <div fxFlex>
+                    <md-card class="card">
+                        <md-card-header>
+                            <div md-card-avatar class="pf-img"></div>
+                            <md-card-title>PPF & EPF
+                                <md-icon class="md-14"
+                                         mdTooltip="Tax benefits up to 1.5lacs. PPF has 15Years lock-in.">
+                                    &#xE88E;</md-icon>
+                            </md-card-title>
+                            <md-card-subtitle class="sub-title">Provident Fund</md-card-subtitle>
+                        </md-card-header>
+                        <md-divider></md-divider>
+                        <md-card-content>
+                            <p>
+                                EPF has no lock-in. It’s 12% of the salary that is deducted by an employer.
+                            </p>
+                        </md-card-content>
+                        <md-card-footer class="center-align">
+                            <md-input-container align="end">
+                                <input type="number" md-input [(ngModel)]="pfAmt" (keyup)="thermometer()"/>
+                                <span md-prefix>&#x20B9;</span>
+                            </md-input-container>
+                        </md-card-footer>
+                    </md-card>
+                </div>
+                <div fxFlex>
+                    <md-card class="card">
+                        <md-card-header>
+                            <div md-card-avatar class="lic-img"></div>
+                            <md-card-title>Life Insurance Premium
+                                <md-icon class="md-14"
+                                         mdTooltip="Tax benefits up to 1.5lacs.">
+                                    &#xE88E;</md-icon>
+                            </md-card-title>
+                        </md-card-header>
+                        <md-divider></md-divider>
+                        <md-card-content>
+                            <p>The annual premium paid for life insurance in the name of taxpayer or the
+                                taxpayer’s wife & children.</p>
+                        </md-card-content>
+                        <md-card-footer class="center-align">
+                            <md-input-container align="end">
+                                <input type="number" md-input [(ngModel)]="lifeInsuranceAmt" (keyup)="thermometer()"/>
+                                <span md-prefix>&#x20B9;</span>
+                            </md-input-container>
+                        </md-card-footer>
+                    </md-card>
+                </div>
+                <div fxFlex>
+                    <md-card class="card">
+                        <md-card-header>
+                            <div md-card-avatar class="fd-img"></div>
+                            <md-card-title>FD & NPS
+                                <md-icon class="md-14"
+                                         mdTooltip="Tax benefits up to 1.5lacs. FD has 5Years lock-in.">
+                                    &#xE88E;</md-icon>
+                            </md-card-title>
+                            <md-card-subtitle class="sub-title">Fixed Deposit & National Pension Scheme
+                            </md-card-subtitle>
+                        </md-card-header>
+                        <md-divider></md-divider>
+                        <md-card-content>
+                            <p>NPS offers different plans on which tax is applicable on the capital gains earned.</p>
+                        </md-card-content>
+                        <md-card-footer class="center-align">
+                            <md-input-container align="end">
+                                <input type="number" md-input [(ngModel)]="fdAmt" (keyup)="thermometer()"/>
+                                <span md-prefix>&#x20B9;</span>
+                            </md-input-container>
+                        </md-card-footer>
+                    </md-card>
+                </div>
+            </div>
+            <div class="pad-tb-10" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" *ngIf="showAll">
+                <div fxFlex>
+                    <md-card class="card">
+                        <md-card-header>
+                            <div md-card-avatar class="nsc-img"></div>
+                            <md-card-title>NSC
+                                <md-icon class="md-14"
+                                         mdTooltip="Tax benefits up to 1.5lacs. 5Years lock-in.">
+                                    &#xE88E;</md-icon>
+                            </md-card-title>
+                            <md-card-subtitle class="sub-title">National Savings Certificates</md-card-subtitle>
+                        </md-card-header>
+                        <md-divider></md-divider>
+                        <md-card-content>
+                            <p>NSC can be bought from designated post offices. Average interest rate is approximately
+                                8.5%.</p>
+                        </md-card-content>
+                        <md-card-footer class="center-align">
+                            <md-input-container align="end">
+                                <input type="number" md-input [(ngModel)]="nscAmt" (keyup)="thermometer()"/>
+                                <span md-prefix>&#x20B9;</span>
+                            </md-input-container>
+                        </md-card-footer>
+                    </md-card>
+                </div>
+                <div fxFlex>
+                    <md-card class="card">
+                        <md-card-header>
+                            <div md-card-avatar class="scss-img"></div>
+                            <md-card-title>SCSS
+                                <md-icon class="md-14"
+                                         mdTooltip="Tax benefits up to 1.5lacs. 5Years lock-in.">
+                                    &#xE88E;</md-icon>
+                            </md-card-title>
+                            <md-card-subtitle class="sub-title">Senior Citizens Savings Scheme</md-card-subtitle>
+                        </md-card-header>
+                        <md-divider></md-divider>
+                        <md-card-content>
+                            <p>The SCSS is for one who is over 60 years or who is over 55 years and has opted for
+                                retirement.</p>
+                        </md-card-content>
+                        <md-card-footer class="center-align">
+                            <md-input-container align="end">
+                                <input type="number" md-input [(ngModel)]="scssAmt" (keyup)="thermometer()"/>
+                                <span md-prefix>&#x20B9;</span>
+                            </md-input-container>
+                        </md-card-footer>
+                    </md-card>
+                </div>
+                <div fxFlex>
+                    <md-card class="card">
+                        <md-card-header>
+                            <div md-card-avatar class="sukanya-img"></div>
+                            <md-card-title>Sukanya Samriddhi Yojana
+                                <md-icon class="md-14"
+                                         mdTooltip="Tax benefits up to 1.5lacs. 21Years lock-in.">
+                                    &#xE88E;</md-icon>
+                            </md-card-title>
+                        </md-card-header>
+                        <md-divider></md-divider>
+                        <md-card-content>
+                            <p>It has tax free gains. Deposits in this schemes are for a girl child by the parent or
+                                guardian.</p>
+                        </md-card-content>
+                        <md-card-footer class="center-align">
+                            <md-input-container align="end">
+                                <input type="number" md-input [(ngModel)]="sukanyaAmt" (keyup)="thermometer()"/>
+                                <span md-prefix>&#x20B9;</span>
+                            </md-input-container>
+                        </md-card-footer>
+                    </md-card>
+                </div>
+                <div fxFlex>
+                    <md-card class="card">
+                        <md-card-header>
+                            <div md-card-avatar class="ulip-img"></div>
+                            <md-card-title>ULIPS
+                                <md-icon class="md-14"
+                                         mdTooltip="Tax benefits up to 1.5lacs.">
+                                    &#xE88E;</md-icon>
+                            </md-card-title>
+                        </md-card-header>
+                        <md-divider></md-divider>
+                        <md-card-content>
+                            <p>ULIPs are a mix of insurance and investment. It provides insurance and invests in stocks
+                                either.</p>
+                        </md-card-content>
+                        <md-card-footer class="center-align">
+                            <md-input-container align="end">
+                                <input type="number" md-input [(ngModel)]="ulipAmt" (keyup)="thermometer()"/>
+                                <span md-prefix>&#x20B9;</span>
+                            </md-input-container>
+                        </md-card-footer>
+                    </md-card>
+                </div>
+            </div>
+            <div class="pad-tb-10" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <div fxFlex="80">
+                    <span>Your Annual Salary is &nbsp;&nbsp;</span>
+                    <md-input-container align="end">
+                        <input md-input [(ngModel)]="annualSalary"/>
+                        <span md-prefix>&#x20B9;</span>
+                    </md-input-container>
+                    <span *ngIf="salaryHint.length>0">{{salaryHint}}</span>
+                </div>
+                <div fxFlex="20" class="right-align" *ngIf="!showAll">
+                    <button md-button="" (click)="showAll=true"
+                            name="See more tax-saving instruments where you can invest to save income tax.">More
+                        Options
+                    </button>
+                </div>
+
+            </div>
+            <md-divider></md-divider>
+            <div class="pad-tb-20" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                <div fxFlex="20">
+                    <button color="primary" md-raised-button="" class="cta-50" (click)="calculate()">Calculate
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="showResults" fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="80">
+                <div class="results-area">
+                    <div class="title">Our Assessment</div>
+                    <div class="curr-inv">
+                        Your Current Investments are: {{currentInvestment | currency:'INR':true:'1.0-0'}}
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                        <div fxFlex class="amount-area">
+                            <div class="amount-title">Investment Opportunity</div>
+                            <div class="amount">{{investmentOpportunity | currency:'INR':true:'1.0-0'}}</div>
+                        </div>
+                        <div fxFlex class="amount-area">
+                            <div class="amount-title">Tax saved through investment</div>
+                            <div class="amount">{{taxSaved | currency:'INR':true:'1.0-0'}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between start" class="pad-20">
+                    <div fxFlex="25">
+                        <button md-raised-button="" class="hollow-cta-36" (click)="back()">Start Again
+                        </button>
+                    </div>
+                    <div fxFlex="25">
+                        <button color="primary" md-raised-button="" class="cta-36" routerLink="/explore">Proceed to
+                            Invest
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

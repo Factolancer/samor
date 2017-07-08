@@ -1,0 +1,371 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper  pad-tb-35">
+    <div fxFlex="80" fxFlex.xs="100" class="calc-box">
+        <div fxLayout="row" fxLayout="start start" class="calc-title">
+            <div fxFlex="100">Tax Calculator</div>
+        </div>
+        <div fxLayout="row" fxLayout="start start" class="calc-sub-title pad-tb-15">
+            <div fxFlex="100">Investment Limit under Section 80C is {{150000 | currency:'INR':true:'1.0-0' }}</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="70" >
+                <div fxLayout="row" fxLayout="start start">
+                    <div fxFlex="{{completeTherm}}" class="completeTherm"></div>
+                    <div fxFlex="{{remainingTherm}}" class="remainingTherm"></div>
+                </div>
+                <div fxLayout="row" fxLayout="start start">
+                    <div fxFlex="{{completeTherm}}" *ngIf="remainingTherm!=0" class="completeThermText">
+                        {{currentInvestment | currency:'INR':true:'1.0-0'}}
+                    </div>
+                    <div fxFlex="{{completeTherm}}" *ngIf="remainingTherm==0" class="completeThermText">
+                        {{150000 | currency:'INR':true:'1.0-0'}}
+                    </div>
+                    <div fxFlex="{{remainingTherm}}" *ngIf="remainingTherm!=0" class="remainingThermText">
+                        {{150000 - currentInvestment| currency:'INR':true:'1.0-0' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="question-area" *ngIf="!showResults">
+            <div class="highlight pad-tb-10 bold center-align">
+                How much are you investing annually in the following avenues?
+            </div>
+            <form (ngSubmit)="taxCalcSubmit()" [formGroup]="calcFormGroup" #form="ngForm">
+                <div class="pad-tb-10" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <div fxFlex >
+                        <md-card class="card">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" class="head">
+                                <div fxFlex="23">
+                                    <img class="calc-img" src="../../assets/img/tax/calc/elss.svg"/>
+                                </div>
+                                <div fxFlex="77" class="dark-grey-text bold">ELSS
+                                    <md-icon class="md-12"
+                                             mdTooltip="Tax benefits up to 1.5lacs. Lock-in: 3 Years.">
+                                        &#xE88E;</md-icon>
+                                    <div class="sub-title">Equity Linked Saving Scheme</div>
+                                </div>
+                            </div>
+                            <md-divider></md-divider>
+                            <div class="body">
+                                <p>ELSS funds have Tax-free gains. It has the lowest lock-in among all the tax-saving
+                                    avenues.</p>
+                            </div>
+                            <div class="foot center-align">
+                                <md-input-container align="end">
+                                    <input type="number" mdInput
+                                           [formControl]="calcFormGroup.get('elssAmt')" autocomplete="off"
+                                           (keyup)="thermometer()"/>
+                                    <span md-prefix>&#x20B9;</span>
+                                    <md-hint *ngIf="calcFormErrors.elssAmt"
+                                             class="form-error">
+                                        {{calcFormErrors.elssAmt}}
+                                    </md-hint>
+                                </md-input-container>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div fxFlex>
+                        <md-card class="card">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" class="head">
+                                <div fxFlex="23">
+                                    <img class="calc-img" src="../../assets/img/tax/calc/pf.svg"/>
+                                </div>
+                                <div fxFlex="77" class="dark-grey-text bold">PPF & EPF
+                                    <md-icon class="md-12"
+                                             mdTooltip="Tax benefits up to 1.5lacs. PPF has 15 Years lock-in.">
+                                        &#xE88E;</md-icon>
+                                    <div class="sub-title">Provident Fund</div>
+                                </div>
+                            </div>
+                            <md-divider></md-divider>
+                            <div class="body">
+                                <p>
+                                    EPF has no lock-in. It’s 12% of the salary that is deducted by an employer.
+                                </p>
+                            </div>
+                            <div class="foot center-align">
+                                <md-input-container align="end">
+                                    <input type="number" mdInput [formControl]="calcFormGroup.get('pfAmt')"
+                                           autocomplete="off" (keyup)="thermometer()"/>
+                                    <span md-prefix>&#x20B9;</span>
+                                    <md-hint *ngIf="calcFormErrors.pfAmt"
+                                             class="form-error">
+                                        {{calcFormErrors.pfAmt}}
+                                    </md-hint>
+                                </md-input-container>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div fxFlex>
+                        <md-card class="card">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" class="head">
+                                <div fxFlex="23">
+                                    <img class="calc-img" src="../../assets/img/tax/calc/lic.svg"/>
+                                </div>
+                                <div fxFlex="77" class="dark-grey-text bold">Life Insurance Premium
+                                    <md-icon class="md-12"
+                                             mdTooltip="Tax benefits up to 1.5lacs.">
+                                        &#xE88E;</md-icon>
+                                </div>
+                            </div>
+                            <md-divider></md-divider>
+                            <div class="body">
+                                <p>The annual premium paid for life insurance in the name of taxpayer or the
+                                    taxpayer’s wife & children.</p>
+                            </div>
+                            <div class="foot center-align">
+                                <md-input-container align="end">
+                                    <input type="number" mdInput [formControl]="calcFormGroup.get('lifeInsuranceAmt')"
+                                           autocomplete="off"
+                                           (keyup)="thermometer()"/>
+                                    <span mdPrefix>&#x20B9;</span>
+                                    <md-hint *ngIf="calcFormErrors.lifeInsuranceAmt"
+                                             class="form-error">
+                                        {{calcFormErrors.lifeInsuranceAmt}}
+                                    </md-hint>
+                                </md-input-container>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div fxFlex>
+                        <md-card class="card">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" class="head">
+                                <div fxFlex="23">
+                                    <img class="calc-img" src="../../assets/img/tax/calc/fd.svg"/>
+                                </div>
+                                <div fxFlex="77" class="dark-grey-text bold">FD & NPS
+                                    <md-icon class="md-12"
+                                             mdTooltip="Tax benefits up to 1.5lacs. FD has 5 Years lock-in.">
+                                        &#xE88E;</md-icon>
+                                    <div class="sub-title">Fixed Deposit & National Pension Scheme</div>
+                                </div>
+                            </div>
+                            <md-divider></md-divider>
+                            <div class="body">
+                                <p>NPS offers different plans on which tax is applicable on the capital gains
+                                    earned.</p>
+                            </div>
+                            <div class="foot center-align">
+                                <md-input-container align="end">
+                                    <input type="number" mdInput [formControl]="calcFormGroup.get('fdAmt')"
+                                           autocomplete="off" (keyup)="thermometer()"/>
+                                    <span mdPrefix>&#x20B9;</span>
+                                    <md-hint *ngIf="calcFormErrors.fdAmt"
+                                             class="form-error">
+                                        {{calcFormErrors.fdAmt}}
+                                    </md-hint>
+                                </md-input-container>
+                            </div>
+                        </md-card>
+                    </div>
+                </div>
+                <div class="pad-tb-10" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" *ngIf="showAll">
+                    <div fxFlex>
+                        <md-card class="card">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" class="head">
+                                <div fxFlex="23">
+                                    <img class="calc-img" src="../../assets/img/tax/calc/nsc.svg"/>
+                                </div>
+                                <div fxFlex="77" class="dark-grey-text bold">NSC
+                                    <md-icon class="md-12"
+                                             mdTooltip="Tax benefits up to 1.5lacs. 5 Years lock-in.">
+                                        &#xE88E;</md-icon>
+                                    <div class="sub-title">National Savings Certificates</div>
+                                </div>
+                            </div>
+                            <md-divider></md-divider>
+                            <div class="body">
+                                <p>NSC can be bought from designated post offices. Average interest rate is
+                                    approximately
+                                    8.5%.</p>
+                            </div>
+                            <div class="foot center-align">
+                                <md-input-container align="end">
+                                    <input type="number" mdInput mdInput [formControl]="calcFormGroup.get('nscAmt')"
+                                           autocomplete="off" (keyup)="thermometer()"/>
+                                    <span mdPrefix>&#x20B9;</span>
+                                    <md-hint *ngIf="calcFormErrors.nscAmt"
+                                             class="form-error">
+                                        {{calcFormErrors.nscAmt}}
+                                    </md-hint>
+                                </md-input-container>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div fxFlex>
+                        <md-card class="card">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" class="head">
+                                <div fxFlex="23">
+                                    <img class="calc-img" src="../../assets/img/tax/calc/scss.svg"/>
+                                </div>
+                                <div fxFlex="77" class="dark-grey-text bold">SCSS
+                                    <md-icon class="md-12"
+                                             mdTooltip="Tax benefits up to 1.5lacs. 5 Years lock-in.">
+                                        &#xE88E;</md-icon>
+                                    <div class="sub-title">Senior Citizens Savings Scheme</div>
+                                </div>
+                            </div>
+                            <md-divider></md-divider>
+                            <div class="body">
+                                <p>The SCSS is for those who are over 60 years or who are over 55 years and has opted
+                                    for
+                                    retirement.</p>
+                            </div>
+                            <div class="foot center-align">
+                                <md-input-container align="end">
+                                    <input type="number" mdInput mdInput [formControl]="calcFormGroup.get('scssAmt')"
+                                           autocomplete="off" (keyup)="thermometer()"/>
+                                    <span mdPrefix>&#x20B9;</span>
+                                    <md-hint *ngIf="calcFormErrors.scssAmt"
+                                             class="form-error">
+                                        {{calcFormErrors.scssAmt}}
+                                    </md-hint>
+                                </md-input-container>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div fxFlex>
+                        <md-card class="card">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" class="head">
+                                <div fxFlex="23">
+                                    <img class="calc-img" src="../../assets/img/tax/calc/sukanya.svg"/>
+                                </div>
+                                <div fxFlex="77" class="dark-grey-text bold">Sukanya Samriddhi Yojana
+                                    <md-icon class="md-12"
+                                             mdTooltip="Tax benefits up to 1.5lacs. 21 Years lock-in.">
+                                        &#xE88E;</md-icon>
+                                </div>
+                            </div>
+                            <md-divider></md-divider>
+                            <div class="body">
+                                <p>It has tax free gains. Deposits in these schemes are for a girl child by the parent
+                                    or
+                                    guardian.</p>
+                            </div>
+                            <div class="foot center-align">
+                                <md-input-container align="end">
+                                    <input type="number" mdInput mdInput [formControl]="calcFormGroup.get('sukanyaAmt')"
+                                           autocomplete="off" (keyup)="thermometer()"/>
+                                    <span mdPrefix>&#x20B9;</span>
+                                    <md-hint *ngIf="calcFormErrors.sukanyaAmt"
+                                             class="form-error">
+                                        {{calcFormErrors.sukanyaAmt}}
+                                    </md-hint>
+                                </md-input-container>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div fxFlex>
+                        <md-card class="card">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" class="head">
+                                <div fxFlex="23">
+                                    <img class="calc-img" src="../../assets/img/tax/calc/ulip.svg"/>
+                                </div>
+                                <div fxFlex="77" class="dark-grey-text bold">ULIPs
+                                    <md-icon class="md-12"
+                                             mdTooltip="Tax benefits up to 1.5lacs.">
+                                        &#xE88E;</md-icon>
+                                    <div class="sub-title">Unit Linked Insurance Plan</div>
+                                </div>
+                            </div>
+                            <md-divider></md-divider>
+                            <div class="body">
+                                <p>ULIPs are a mix of insurance and investment. It provides insurance and invests in
+                                    stocks
+                                    either.</p>
+                            </div>
+                            <div class="foot center-align">
+                                <md-input-container align="end">
+                                    <input type="number" mdInput mdInput [formControl]="calcFormGroup.get('ulipAmt')"
+                                           autocomplete="off" (keyup)="thermometer()"/>
+                                    <span mdPrefix>&#x20B9;</span>
+                                    <md-hint *ngIf="calcFormErrors.ulipAmt"
+                                             class="form-error">
+                                        {{calcFormErrors.ulipAmt}}
+                                    </md-hint>
+                                </md-input-container>
+                            </div>
+                        </md-card>
+                    </div>
+                </div>
+                <div class="pad-tb-10" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                    <div fxFlex="80" fxFlex.xs="60">
+                        <span class="dark-grey-text bold">Your Annual Salary is &nbsp;&nbsp;</span>
+                        <md-input-container align="end">
+                            <input type="number" mdInput
+                                   [formControl]="calcFormGroup.get('annualSalary')"
+                                   autocomplete="off"/>
+                            <span mdPrefix>&#x20B9;</span>
+                            <md-hint *ngIf="calcFormErrors.annualSalary"
+                                     class="form-error">
+                                {{calcFormErrors.annualSalary}}
+                            </md-hint>
+                        </md-input-container>
+                    </div>
+                    <div fxFlex="20" fxFlex.xs="40" class="right-align" *ngIf="!showAll">
+                        <button md-button="" (click)="showAll=true" type="button"
+                                name="See more tax-saving instruments where you can invest to save income tax.">More
+                            Options
+                        </button>
+                    </div>
+                </div>
+                <md-divider></md-divider>
+                <div class="pad-tb-10" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <div fxFlex="20" fxFlex.xs="50">
+                        <button type="submit" color="primary" md-raised-button="" class="cta-50">
+                            Calculate
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div *ngIf="showResults" fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="80" fxFlex.xs="100">
+                <div class="results-area">
+                    <div class="highlight">Our Assessment</div>
+                    <div class="curr-inv" *ngIf="investmentOpportunity>0">
+                        Your Current Investments are: {{currentInvestment | currency:'INR':true:'1.0-0'}}
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start start" *ngIf="investmentOpportunity>0">
+                        <div fxFlex class="amount-area">
+                            <div class="amount-title">Further Investment Opportunity</div>
+                            <div class="amount">{{investmentOpportunity | currency:'INR':true:'1.0-0'}}</div>
+                        </div>
+                        <div fxFlex class="amount-area">
+                            <div class="amount-title">
+                                <md-icon class="md-16"
+                                         mdTooltip="The amount shown is estimated from the salary you have mentioned and the taxation norms of financial year 2016-17. Please consult your financial advisor for other tax-related information.">
+                                    &#xE88E;</md-icon>
+                                Tax Saved through further Investment
+                            </div>
+                            <div class="amount">{{taxSaved | currency:'INR':true:'1.0-0'}}</div>
+                        </div>
+                    </div>
+                    <div class=" grey-back center-align pad-25" *ngIf="investmentOpportunity==0">
+                        <p>You no longer need to Invest in tax-saving schemes under section 80C.
+                        </p>
+                        <p class="dark-grey-text bold">Invest in <a routerLink="/sip" class="clickable">SmartSIP</a>
+                            &amp; <a routerLink="/cash" class="clickable">SavingsPlus</a> to earn more.</p>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between start" class="pad-20">
+                    <div fxFlex="15" fxFlex.xs="40">
+                        <button md-raised-button="" class="hollow-cta-36" (click)="back()">Start Again
+                        </button>
+                    </div>
+                    <div fxFlex="15" fxFlex.xs="40">
+                        <button color="primary" md-raised-button="" class="cta-36" routerLink="/tax/taxsaver">
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" class=" wrapper">
+    <div fxFlex="80">
+        <span (click)="seeDisclaimers()" class="disclaimer-text clickable">Disclaimers: The projections and charts are based
+        upon the basic information you have provided and are simulated based on expected long term returns...<u>read more</u></span>
+    </div>
+</div>

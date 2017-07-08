@@ -1,0 +1,29 @@
+/**
+ * Created by Fincash on 09-02-2017.
+ */
+import {Injectable} from '@angular/core';
+import {Observable} from "rxjs/Observable";
+
+import {HttpService} from "../services/http-service.service";
+
+import {Logger} from "../shared/logger/logger";
+
+@Injectable()
+export class OTPService {
+
+    constructor(private http:HttpService, private logger:Logger) { };
+    from:any = 943816245
+
+    sendOTP (to, message) : Observable<string>  {
+        return this.http.get('/generateOTP/'+this.from+'/'+to+'/'+message)
+            .map(res => res.otp )
+    }
+
+    validateOTP (otp) :any{
+        let otpStored = localStorage.getItem('otpToken');
+        if(otp==otpStored)
+            return true;
+        return false;
+    }
+
+}

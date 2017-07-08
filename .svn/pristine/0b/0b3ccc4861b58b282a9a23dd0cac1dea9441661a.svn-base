@@ -1,0 +1,5 @@
+<h4>Min Fund Age</h4>
+<button (click)="clearFilter(age)">Clear</button>
+<span *ngFor="let ageItem of ageList; let lastVal = last;">
+    <input type="radio" name="age" #age value="{{ageItem}}"
+           (click)="filter($event.target.value)"> {{ageItem}}<span *ngIf="lastVal"> or more</span> years<br></span>

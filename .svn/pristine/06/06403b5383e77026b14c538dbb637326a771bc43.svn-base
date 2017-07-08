@@ -1,0 +1,60 @@
+@import "../../styles/partials/web-partials";
+
+.section-header {
+  background-color: $brand-secondary;
+  color: $white;
+  @include heading(20px, 300);
+  width: 100%;
+  line-height: 50px;
+}
+
+md-icon{
+  cursor: pointer;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.section-content {
+  background-color: $white;
+  width: 100%;
+}
+
+md-input-container{
+  width: 90%;
+}
+
+.errorMessage {
+  float: right;
+  margin-top: 1px;
+  font-size: 0.7em;
+  color: $error;
+
+}
+.errorMessage span {
+  position: absolute;
+  color: red;
+  top: -10px;
+  font-size:0.63em;
+}
+
+.field_label{
+  color: rgba(0, 0, 0, 0.38);
+  display: block;
+  text-align: left;
+  @include heading(11px, 300);
+  line-height: 20px;
+  position: absolute;
+  text-align: left;
+  margin-bottom: 5px;
+  //margin-left: -105px;
+  margin-top: -20px;
+  padding-bottom: 5px;
+}
+
+.address-header{
+  color: $dark-grey;
+  @include heading(16px, 400);
+  margin-left: 78px;
+}

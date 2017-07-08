@@ -1,0 +1,25 @@
+import {Injectable} from "@angular/core";
+import {Logger} from "../shared/logger/logger";
+import {HttpService} from "./http-service.service";
+import {Http, Headers, RequestOptions} from "@angular/http";
+
+@Injectable()
+export class UploadService {
+
+    className: string
+    constructor(public logger: Logger, public httpSerivce: HttpService, public http: Http){
+        this.className = "UploadService"
+    }
+
+    public uploadDoc(formData: FormData){
+        let headers = this.setHeader()
+        let options = new RequestOptions({headers: headers});
+        return this.http.post('http://10.1.0.2:81/api/file/upload', formData, options);
+    }
+
+    private setHeader() {
+        this.logger.debug(this.className, "set Content type");
+        let headers = new Headers({'Content-Type': 'multipart/form-data'});
+        return headers;
+    }
+}

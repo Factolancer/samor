@@ -1,0 +1,117 @@
+import {Component, OnInit, ViewContainerRef, OnDestroy} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Fund} from "../models/fund";
+import {CartService} from "../services/cart.service";
+import {InvestmentModeEnum} from "../enum/investment-mode-enum";
+import {MdDialog, MdDialogConfig, MdSnackBarConfig, MdSnackBar} from "@angular/material";
+import {ConfirmationDialogComponent} from "../shared/confirmation-dialog.component";
+import {isNullOrUndefined} from "util";
+import {ProductInvestment} from "../models/product-investment";
+import {Subscription} from "rxjs";
+
+@Component({
+    selector: 'app-cart',
+    templateUrl: './cart.component.html',
+    styleUrls: ['./cart.styles.scss']
+})
+export class CartComponent implements OnInit, OnDestroy {
+
+    cartItems: Fund[];
+    updatedCartItems: Fund[];
+    investmentMode = InvestmentModeEnum;
+    cartSubscription: Subscription;
+
+
+    constructor(private route: ActivatedRoute, private cartService: CartService, private dialog: MdDialog,
+                private viewContainerRef: ViewContainerRef, private mdSnackBar: MdSnackBar, private router: Router) {
+        this.cartItems = [];
+    }
+
+    ngOnInit() {
+        this.cartSubscription = this.cartService.cartObservable.subscribe(cart => {
+            this.cartItems = cart.funds;
+        })
+    }
+
+    ngOnDestroy() {
+        this.cartSubscription.unsubscribe();
+    }
+
+    removeFund(fund: Fund, index: number) {
+        this.updatedCartItems = this.cartItems;
+        this.updatedCartItems = this.updatedCartItems.filter((item, idx) => idx != index);
+        //this.cartItems = this.cartItems.filter((item, idx) => idx != index);
+        this.cartService.removeFundFromCart(this.updatedCartItems).subscribe(res => {
+                this.cartItems = this.cartItems.filter((item, idx) => idx != index);
+                let config = new MdSnackBarConfig();
+                config.viewContainerRef = this.viewContainerRef;
+                config.duration = 2000;
+                this.mdSnackBar.open("Fund successfully deleted from cart!", "Okay", config);
+
+            }
+        )
+
+    }
+
+    validate() {
+        let investmentModeSelected = true;
+        for (let fund of this.cartItems) {
+            if (isNullOrUndefined(fund.investmentMode) || fund.investmentMode.length == 0) {
+                investmentModeSelected = false;
+
+            }
+        }
+        if (!investmentModeSelected) {
+            let config = new MdSnackBarConfig();
+            config.viewContainerRef = this.viewContainerRef;
+            config.duration = 2000;
+            this.mdSnackBar.open("Please Select Investment Mode", "Okay", config);
+        } else {
+            this.cartService.updateCartData(this.cartItems).subscribe(result => {
+                this.router.navigate(['/checkout/init'])
+            });
+
+        }
+    }
+
+    investmentModeUpdate(fund: Fund, index: number) {
+        //console.log(fund);
+        let fundFoundCount = 0;
+        this.cartItems.forEach(item => {
+            if (item.id == fund.id && item.investmentMode == fund.investmentMode) {
+                fundFoundCount++;
+            }
+        });
+
+        if (fundFoundCount > 1) {
+            let config = new MdDialogConfig();
+            config.width = "300px";
+            config.disableClose = true;
+            config.viewContainerRef = this.viewContainerRef;
+
+            let confirmationConfig = {
+                confirmationTitle: "Please Confirm!",
+                confirmationText: "Two funds cannot have same investment modes, do you want to remove this fund?",
+                confirmationActions: [['Y', "Yes"], ['N', "No"]]
+            }
+
+            let dialogRef = this.dialog.open(ConfirmationDialogComponent, config);
+            dialogRef.componentInstance.config = confirmationConfig;
+            dialogRef.afterClosed().subscribe(result => {
+                if (result[0] == 'Y') {
+                    this.removeFund(fund, index);
+                } else {
+                    //toggle back the investment mode
+                    //  console.log(this.cartItems[index].investmentMode);
+                    this.cartItems[index].investmentMode == InvestmentModeEnum[InvestmentModeEnum.SIP] ?
+                        this.cartItems[index].investmentMode = InvestmentModeEnum[InvestmentModeEnum.LUMPSUM] :
+                        this.cartItems[index].investmentMode = InvestmentModeEnum[InvestmentModeEnum.SIP];
+                    //console.log(this.cartItems[index].investmentMode);
+                }
+
+                //console.log(this.cartItems[index]);
+            });
+        }
+    }
+
+}

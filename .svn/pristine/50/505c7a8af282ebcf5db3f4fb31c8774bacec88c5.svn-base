@@ -1,0 +1,20 @@
+<div fxLayout="column" fxLayoutAlign="center center ">
+    <md-card class="mar-tb-5 report-card no-padding">
+        <div fxLayout="row" fxLayoutAlign="center center" class="allocation-header  allocation-heading ">
+            <div fxFlex>Folio</div>
+            <div fxFlex>Fund</div>
+            <div fxFlex>IRR</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex><hr></div>
+        </div>
+        <div *ngFor="let data of irrData; let i = index" fxLayout="row" fxLayoutAlign="center center" class="allocation-details " [ngClass]="{tableHeader: i==irrData.length-1, total:i==irrData.length-1}">
+            <span fxFlex class="asset-class-details">{{data.folioNo}}</span>
+            <span fxFlex class="asset-class-details">{{data.fundName}}</span>
+            <span fxFlex class="asset-class-details">{{data.xirr}}%</span>
+        </div>
+    </md-card>
+    <!--<div class="col-md-2 text-right">
+        <span (click)="download()" class="clickable"><i class="material-icons">&#xE2C4;</i></span>
+    </div>-->
+</div>

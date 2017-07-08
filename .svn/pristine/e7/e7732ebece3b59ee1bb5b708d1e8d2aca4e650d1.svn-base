@@ -1,0 +1,41 @@
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FundComponent} from './fund.component';
+import {Fund} from "./models/fund";
+import {MdCheckboxModule} from "@angular2-material/checkbox";
+import {RouterModule} from "@angular/router";
+import {FormsModule} from "@angular/forms";
+import {SearchModule} from "../search/search.module";
+import {MdButtonModule} from "@angular2-material/button";
+import { RatingPipe } from './rating.pipe';
+import {MdIconModule} from "@angular2-material/icon";
+import {MdCardModule} from "@angular2-material/card";
+import { CompareFundsComponent } from './compare/compare-funds.component';
+import {MdTabsModule} from "@angular2-material/tabs";
+import {FundService} from "./fund.service";
+import {HttpService} from "../services/http-service.service";
+import { BasicFactsheetComponent } from './factsheet/basic-factsheet.component';
+import { AdvancedFactsheetComponent } from './factsheet/advanced-factsheet.component';
+import {fundRouting} from "./fund.routes";
+
+
+@NgModule({
+    imports: [
+        CommonModule,
+        MdCheckboxModule,
+        RouterModule,
+        FormsModule,
+        SearchModule,
+        MdButtonModule,
+        MdIconModule,
+        MdCardModule,
+        MdTabsModule,
+        fundRouting,
+
+    ],
+    exports: [FundComponent],
+    providers:[FundService, HttpService],
+    declarations: [FundComponent, RatingPipe, CompareFundsComponent, BasicFactsheetComponent, AdvancedFactsheetComponent],
+})
+export class FundModule {
+}

@@ -1,0 +1,150 @@
+<div fxLayout="row" fxLayoutAlign="center start" class="wrapper">
+    <div fxFlex="90">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <div fxFlex class="heading-32-blue pad-tb-15">Investment Summary</div>
+        </div>
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="10px" class="wrapper">
+    <div fxFlex="65">
+        <!--<app-user-journey></app-user-journey>-->
+        <div fxFlex class="grey-back pad-20 mar-tb-10" *ngIf="sipProducts.length>0">
+            <md-card class="checkout-product-head">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex="40">
+                        Fund Name
+                    </div>
+                    <div fxFlex="20">
+                        Monthly SIP Date
+                    </div>
+                    <div fxFlex="20">
+                        SIP Tenure
+                    </div>
+                    <div fxFlex="20">
+                        Investment Amount
+                    </div>
+                </div>
+            </md-card>
+            <md-card class="checkout-product-item" *ngFor="let product of sipProducts">
+                <div *ngFor="let fundItem of product.funds" fxLayout="row" fxLayoutAlign="start center" class="fund">
+                    <div fxFlex="40">
+                        {{fundItem.name}}
+                    </div>
+                    <div fxFlex="20">
+                        <md-icon class="md-14">&#xE88E;</md-icon>
+                        {{fundItem.startDate}}
+                    </div>
+                    <div fxFlex="20">{{fundItem.months}}</div>
+                    <div fxFlex="20">
+                        {{fundItem.investmentAmount | currency:'INR':true:'1.0-0'}}
+                    </div>
+                </div>
+            </md-card>
+        </div>
+        <div fxFlex class="grey-back pad-20 mar-tb-10" *ngIf="lumpsumProducts.length>0">
+            <md-card class="checkout-product-head">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex="50">
+                        Fund
+                    </div>
+                    <div fxFlex="25">
+                        Investment Date
+                    </div>
+                    <div fxFlex="25">
+                        Investment Amount
+                    </div>
+                </div>
+            </md-card>
+            <md-card class="checkout-product-item" *ngFor="let product of lumpsumProducts">
+                <div *ngFor="let fundItem of product.funds" fxLayout="row" fxLayoutAlign="start center" class="fund">
+                    <div fxFlex="50">
+                        {{fundItem.name}}
+                    </div>
+                    <div fxFlex="25">
+                        <md-icon class="md-14">&#xE88E;</md-icon>
+                        {{fundItem.startDate}}
+                    </div>
+                    <div fxFlex="25">
+                        {{fundItem.investmentAmount | currency:'INR':true:'1.0-0'}}
+                    </div>
+                </div>
+            </md-card>
+        </div>
+        <div fxFlex class="grey-back pad-20 mar-tb-10">
+            <md-card>
+                <md-card-title class="heading-14">
+                    Disclaimers
+                </md-card-title>
+                <md-card-content class="disclaimer-text">
+                    <p><b>Disclaimer 1:</b>Your risk appetit.....</p>
+                    <p><b>Disclaimer 2:</b>Cutoff:</p>
+                    <p><b>Disclaimer 3:</b>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                        do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat.</p>
+                    <!--<p><b>Disclaimer 3:</b>{{disclaimerContent3}}</p>-->
+                </md-card-content>
+                <md-card-actions>
+                    <button md-button (click)="readMore()">Read More</button>
+                </md-card-actions>
+            </md-card>
+        </div>
+    </div>
+    <div fxFlex="25" class="mar-tb-10">
+
+        <md-card>
+            <table>
+                <tr>
+                    <td colspan="2" class="heading-18-blue">
+                        Investor Details
+                        <hr/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{summaryData.name}}</td>
+                </tr>
+                <tr>
+                    <td>PAN Card</td>
+                    <td>{{summaryData.pan}}</td>
+                </tr>
+                <tr>
+                    <td>Nominee</td>
+                    <td>{{summaryData.nominee}}</td>
+                </tr>
+                <tr>
+                    <td>Bank</td>
+                    <td>{{summaryData.bank}}</td>
+                </tr>
+                <tr>
+                    <td>KYC &amp; Risk Profiling</td>
+                    <td>
+                        <md-icon class="md-24">&#xE86C;</md-icon><!--Tick Mark-->
+                    </td>
+                </tr>
+            </table>
+
+            <div class="total-inv-summary">
+                <span>Total Investment</span>
+                <span>{{summaryData.totalInvestment | currency:'INR':true:'1.0-0'}}</span>
+            </div>
+        </md-card>
+        <div fxLayout="column" fxLayoutAlign="end end" class="ip-details">
+            <div fxFlex>Time: {{summaryData.time}}</div>
+            <div fxFlex>IP Address: {{summaryData.ipAddress}}</div>
+        </div>
+        <md-card class="mar-tb-10 pad-15">
+            <div class="pad-10">
+                <md-checkbox [(ngModel)]="summaryData.agreement">
+                    I have read the disclaimers and I agree to the Terms & Conditions
+                </md-checkbox>
+            </div>
+            <div>
+                <button color="primary" md-raised-button="" [disabled]="!summaryData.agreement"
+                        class="cta-50" (click)="proceed()">
+                    Proceed to Pay
+                </button>
+            </div>
+        </md-card>
+    </div>
+</div>

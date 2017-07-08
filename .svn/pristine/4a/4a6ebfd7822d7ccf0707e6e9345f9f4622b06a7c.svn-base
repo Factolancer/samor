@@ -1,0 +1,58 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Input} from "@angular/core/src/metadata/directives";
+import {FilterData} from "./filter-data";
+import {ExploreFundsService} from "../explore-funds.service";
+import {Subscription} from "rxjs";
+import {FundSearchInput} from "../fund-search-input";
+import {ExploreFundConstants} from "../explore-funds.constants";
+
+@Component({
+    selector: 'app-age-filter',
+    templateUrl: 'age-filter.component.html',
+    styleUrls: ['filters.scss']
+})
+export class AgeFilterComponent implements OnInit,OnDestroy {
+
+    ageFilterData: FilterData[];
+    filterTitle: string;
+    selectedAge: string;
+    searchInputSubscription: Subscription;
+    searchResultSubscription: Subscription;
+    searchInput: FundSearchInput;
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput
+            .subscribe(searchInput => {
+                this.searchInput = searchInput;
+                if (searchInput.queryType == ExploreFundConstants.SEARCH_QUERY) {
+                    this.selectedAge = this.searchInput.age.toString();
+                }
+            });
+
+        this.searchResultSubscription = this.exploreFundsService.fundSearchResult.subscribe(searchResults => {
+            this.ageFilterData = searchResults.ageFilterData;
+        })
+    }
+
+    filter() {
+        this.searchInput.age = +this.selectedAge;
+        this.exploreFundsService.filterFunds(this.searchInput);
+    }
+
+    clearFilter() {
+        this.selectedAge = "";
+        this.searchInput.age = 0;
+        this.exploreFundsService.filterFunds(this.searchInput);
+    }
+
+    ngOnInit() {
+        this.filterTitle = "Fund Age";
+        this.selectedAge = "";
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+        this.searchResultSubscription.unsubscribe();
+    }
+
+}

@@ -1,0 +1,32 @@
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import {CheckoutService} from "../checkout.service";
+import {Summary} from "../summary";
+import {ProductEnum} from "../../enum/product-enum";
+
+@Component({
+    selector: 'app-summary',
+    templateUrl: './summary.component.html',
+    styleUrls: ['./summary.component.css']
+})
+export class SummaryComponent implements OnInit {
+
+    summaryData: Summary;
+    productEnum: ProductEnum;
+
+    constructor(private route: ActivatedRoute, private router: Router, private checkoutService: CheckoutService) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: { summaryData: Summary}) => {
+            this.summaryData = data.summaryData;
+        });
+    }
+
+    proceed() {
+        this.checkoutService.invest().subscribe(res => {
+            window.location.href = res;
+        });
+    }
+
+}

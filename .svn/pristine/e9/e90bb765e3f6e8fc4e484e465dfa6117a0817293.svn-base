@@ -1,0 +1,158 @@
+<!--Header-->
+<header>
+    <md-toolbar class="header">
+        <span><a routerLink="/"><img src="../assets/img/logo.png"></a></span>
+        <span class="nav">
+         <a md-button="" class="nav-btn" [md-menu-trigger-for]="solutionsMenu">
+             SOLUTIONS <md-icon class="md-16">&#xE313;</md-icon>
+         </a>
+         <a md-button="" class="nav-btn" routerLink="/explore/all">EXPLORE FUNDS</a>
+         <a md-button="" class="nav-btn" [md-menu-trigger-for]="calculatorMenu">CALCULATORS <md-icon
+                 class="md-16">&#xE313;</md-icon>
+         </a>
+         <a md-button="" class="nav-btn" [md-menu-trigger-for]="resourceCenterMenu">RESOURCE CENTER<md-icon
+                 class="md-16">&#xE313;</md-icon>
+         </a>
+    </span>
+
+        <span style="flex: 1 1 auto"></span>
+        <span *ngIf="!userLoggedIn()">
+            <span role="button" (click)="logUserIn()" class="login-btn-area">
+                <span class="text">LOGIN/SIGNUP</span>
+            </span>
+            <span role="button" class="">
+                <md-icon class="md-20">&#xE8CC;</md-icon>
+            </span>
+        </span>
+        <span *ngIf="userLoggedIn()">
+            <span role="button" class="">
+                <md-icon class="md-20">&#xE417;</md-icon>
+            </span>
+             <span role="button" class="">
+                <md-icon class="md-20">&#xE8CC;</md-icon>
+            </span>
+             <span role="button" class="">
+                <md-icon class="md-20">&#xE7F4;</md-icon>
+            </span>
+            <span role="button" class="" [md-menu-trigger-for]="myAccountMenu">
+                <md-icon class="md-20">&#xE853;</md-icon><md-icon
+                    class="md-16">&#xE313;</md-icon>
+            </span>
+        </span>
+
+        <md-menu #solutionsMenu="mdMenu" y-position="below" class="menu">
+            <a md-menu-item  routerLink="/sip">SmartSIP</a>
+            <a md-menu-item routerLink="/tax">TaxSaver</a>
+            <a md-menu-item routerLink="/cash">SavingsPlus</a>
+        </md-menu>
+        <md-menu #calculatorMenu="mdMenu" y-position="below" class="menu">
+            <a md-menu-item routerLink="/sip/calculator">SIP</a>
+            <a md-menu-item routerLink="/tax/calculator">Tax</a>
+        </md-menu>
+        <md-menu #resourceCenterMenu="mdMenu" y-position="below" class="menu">
+            <a md-menu-item routerLink="https://www.fincash.com/b/mutual-funds">Mutual Funds</a>
+            <a md-menu-item routerLink="https://www.fincash.com/b/insurance">Insurance</a>
+        </md-menu>
+        <md-menu #myAccountMenu="mdMenu" y-position="below" class="menu">
+            <a md-menu-item routerLink="#">Profile</a>
+            <a md-menu-item routerLink="/dashboard">Dashboard</a>
+            <a md-menu-item (click)="logUserOut()">Logout</a>
+        </md-menu>
+
+    </md-toolbar>
+</header>
+
+<!--Body-->
+<div class="fc-body">
+    <router-outlet></router-outlet>
+</div>
+
+
+<!--Footer-->
+<footer class="footer">
+    <md-toolbar class="top">
+        <span>Questions? Get in touch!</span>
+        <span style="flex: 1 1 auto"></span>
+        <span><md-icon class="md-20">&#xE325;</md-icon>022-813456543</span>
+        <span><md-icon class="md-20">&#xE0BE;</md-icon>support[at]fincash.com</span>
+    </md-toolbar>
+    <div class="bottom">
+        <div fxLayout="row" fxLayoutAlign="start start" class="wrapper">
+            <div fxFlex="15">
+                <div class="section-title">ABOUT US</div>
+                <md-list>
+                    <md-list-item><a routerLink="#">Why Fincash</a></md-list-item>
+                    <md-list-item><a routerLink="#">Team</a></md-list-item>
+                    <md-list-item><a routerLink="#">Careers</a></md-list-item>
+                </md-list>
+            </div>
+            <div fxFlex="15">
+                <div class="section-title">PRODUCT SOLUTIONS</div>
+                <md-list>
+                    <md-list-item><a routerLink="#">SavingsPlus</a></md-list-item>
+                    <md-list-item><a routerLink="#">SmartSIP</a></md-list-item>
+                    <md-list-item><a routerLink="#">TaxSaver</a></md-list-item>
+                    <md-list-item><a routerLink="#">Explore Funds</a></md-list-item>
+                </md-list>
+            </div>
+            <div fxFlex="30">
+                <div class="section-title">RESOURCE CENTER</div>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex>
+                        <div class="section-title">MUTUAL FUNDS</div>
+                        <md-list>
+                            <md-list-item><a routerLink="#">Equity Large Cap</a></md-list-item>
+                            <md-list-item><a routerLink="#">Equity Mid Cap</a></md-list-item>
+                            <md-list-item><a routerLink="#">ELSS</a></md-list-item>
+                            <md-list-item><a routerLink="#">Liquid Funds</a></md-list-item>
+                            <md-list-item><a routerLink="#">Gold</a></md-list-item>
+                        </md-list>
+                    </div>
+                    <div fxFlex>
+                        <div class="section-title">INSURANCE</div>
+                        <md-list>
+                            <md-list-item><a routerLink="#">Life Insurance</a></md-list-item>
+                            <md-list-item><a routerLink="#">Health Insurance</a></md-list-item>
+                            <md-list-item><a routerLink="#">Travel Insurance</a></md-list-item>
+                            <md-list-item><a routerLink="#">Vehicle Insurance</a></md-list-item>
+                            <md-list-item><a routerLink="#">House Insurance</a></md-list-item>
+                        </md-list>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="15">
+                <div class="section-title">CALCULATORS</div>
+                <md-list>
+                    <md-list-item><a routerLink="#">SIP</a></md-list-item>
+                    <md-list-item><a routerLink="#">Retirement Planning</a></md-list-item>
+                    <md-list-item><a routerLink="#">Higher Education</a></md-list-item>
+                    <md-list-item><a routerLink="#">Marriage</a></md-list-item>
+                    <md-list-item><a routerLink="#">Buy House</a></md-list-item>
+                    <md-list-item><a routerLink="#">Buy Vehicle</a></md-list-item>
+                    <md-list-item><a routerLink="#">Growth of SIP Investment</a></md-list-item>
+                    <md-list-item><a routerLink="#">Tax</a></md-list-item>
+                </md-list>
+            </div>
+            <div fxFlex="15">
+                <div class="section-title">LEGAL</div>
+                <md-list>
+                    <md-list-item><a routerLink="#">Privacy Policy</a></md-list-item>
+                    <md-list-item><a routerLink="#">Terms &amp; Conditions</a></md-list-item>
+                    <md-list-item><a routerLink="#">Disclaimers</a></md-list-item>
+                </md-list>
+            </div>
+            <div fxFlex="10">
+                <div class="section-title">CONTACT US</div>
+                <div>A -204, Technocity, Plot No X-4/1 & X-4/2,
+                    TTC, MIDC, Mahape, Navi Mumbai - 400710
+                </div>
+                <div>
+                    <md-icon class="md-14">&#xE90C;</md-icon>
+                    2017 Fincash.com
+                </div>
+                <div><a routerLink="#">Social Icons</a></div>
+            </div>
+        </div>
+    </div>
+
+</footer>

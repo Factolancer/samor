@@ -1,0 +1,241 @@
+import {Component, OnInit, trigger, transition, state, animate, style, keyframes, Input} from '@angular/core';
+import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+
+// google.load("visualization", "1.1", {packages:["corechart"]});
+
+@Component({
+    selector: 'demo',
+
+    templateUrl: './demo.component.html',
+    styleUrls: ['./../cash.styles.scss'],
+   // styles: ['button {font-size:1.8em;} #contant {padding:30px; background:#eeeeee; }'],
+
+
+providers: [],
+    animations: [
+    trigger('focusPanel', [
+        state('out' , style({ opacity: 0, transform: 'scale(0.0)' })),
+        state('in', style({ opacity: 1, transform: 'scale(0.0)' })),
+       // transition('1 => 0', animate('300ms')),
+        transition('1 => 0', animate('300ms')),
+     //   transition('void => ')
+    ])
+]
+
+})
+export class DemoComponent implements OnInit {
+
+   // state: string = 'out';
+    focusPanel = 'in';
+    heading = 'invisible';
+    @Input() mystate = 'in';
+    index: number = 0;
+
+    constructor(private router: Router) {
+        Observable.interval(2000)
+            .subscribe(x => {
+                //console.log(x);
+                //this.headingvisible = !this.headingvisible;
+                this.heading = (this.heading == 'visible') ? 'invisible' : 'visible';
+                if (x % 2 == 0)
+                    this.index = (x / 2) % 3
+            })
+    }
+    salary_1 = ['1 Jan', 'Salary', '70,000', '70,000']
+
+    headingarray = [
+        "Earn more by investing in SavingsPlus",
+        "Double your savings from SavingsPlus",
+        "Benefits of bank account.. with more returns - SavingsPlus"
+    ]
+    url = this.router.url;
+
+    toDemo() {
+        this.url = this.url + '/demo';
+        this.router.navigate([this.url]);
+    }
+
+    toDemoa() {
+        this.url = this.url + '../../demoa';
+        this.router.navigate([this.url]);
+    }
+
+    private data: Observable<number>;
+    private values: number[] = [];
+    private anyErrors: boolean;
+    private finished: boolean;
+
+
+    ngOnInit() {
+        this.data = new Observable(observer => {
+            setTimeout(() => {
+                observer.next('1 Jan');
+            }, 500);
+
+            setTimeout(() => {
+                observer.next('Salary');
+            }, 500);
+
+            setTimeout(() => {
+                observer.next('₹ 70,000');
+            }, 500);
+
+            setTimeout(() => {
+                observer.next('₹ 70,000');
+            }, 500);
+
+            setTimeout(() => {
+                observer.next('9 Jan');
+            }, 1000);
+
+            setTimeout(() => {
+                observer.next('Expense 1');
+            }, 1000);
+
+            setTimeout(() => {
+                observer.next('₹ 20,000');
+            }, 1000);
+
+            setTimeout(() => {
+                observer.next('₹ 50,000');
+            }, 1000);
+
+
+            setTimeout(() => {
+                observer.next('15 Jan');
+            }, 1500);
+
+            setTimeout(() => {
+                observer.next('Expense 2');
+            }, 1500);
+
+            setTimeout(() => {
+                observer.next('₹ 10,000');
+            }, 1500);
+
+            setTimeout(() => {
+                observer.next('₹ 40,000');
+            }, 1500);
+
+            setTimeout(() => {
+                observer.next('1 Feb');
+            }, 2000);
+
+            setTimeout(() => {
+                observer.next('Salary');
+            }, 2000);
+
+            setTimeout(() => {
+                observer.next('₹ 70,000');
+            }, 2000);
+
+            setTimeout(() => {
+                observer.next('₹ 1,10,000');
+            }, 2000);
+
+            setTimeout(() => {
+                observer.next('8 Feb');
+            }, 2500);
+
+            setTimeout(() => {
+                observer.next('Expense 1');
+            }, 2500);
+
+            setTimeout(() => {
+                observer.next('₹ 7,000');
+            }, 2500);
+
+            setTimeout(() => {
+                observer.next('₹ 1,03,000');
+            }, 2500);
+
+            setTimeout(() => {
+                observer.next('20 Feb');
+            }, 3000);
+
+            setTimeout(() => {
+                observer.next('Expense 2');
+            }, 3000);
+
+            setTimeout(() => {
+                observer.next('₹ 15,000');
+            }, 3000);
+
+            setTimeout(() => {
+                observer.next('₹ 88,000');
+            }, 3000);
+
+
+            setTimeout(() => {
+                observer.next('1 Mar');
+            }, 3500);
+
+            setTimeout(() => {
+                observer.next('Salary');
+            }, 3500);
+
+            setTimeout(() => {
+                observer.next('₹ 70,000');
+            }, 3500);
+
+            setTimeout(() => {
+                observer.next('₹ 1,58,000');
+            }, 3500);
+
+            setTimeout(() => {
+                observer.next('10 Mar');
+            }, 4000);
+
+            setTimeout(() => {
+                observer.next('Expense 1');
+            }, 4000);
+
+            setTimeout(() => {
+                observer.next('₹ 10,000');
+            }, 4000);
+
+            setTimeout(() => {
+                observer.next('₹ 1,48,000');
+            }, 4000);
+
+            setTimeout(() => {
+                observer.next('15 Mar');
+            }, 4500);
+
+            setTimeout(() => {
+                observer.next('Expense 2');
+            }, 4500);
+
+            setTimeout(() => {
+                observer.next('₹ 15,000');
+            }, 4500);
+
+            setTimeout(() => {
+                observer.next('₹ 1,33,000');
+            }, 4500);
+
+            setTimeout(() => {
+                observer.complete();
+            }, 4500);
+        });
+
+        let subscription = this.data.subscribe(
+            value => this.values.push(value),
+            error => this.anyErrors = true,
+            () => this.finished = true
+        );
+    }
+    // testData() {
+    //     this.state = (this.state === 'in' ? 'out' : 'in');
+    //
+    //     console.log('k');
+    // }
+
+
+
+
+
+
+
+}

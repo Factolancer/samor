@@ -1,0 +1,40 @@
+import {Component} from "@angular/core";
+import {Headers, Http} from "@angular/http";
+import * as html2canvas from "html2canvas";
+
+
+@Component({
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.css']
+})
+export class AppComponent {
+    public constructor(public http: Http) {
+    }
+
+    getSS(){
+        var myhttp = this.http;
+
+        html2canvas(document.body, {
+            onrendered: function (canvas) {
+                const headers = new Headers();
+                headers.append('Accept', 'image/png');
+                headers.append('Content-Type', 'image/png');
+                var formData = new FormData();
+                var img = canvas.toDataURL("image/png");
+                formData.append("name", "MySS");
+                formData.append("image", img);
+                console.log(formData);
+                var body = {"name": img};
+                window.open(img);
+                myhttp.post('http://localhost:4000/getSS', body ) //BalanceService/bankservice.js
+                    .subscribe(
+                        response => {
+                            console.log(response);
+
+                        }
+                    )
+            }
+        })
+    }
+}

@@ -1,0 +1,185 @@
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {FormGroup, FormControl, Validators, FormBuilder} from "@angular/forms";
+import {Params, ActivatedRoute, Router} from "@angular/router";
+import {MdDialog} from "@angular/material/dialog/index";
+
+import {SipCalcQuestion} from "./sip-calc-question";
+import {SipCalcGoal} from "./sip-calc-goal";
+import {SipGoalQuestions} from "./questions";
+import {SipGoals} from "./goals";
+import {Logger} from "../../core/logger/logger";
+import {disclaimers} from "../../../properties/discalimers";
+import {TitleService} from "../../core/services/title.service";
+import {DialogService} from "../../core/services/dialog.service";
+import {URLAccessGuard} from "../../core/guards/urlAccess.guard";
+import {SIPCalcValidationMessages} from "./sip-calc-validations";
+import {NumberValidator} from "../../validators/validator";
+import {SnackBarService} from "../../core/services/snack-bar.service";
+
+@Component({
+    selector: 'app-goal-based',
+    templateUrl: './goal-based.component.html',
+    styleUrls: ['./sip-calc.styles.scss'],
+})
+export class GoalBasedComponent implements OnInit {
+
+    selectedIndex: number = 0;
+    questions: SipCalcQuestion[];
+    goal: SipCalcGoal;
+    goalId: any;
+
+    calcFormGroup: FormGroup;
+    calcFormErrors: any;
+    className: string;
+
+    constructor(private router: Router, private route: ActivatedRoute, public logger: Logger,
+                private viewContainerRef: ViewContainerRef, private dialog: MdDialog,
+                private titleService: TitleService, private dialogService: DialogService,
+                private urlAccessGuard: URLAccessGuard, private fb: FormBuilder, public snackBarService: SnackBarService) {
+
+    }
+
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            this.goalId = +params['id'];
+
+            this.questions = SipGoalQuestions[this.goalId - 1];
+            this.goal = SipGoals[this.goalId - 1];
+            this.titleService.setTitle("sip_calculator_goal", {goal: this.goal.name});
+
+            if (this.goalId == 1) {
+                if (params['a'] && params['e']) {
+                    this.questions.forEach(question => {
+                        if (question.id == 1) {
+                            question.answer = +params['a'];
+                        } else if (question.id == 2) {
+                            question.answer = +params['e'];
+                        }
+                    });
+                }
+            }
+            this.selectedIndex = 0;
+            this.initializeForm();
+        });
+
+
+    }
+
+
+    initializeForm() {
+        this.logger.debug(this.className, "Initializing form!");
+
+        this.calcFormGroup = this.fb.group({
+            first: [this.questions[this.selectedIndex].answer,
+                Validators.compose([Validators.required, NumberValidator.minValue(this.questions[this.selectedIndex].min), NumberValidator.maxValue(this.questions[this.selectedIndex].max)])],
+            second: [this.questions[this.selectedIndex + 1].answer,
+                Validators.compose([Validators.required, NumberValidator.minValue(this.questions[this.selectedIndex + 1].min), NumberValidator.maxValue(this.questions[this.selectedIndex + 1].max)])]
+        });
+
+        this.calcFormErrors = {
+            first: '',
+            second: '',
+        };
+
+        this.calcFormGroup.valueChanges
+            .subscribe(data => {
+                if (!this.calcFormGroup) {
+                    return;
+                }
+                /*else if (this.calcFormGroup.controls['first'].hasError('required') || this.calcFormGroup.controls['second'].hasError('required')){
+                    this.logger.debug(this.className, this.calcFormErrors);
+                    this.snackBarService.showSnackBar("Please enter values!", "OKAY", this.viewContainerRef);
+                }*/
+                else {
+                    this.logger.debug(data);
+                    this.updateErrorMessages();
+                }
+            });
+    }
+
+    updateErrorMessages() {
+
+        const form = this.calcFormGroup;
+        this.logger.debug(this.className, "updating message");
+
+        //First Validation
+        this.calcFormErrors.first = '';
+        let firstControl = form.get('first') as FormControl;
+        if (firstControl && firstControl.dirty && !firstControl.valid) {
+            const messages = SIPCalcValidationMessages.fields
+            for (const key in firstControl.errors) {
+                this.calcFormErrors.first += this.prepareErrorMessage(messages, firstControl, key)
+            }
+        }
+
+        this.questions[this.selectedIndex].answer = firstControl.value;
+
+        //Second Validation
+        this.calcFormErrors.second = '';
+        let secondControl = form.get('second') as FormControl;
+        if (secondControl && secondControl.dirty && !secondControl.valid) {
+            const messages = SIPCalcValidationMessages.fields
+            for (const key in secondControl.errors) {
+                this.calcFormErrors.second += this.prepareErrorMessage(messages, secondControl, key)
+            }
+        }
+        this.questions[this.selectedIndex + 1].answer = secondControl.value;
+
+    }
+
+
+    prepareErrorMessage(messages: any, control: FormControl, key: string) {
+        switch (key) {
+           /* case "required":
+                return messages[key];*/
+            case "minValue":
+                return messages[key] + control.errors[key].requiredValue + ' ';
+            case "maxValue":
+                return messages[key] + control.errors[key].requiredValue + ' ';
+            default:
+                return messages[key] + ' ';
+        }
+    }
+
+
+    next() {
+        if (this.calcFormGroup.invalid){
+            this.snackBarService.showSnackBar("Please enter valid Values", "Okay", this.viewContainerRef);
+        }
+        if (this.selectedIndex == 0) {
+            if (this.calcFormGroup.valid == true) {
+                this.selectedIndex = 2;
+                this.initializeForm();
+                this.updateErrorMessages();
+            }
+            /*else {
+                this.updateErrorMessages();
+            }*/
+        } else {
+            this.calculate();
+        }
+    }
+
+    prev() {
+        this.selectedIndex = 0;
+
+        if (this.calcFormGroup.valid) {
+            this.initializeForm();
+            this.updateErrorMessages();
+        }
+    }
+
+
+    calculate() {
+        this.urlAccessGuard.allow = true;
+        this.router.navigate(['/calculator/sip/goals/results/' + this.goalId])
+    }
+
+
+    seeDisclaimers() {
+        let disclaimerText: string[] = [`${disclaimers.calculator_1}`, `${disclaimers.calculator_2}`,
+            `${disclaimers.calculator_3}`, `${disclaimers.calculator_4}`]
+        this.dialogService.showDisclaimers(disclaimerText, this.viewContainerRef);
+    }
+
+}

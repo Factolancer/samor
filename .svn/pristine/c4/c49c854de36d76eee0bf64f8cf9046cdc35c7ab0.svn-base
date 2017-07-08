@@ -1,0 +1,149 @@
+<div class="container" *ngIf="resolved">
+
+  <div class="pan-kyc-container">
+   <div class="otp-kyc-container" >
+    <div fxLayout="row" fxLayoutAlign="center center" class="otp-kyc-header" md-dialog-title>
+      <div fxFlex="95"> KNOW YOUR KYC STATUS HERE</div>
+    </div>
+    <div class="otp-kyc-content" >
+
+      <div class="otp-container" >
+
+        <div  class="heading">
+          <span *ngIf=!registredMobileData.mob>Register your mobile number</span>
+          <span *ngIf=registredMobileData.mob>Your registered mobile number</span>
+        </div>
+
+        <div *ngIf=!registredMobileData.mob>
+
+          <div *ngIf="!otpSent" fxLayout="row" fxLayoutAlign="center center">
+            <form [formGroup]="PhoneValidationForm" (ngSubmit)="onSendOTP()" fxFlex="80" align="center">
+              <br/>
+
+              <div fxLayout="row" fxLayoutAlign="center">
+                <md-input-container fxFlex="60">
+                  <span mdPrefix>+91 </span>
+                  <input mdInput type="tel" [maxLength]=mobLength formControlName="mob" required  placeholder="Enter your mobile number">
+                  <md-hint class="error" *ngIf="(PhoneValidationForm.controls['mob'].touched ||phoneFormSubmitted)&&PhoneValidationForm.controls['mob'].invalid">
+                    <span *ngIf="PhoneValidationForm.controls['mob'].value.length">Invalid mobile number</span>
+                    <span *ngIf="!PhoneValidationForm.controls['mob'].value.length">Mobile number is required</span>
+                  </md-hint>
+                </md-input-container>
+              </div> <br/>
+
+              <div fxLayout="row" fxLayoutAlign="center">
+                <button fxFlex="30" fxAlign="center" md-raised-button class="send-otp-button"
+                        [ngClass]="{'resLoading':OTPResloading} " [disabled]="OTPResloading"
+                        (click)="validatePhoneForm(PhoneValidationForm.valid)">
+                  <span [ngClass]="{'vis-hidden':OTPResloading}">Send OTP</span>
+                </button>
+              </div>
+            </form>
+          </div>
+          <div *ngIf="otpSent  && !otpVerified" fxLayout="row" fxLayoutAlign="center center" class="otp-validateOTP-content">
+            <form [formGroup]="OTPValidationForm" (ngSubmit)="onValidateOTP()" fxFlex="80" align="center" novalidate>
+              <br/>
+              <div fxLayout="row" fxLayoutAlign="center">
+                <md-input-container fxFlex="60">
+                  <input mdInput  required formControlName="otp" [maxLength]="otpLength" placeholder="Enter OTP">
+                  <md-hint align="start" class="otp-error">{{otpErrorMessage}}</md-hint>
+
+                    <span align="start" class="msgDeliveryStatus" [ngClass]="{'sent': messageStatus=='sent', 'delivered': messageStatus=='delivered'}" *ngIf="messageStatus">
+                     <span >{{messageStatus}}</span>
+                   </span>
+                </md-input-container>
+              </div>
+                <span >
+                    <span  *ngIf="ticks>0" class="otp-timer"> 0:{{ticks}}</span>
+                     <button type="button" (click)="resendOTP()" class="resendOTP" [ngClass]="{disabled:!resendBtnState}" [disabled]="!resendBtnState">Re-send OTP</button>
+                    <br/>
+                </span>
+
+              <div fxLayout="row" fxLayoutAlign="center">
+                <button type="submit" fxFlex="30" fxAlign="center" md-raised-button color="primary"  class="submit-otp-button" >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div *ngIf="otpVerified" class="otp-success-box" fxLayoutAlign="center">
+            <div class="content" fxFlex="60">
+              <i class="material-icons mobile-icon" >stay_primary_portrait</i>
+              <i class="material-icons check-icon" >check_circle</i>
+
+              <p class="highlight"> Congratulations!</p>
+              <p class="message">Mobile number verified successfully</p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf=registredMobileData.mob fxLayout="column" fxLayoutAlign="center" class="mobile-registered-box">
+            <div fxLayout="column" fxFlex="100" fxLayoutAlign="center">
+             <div class="content" >
+              <i class="material-icons mobile-icon" >stay_primary_portrait</i><br/>
+              {{registredMobileData.mob}}<span><i class="material-icons check-icon" >check_circle</i></span>
+              <p class="message" align="center">This mobile no. was registered and successfully verified <br/>by you on
+                {{registredMobileData.regDate | date}}</p>
+             </div>
+           </div>
+        </div>
+
+      </div>
+
+      <div  class="pan-kyc-container">
+        <div class="heading"> KYC Status via PAN</div>
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <form [formGroup]="KYCStatusForm" (ngSubmit)="checkPAN()" fxFlex="80" align="center" novalidate>  <br/>
+            <div fxLayout="row" fxLayoutAlign="center">
+              <md-input-container fxFlex="60">
+                <input mdInput formControlName="pan" [maxLength]=PANLength required  placeholder="Enter your PAN" #pan
+                       [value]="pan.value.toUpperCase()">
+                <md-hint class="error" *ngIf="(KYCStatusForm.controls['pan'].touched ||panFormSubmitted)&&KYCStatusForm.controls['pan'].invalid">
+                 <span *ngIf="KYCStatusForm.controls['pan'].value.length">Please enter valid PAN</span>
+                  <span *ngIf="!KYCStatusForm.controls['pan'].value.length">PAN is required</span>
+                </md-hint>
+              </md-input-container>
+            </div>              <br/>
+            <div fxLayout="row" fxLayoutAlign="center">
+                <button fxFlex="30" fxAlign="center" md-raised-button class="check-pan-button"
+                        [ngClass]="{'resLoading':panResloading} "[disabled]="panResloading"
+                (click)="validatePANKYC(KYCStatusForm.valid)">
+                  <span [ngClass]="{'vis-hidden':panResloading}">Submit</span>
+                </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+      <div *ngIf="panGiven" fxLayout="row" fxLayoutAlign="center center" class="kyc-status">
+        <span *ngIf="kycCompliant" >
+          <b class="text">KYC DONE</b>
+           <i class="material-icons success" fxFlexOffset="5px">check_circle</i>
+        </span>
+        <span *ngIf="!kycCompliant">KYC NOT DONE <i  class="material-icons error" fxFlexOffset="5px">highlight_off</i></span>
+      </div>
+
+      <div *ngIf="panGiven && !kycCompliant"  fxLayout="row" fxLayoutAlign="center center" class="adhaar-enquiry-box" md-dialog-title>
+        <div fxFlex="100" align="center">
+          <div fxFlex="100" class="adhaar-enquiry-text">Would you like to proceed with aadhar based KYC ? <br/>
+            <i class="disclaimer">(This entitles you to transact upto INR 50,000 per Fund House per year)</i>
+          </div>
+          <div fxLayout="row" fxFlex="30">
+            <div fxFlex align="start" ><a (click)="goTo('kyc/aadhar')" class="yes-button">YES</a></div>
+            <div fxFlex align="end" ><a (click)="goTo('registration')" class="no-button">NO</a></div>
+          </div>
+        </div>
+      </div>
+  </div>
+  </div>
+
+
+  <div *ngIf="kycCompliant" class="next-step" fxLayout="row" fxLayoutAlign="center" style="margin-bottom: 10px">
+    <button (click)="proceed()" md-raised-button color="primary">Proceed to Registration</button>
+  </div>
+
+</div>
+
+

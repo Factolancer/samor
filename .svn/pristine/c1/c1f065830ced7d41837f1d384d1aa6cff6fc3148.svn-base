@@ -1,0 +1,47 @@
+export class User{
+
+    constructor(
+        public Basic: {
+            pan: string;
+            mob: string;
+            email: string;
+            name: string;
+            dob: string;
+            gender: string;
+            marital_status?: string;
+        },
+        public KYC: {
+            job: string,
+            income: string,
+            father_spouse: string,
+            address_proof: string,
+            pin: string,
+            address: string,
+            district: string,
+            state: string,
+            nominee_name?: string,
+            nominee_relation?: string,
+            nominee_dob?: string
+        },
+        public Bank:{
+            name: string,
+            ifsc: string,
+            account_type: string,
+            account_number: number
+        },
+        public Other:{
+            investor_type: string,
+            birth_country: string,
+            country: string,
+            tax_country: string,
+
+            international_address?: string,
+            international_postal_code?: string,
+            international_district?: string,
+            international_state?: string,
+
+            politically_exposed: string,
+            politically_related: string
+        }
+    ){ }
+}

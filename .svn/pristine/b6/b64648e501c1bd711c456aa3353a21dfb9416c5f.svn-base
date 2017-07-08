@@ -1,0 +1,229 @@
+import {Component, OnInit, animate, style, transition, trigger, state} from "@angular/core";
+import {SipReturnsQuestions} from "./questions";
+import {CheckReturns} from "./goals";
+import {CalculationKeys} from "./calculation-keys";
+import {SipCalcGoal} from "./sip-calc-goal";
+import {SipCalcQuestion} from "./sip-calc-question";
+import {Router, ActivatedRoute} from "@angular/router";
+
+import * as Highcharts from 'highcharts';
+
+@Component({
+    selector: 'app-returns-based',
+    templateUrl: './returns-based.component.html',
+    styleUrls: ['./sip-calc.styles.scss']
+})
+
+
+export class ReturnsBasedComponent implements OnInit {
+
+    chart: any;
+    orientation: string;
+    selectedIndex: number = 0;
+    questions: SipCalcQuestion[];
+    goal: SipCalcGoal;
+    principal: number = 0;
+    years: number = 0;
+    amount: number = 0;
+    inflation: number = 0;
+    rate: number = 0;
+
+    xCategories:any[] =[];
+    SIPAmtData:any[] = [];
+    investedAmtData:any[] = [];
+    floor:number;
+    ceiling:number;
+
+    considerInflation: boolean;
+    showReCalculateButton: boolean;
+    investedAmount: number;
+    trySimulation: boolean;
+
+    constructor(private router: Router, private route: ActivatedRoute) {
+    }
+
+    next() {
+        this.orientation = 'next';
+        if (this.selectedIndex == 0) {
+            this.selectedIndex = 2;
+        } else {
+            this.calculate();
+        }
+    }
+
+    prev() {
+        this.orientation = 'prev';
+        this.selectedIndex = 0;
+    }
+
+
+    inflationAdjustment(value: any) {
+        this.considerInflation = value;
+        this.calculate();
+    }
+
+    recalculate(value: any) {
+        if (value && value > 0) {
+            this.calculate();
+        }
+    }
+
+    saveChartInstance(chartInstance : any){
+        console.log(chartInstance);
+        this.chart = chartInstance;
+    }
+
+    calculate() {
+        this.showReCalculateButton = false;
+        this.questions.forEach(question => {
+            switch (question.calculationKey) {
+                case CalculationKeys.inflation:
+                    this.inflation = question.answer;
+                    break;
+                case CalculationKeys.principal:
+                    this.principal = question.answer;
+                    break;
+                case CalculationKeys.rate:
+                    this.rate = question.answer;
+                    break;
+                case CalculationKeys.years:
+                    this.years = question.answer;
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        //calculations for all other goals
+        let applicableRate;
+        if (this.considerInflation) {
+            applicableRate = (this.rate - this.inflation) / 100;
+        } else {
+            applicableRate = this.rate / 100;
+        }
+
+
+        if (this.trySimulation) {
+
+        }
+        /*
+         //inflation adjusted amount
+         applicableRate = (rate - inflation) / 100;
+         compoundingFrequency = how many times is it compounding in one year.
+         calculationFactor = (1+applicableRate/100)^(1/compoundingFrequency)
+         months = years*12
+         numerator  = [calculationFactor -1]
+         denom = [calculationFactor^n-1] * [calculationFactor]
+         P = adjustedAmount * numerator / denominator ;
+
+         */
+        let months: number = this.years * 12;
+        let compoundFrequency: number = 12;
+        let calculationFactor: number = (1 + applicableRate) ** (1 / compoundFrequency);
+        let denom: number = calculationFactor - 1;
+        let numerator: number = (calculationFactor ** months - 1) * calculationFactor;
+        let amount: number = this.principal * numerator / denom;
+        this.investedAmount = this.principal * months;
+        //console.log("adjustedAmount:" + adjustedAmount);
+        /*console.log("applicableRate:" + applicableRate);
+         console.log("months:" + months);
+         console.log("calculationFactor:" + calculationFactor);
+         console.log("numerator:" + numerator);
+         console.log("denom:" + denom);
+         console.log("amount:" + amount);*/
+        //calculation for graph
+        let graphSIPAmount: number = 0;
+        let graphInvestedAmount: number = 0;
+
+
+        for (let graphTime = 1; graphTime <= this.years * 12; graphTime++) {
+
+            let numerator: number = (calculationFactor ** graphTime - 1) * calculationFactor;
+
+            graphSIPAmount = this.principal * numerator / denom;
+            graphInvestedAmount += this.principal;
+            if (graphTime % 12 == 0) {
+                this.xCategories.push(graphTime/12);
+                this.SIPAmtData.push(Math.ceil(graphSIPAmount));
+                this.investedAmtData.push(Math.ceil(graphInvestedAmount));
+
+            }
+        }
+        this.amount = Math.ceil(amount);
+
+        this.floor = Math.min( Math.min.apply(Math, this.SIPAmtData),Math.min.apply(Math, this.investedAmtData));
+        this.ceiling = Math.max( Math.max.apply(Math, this.SIPAmtData),Math.max.apply(Math, this.investedAmtData));
+
+        console.log('floor -ceil');
+        console.log(this.floor+ '-'+ this.ceiling);
+
+        this.options = this.options1;
+        this.options.xAxis.categories = this.xCategories;
+        this.options.series[0].data= this.SIPAmtData;
+        this.options.series[1].data= this.investedAmtData;
+    }
+    options:any;
+    options1:any;
+
+
+    ngOnInit() {
+
+        this.questions = SipReturnsQuestions;
+        this.goal = CheckReturns;
+        this.considerInflation = true;
+        this.showReCalculateButton = false;
+
+        this.options1 = {
+            title : { text : ''},
+            credits: {enabled: false},
+            chart:{
+                width: 420,
+                height: 220
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            },
+            xAxis: {
+                categories: [],
+                title:{
+                    text:'Time(in yrs)',
+                    style:{'fontSize':'8px'}
+                }
+
+            },
+            colors:["#77ba78", "#BF3235","black"],
+            yAxis: {
+             min: this.floor,
+             max: this.ceiling,
+                title: {
+                    text: 'Amount(in Rs.)',
+                    style:{'fontSize':'9px'}
+                }
+            },
+            tooltip: {
+                valuePrefix: 'INR '
+            },
+            legend: {
+                align: 'top',
+                verticalAlign: 'top',
+                layout: 'horizontal',
+                x:50
+            },
+            series: [{
+                name: 'SIP Value',
+                data: []
+            }, {
+                name: 'Invested Amount',
+                data: []
+            }]
+        };
+
+
+}
+
+
+}

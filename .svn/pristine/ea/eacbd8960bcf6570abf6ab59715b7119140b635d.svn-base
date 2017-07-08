@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-user-journey',
+  templateUrl: './user-journey.component.html',
+  styleUrls: ['./shared.styles.scss']
+})
+export class UserJourneyComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

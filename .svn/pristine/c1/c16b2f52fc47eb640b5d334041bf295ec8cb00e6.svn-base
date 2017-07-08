@@ -1,0 +1,23 @@
+export class FundDetails {
+    constructor(public id: string,
+                public name: string,
+                public age: number,
+                public rating: number,
+                public aum: number,
+                public amc: string,
+                public cid: number,
+                public category: string,
+                public scid: number,
+                public subCategory: string,
+                public minInvestment: number,
+                public return1mn: number,
+                public return3mn: number,
+                public return6mn: number,
+                public return1yr: number,
+                public return3yr: number,
+                public return5yr: number,
+                public returnSi: number,
+                public risk: string,
+                public selected: boolean = false) {
+    }
+}

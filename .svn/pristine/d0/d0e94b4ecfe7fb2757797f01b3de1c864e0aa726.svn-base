@@ -1,0 +1,13 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+
+@Injectable()
+export class CheckoutService {
+
+    constructor(private httpService: HttpService) {
+    }
+
+    getCheckoutData() {
+        return this.httpService.get("/fund/getCheckoutData");
+    }
+}

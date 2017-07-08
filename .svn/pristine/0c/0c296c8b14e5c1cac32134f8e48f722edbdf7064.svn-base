@@ -1,0 +1,52 @@
+import {Component, OnInit, Input} from '@angular/core';
+import {ExploreFundConstants} from "../explore-funds.constants";
+
+@Component({
+    selector: 'app-filter-master',
+    templateUrl: './filter-master.component.html',
+    styleUrls: ['./filters.styles.scss']
+})
+export class FilterMasterComponent implements OnInit {
+
+    @Input() _searchType: string;
+
+    showAMCFilter: boolean;
+    showAgeFilter: boolean;
+    showCategoryFilter: boolean;
+    showSubCategoryFilter: boolean;
+    showRatingFilter: boolean;
+    showAUMFilter: boolean;
+
+    constructor() {
+    }
+
+    ngOnInit() {
+        switch (this._searchType) {
+            case ExploreFundConstants.ALL_FUNDS:
+                this.showAMCFilter = true;
+                this.showAgeFilter = true;
+                this.showCategoryFilter = true;
+                this.showSubCategoryFilter = true;
+                this.showRatingFilter = true;
+                this.showAUMFilter = true;
+                break;
+            case ExploreFundConstants.ELSS_FUNDS:
+                this.showAMCFilter = true;
+                this.showAgeFilter = true;
+                this.showCategoryFilter = false;
+                this.showSubCategoryFilter = false;
+                this.showRatingFilter = true;
+                this.showAUMFilter = true;
+                break;
+            case ExploreFundConstants.SIP_FUNDS:
+                this.showAMCFilter = true;
+                this.showAgeFilter = true;
+                this.showCategoryFilter = false;
+                this.showSubCategoryFilter = true;
+                this.showRatingFilter = true;
+                this.showAUMFilter = true;
+                break;
+        }
+    }
+
+}

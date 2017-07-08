@@ -1,0 +1,180 @@
+import {Component, OnInit, style, state, animate, transition, trigger, OnDestroy} from '@angular/core';
+import {NgForm, FormGroup, Validators, FormControl, FormBuilder, Validator, FormControlName} from '@angular/forms';
+import {Subscription} from "rxjs";
+
+import {User} from "../../../models/user";
+import {UserService} from '../../userdata.service';
+import {HttpService} from "../../../services/http-service.service";
+import {Country} from "../../../countries";
+import {Heading} from "../../constants/headings";
+import {Income} from "../../constants/incomerange";
+import {Occupation} from "../../constants/occupation";
+import {ValidationMessages} from "../../constants/validationmessages";
+import {ActivatedRoute} from "@angular/router";
+import {LookUpService} from "../../../services/lookup.service";
+
+@Component({
+    selector: 'other-section',
+    templateUrl: './other-section.component.html',
+    styleUrls: ['../../registration.styles.scss'],
+    providers: [LookUpService],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({opacity: '1', height: '*', visibility: 'visible'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ])
+        ])
+    ]
+})
+export class OtherSectionComponent implements OnInit, OnDestroy {
+
+    otherForm: FormGroup;
+    public countries: any
+    public heading = Heading;
+    public incomerange: any
+    public occupations: any
+
+    state: string = 'hide';
+    othersaved = false;
+    othercollapsed = true;
+    isNRI = false;
+    indiantaxpayer = 'Yes';
+
+    user: User
+    usersubscription: Subscription;
+
+    validationMessages = ValidationMessages;
+
+    constructor(private fb: FormBuilder, public userService: UserService, public http: HttpService, private route: ActivatedRoute,
+                public lookupService: LookUpService) {
+        this.user = new User({firstName: '', lastName: '',  pan: '', panName: '', fatherName: '', motherName: '', contact: {}, dob: '', gender: '' },
+            {currentAddress: {}, permanentAddress: {}},
+            {
+                holderName: '', accountType: 'Savings Account',
+                bank: {bankName: '', IFSC: '', city: '', state: '', branch: ''},
+                accountNumber: ''
+            },
+            {
+                income: '',
+                occupation: '',
+                nationality: 'India',
+                birthCountry: 'India',
+                birthCity: '',
+                taxCountry: 'India',
+                politicallyExposed: 'No',
+                politicallyRelated: 'No'
+            },
+            {}
+        );
+    }
+
+    ngOnInit() {
+        /*this.route.data.forEach((data: {user: User}) => {
+            this.user = data.user;
+        });*/
+        /*this.usersubscription = this.userService.currentUser.subscribe(
+            result => {
+                console.log("In Init of Bank ");
+                console.log(result)
+                this.user = result
+            }
+        )*/
+        this.lookupService.getByGroup("OCCUPATION").subscribe(response =>{
+            this.occupations = response
+        })
+        this.lookupService.getByGroup("COUNTRY").subscribe(response => {
+            this.countries = response
+        })
+        this.lookupService.getByGroup("INCOMESLAB").subscribe(response => {
+            this.incomerange = response
+        })
+
+        console.log("Occupations >>")
+        console.log(this.occupations);
+        this.buildform();
+    }
+
+    buildform(): void {
+        this.otherForm = this.fb.group({
+            income: ['', Validators.compose([Validators.required])],
+            occupation: ['', Validators.required],
+            nationality: ['India', Validators.required],
+            birth_country: ['India', Validators.compose([Validators.required])],
+            birth_city: ['', Validators.required],
+            tax_country_india: ['Yes'],
+            tax_country: [''],
+            tin: [''],
+            politically_exposed: ['No'],
+            politically_related: ['No'],
+        });
+
+        this.otherForm.statusChanges.subscribe(data => this.onValueChanged(data));
+        this.onValueChanged();
+    }
+
+    onValueChanged(data?: any) {
+        if (!this.otherForm) {
+            return;
+        }
+        const otherform = this.otherForm;
+        if (otherform.pristine) {
+            return;
+        }
+        if (!otherform.dirty) {
+            return;
+        }
+        for (const field in this.formErrors) {
+            // clear previous error message (if any)
+            this.formErrors[field] = '';
+            const control = otherform.controls[field];
+            console.log(control + typeof control);
+            if (!control.valid && control.touched) {
+                console.log(control.errors);
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrors[field] += messages[key] + ' ';
+                }
+            }
+        }
+
+    }
+
+    formErrors = {
+        'birth_city': ''
+    };
+
+    onOtherSubmit() {
+        console.log("we are in other section compoenent")
+        this.othersaved = true;
+        this.otherForm.controls['tax_country_india'].setValue(this.indiantaxpayer)
+        this.userService.updateOtherData(this.otherForm.value);
+        //this.user.Other = this.otherForm.value;
+        /*if (this.otherForm.controls['tax_country_india'].value == 'Yes') {
+         this.user.Other.taxCountry = 'India';
+         }
+         else {
+         this.user.Other.taxCountry = this.otherForm.controls['tax_country'].value;
+         }
+         if (this.otherForm.controls['investorType'].value == 'Resident Indian') {
+         this.user.Other.country = 'India';
+         }
+         else {
+         this.user.Other.country = this.otherForm.controls['country'].value;
+         }*/
+        //console.log(this.user);
+        this.toggleOther();
+    }
+
+    toggleOther() {
+        if (this.othercollapsed == true) this.othercollapsed = false;
+        else this.othercollapsed = true;
+
+        this.state = (this.state === 'hide' ? 'show' : 'hide')
+    }
+
+    ngOnDestroy() {
+
+    }
+}

@@ -1,0 +1,33 @@
+import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
+
+@Component({
+  selector: 'app-product-solution',
+  templateUrl: './product-solution.component.html',
+  styleUrls: ['./product-solution.component.scss']
+})
+export class ProductSolutionComponent implements OnInit {
+
+  productSolutions:Array<Object>;
+   constructor(private router:Router) { }
+  invest(index){
+    this.router.navigateByUrl(this.productSolutions[index]['routerUrl']);
+    // Navigate without updating the URL
+    //router.navigateByUrl("/team/33/user/11", { skipLocationChange: true });
+
+  }
+  ngOnInit() {
+    this.productSolutions = [
+      {title:'SmartSIP', content:['Invest small to achieve your Financial Goals',
+      '5 clicks to start a Systematic Investment Plan (SIP)',
+      'Pre-selected top 3 Mutual Funds'], image:'../../../assets/img/product/smart-sip.svg', routerUrl:'sip'},
+      {title:'SavingsPlus', content:['Earn more from the money in your bank account',
+      'Better returns than Savings Account (7-9%)',
+      'Instant Redemption with no Lock-in & Exit Load'], image:"../../../assets/img/product/saving-plus.svg", routerUrl:'cash'},
+      {title:'TaxSaver', content:['Save Tax under Section 80C.',
+      'Earn tax-free returns via ELSS ',
+      'Pre-selected top 2 ELSS Funds'], image:'../../../assets/img/product//tax-saver.svg', routerUrl:'tax'},
+    ]
+  }
+
+}

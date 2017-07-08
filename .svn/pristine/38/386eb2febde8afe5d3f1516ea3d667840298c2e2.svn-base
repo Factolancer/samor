@@ -1,0 +1,23 @@
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {ActivatedRoute, Params} from "@angular/router";
+import {InvestmentType} from "./models/investment-type";
+
+
+@Component({
+    selector: 'app-fund-selection',
+    templateUrl: 'fund-selection.component.html',
+    styleUrls: ['fund-selection.component.css']
+})
+export class FundSelectionComponent implements OnInit {
+
+    investmentType: InvestmentType;
+
+    constructor(private route: ActivatedRoute) {
+    }
+
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            this.investmentType = params['investmentType'];
+        });
+    }
+}

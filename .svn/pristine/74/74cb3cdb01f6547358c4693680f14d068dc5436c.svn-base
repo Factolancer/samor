@@ -1,0 +1,28 @@
+import { Injectable } from '@angular/core';
+import { HttpService } from '../core/services/http-service.service';
+import { MdDialogConfig } from '@angular/material/typings/dialog';
+
+@Injectable()
+export class FactsheetService {
+
+
+    constructor(private httpService: HttpService) {
+    }
+
+
+    getBasicFactsheet(id: number) {
+        return this.httpService.post('/fund/getBasicFactsheet', {"id": id});
+    }
+
+    getAdvancedFactsheet(id: number) {
+        return this.httpService.post('/fund/getAdvancedFactsheet', {"id": id});
+    }
+
+    getFactsheetDialogConfig(): MdDialogConfig {
+        let config = new MdDialogConfig();
+        config.role = 'dialog';
+        config.width = '60%';
+        //config.height= '85vh';
+        return config;
+    }
+}

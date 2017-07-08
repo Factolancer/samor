@@ -1,0 +1,56 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Params, ActivatedRoute} from "@angular/router";
+import {FundSearchResults} from "../search/search-results";
+import {Title} from "@angular/platform-browser";
+import {FundSearchInput} from "../search/fund-search-input";
+import {Subscription} from "rxjs";
+import {SearchService} from "../search/search.service";
+import {ExploreFundsService} from "./explore-funds.service";
+
+
+@Component({
+    selector: 'app-explore-funds',
+    templateUrl: './explore-funds.component.html',
+    styleUrls: ['./explore-funds.component.css']
+})
+export class ExploreFundsComponent implements OnInit, OnDestroy {
+
+
+    searchResults: FundSearchResults;
+    fundSearchInput: FundSearchInput;
+    searchResultsSubscription: Subscription;
+    showFilterContent: boolean;
+
+    constructor(private route: ActivatedRoute, private searchService: SearchService, private exploreFundsService: ExploreFundsService,
+                private titleService: Title) {
+        this.searchResultsSubscription = this.searchService.fundSearchInput.subscribe(
+            (searchInput: FundSearchInput) => {
+                console.log("inside switch map!");
+                this.searchService.search(searchInput).subscribe(output => {
+                    this.searchResults = output as FundSearchResults;
+                    let fundDisplay = this.exploreFundsService.getFundDisplay();
+                    fundDisplay.totalCount = this.searchResults.numFound;
+                    this.exploreFundsService.setFundDisplay(fundDisplay)
+                });
+            });
+    }
+
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+           // this.investmentType = params['investmentType'];
+        });
+
+       // this.titleService.setTitle("Search for " + this.investmentType + " funds");
+        this.showFilterContent = false;
+        this.fundSearchInput = this.searchService.getFundSearchInput();
+        this.fundSearchInput.searchType = 'sip';
+        this.searchService.setFundSearchInput(this.fundSearchInput);
+
+        console.log(this.searchService.getFundSearchInput());
+    }
+
+    ngOnDestroy() {
+        this.searchResultsSubscription.unsubscribe();
+    }
+
+}

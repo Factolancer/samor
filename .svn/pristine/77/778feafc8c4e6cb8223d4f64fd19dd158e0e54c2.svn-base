@@ -1,0 +1,17 @@
+<div class="wrapper" >
+
+    <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="center center">
+        <h1 class="cent heading-32-dark-grey">Fincash - Investing made simple</h1>
+        <div fxFlex="80"  fxLayoutAlign="center">
+            <app-product-solution></app-product-solution>
+        </div>
+        <div fxFlex="100"  fxLayout="column" fxLayoutAlign="center center">
+           <div class="dark-grey-text bold">Or</div> <br>
+            <button md-raised-button color="primary" class="pad-tb-5 pad-lr-30"> Explore Funds and Start Investing</button>
+        </div>
+
+
+
+    </div>
+</div>
+

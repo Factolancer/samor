@@ -1,0 +1,80 @@
+
+<div class="wrapper"  fxLayout="row" fxLayoutAlign="center center" xmlns="http://www.w3.org/1999/html">
+        <div fxLayout="row" fxFlex="100" fxLayoutWrap="wrap" fxLayoutAlign="start">
+
+            <div fxFlex="33" class="no-padding" [ngClass]="{'col-card':showanim1&& !showanim2 && !showanim3}" *ngIf="showanim1 && !quesActive">
+                <md-card class="no-padding">
+                    <md-card-content>
+                        <div class="demoa-other-header">
+                            <div class="no-select" mdTooltip="Calculated as daily weighted average of closing day balance"
+                                 mdTooltipPosition="above">
+                                Average Monthly <br/> Account Balance</div>
+                        </div>
+                        <div class="demoa-other-content">
+                            <div>&#8377; 50,000</div>
+                        </div>
+                        <div class="demoa-other-content">
+                            <div>&#8377; 1,00,000</div>
+                        </div>
+                        <div class="demoa-other-content">
+                            <div>&#8377; 1,50,000</div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+
+            <div fxFlex="33" class="no-padding" [ngClass]="{'col-card':showanim2 && showanim1 && !showanim3}" *ngIf="showanim2 && !quesActive">
+                <md-card class="no-padding">
+                    <md-card-content>
+                        <div class="row demoa-other-header">
+                            <div class="col-sm-12 no-select" md-tooltip="Calculated at 4% p.a." mdTooltipPosition="above">Savings Account<br/>  Earnings</div>
+                        </div>
+                        <div class="row demoa-other-content">
+                            <div class="col-sm-12">&#8377; 167</div>
+                        </div>
+                        <div class="row demoa-other-content">
+                            <div class="col-sm-12">&#8377; 333</div>
+                        </div>
+                        <div class="row demoa-other-content">
+                            <div class="col-sm-12">&#8377; 500</div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div fxFlex="33" class="no-padding" [ngClass]="{'col-card':showanim3 && showanim1 && showanim2}" *ngIf="showanim3 && !quesActive">
+                <md-card class="no-padding highlightBox">
+                    <a routerLink="/cash/funds">
+
+                        <md-card-content>
+                            <div class="row demoa-other-header-secondary no-select" md-tooltip="Calculated at 8% p.a." mdTooltipPosition="above">
+                                <div>SavingsPlus<br/> Earnings</div>
+                            </div>
+                            <div class="row demoa-other-content  bold">
+                                <div>&#8377; 333</div>
+                            </div>
+                            <div class="row demoa-other-content  bold">
+                                <div class="col-sm-12">&#8377; 667</div>
+                            </div>
+                            <div class="row demoa-other-content  bold">
+                                <div class="col-sm-12">&#8377; 1,000</div>
+                            </div>
+                        </md-card-content>
+                    </a>
+                </md-card>
+            </div>
+
+            <div fxFlex class="no-padding fadeIn" *ngIf="!finished2 && quesActive" fxLayoutAlign="center center" style="height:378px;" >
+                <md-card class="no-padding demoa-middle" fxFlex="100"  style="height:100%;">
+                    <md-card-content>
+                        <div fxFlex="100" class="pad-lr-10 demoa-text-middle">
+                            <span *ngIf="showMsg1">Given your expenses, your Average Monthly Account balance is this...</span>
+                            <span *ngIf="showMsg2">Your Savings Account at 4% p.a. would have earned...</span>
+                            <span *ngIf="showMsg3">Your SavingsPlus Earnings(8%) are...</span>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+
+        </div>
+</div>
+

@@ -1,0 +1,53 @@
+<div *ngFor="let fundItem of _funds">
+    <md-card class="fund-card">
+        <md-card-content>
+<<<<<<< .mine
+            <table width="100%" class="no-border"><!--[ngClass.lt-md]="{'scroll-x': true}"-->
+=======
+            <table width="100%" class="no-border" ngClass.lt-md='scroll-x'>
+>>>>>>> .r3889
+                <tr>
+                    <td>
+                        <div>
+                            <span (click)="viewFactSheet(fundItem)" class="cash-fund-name clickable">
+                                <md-icon class="md-16 medium-grey-text">&#xE873;</md-icon>&nbsp;&nbsp;{{fundItem.name}}
+                            </span>
+                        </div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="medium-grey-text" mdTooltip={{ratingDisclaimerText}}>Fincash Rating:</span>
+                            <span [outerHTML]="fundItem.rating | rating"></span>
+                        </div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="medium-grey-text">Riskometer:</span>
+                            <span class="medium-grey-text">{{fundItem.risk | riskometer}}</span>
+                        </div>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">1 Month Return</span><br/>
+                        <span class="dark-grey-text">{{fundItem.basicFactsheet.ret1mn | returns:true}}</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">3 Month Return</span><br/>
+                        <span class="dark-grey-text mar-tb-5">{{fundItem.basicFactsheet.ret3mn | returns:true}}</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">1 Yr Return</span><br/>
+                        <span class="dark-grey-text">{{fundItem.basicFactsheet.ret1yr | returns:true}}</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">Fund Age</span><br/>
+                        <span class="dark-grey-text">{{fundItem.age}} years</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">AUM</span><br/>
+                        <span class="dark-grey-text">{{fundItem.aum | currency:'INR':true:'1.0-0' }} Cr.</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span class="dark-grey-text bold">Min. Investment</span><br/>
+                        <span class="dark-grey-text">{{fundItem.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}</span>
+                    </td>
+                </tr>
+            </table>
+        </md-card-content>
+    </md-card>
+</div>

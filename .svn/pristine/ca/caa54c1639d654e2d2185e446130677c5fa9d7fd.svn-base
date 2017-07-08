@@ -1,0 +1,45 @@
+import {Component, OnInit} from "@angular/core";
+import {HttpService} from "../../services/http-service.service";
+
+@Component({
+
+    selector: 'quick-sip',
+    templateUrl: 'quick-sip.component.html',
+    styleUrls: ['quick-sip.component.css'],
+    providers: [HttpService]
+})
+export class QuickSipComponent implements OnInit {
+
+    quickSipFunds: any
+    isCardView: boolean = true
+
+    constructor(private httpService: HttpService) {
+
+    }
+
+    list() {
+        this.isCardView = false
+    }
+
+    card() {
+        this.isCardView = true
+    }
+
+    proceed() {
+        //check if user is logged in  or not, if not then prompt for login
+        //once loggedin check for KYC and registration, if not complete take him to regsitration and KYC page
+        //if all done take him to investment page
+        this.incomplete()
+    }
+
+
+    incomplete() {
+        alert("Yet to be developed!")
+    }
+
+    ngOnInit() {
+        this.httpService.get("/sip/getQuickSipFunds").subscribe(output =>
+            this.quickSipFunds = output)
+    }
+
+}

@@ -1,0 +1,32 @@
+import {Injectable, Inject} from "@angular/core";
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from "@angular/router";
+import {Observable} from "rxjs/Observable";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {Logger} from "../logger/logger";
+import {IsFatcaUpdatedService} from "../services/isfatcaupdated.service";
+import {LocalStorageService} from "angular-2-local-storage";
+import {isNullOrUndefined} from "util";
+
+
+@Injectable()
+export class FatcaStatusGuard implements CanActivate {
+    className: string;
+
+    constructor(public isFatcaUpdatedService: IsFatcaUpdatedService, @Inject(APP_CONFIG) private config: IAppConfig, public router: Router,
+                public logger: Logger, public localStorageService: LocalStorageService) {
+        this.className = "FatcaStatusGuard";
+    }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+
+        return this.isFatcaUpdatedService.checkIfFatcaUpdated().map(value => {
+            if (!isNullOrUndefined(value) && !value) {
+                this.localStorageService.set(this.config.FATCAGuard.storagekey, state.url);
+                this.router.navigate([this.config.FATCAGuard.navigate]);
+                return false;
+            } else {
+                return true;
+            }
+        });
+    }
+}

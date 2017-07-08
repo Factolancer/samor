@@ -1,0 +1,31 @@
+import { MaterialModule } from '@angular/material';
+import { NgModule } from '@angular/core';
+
+import {LoginComponent} from "./login.component";
+import {ForgotPasswordComponent} from "./forgot-password.component";
+import {CheckKYCComponent} from "./check-kyc.component";
+
+import {SignupComponent} from "./signup.component";
+
+import {LoginService} from "./login.service";
+import {ForgotPasswordService} from "./forgot-password.service";
+
+import {SharedModule} from "../shared/shared.module";
+
+@NgModule({
+    imports: [
+        MaterialModule.forRoot(),
+        SharedModule
+    ],
+    exports: [
+        LoginComponent, SignupComponent, ForgotPasswordComponent, CheckKYCComponent
+    ],
+    declarations: [
+        LoginComponent, SignupComponent, ForgotPasswordComponent, CheckKYCComponent
+    ],
+    entryComponents:[LoginComponent, ForgotPasswordComponent, CheckKYCComponent],
+    providers: [
+        LoginService, ForgotPasswordService
+    ]
+})
+export class LoginModule { }

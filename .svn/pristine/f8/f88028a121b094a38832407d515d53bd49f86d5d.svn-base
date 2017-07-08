@@ -1,0 +1,21 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Quick Sip to invest in top3 equity schemes</h1>
+            <h4 class="center-align">SIP type > Fund Seelction > Investment Portfolio > Summary &amp; Checkout</h4>
+        </div>
+    </section>
+    <section class="data-body">
+        <app-fund-view-panel></app-fund-view-panel>
+        <app-fund [funds]="quickSipFunds" [showCardView]="true"></app-fund>
+    </section>
+    <section class="data-foot">
+        <div class="row">
+            <div class="col-md-12">
+                <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                        (click)="proceed()">Proceed to Invest
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

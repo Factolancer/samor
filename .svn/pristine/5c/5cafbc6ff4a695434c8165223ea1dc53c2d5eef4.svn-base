@@ -1,0 +1,341 @@
+<section>
+    <!--<md-card _ngcontent-pxi-6>-->
+    <!--<md-card-title>-->
+    <md-toolbar color="lightgray" class="sectiontitle">
+        <i [ngClass]="{'material-icons': true, 'md-dark': !basicsaved, 'md-inactive': !basicsaved, 'blue600': basicsaved}">check</i>
+        <a (click)="toggleBasic()">Basic Details</a>
+    </md-toolbar>
+    <!--</md-card-title>-->
+    <!--<br/>-->
+    <!--<md-card-content>-->
+    <form [formGroup]="basicForm" (ngSubmit)="onBasicSubmit()" [hidden]="basiccollapsed" novalidate>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input required formControlName="pan" placeholder="PAN" #pan [value]="pan.value.toUpperCase()"></md-input>
+                <div *ngIf="!basicForm.controls['pan'].valid && (basicForm.controls['pan'].touched)"
+                     class="errorMessage">
+                    <span>Please enter valid PAN number</span>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile style="display: block">
+                <md-input required formControlName="mob" placeholder="Mobile no"></md-input>
+                <div *ngIf="!basicForm.controls['mob'].valid && (basicForm.controls['mob'].touched)"
+                     class="errorMessage">
+                    <span>Please enter valid Mobile number</span>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group">
+                <md-input required formControlName="name" placeholder="Name"></md-input>
+                <div *ngIf="!basicForm.controls['name'].valid && (basicForm.controls['name'].touched)"
+                     class="errorMessage">
+                    <span>Name is required</span>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile class="form-group">
+                <md-input required formControlName="email" placeholder="Email Id"></md-input>
+                <div *ngIf="!basicForm.controls['email'].valid && (basicForm.controls['email'].touched)"
+                     class="errorMessage">
+                    <span>Please enter valid email id</span>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group">
+                <!--<label class="field_label">Date of Birth</label>-->
+                <md-input required formControlName="dob" type="date" class="date_margin"></md-input>
+            </md-grid-tile>
+            <md-grid-tile class="form-group">
+                <md-radio-group required formControlName="gender">
+                    <md-radio-button value="Male">Male</md-radio-button>
+                    <md-radio-button value="Female">Female</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group" style="display: block">
+                <md-radio-group required formControlName="marital_status">
+                    <md-radio-button value="Single">Single</md-radio-button>
+                    <md-radio-button value="Married">Married</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+            <md-grid-tile>
+
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="1" rowHeight="50px" class="button-list-margins">
+            <md-grid-tile>
+                <button md-raised-button color="primary" [disabled]="!basicForm.valid">Save</button>
+            </md-grid-tile>
+        </md-grid-list>
+    </form>
+    <!--</md-card-content>-->
+    <!--</md-card>-->
+</section>
+
+<section>
+    <!--<md-card _ngcontent-pxi-6>-->
+    <md-toolbar color="lightgray" class="sectiontitle">
+        <i [ngClass]="{'material-icons': true, 'md-dark': !kycsaved, 'md-inactive': !kycsaved, 'blue600': kycsaved}">check</i>
+        <a (click)="toggleKyc()">Know Your Customer Details</a>
+    </md-toolbar>
+    <!--<br/>-->
+    <!--<md-card-content>-->
+    <form [formGroup]="kycForm" (ngSubmit)="onKYCSubmit()" [hidden]="kyccollapsed" novalidate>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <select required formControlName="job">
+                    <option *ngFor="let item of occupations" [value]="item.name">{{item.name}}</option>
+                </select>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input required formControlName="income" placeholder="Annual Income(in lakhs)"></md-input>
+                <div *ngIf="!kycForm.controls['income'].valid && (kycForm.controls['income'].touched)"
+                     class="errorMessage">
+                    <span>Required field</span>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input required formControlName="father_spouse" placeholder="Father/Spouse Name"></md-input>
+                <div *ngIf="!kycForm.controls['father_spouse'].valid && (kycForm.controls['father_spouse'].touched)"
+                     class="errorMessage">
+                    <span>Please enter Father/Spouse name</span>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <select formControlName="address_proof">
+                    <option *ngFor="let item of addressprooofs" [value]="item.name">{{item.name}}</option>
+                </select>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input type="text" required formControlName="address"
+                          placeholder="House Number, Street Name"></md-input>
+                <div *ngIf="!kycForm.controls['address'].valid && (kycForm.controls['address'].touched)"
+                     class="errorMessage">
+                    <span>Please enter your communication address</span>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input type="text" required formControlName="district" placeholder="Town/District"></md-input>
+                <div *ngIf="!kycForm.controls['district'].valid && (kycForm.controls['district'].touched)"
+                     class="errorMessage">
+                    <span>Required</span>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input type="text" required formControlName="state" placeholder="State"></md-input>
+                <div *ngIf="!kycForm.controls['state'].valid && (kycForm.controls['state'].touched)"
+                     class="errorMessage">
+                    <span>Required</span>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input required formControlName="pin" placeholder="Pin Code"></md-input>
+                <div *ngIf="!kycForm.controls['pin'].valid && (kycForm.controls['pin'].touched)"
+                     class="errorMessage">
+                    <span>Please enter valid 6 digit Pin Code</span>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="1">
+            <md-checkbox [(ngModel)]="nomineepresent" [ngModelOptions]="{standalone: true}">
+                I want to add a nominee
+            </md-checkbox>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px" *ngIf="nomineepresent">
+            <md-grid-tile>
+                <md-input formControlName="nominee_name" placeholder="Your Nominee Name"></md-input>
+            </md-grid-tile>
+            <md-grid-tile>
+                <select formControlName="nominee_relation">
+                    <option *ngFor="let item of relations" [value]="item.name">{{item.name}}</option>
+                </select>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px"  *ngIf="nomineepresent">
+            <md-grid-tile>
+                <md-input formControlName="nominee_dob" type="date" class="date_margin"></md-input>
+            </md-grid-tile>
+            <md-grid-tile>
+
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="1" rowHeight="50px" class="button-list-margins">
+            <md-grid-tile>
+                <button md-raised-button color="primary" [disabled]="!kycForm.valid">Save</button>
+            </md-grid-tile>
+        </md-grid-list>
+    </form>
+    <!--</md-card-content>-->
+    <!--</md-card>-->
+</section>
+
+<section>
+    <!--<md-card _ngcontent-pxi-6>-->
+    <md-toolbar color="lightgray" class="sectiontitle">
+        <i [ngClass]="{'material-icons': true, 'md-dark': !banksaved, 'md-inactive': !banksaved, 'blue600': banksaved}">check</i>
+        <a (click)="toggleBank()">Bank Details</a>
+    </md-toolbar>
+    <!--<br/>-->
+    <!--<md-card-content>-->
+    <form [formGroup]="bankForm" (ngSubmit)="onBankSubmit()" [hidden]="bankcollapsed" novalidate>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input required formControlName="name" placeholder="Name as on Cheque Book" #name [value]="name.value.toUpperCase()"></md-input>
+                <div *ngIf="!bankForm.controls['name'].valid && (bankForm.controls['name'].touched)"
+                     class="errorMessage">
+                    <span>Name is required</span>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input required formControlName="ifsc" placeholder="IFSC Code" #ifsc [value]="ifsc.value.toUpperCase()"></md-input>
+                <div *ngIf="!bankForm.controls['ifsc'].valid && (bankForm.controls['ifsc'].touched)"
+                     class="errorMessage">
+                    <span>IFSC code is incorrect</span>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <select required formControlName="account_type">
+                    <option>Savings Account</option>
+                    <option>Current Account</option>
+                </select>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input required formControlName="account_number" placeholder="Bank Account Number"></md-input>
+                <div *ngIf="!bankForm.controls['account_number'].valid && (bankForm.controls['account_number'].touched)"
+                     class="errorMessage">
+                    <span>Account Number is incorrect</span>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input required formControlName="confirm_account_number"
+                          placeholder="Confirm Bank Account Number"></md-input>
+            </md-grid-tile>
+            <md-grid-tile>
+
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="1" rowHeight="50px" class="button-list-margins">
+            <md-grid-tile>
+                <button md-raised-button color="primary" [disabled]="!bankForm.valid">Save</button>
+            </md-grid-tile>
+        </md-grid-list>
+    </form>
+    <!--</md-card-content>-->
+    <!--</md-card>-->
+</section>
+
+<section>
+    <!--<md-card _ngcontent-pxi-6>-->
+    <md-toolbar color="lightgray" class="sectiontitle">
+        <i [ngClass]="{'material-icons': true, 'md-dark': !othersaved, 'md-inactive': !othersaved, 'blue600': othersaved}">check</i>
+        <a (click)="toggleOther()">Other Details</a>
+    </md-toolbar>
+    <!--<br/>-->
+    <!--<md-card-content>-->
+    <form [formGroup]="otherForm" (ngSubmit)="onOtherSubmit()" [hidden]="othercollapsed" novalidate>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group" style="display: block" >
+                <md-radio-group required formControlName="investor_type" [(ngModel)]="user.Other.investor_type">
+                    <md-radio-button value="Resident Indian">Resident Indian</md-radio-button>
+                    <md-radio-button value="NRI">NRI</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+            <md-grid-tile></md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <label>Birth Country</label>
+                <select required formControlName="birth_country">
+                    <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                </select>
+            </md-grid-tile>
+            <md-grid-tile> </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="1" rowHeight="100px" *ngIf="user.Other.investor_type=='NRI'">
+            <md-grid-tile class="form-group" style="display: block">
+                <md-input formControlName="international_address" placeholder="Overseas Communication Address"></md-input>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px" *ngIf="user.Other.investor_type=='NRI'">
+            <md-grid-tile>
+                <md-input formControlName="international_postal_code" placeholder="Postal Code"></md-input>
+                <div *ngIf="!otherForm.controls['international_postal_code'].valid && (otherForm.controls['international_postal_code'].touched)"
+                     class="errorMessage">
+                    <span>Please enter valid 6 digit Pin Code</span>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input type="text" formControlName="international_district"
+                          placeholder="Town/District"></md-input>
+                <div *ngIf="!otherForm.controls['international_district'].valid && (otherForm.controls['international_district'].touched)"
+                     class="errorMessage">
+                    <span>Required</span>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px" *ngIf="user.Other.investor_type=='NRI'">
+            <md-grid-tile>
+                <md-input type="text" required formControlName="international_state" placeholder="State"></md-input>
+                <div *ngIf="!otherForm.controls['international_state'].valid && (otherForm.controls['international_state'].touched)"
+                     class="errorMessage">
+                    <span>Required</span>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <select formControlName="country">
+                    <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                </select>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="1" rowHeight="100px">
+            <md-grid-tile class="form-group" style="display: block" >
+                <md-radio-group required formControlName="tax_country_india" [(ngModel)]="indiantaxpayer">
+                    <md-radio-button value="Yes">Tax resident of India</md-radio-button>
+                    <md-radio-button value="No">Tax resident of another Country</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="1" rowHeight="100px" *ngIf="indiantaxpayer=='No'">
+            <md-grid-tile class="form-group" style="display: block">
+                <select formControlName="tax_country">
+                    <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                </select>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group" style="display: block">
+                <label>Politically exposed</label>
+                <md-radio-group required formControlName="politically_exposed">
+                    <md-radio-button value="Yes">Yes</md-radio-button>
+                    <md-radio-button value="No">No</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+            <md-grid-tile class="form-group" style="display: block" >
+                <label>Politically related</label>
+                <md-radio-group required formControlName="politically_related">
+                    <md-radio-button value="yes">Yes</md-radio-button>
+                    <md-radio-button value="No">No</md-radio-button>
+                </md-radio-group>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="1" rowHeight="50px" class="button-list-margins">
+            <md-grid-tile>
+                <button md-raised-button color="primary" [disabled]="!otherForm.valid">Save</button>
+            </md-grid-tile>
+        </md-grid-list>
+    </form>
+    <!--</md-card-content>-->
+    <!--</md-card>-->
+</section>

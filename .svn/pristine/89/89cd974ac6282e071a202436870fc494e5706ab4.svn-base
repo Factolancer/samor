@@ -1,0 +1,432 @@
+import {Component, OnInit, AfterViewInit, Input, ViewChild, ViewChildren} from '@angular/core';
+import {Http} from "@angular/http";
+import {NgForm, FormGroup, Validators, FormControl, FormBuilder, Validator, FormControlName} from '@angular/forms';
+import {Subscription} from "rxjs";
+
+import {EmailValidator} from '../validator';
+import {Occupation} from './occupation';
+import {AddressProof} from './addressproof';
+import {Relation} from './relation';
+import {User} from '../models/user';
+import {Country} from '../countries';
+import {Bank} from '../models/bank';
+import {Banks} from '../bank-list';
+import {HttpService} from "../services/http-service.service";
+import {SearchInput} from './search-input';
+import {SearchService} from './search.service';
+import {contentHeaders} from '../headers';
+
+@Component({
+    selector: 'app-registration',
+    templateUrl: './registration.component.html',
+    styleUrls: ['./registration.component.css'],
+    providers: [SearchService]
+})
+export class RegistrationComponent implements OnInit {
+
+    public occupations = Occupation;
+    public addressprooofs = AddressProof;
+    public relations = Relation;
+    public countries = Country;
+    public banks = Banks;
+    user: User;
+    public bank: Bank;
+    public bankList: Bank[];
+
+    basicForm: FormGroup;
+    kycForm: FormGroup;
+    bankForm: FormGroup;
+    otherForm: FormGroup;
+    current_address: FormGroup;
+    permanent_address: FormGroup;
+    account: FormGroup;
+
+    basicsaved = false;
+    kycsaved = false;
+    banksaved = false;
+    othersaved = false;
+
+    basiccollapsed = true;
+    kyccollapsed = true;
+    bankcollapsed = true;
+    othercollapsed = true;
+
+    nomineepresent = false;
+    permanantEqualsPresent = true;
+    isNRI = false;
+    indiantaxpayer = 'Yes';
+
+    searchInput: SearchInput = {
+        bank_name: '',
+        keyword: '',
+        branch: '',
+        city: '',
+        IFSC: '',
+        address: ''
+    };
+    resultsubscription: Subscription
+
+    constructor(private fb: FormBuilder, public http: HttpService, public  searchService: SearchService) {
+        this.user = new User({pan: '', name: '', dob: '', gender: '', contact: {}},
+            {job: '', income: '', father_spouse: '', address_proof: '', current_address: {}, permanent_address: {}},
+            {holder_name: '', account_type: 'Savings Account', account_number: '',
+                bank: {bank_name:'', ifsc: '', city:'', state:''}},
+            {
+                investor_type: 'Resident Indian',
+                birth_country: 'India',
+                country: 'India',
+                tax_country: 'India',
+                politically_exposed: 'No',
+                politically_related: 'No'
+            });
+
+        this.resultsubscription = this.searchService.searchResults.subscribe(
+            result => {
+                this.bankList = result.banks;
+            }
+        );
+    }
+
+    ngOnInit() {
+        this.basicForm = this.fb.group({
+            pan: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}')])],
+            name: ['', Validators.compose([Validators.required])],
+            contact: this.fb.group({
+                mob: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern('^[\+0-9]{10,12}$')])],
+                email: ['', Validators.compose([Validators.required, EmailValidator.isValidMailFormat])],
+                tel: [''],
+                fax: ['']
+            }),
+            dob: ['', [Validators.required]],
+            gender: ['', [Validators.required]],
+            marital_status: ['', Validators.required]
+        });
+
+        this.kycForm = this.fb.group({
+            job: ['', Validators.required],
+            income: ['', Validators.compose([Validators.required])],
+            father_spouse: ['', Validators.required],
+            address_proof: ['', Validators.required],
+            current_address: this.fb.group({
+                address1: ['', Validators.compose([Validators.required])],
+                address2: ['', Validators.compose([])],
+                pin: ['', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])],
+                district: ['', Validators.compose([Validators.required])],
+                state: ['', Validators.compose([Validators.required])],
+                city: [''],
+                country: ['']
+            }),
+            permanent_address: this.fb.group({
+                address1: [''], // ['', Validators.compose([Validators.required])],
+                address2: [''], // ['', Validators.compose([])],
+                pin: [''], // ['', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])],
+                district: [''], // ['', Validators.compose([Validators.required])],
+                state: [''], // ['', Validators.compose([Validators.required])],
+                city: [''],
+                country: ['']
+            }),
+            nominee: this.fb.group({
+                nominee_name: ['', Validators.compose([])],
+                nominee_relation: [''],
+                nominee_dob: [''],
+            })
+        });
+
+        this.bankForm = this.fb.group({
+                holder_name: ['', Validators.compose([Validators.required])],
+                bank: this.fb.group({
+                    bank_name: [''],
+                    ifsc: ['', Validators.compose([Validators.required, Validators.pattern('[0-9a-zA-Z]{11}')])],
+                    city: [''],
+                    state: [''],
+                    branch: [''],
+                    district: [''],
+                    address: ['']
+                }),
+                account_type: [''],
+                account: this.fb.group({
+                    account_number: ['', Validators.compose([Validators.required])],
+                    confirm_account_number: ['', Validators.compose([Validators.required])]
+                }) //this.isAccountNumberSame('account_number', 'confirm_account_number'))
+            }, //);
+
+            this.isAccountNumberSame('account_number', 'confirm_account_number')
+        );
+
+        this.otherForm = this.fb.group({
+            investor_type: ['Resident Indian', Validators.compose([Validators.required])],
+            birth_country: ['India', Validators.compose([])],
+            overseas_address: this.fb.group({
+                address1: [''], // ['', Validators.compose([Validators.required])],
+                address2: [''], // ['', Validators.compose([])],
+                pin: [''], // ['', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])],
+                district: [''], // ['', Validators.compose([Validators.required])],
+                state: [''], // ['', Validators.compose([Validators.required])],
+                city: [''],
+                country: ['']
+            }),
+            // international_address: [''],
+            // international_postal_code: [''],
+            // international_district: [''],
+            // international_state: [''],
+            country: [''],
+            tax_country_india: ['Yes'],
+            tax_country: [''],
+            politically_exposed: ['No'],
+            politically_related: ['No']
+        });
+    }
+
+    indexBanks() {
+        this.http.get("/indexBanks").subscribe(output => {
+            console.log("details indexed");
+        });
+    }
+
+    searchForBranch(value: any) {
+        if (value.length >= 3) {
+            this.searchInput.keyword = value;
+        } else {
+            this.searchInput.keyword = "";
+        }
+        this.searchService.searchBranch(this.searchInput)
+    }
+
+    select(item: Bank) {
+        this.user.Bank.bank = item;
+       // console.log(this.user.Bank.bank.city);
+        //console.log(this.bank.IFSC);
+       // this.bankForm.controls['bank'].get('city').setValue(item.city);
+    }
+
+    setBankName() {
+        this.searchInput.bank_name = this.bankForm.controls['bank'].get('bank_name').value;
+    }
+
+    // searchForIFSC (value: any) {
+    //   if (value.length > 3) {
+    //     this.searchInput.keyword = value
+    //   } else {
+    //     this.searchInput.keyword = ""
+    //   }
+    //   //this.searchService.searchIFSC(this.searchInput)
+    // }
+
+    accountMatchValidator(g: FormGroup) {
+        // console.log(g.controls['account'].get('account_number').value);
+        // var valid = false;
+        // for (name in g.controls){    }
+        // return g.controls['account_number'].value === g.controls['confirm_account_number'].value
+        //     ? null : {'mismatch': true};
+        return null;
+    }
+
+    isAccountNumberSame(acc: string, confirmAcc: string) {
+        return (group: FormGroup): {[key: string]: any} => {
+            let account = group.controls[acc];
+            let confirmAccount = group.controls[confirmAcc];
+
+            console.log(account, confirmAccount);
+
+            if (account.value !== confirmAccount.value) {
+                return {
+                    mismatchedPasswords: true
+                };
+            }
+            else {
+                return null;
+            }
+        }
+    }
+
+    onBasicSubmit() {
+        this.basicsaved = true;
+        this.user.Basic = this.basicForm.value;
+        console.log(this.user);
+        this.toggleBasic();
+    }
+
+    onKYCSubmit() {
+        this.kycsaved = true;
+        this.user.KYC = this.kycForm.value;
+        // if (!this.nomineepresent){
+        //   this.user.KYC.nominee_name='';
+        //   this.user.KYC.nominee_relation='';
+        //   this.user.KYC.nominee_dob='';
+        // }
+        console.log(this.user);
+        this.toggleKyc();
+    }
+
+    onBankSubmit() {
+        this.banksaved = true;
+        this.user.Bank = this.bankForm.value;
+        console.log(this.user);
+        this.toggleBank();
+    }
+
+    onOtherSubmit() {
+        this.othersaved = true;
+        this.user.Other = this.otherForm.value;
+        if (this.otherForm.controls['tax_country_india'].value == 'Yes') {
+            this.user.Other.tax_country = 'India';
+        }
+        else {
+            this.user.Other.tax_country = this.otherForm.controls['tax_country'].value;
+        }
+        if (this.otherForm.controls['investor_type'].value == 'Resident Indian') {
+            this.user.Other.country = 'India';
+        }
+        else {
+            this.user.Other.country = this.otherForm.controls['country'].value;
+        }
+        console.log(this.user);
+        this.toggleOther();
+    }
+
+    toggleBasic() {
+        if (this.basiccollapsed == true) this.basiccollapsed = false;
+        else this.basiccollapsed = true;
+    }
+
+    toggleKyc() {
+        if (this.kyccollapsed == true) this.kyccollapsed = false;
+        else this.kyccollapsed = true;
+    }
+
+    toggleBank() {
+        if (this.bankcollapsed == true) this.bankcollapsed = false;
+        else this.bankcollapsed = true;
+    }
+
+    toggleOther() {
+        if (this.othercollapsed == true) this.othercollapsed = false;
+        else this.othercollapsed = true;
+    }
+
+    GetPinDetails() {
+        let pin_current = this.kycForm.controls['current_address'].get('pin').value;
+        let pin_permanent = this.kycForm.controls['permanent_address'].get('pin').value;
+
+        if (pin_current) {
+            this.http.post('/pincode', {"pin": pin_current})
+                .subscribe(
+                    response => {
+                        console.log(response.json().city);
+                        this.kycForm.controls['current_address'].get('state').setValue(response.json().state);
+                        this.kycForm.controls['current_address'].get('district').setValue(response.json().district);
+                    }
+                );
+        }
+
+        if (pin_permanent) {
+            this.http.post('/pincode', {"pin": pin_permanent})
+                .subscribe(
+                    response => {
+                        console.log(response.json().city);
+                        this.kycForm.controls['permanent_address'].get('state').setValue(response.json().state);
+                        this.kycForm.controls['permanent_address'].get('district').setValue(response.json().district);
+                    }
+                );
+        }
+    }
+
+
+    // @ViewChild('basicForm') currentBasicForm: NgForm;
+    // @ViewChild('kycForm') currentKycForm: NgForm;
+    // @ViewChild('bankForm') currentBankForm: NgForm;
+    //
+    //
+    // ngAfterViewChecked() {
+    //   this.basicformChanged();
+    //   this.kycformChanged();
+    //   this.bankformChanged();
+    //   console.log("In after view checked");
+    // }
+    //
+    // basicformChanged() {
+    //   // if (this.currentBasicForm === this.basicForm) {console.log("current basic = basic"); return; }
+    //   this.basicForm = this.currentBasicForm;
+    //   if (this.basicForm) {
+    //     console.log("in basic form");
+    //     this.basicForm.valueChanges
+    //         .subscribe(data => this.onValueChanged(data));
+    //   }
+    // }
+    // kycformChanged() {
+    //   if (this.currentKycForm === this.kycForm) { return; }
+    //   this.kycForm = this.currentKycForm;
+    //   if (this.kycForm) {
+    //     this.kycForm.valueChanges
+    //         .subscribe(data => this.onValueChanged(data));
+    //   }
+    // }
+    // bankformChanged() {
+    //   if (this.currentBankForm === this.bankForm) { return; }
+    //   this.bankForm = this.currentBankForm;
+    //   if (this.kycForm) {
+    //     this.kycForm.valueChanges
+    //         .subscribe(data => this.onValueChanged(data));
+    //   }
+    // }
+    //
+    // onValueChanged(data?: any) {
+    //   if (!this.basicForm || !this.kycForm || !this.bankForm) { return; }
+    //   const basicform = this.basicForm.form;
+    //   const kycform = this.kycForm.form;
+    //   const bankform = this.bankForm.form;
+    //
+    //   for (const field in this.formErrors) {
+    //     // clear previous error message (if any)
+    //     this.formErrors[field] = '';
+    //     const basiccontrol = basicform.get(field);
+    //     const kyccontrol = kycform.get(field);
+    //     const bankcontrol = bankform.get(field);
+    //
+    //     if (basiccontrol && basiccontrol.dirty && !basiccontrol.valid) {
+    //       console.log("basic dirty & not valid");
+    //       const messages = this.validationMessages[field];
+    //       for (const key in basiccontrol.errors) {
+    //         this.formErrors[field] += messages[key] + ' ';
+    //       }
+    //       console.log(this.formErrors['pan']);
+    //     }
+    //     if (kyccontrol && kyccontrol.dirty && !kyccontrol.valid){
+    //       const messages = this.validationMessages[field];
+    //       for (const key in kyccontrol.errors) {
+    //         this.formErrors[field] += messages[key] + ' ';
+    //       }
+    //     }
+    //     if (bankcontrol && bankcontrol.dirty && !bankcontrol.valid){
+    //       const messages = this.validationMessages[field];
+    //       for (const key in bankcontrol.errors) {
+    //         this.formErrors[field] += messages[key] + ' ';
+    //       }
+    //     }
+    //   }
+    // }
+    //
+    // formErrors = {
+    //   'name': '',
+    //   'pan': '',
+    //   'mobile':'',
+    //   'email': '',
+    //   'dob':''
+    // };
+    //
+    // validationMessages = {
+    //   'name': {
+    //     'required':      'Name is required.',
+    //     'minlength':     'Name must be at least 4 characters long.',
+    //     'maxlength':     'Name cannot be more than 24 characters long.',
+    //     'forbiddenName': 'Someone named "Bob" cannot be a hero.'
+    //   },
+    //   'pan': {
+    //     'required': 'PAN number is required.',
+    //     'minlength': 'PAN number is incorrect, please enter valid PAN number',
+    //     'maxlength': 'PAN number is incorrect, please enter valid PAN number'
+    //   }
+    // };
+
+
+}

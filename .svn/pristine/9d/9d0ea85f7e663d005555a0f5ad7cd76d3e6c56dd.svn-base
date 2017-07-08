@@ -1,0 +1,64 @@
+<!--<chart type="StockChart" [options]="options"></chart>-->
+
+
+<div [hidden]="transactions" class="loading">
+    <img src="../../../assets/img/loading.gif" alt="loading">
+</div>
+
+<div class="transaction-container" *ngIf="transactionDataAvailable" fxLayout="column">
+    <div class="highlight" align="center">Transaction History</div>
+    <div fxLayout="row">
+        <table ngClass.lt-md="scroll-x">
+            <thead>
+            <th>Order Id</th>
+            <th>Fund</th>
+            <th>Mode</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let transaction of transactions|slice:from:to">
+                <td>{{transaction.orderId}}/{{transaction.subOrderId}}</td>
+                <td>{{transaction.fundName}}<br><i>Plan-{{transaction.dividendFreq}}
+                    {{transaction.schemePlan}}, Option-{{transaction.dividendOption}}</i>
+                </td>
+                <td>{{transaction.subOrderInvestmentMode}}</td>
+                <td>{{transaction.subOrderDate | date}}</td>
+                <td>{{transaction.subOrderAmount | currency:'INR':true:'1.0-0'}}</td>
+                <td>{{transaction.subOrderStatus}}</td>
+                <td><button md-button="" color="warn" *ngIf="transaction.cancelAllowed" (click)="cancelOrder(transaction)">Cancel</button>
+                    <button md-button="" color="warn" *ngIf="transaction.paymentAllowed" (click)="payOrder(transaction)">Pay Now</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="transactionDataAvailable" fxLayout="row" fxLayoutAlign="end" class="pagination">
+    <table>
+        <tr>
+            <td>
+                <button class="page-number-btn" (click)="prevSeries()" [disabled]="noPrevSeries">&lt;&lt;</button>
+            </td>
+            <td>
+                <button class="page-number-btn" (click)="prev()" [disabled]="noPrev">&lt;</button>
+            </td>
+            <td *ngFor="let page of pages">
+                <button class="page-number-btn clickable" [ngClass]="{active:currentPage==page?true:false}"
+                        (click)="goto(page)">{{page}}
+                </button>
+            </td>
+            <td>
+                <button class="page-number-btn" (click)="next()" [disabled]="noNext">&gt;</button>
+            </td>
+            <td>
+                <button class="page-number-btn clickable" value="{{page}}" (click)="nextSeries()"
+                        [disabled]="noNextSeries">&gt;&gt;
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>

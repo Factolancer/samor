@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-md-2">
+        <img src="{{goal.imagePath}}">
+        {{goal.name}}
+
+    </div>
+    <div class="col-md-8">
+        <div *ngFor="let question of questions">
+            <div [@questionAnimation]="orientation">
+                {{question.statement}}
+                <md-input [(ngModel)]="question.answer" placeholder="{{question.helperText}}"
+                          maxlength="{{question.inputLength}}"></md-input>
+            </div>
+        </div>
+        <!-- <button md-button (click)="prev()">Previous</button>
+         <button md-button (click)="next()">Next</button>-->
+        <button md-button (click)="calculate()">Calculate</button>
+        Amount you need to invest is: {{principal | currency:'INR':true:'1.0-0'}}
+    </div>
+</div>
+

@@ -1,0 +1,88 @@
+import {Component, OnInit, trigger, transition, state, animate, style,Input} from '@angular/core';
+import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+import {GoogleChart} from "../../shared/google-chart.directive";
+
+// google.load("visualization", "1.1", {packages:["corechart"]});
+
+@Component({
+  selector: 'demoa',
+
+  templateUrl: './demoa.component.html',
+  styleUrls: ['./../cash.styles.scss'],
+  //styleUrls: ['./../cash.styles.scss', './../cash.styles.scss'],
+  providers: [GoogleChart],
+  animations: [
+    // trigger('flyInOut', [
+    //   state('in', style({transform: 'translateX(0)'})),
+    //   transition('void => *', [
+    //     style({transform: 'translateX(-100%)'}),
+    //     animate(100)
+    //   ]),
+    //   transition('* => void', [
+    //     animate(100, style({transform: 'translateX(100%)'}))
+    //   ])
+    // ]),
+
+      trigger('visibilityChanged', [
+          state('show' , style({ opacity: 1 })),
+          state('hide', style({ opacity: 0 })),
+          transition('void => *', animate('.5s'))
+      ])
+  ]
+})
+export class DemoaComponent implements OnInit {
+    visibility = 'shown';
+
+  heading = 'invisible';
+  mystate = 'in';
+  screen2 = 'out';
+  index: number = 0 ;
+  state = 'show';
+
+    isVisible = 'hidden';
+
+    constructor(private router: Router) {
+    Observable.interval(2000)
+        .subscribe(x => {
+          console.log(x);
+
+            // this.state = (this.state == 'hide' ? 'show' : 'hide');
+
+
+        })
+  }
+
+  headingarray = [
+    "Earn more by investing in SavingsPlus",
+    "Double your savings from SavingsPlus",
+    "Benefits of bank account.. with more returns - SavingsPlus"
+  ]
+  url = this.router.url;
+
+  toDemo(){
+    this.url = this.url + '/demo';
+    this.router.navigate([this.url]);
+  }
+
+  toFunds(){
+    this.url = this.url + '/demoa'
+    this.router.navigate([this.url]);
+  }
+
+  NextScreen(){
+    this.mystate = 'out';
+    this.screen2 = 'in';
+    console.log(this.mystate)
+  }
+
+  ngOnInit() {
+
+      console.log(this.state)
+      setTimeout(function() {
+this.state = (this.state === 'hide' ? 'show' : 'hide')
+          console.log(this.state)
+      }, 2000);
+  }
+
+}

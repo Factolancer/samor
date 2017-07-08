@@ -1,0 +1,44 @@
+
+<div fxFlex="100" >
+
+
+    <div [carousel]="carouselContent" ></div>
+
+    <app-product-solution></app-product-solution>
+    <app-investment-step></app-investment-step>
+    <app-product-branding></app-product-branding>
+
+    <div class="calc-container">
+
+        <div class="wrapper" fxLayoutWrap="wrap" fxLayout="row">
+
+             <div fxFlex="100" align="center" class="sub-heading pad-25 mar-b-30">
+                 <div class="wrapper">START AN INVESTMENT PLAN</div>
+             </div>
+
+            <div fxFlex="65" fxFlex.xs="100" fxLayoutWrap="wrap" fxLayout="row">
+                    <div class="mar-b-30" fxFlex="100" fxLayoutAlign="end center">
+                        <div class="label">My Age</div>
+                        <div class=" pad-lr-20 grey-border mar-lr-20 pos-rel" fxFlex="250px">
+                            <md-slider class="age-slider clickable" thumbLabel [min]=minAge [max]=maxAge #age></md-slider>
+                        </div>
+                    </div>
+                    <div class="mar-b-20" fxFlex="100" fxLayoutAlign="end center">
+                        <div class="label">Monthly Expenditure</div>
+                        <div class="pad-lr-20 grey-border mar-lr-20 pos-rel" fxFlex="250px">
+                            <md-slider  class="expense-slider clickable" [min]=minExpns [max]=maxExpns #expense ></md-slider>
+                            <span class="slider-val">{{expense.value |  currency:'INR':true:'1.0-0'}}</span>
+                        </div>
+                    </div>
+            </div>
+
+            <div fxFlex="100"  align="center"class="mar-tb-10">
+                <button md-raised-button color="primary" fxFlex="150px" (click)="calculate(age.value,expense.value)">Get Started</button>
+            </div>
+        </div>
+    </div>
+
+    <app-product-feature></app-product-feature>
+
+
+</div>

@@ -1,0 +1,84 @@
+/**
+ * Created by Fincash on 09-02-2017.
+ */
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {HttpService} from "../core/services/http-service.service";
+import {Logger} from "../core/logger/logger";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {RedemptionOtpDetails} from "../redemption/models/redemption-otp-details";
+
+@Injectable()
+export class OTPService {
+    className: string;
+    userDetails: any;
+    defaultPurpose: string;
+    defaultFrom: string;
+
+    public redemptionOtpDetailsSubject: BehaviorSubject<RedemptionOtpDetails>;
+
+    public validatedSubject: BehaviorSubject<any>;
+    validatedObservable: Observable<any>;
+
+    constructor(private http: HttpService, private logger: Logger) {
+        this.className = 'OTPService';
+        this.userDetails = {};
+        this.defaultPurpose = 'KY';
+        this.defaultFrom = "+91";
+        this.redemptionOtpDetailsSubject = new BehaviorSubject<RedemptionOtpDetails>(new RedemptionOtpDetails);
+
+        this.validatedSubject = new BehaviorSubject<any>({isValid: false});
+        this.validatedObservable = this.validatedSubject.asObservable();
+    };
+
+    sendOTP(to, message): Observable<any> {
+        return this.http.secureGet('/generateOTP/' + this.defaultPurpose + '/' + this.defaultFrom + '/' + to + '/' + message, 60000, 0);
+    }
+
+    sendOrderOTP(orderId, to, message): Observable<any> {
+        this.defaultPurpose = 'ORDER';
+        return this.http.secureGet('/generateOrderOTP/' + this.defaultPurpose + '/' + this.defaultFrom + '/' + to + '/' + orderId + '/' + message, 90000, 0);
+    }
+
+    validateOTP(otp): Observable<any> {
+        return this.http.secureGet('/validateOTP/' + this.defaultPurpose + '/' + otp).map((res) => res.valid);
+    }
+
+    validateOrderOTP(otp, orderId): Observable<any> {
+        let purpose = 'ORDER';
+        return this.http.secureGet('/validateOrderOTP/' + purpose + '/' + orderId + '/' + otp).map((res) => res.valid);
+    }
+
+    otpDeliveryStatus(msgId): Observable<any> {
+        return this.http.get('/getOTPStatus/' + msgId, 30000, 3);
+    }
+
+    updateUserDetails(property, value) {
+        this.userDetails[property] = value;
+    }
+
+    getUserDetails() {
+        return this.userDetails;
+    }
+
+    getUserData(): Observable<any> {
+        return this.http.secureGet('/user/getUserDetails');
+    }
+
+    sendeKYCMail(status: boolean) {
+        return this.http.securePost('/sendMail/eKYCStatus', {status: status});
+    }
+
+    setOTPData(mobNo: string, orderId: number) {
+        this.redemptionOtpDetailsSubject.next(new RedemptionOtpDetails(mobNo, orderId))
+    }
+
+    setOTPValidated(valid: any) {
+        this.validatedSubject.next(valid);
+    }
+
+    updateUserStageinTicket(): Observable<any> {
+        return this.http.secureGet('/user/updateUserStageinTicket');
+    }
+
+}

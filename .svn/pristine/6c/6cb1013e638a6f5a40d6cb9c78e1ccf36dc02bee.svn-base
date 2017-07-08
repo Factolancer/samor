@@ -1,0 +1,10 @@
+export class SearchInput {
+    amcCode: string[];
+    keyword: string;
+    from: number;
+    rows: number;
+    rating: number[];
+    age: number;
+    category: string;
+    sortString: string;
+}

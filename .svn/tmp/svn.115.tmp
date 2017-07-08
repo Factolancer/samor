@@ -1,0 +1,71 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="95">
+        <!--<div class="row">
+            <h1 class="center-align">{{pageHeading}}</h1>
+            &lt;!&ndash;  <h4 class="center-align">SIP type > Fund Selection > Investment Portfolio > Summary &amp; Checkout</h4>&ndash;&gt;
+        </div>-->
+
+        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px" class="pad-tb-20">
+            <div fxFlex="15"></div>
+            <div fxFlex="60">
+                <app-fund-search-bar [searchType]="searchType"></app-fund-search-bar>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-10">
+            <div fxFlex="15">
+                <md-chip-list>
+                    <md-basic-chip class="page-heading">{{pageHeading}}</md-basic-chip>
+                </md-chip-list>
+            </div>
+            <div fxFlex="65">
+                <app-chips></app-chips>
+            </div>
+            <div fxFlex="20">
+                <app-fund-view-panel [allowViewChange]="false"></app-fund-view-panel>
+            </div>
+        </div>
+
+
+        <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="10px" *ngIf="searchResults">
+            <div fxFlex="15">
+                <app-filter-master [_searchType]="searchType"></app-filter-master>
+            </div>
+            <div fxFlex="85">
+                <app-fund [showListView]="true"></app-fund>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" class="pad-tb-20">
+                    <div fxFlex="83">
+                        <app-fund-pagination-panel></app-fund-pagination-panel>
+                    </div>
+                    <div fxFlex="17">
+                        <button color="primary" md-raised-button="" class="cta-50"
+                                (click)="proceed()">Proceed
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="compareFundList.length>0">
+    <button md-raised-button="" color="accent" class="comparison-button"
+            (click)="compare()" (mouseover)="showComparisonList=true">Compare
+        {{compareFundList.length}}
+    </button>
+    <div *ngIf="showComparisonList" class="comparison-list"
+         (mouseleave)="showComparisonList=false">
+        <div class="top-bar">
+            <button md-button="" class="remove-button" (click)="emptyCompare()">Remove All</button>
+        </div>
+        <div *ngFor="let fund of compareFundList;let index = index; let last= last;">
+            <div fxLayout="row" fxLayoutAlign="start start" class="list-text">
+                <div fxFlex="95">{{fund.name}}</div>
+                <div fxFlex="5" class="clickable" (click)="removeCompareFund(fund)">
+                    <md-icon class="md-14">&#xE888;</md-icon>
+                </div>
+            </div>
+            <md-divider *ngIf="!last"></md-divider>
+        </div>
+    </div>
+</div>

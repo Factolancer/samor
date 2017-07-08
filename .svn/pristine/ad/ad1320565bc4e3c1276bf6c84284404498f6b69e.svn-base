@@ -1,0 +1,9 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <md-card class="mar-tb-5 report-card no-padding">
+        <div fxFlex="300" *ngIf="currentTab==4" id="pie_chart" class="pieChartLayout pad-20" [chartData]="data"
+             [chartOptions]="pieChartOptions"
+             chartType="PieChart" GoogleChart>
+        </div>
+    </md-card>
+
+</div>

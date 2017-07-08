@@ -1,0 +1,27 @@
+import {Component, OnInit} from "@angular/core";
+import {SipCalcGoal} from "./sip-calc-goal";
+import {Router, ActivatedRoute} from "@angular/router";
+import {Logger} from "../../core/logger/logger";
+import {SipGoals} from "./goals";
+
+@Component({
+    selector: 'app-sip-calc-goal',
+    templateUrl: './sip-calc-goal.component.html',
+    styleUrls: ['./sip-calc.styles.scss']
+})
+export class SipCalcGoalComponent implements OnInit {
+
+    sipGoals: SipCalcGoal[];
+
+    constructor(private router: Router, private route: ActivatedRoute, private logger: Logger) {
+        this.sipGoals = SipGoals;
+    }
+
+
+    ngOnInit() {
+    }
+
+    selectGoal(goal: SipCalcGoal) {
+        this.router.navigate(['questions', goal.id], {relativeTo: this.route});
+    }
+}

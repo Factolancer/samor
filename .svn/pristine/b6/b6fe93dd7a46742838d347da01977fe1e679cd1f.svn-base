@@ -1,0 +1,120 @@
+@import '../../styles/partials/web-partials';
+
+//fund list styling
+
+.explore-fund-head {
+  background-color: $brand-secondary;
+  text-align: center;
+  color: $white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 12px;
+  margin-bottom: 2px;
+  border-radius: 0;
+}
+
+.fund-list {
+  font-size: 14px;
+  text-align: center;
+  padding: 12px;
+  margin-bottom: 2px;
+  border-radius: 0;
+}
+
+//pagination styling
+.page-number-btn {
+  background-color: $white;
+  color: $brand-secondary;
+  margin: 0 0 0 0;
+  text-align: center;
+  padding: 0 15px;
+  border: 0;
+  height: 25px;
+}
+
+.blue {
+  background-color: $brand-secondary;
+  color: $white;
+}
+
+.grey {
+  color: $dark-grey;
+}
+
+table, tr, td {
+  border: 1px solid $dark-grey;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+//search component styling
+
+.search-input {
+  background-color: $light-grey;
+  border: solid 1px $dark-grey;
+  line-height: 32px;
+  padding-left: 10px;
+  font-size: 12px;
+  width: 80%;
+}
+
+.search-btn {
+  border-radius: 0 !important;
+}
+
+.page-heading {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  line-height: 16px;
+  background-color: $brand-primary;
+  color: $white;
+
+  &:focus {
+    outline: none !important;
+  }
+}
+
+.fund-count {
+  font-size: 12px;
+}
+
+.comparison-button {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 1000;
+  float: right;
+  margin: 10px;
+}
+
+.comparison-list {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 999;
+  background-color: $white;
+  width: 320px;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
+  will-change: box-shadow;
+  font-size: 12px;
+  padding: 10px;
+
+  .remove-button {
+    color: $text-medium-grey;
+  }
+}
+
+.watchlist-icon-btn {
+  border: 1px solid $medium-grey;
+  color: $text-medium-grey;
+  border-radius: 2px;
+  line-height: 30px;
+  height: 36px;
+  width: 36px;
+  margin-left: 10px;
+}

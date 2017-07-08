@@ -1,0 +1,57 @@
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import {CheckoutService} from "../checkout.service";
+import {Summary} from "../summary";
+import {ProductEnum} from "../../enum/product-enum";
+import {SummaryProduct} from "../summary-product";
+
+@Component({
+    selector: 'app-summary',
+    templateUrl: './summary.component.html',
+    styleUrls: ['../checkout.styles.scss']
+})
+export class SummaryComponent implements OnInit {
+
+    summaryData: Summary;
+    sipProducts: SummaryProduct[] = [];
+    lumpsumProducts: SummaryProduct[] = [];
+
+    productEnum: ProductEnum;
+
+    constructor(private route: ActivatedRoute, private router: Router, private checkoutService: CheckoutService) {
+
+    }
+
+    ngOnInit() {
+        let count = 0;
+        this.route.data.forEach((data: {summaryData: Summary}) => {
+            this.summaryData = data.summaryData;
+            //console.log(this.summaryData);
+            this.segregate();
+            console.log(this.lumpsumProducts);
+            console.log(this.sipProducts);
+            count++;
+            console.log(count);
+        });
+    }
+
+    proceed() {
+        this.checkoutService.invest().subscribe(res => {
+            window.location.href = res;
+        });
+    }
+
+    segregate() {
+        this.sipProducts = [];
+        this.lumpsumProducts = [];
+        this.summaryData.products.forEach(product => {
+            console.log(product);
+            if (product.investmentType == 0) {
+                this.sipProducts.push(product);
+            } else {
+                this.lumpsumProducts.push(product);
+            }
+        });
+    }
+
+}

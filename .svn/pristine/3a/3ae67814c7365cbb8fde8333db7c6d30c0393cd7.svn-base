@@ -1,0 +1,21 @@
+export class CapitalGains {
+
+    private fundName:string;
+    private transactionsList:RedemptionDetails;
+    private totalAmount:number;
+    private totalUnits:number;
+    private totalCapitalGain:number;
+}
+
+class RedemptionDetails{
+
+    private desc:string;
+    private redeemDate:Date;
+    private units:number;
+    private price:number;
+    private amount:number;
+    private purchaseDate:Date;
+    private purchaseUnits:number;
+    private purchasePrice:number;
+    private gain?:number;
+}

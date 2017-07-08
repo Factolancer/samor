@@ -1,0 +1,89 @@
+
+    <section class="data-head">
+
+    </section>
+    <section class="grey-back">
+        <div class="col-md-11" style="text-align: center;"><label>Investment Gain/Loss Statement</label></div>
+        <div class="col-md-1">
+            <span (click)="download()" class="clickable"><i class="material-icons">&#xE2C4;</i></span>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="col-md-12">
+                    <span>Customer Details</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-bordered">
+                    <tr>
+                        <td colspan="2">AMC:Birla sun Life Mutual Fund</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Folio No:1016976426</td>
+                    </tr>
+                    <tr>
+                        <td>Status : Individual</td>
+                        <td>PAN:AXOPV5011C</td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <table class="table table-bordered" *ngFor="let fund of funds">
+                <tr>
+                    <th colspan="6">Redemption/Switch-out</th>
+                    <th colspan="4">Corresponding units in Purchase/Switch-In/Div-Reinvestment</th>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>Date</td>
+                    <td>Units</td>
+                    <td>Price(Rs.)</td>
+                    <td>Amount(Rs.)</td>
+                    <td>STT</td>
+                    <td>Date</td>
+                    <td>Purchased Units</td>
+                    <td>Purchased Unit Cost(Rs.)</td>
+                    <td>Capital Gains/Losses</td>
+                </tr>
+                <tr>
+                    <td colspan="10">{{fund.fundName}}</td>
+                </tr>
+                <tr *ngFor="let trans of fund.transactionsList">
+                    <td *ngIf="trans.transType=='R'">Redemption</td>
+                    <td *ngIf="trans.transType=='P'">Purchase</td>
+                    <td>{{trans.transDate | date:'dd-MM-yy'}}</td>
+                    <td>{{trans.units | number : '1.2-3'}}</td>
+                    <td>{{trans.price | number : '1.2-2'}}</td>
+                    <td>{{trans.amount | number : '1.2-2'}}</td>
+                    <td>0.01</td>
+                    <td>06-04-2015</td>
+                    <td>97.37</td>
+                    <td>10.27</td>
+                    <td>{{trans.gain | number : '1.2-2'}}</td>
+                </tr>
+                <tr>
+                    <td><b>Total</b></td>
+                    <td></td>
+                    <td><b>{{fund.totalUnits| number : '1.2-3'}}</b></td>
+                    <td></td>
+                    <td><b>{{fund.totalAmount| number : '1.2-2'}}</b></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><b>{{fund.totalCapitalGain | number : '1.2-2'}}</b></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-md-12">
+            <span>Note: Short term (less than 1year) redemption of units/amount would incur a taxation of 1%</span>
+        </div>
+
+    </section>
+    <section class="data-foot">
+
+    </section>

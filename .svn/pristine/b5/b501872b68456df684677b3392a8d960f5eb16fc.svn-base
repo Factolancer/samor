@@ -1,0 +1,40 @@
+import {OpaqueToken} from "@angular/core";
+export let APP_CONFIG = new OpaqueToken('environment');
+export interface IAppConfig {
+    playAPIUrl: string;
+    defaultAfterLogin: string;
+    defaultAfterLogout: string;
+    dloginUrl: string;
+    signupUrl: string,
+    checkkycUrl: string;
+    returnUrlParam: string;
+    kycReturnBaseUrl: string;
+    paymentFallbackUrl: string;
+    eKYCUrl: string;
+    eKYCAuthToken: string;
+    authToken: string,
+    cartToken: string,
+    staticImagePath: string,
+    snackBarTime: number
+}
+
+export const AppConfig: IAppConfig = {
+    playAPIUrl: "http://10.1.0.2:2930",
+    //playAPIUrl: "http://localhost:9000",
+    defaultAfterLogin: '/dashboard',
+    defaultAfterLogout: '/',
+    dloginUrl: '/auth/login',
+    signupUrl: '/auth/signup',
+    checkkycUrl: '/kyc',
+    returnUrlParam: 'returnUrl',
+    paymentFallbackUrl: '/order',
+    kycReturnBaseUrl: 'http://uat.fincash.com/api/kyc',
+    eKYCUrl: 'https://eiscuat1.camsonline.com/ekycuat3/eKYCVal_Aadhar.aspx',
+    eKYCAuthToken: 'fincash|UECH_SHEP|HzK6$g3|B|MFKYC2'
+    /*eKYCUrl:'https://eiscweb.camsonline.com/ekyc3/eKYCVal_Aadhar.aspx',
+     eKYCAuthToken:'fincash|EKYC_SHEP|HGde$56|B|MFKYC2'*/,
+    authToken: 'id_token',
+    cartToken: 'cartId',
+    staticImagePath: 'http://uat.fincash.com',
+    snackBarTime: 2000,
+};

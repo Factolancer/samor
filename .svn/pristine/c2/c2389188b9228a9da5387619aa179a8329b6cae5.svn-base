@@ -1,0 +1,13 @@
+/**
+ * Created by Fincash on 15-09-2016.
+ */
+import { ModuleWithProviders }  from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { RiskComponent } from './risk.component';
+
+const riskRoutes: Routes = [
+    {path: 'risk', component: RiskComponent}
+];
+
+export const riskRouting: ModuleWithProviders = RouterModule.forChild(riskRoutes);

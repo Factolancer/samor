@@ -1,0 +1,71 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../core/services/http-service.service";
+import {Checkout} from "./models/checkout";
+import {Summary} from "./models/summary";
+import {SummaryFund} from "./models/summary-fund";
+import {ActivatedRoute, Router, NavigationEnd} from "@angular/router";
+import {PaymentObject} from "./models/payment-object";
+import {Logger} from "../core/logger/logger";
+import {CheckoutFund} from "./models/checkout-fund";
+import {CartService} from "../core/services/cart.service";
+
+@Injectable()
+export class CheckoutService {
+
+    checkoutData: Checkout;
+    previousURL: string;
+    className: string;
+    errorCheckoutData: CheckoutFund[];
+
+    constructor(private httpService: HttpService, private activatedRoute: ActivatedRoute, private router: Router,
+                private logger: Logger, private cartService: CartService) {
+
+        this.className = "CheckoutService";
+        this.previousURL = "";
+        this.logger.debug(this.className, this.previousURL);
+        this.router.events
+            .filter(event => event instanceof NavigationEnd)
+            .subscribe(e => {
+                this.logger.debug(this.className, this.previousURL);
+                this.previousURL = e.url;
+                this.logger.debug(this.className, this.previousURL);
+            });
+
+    }
+
+    getCheckoutData() {
+        return this.httpService.get("/checkout/getCheckoutData");
+    }
+
+    getSummaryInfo() {
+        return this.httpService.get("/checkout/getSummaryInfo");
+    }
+
+    invest() {
+        return this.httpService.post("/checkout/invest", this.prepareSummary());
+    }
+
+    getPaymentLink(paymentObj: PaymentObject) {
+        return this.httpService.post("/checkout/generatePaymentUrl", paymentObj);
+    }
+
+    prepareSummary(): any {
+        let summaryFunds: SummaryFund[] = [];
+
+        this.checkoutData.fundsData.forEach(fund => {
+            summaryFunds.push(new SummaryFund(fund.selectedSoptRfnum, fund.fund.basicFactsheet.name, fund.selectedPlan,
+                fund.selectedOption, fund.selectedInvestmentMode, fund.selectedAIPFrequency, +fund.selectedDeductionDate,
+                +fund.noOfInstallment, +fund.amount));
+        })
+        return new Summary(summaryFunds, this.checkoutData.selectedBank.id,
+            this.checkoutData.totalInvestmentAmount, "");
+    }
+
+    getOrderStatus(orderId: string) {
+        return this.httpService.get('/checkout/orderStatus/' + orderId);
+    }
+
+    getSubOrderStatus(subOrderId: number) {
+        return this.httpService.get('/checkout/subOrderStatus/' + subOrderId);
+    }
+}

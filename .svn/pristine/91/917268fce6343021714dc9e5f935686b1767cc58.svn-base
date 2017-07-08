@@ -1,0 +1,65 @@
+<div class="container">
+    <div class="aadhar-kyc-container">
+        <div fxLayout="column" fxLayoutAlign="center center" class="aadhar-kyc-header" md-dialog-title>
+            <div> AADHAR eKYC</div>
+                <i class="disclaimer">(This entitles you to transact upto INR 50,000 per Fund House per year)</i>
+        </div>
+        <div class="aadhar-kyc-content">
+            <div class="aadhar-form">
+                <div class="heading"> KYC Status via PAN</div>
+
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <form [formGroup]="AadharKYCStatusForm" (ngSubmit)="checkKYC()" fxFlex="70" align="center">  <br/>
+                        <div fxLayout="column" fxLayoutAlign="center">
+                            <md-input-container fxFlex="60">
+                                <input mdInput formControlName="aadhar" [maxLength]=aadharLength required  placeholder="Enter your Aadhar number" #aadhar
+                                       [value]="aadhar.value.toUpperCase()">
+                                <md-hint class="error" align="end" *ngIf="formErrors.aadhar">{{formErrors.aadhar}}</md-hint>
+                            </md-input-container>
+                            <md-input-container fxFlex="60">
+                                <input mdInput formControlName="mob" [maxLength]=mobLength required  placeholder="Mobile(as per Aadhar card records)" #mob>
+                                <md-hint class="error" align="end" *ngIf="formErrors.mob">{{formErrors.mob}}</md-hint>
+
+                            </md-input-container>
+                            <md-input-container fxFlex="60">
+                                <input mdInput formControlName="email"  required  placeholder="E-mail (as per Aadhar card records)" #email>
+                                <md-hint class="error" align="end" *ngIf="formErrors.email">{{formErrors.email}}</md-hint>
+                            </md-input-container>
+                            <md-input-container fxFlex="60">
+                                <input mdInput formControlName="pan" [maxLength] = panLength required  placeholder="Enter your PAN" #pan
+                                [value]="pan.value.toUpperCase()">
+                                <md-hint class="error" align="end" *ngIf="formErrors.pan">{{formErrors.pan}}</md-hint>
+                            </md-input-container>
+                        </div>              <br/>
+                        <div fxLayout="row" fxLayoutAlign="center">
+                            <button fxFlex="30" fxAlign="center" md-raised-button class="aadhar-kyc-button" [disabled]="!AadharKYCStatusForm.valid ||submitted">
+                                Submit
+                            </button>
+                        </div>
+                        <div *ngIf="aadharResloading" class="loading">
+                            <img src="../../assets/img/loading.gif">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--hidden form-->
+
+    <form [hidden]="true" id="kycForm" ngNoForm action={{eKYCUrl}} METHOD="post"  #finalform>
+        <label>Aadhar no </label>
+        <input [hidden]="true" type="text" name="Aadhar" [value]="aadhaar" /><br/>
+        <label>Return url </label>
+        <input  [hidden]="true" type="text" name="url" [value]="ekycReturnUrl" /><br/>
+        <label>KYC data </label>
+        <input [hidden]="true" type="text" name="kyc_data" [value]="ekyc_data" size="100"/><br/>
+        <input type="submit" value="Go to EKYC"/>
+    </form>
+
+
+
+
+
+</div>

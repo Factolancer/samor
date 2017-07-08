@@ -1,0 +1,27 @@
+import {Component, OnInit} from "@angular/core";
+import {Logger} from "../core/logger/logger";
+import {ExploreFundsService} from "../core/services/explore-funds.service";
+
+@Component({
+    selector: 'app-sip',
+    templateUrl: './sip.component.html',
+    styleUrls: ['./sip.styles.scss']
+})
+export class SipComponent implements OnInit {
+
+    //  investmentMode: InvestmentType;
+
+    constructor(private logger: Logger, private exploreFundService: ExploreFundsService) {
+        //  this.investmentType = InvestmentType.sip;
+    }
+
+    ngOnInit() {
+        this.logger.debug("its working!")
+        this.logger.info("its info!")
+    }
+
+    navigateToExplore() {
+        this.exploreFundService.navigateToSIPExplore();
+    }
+
+}

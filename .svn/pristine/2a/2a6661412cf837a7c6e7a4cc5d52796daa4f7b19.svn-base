@@ -1,0 +1,29 @@
+<button _ngcontent-pxi-10="" style="float: right;" color="primary" md-raised-button="" class="md-primary"
+        ng-reflect-color="primary"
+        (click)="list()">List View
+</button>
+<button _ngcontent-pxi-10="" style="float: right;" color="primary" md-raised-button="" class="md-primary"
+        ng-reflect-color="primary"
+        (click)="card()">Card View
+</button>
+<md-card _ngcontent-qgq-19="" *ngFor="let fund of quickSipFunds" style="padding: 0px" [class.sip-card]="isCardView"
+         [class.sip-list]="!isCardView">
+    <div class="md-card">
+
+        <md-card-title _ngcontent-qgq-19="" class="quick-sip-fund-name">
+            <input type="checkbox" (change)="deselectFund()"/>
+            <span class="md-checkbox-label">{{fund.name}}</span>
+        </md-card-title>
+        <md-card-content _ngcontent-qgq-19="">
+            <span>Fund Age: {{fund.age}}</span>
+            <span>Returns: {{fund.returns}}</span>
+            <span>AUM: {{fund.aum}}</span>
+            <span>Min Investment: {{fund.minInv}}</span>
+            <span>RiskoMeter: {{fund.risk}}</span>
+        </md-card-content>
+    </div>
+</md-card>
+<button _ngcontent-pxi-10="" color="primary" md-raised-button="" class="md-primary" ng-reflect-color="primary"
+        (click)="proceed()">Proceed
+</button>
+

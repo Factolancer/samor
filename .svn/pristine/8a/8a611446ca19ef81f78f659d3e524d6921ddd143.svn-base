@@ -1,0 +1,22 @@
+<div class="guideline-dialog">
+    <div fxLayout="row" fxLayoutAlign="center center" class="guideline-title" md-dialog-title>
+        <div fxFlex>Payment Guidelines</div>
+    </div>
+    <div md-dialog-content class="guideline-body">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <!--<img src="{{visibleImage}}" width="100%" height="100%"/>
+            <button md-button="" class="hollow-cta-30" (click)="toggleNetBankingImg()" *ngIf="isNetBanking">
+                <span *ngIf="visibleIndex == 0">Next</span><span *ngIf="visibleIndex == 1">Prev</span>
+            </button>-->
+            <div [payment-carousel]="carouselContent" *ngIf="carouselContent"></div>
+        </div>
+    </div>
+    <div md-dialog-actions fxLayout="row" fxLayoutAlign="center center">
+        <div fxFlex="30">
+            <button md-raised-button="" *ngIf="showProceed" class="cta-40" color="primary" (click)="proceed()">
+                Proceed
+            </button>
+            <md-spinner *ngIf="!showProceed"></md-spinner>
+        </div>
+    </div>
+</div>

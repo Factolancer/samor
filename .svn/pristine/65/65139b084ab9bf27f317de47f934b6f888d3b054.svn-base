@@ -1,0 +1,47 @@
+import {HttpService} from "../services/http-service.service";
+import {BehaviorSubject} from "rxjs";
+import {Fund} from "../models/fund";
+import {Injectable} from "@angular/core";
+
+@Injectable()
+export class CompareService {
+
+    private fundCompareDataSource = new BehaviorSubject<Fund[]>([]);
+    compareData = this.fundCompareDataSource.asObservable();
+
+    constructor(private httpService: HttpService) {
+    }
+
+    addToCompare(fund: Fund): [boolean, string] {
+        console.log(fund);
+        let fundList = this.fundCompareDataSource.getValue();
+        if (fundList.length >= 3) {
+            return [false, "Cannot compare more than 3 funds"];
+        } else if (fundList.some(fundInList => fund.id == fundInList.id)) {
+            return [false, "Fund already added to compare"];
+        } else if (fundList.length > 0 && fundList[0].cid != fund.cid) {
+            return [false, "Cannot compare funds from different categories"];
+        } else {
+            fundList.push(fund);
+            this.fundCompareDataSource.next(fundList);
+            return [true, "Fund added to comparison"];
+        }
+
+    }
+
+    removeFromCompare(fundId: string) {
+        let fundList = this.fundCompareDataSource.getValue();
+        fundList = fundList.filter(fund => fund.id != fundId);
+        console.log(fundList);
+        this.fundCompareDataSource.next(fundList);
+    }
+
+    removeAllFromCompare() {
+        this.fundCompareDataSource.next([]);
+    }
+
+    getFundComparisonData() {
+        return this.fundCompareDataSource.getValue();
+    }
+
+}

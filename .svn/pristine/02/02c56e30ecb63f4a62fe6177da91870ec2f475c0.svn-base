@@ -1,0 +1,141 @@
+import {Component, OnInit, trigger, transition, state, animate, style, Input} from '@angular/core';
+import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+
+// google.load("visualization", "1.1", {packages:["corechart"]});
+
+@Component({
+    selector: 'demoa',
+
+    templateUrl: './demoa.component.html',
+    styleUrls: ['./../cash.styles.scss'],
+    //styleUrls: ['./../cash.styles.scss', './../cash.styles.scss'],
+    animations: [
+        // trigger('flyInOut', [
+        //   state('in', style({transform: 'translateX(0)'})),
+        //   transition('void => *', [
+        //     style({transform: 'translateX(-100%)'}),
+        //     animate(100)
+        //   ]),
+        //   transition('* => void', [
+        //     animate(100, style({transform: 'translateX(100%)'}))
+        //   ])
+        // ]),
+        trigger('showmsg', [
+            state('show', style({opacity: '1'})),
+            state('hide', style({opacity: '0'})),
+            transition('show => hide', [
+                animate(1000)
+            ])
+        ]),
+        trigger('showmsgtwo', [
+            state('hide', style({transform: 'translateX(0%)'})),
+            state('show', style({transform: 'translateX(-54%)'})),
+            transition('hide => show', [
+                animate(10000)
+            ])
+        ]),
+        // trigger('visibilityChanged', [
+        //     state('show', style({opacity: 1})),
+        //     state('hide', style({opacity: 0})),
+        //     transition('shown => hidden', animate('600ms')),
+        //     transition('hidden => shown', animate('300ms')),
+        // ])
+    ]
+})
+export class DemoaComponent implements OnInit {
+
+    heading = 'invisible';
+    mystate = 'false';
+    screen2 = 'out';
+    index: number = 0;
+    state = 'true';
+    visibility = 'shown';
+
+    constructor(private router: Router) {
+        // Observable.interval(2000)
+        //     .subscribe(x => {
+        //       console.log(x);
+        //
+        //         // this.state = (this.state == 'hide' ? 'show' : 'hide');
+        //
+        //
+        //     })
+    }
+
+    url = this.router.url;
+
+
+    statechange: string = 'show';
+    statechangetwo: string = 'hide';
+    showMsg1 = true;
+    showMsg2 = false;
+    showMsg3 = false;
+    showanim1 = false;
+    showanim2 = false;
+    showanim3 = false;
+    showanim4 = false;
+    showanim5 = false;
+
+    question_one = [
+        'This is what your Average Monthly Account balance look like '
+    ]
+
+    ngOnInit() {
+        //this.statechange = (this.statechange === 'show' ? 'hide' : 'show');
+
+        // setTimeout(function () {
+        //    // this.statechange = (this.statechange === 'hide' ? 'show' : 'hide');
+        //     this.statechange = 'hide';
+        //     console.log(this.statechange)
+        //
+        // }, 2000);
+
+        setTimeout(() => {
+            this.statechange = 'hide';
+            console.log(this.statechange)
+        }, 3000);
+
+        // setTimeout(() => {
+        //     this.showMsg1 = false;
+        //     this.showanim1 = true;
+        //     this.showanim2 = true;
+        // }, 5500);
+
+        setTimeout(() => {
+            this.showMsg1 = false;
+            this.showMsg2 = true;
+            this.showMsg3 = false;
+            this.showanim1 = true;
+            this.showanim2 = true;
+            this.showanim3 = false;
+            this.showanim4 = false;
+        }, 5000);
+
+        setTimeout(() => {
+            this.showMsg1 = false;
+            this.showMsg2 = false;
+            this.showMsg3 = true;
+            this.showanim1 = true;
+            this.showanim2 = true;
+            this.showanim3 = true;
+            this.showanim4 = false;
+        }, 8000);
+
+        setTimeout(() => {
+            this.showMsg1 = false;
+            this.showMsg2 = false;
+            this.showMsg3 = false;
+            this.showanim1 = true;
+            this.showanim2 = true;
+            this.showanim3 = true;
+            this.showanim4 = true;
+        }, 10000);
+        setTimeout(() =>
+                this.statechangetwo = 'show',
+            console.log(this.statechangetwo), 10000);
+
+
+    }
+
+}

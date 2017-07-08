@@ -1,0 +1,97 @@
+import {Component, OnDestroy} from "@angular/core";
+import {Subscription} from "rxjs";
+import {FundDisplay} from "./fund-display";
+import {ExploreFundsService} from "./explore-funds.service";
+
+@Component({
+    selector: 'app-fund-pagination-panel',
+    templateUrl: './fund-pagination-panel.component.html',
+    styleUrls: ['./fund-pagination-panel.component.css']
+})
+export class FundPaginationPanelComponent implements OnDestroy {
+
+    private fundDisplaySubscription: Subscription;
+    fundDisplay: FundDisplay;
+    displayPageNumbers: number[] = [];
+    currentPosition: number;
+    totalPages: number;
+    paginationSize: number = 8;
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+        this.fundDisplaySubscription = exploreFundsService.fundDisplay.subscribe(
+            fd => {
+                console.log("fund pagination just listened from fund display!");
+                this.fundDisplay = fd as FundDisplay;
+                this.currentPosition = Math.floor(this.fundDisplay.from / this.fundDisplay.rows);
+                this.totalPages = Math.ceil(this.fundDisplay.totalCount / this.fundDisplay.rows);
+                this.setDisplayPageNumbers();
+            });
+    }
+
+
+    //used for moving to next page on the search reults
+    next() {
+        this.fundDisplay.from = this.fundDisplay.from + this.fundDisplay.rows;
+        this.exploreFundsService.getPage(this.fundDisplay.from);
+    }
+
+    //used for moving to previous page on search results
+    prev() {
+        this.fundDisplay.from = this.fundDisplay.from - this.fundDisplay.rows;
+        this.exploreFundsService.getPage(this.fundDisplay.from);
+    }
+
+    setDisplayPageNumbers() {
+        let start = 0;
+        let end = this.paginationSize;
+        let middle = this.paginationSize / 2;
+
+        this.displayPageNumbers = [];
+
+        if (this.currentPosition <= middle) {
+            //case when current position < middle
+            if (this.totalPages - this.paginationSize > 0)
+                start = this.min(0, this.totalPages - this.paginationSize);
+            end = this.min(this.totalPages, this.paginationSize);
+        } else if ((middle < this.currentPosition ) &&
+            (this.currentPosition < (this.totalPages - middle))) {
+            //case when current position in in between
+            start = this.currentPosition - middle;
+            end = this.currentPosition + middle;
+        } else if (this.currentPosition >= (this.totalPages - middle)) {
+            //case when current position belongs to somewhere towards the end
+            start = this.max(0, this.totalPages - this.paginationSize);
+            end = this.totalPages;
+        }
+
+        for (let i = start; i < end; i++) {
+            this.displayPageNumbers.push(i);
+        }
+
+    }
+
+    max(a: number, b: number) {
+        if (a >= b)
+            return a;
+        else
+            return b;
+    }
+
+    min(a: number, b: number) {
+        if (a <= b)
+            return a;
+        else
+            return b;
+    }
+
+    gotoPage(value: number) {
+        console.log(value);
+        this.fundDisplay.from = this.fundDisplay.rows * value;
+        this.exploreFundsService.getPage(this.fundDisplay.from);
+    }
+
+    ngOnDestroy() {
+        this.fundDisplaySubscription.unsubscribe();
+    }
+
+}

@@ -1,0 +1,265 @@
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {LogoImdData} from "../constants";
+import {ReportService} from "../report.service";
+import {Subscription} from "rxjs/Subscription";
+import {CapitalGainsReportService} from "./capital-gains-report.service";
+import {CapitalGains, FundDetails, FinancialYear} from "./capital-gains";
+import {CustomJspdf} from "../transaction-report/jsPDFext";
+import {isNullOrUndefined} from "util";
+import {DatePipe} from "@angular/common";
+import {disclaimers} from "../../../properties/discalimers";
+import {SnackBarService} from "../../core/services/snack-bar.service";
+
+declare let jsPDF;
+
+@Component({
+    selector: 'app-capital-gains-report',
+    templateUrl: './capital-gains-report.component.html',
+    styleUrls: ['../report.styles.scss']
+})
+export class CapitalGainsReportComponent implements OnInit,OnDestroy {
+
+    capitalGainTabSubscription: Subscription;
+    finYear:number;
+    funds: FundDetails[];
+    finYearList:FinancialYear[]=[];
+    capitalGain:CapitalGains;
+    constructor(private reportService: ReportService, private capitalGainsService: CapitalGainsReportService, private snackBarService: SnackBarService,
+                private viewContainerRef: ViewContainerRef) {
+    }
+
+    ngOnInit() {
+        this.capitalGainTabSubscription = this.reportService.capitalGainsTabResult.subscribe((loadTab: boolean)=> {
+            this.finYear = 1;
+            if (loadTab == true) {
+                this.getLastThreeFinYear();
+
+                this.capitalGainsService.getFundsCapitalGains(this.finYear-1)
+                    .subscribe(capitalGain => {
+
+                        this.capitalGain = capitalGain as CapitalGains;
+
+                        this.funds = capitalGain.fundDetailsList;
+                    }, error => {
+                        this.snackBarService.showSnackBar("Error Occurred, Please Refresh", "Okay", this.viewContainerRef);
+                    });
+
+            } else {
+                this.funds = [];
+            }
+        });
+    }
+
+    getFinYearCapitalGains(){
+        this.capitalGainsService.getFundsCapitalGains(this.finYear-1)
+            .subscribe(capitalGain => {
+
+                this.capitalGain = capitalGain as CapitalGains;
+
+                this.funds = capitalGain.fundDetailsList;
+            }, error => {
+                this.snackBarService.showSnackBar("Error Occurred, Please Refresh", "Okay", this.viewContainerRef);
+            });
+    }
+    getLastThreeFinYear(){
+        let currentDate = new Date();
+
+        if(currentDate.getMonth() > 2){
+            currentDate.setFullYear(currentDate.getFullYear()+1)
+        }
+        for(let offset = 1; offset <= 3; offset++){
+            let currentYear = new DatePipe("en-US").transform(currentDate,'yy');
+            let previousYear = new DatePipe("en-US").transform(currentDate.setFullYear(currentDate.getFullYear() - 1),'yyyy');
+
+            let yearLabel = "FY "+previousYear + "-"+currentYear;
+            this.finYearList.push(new FinancialYear(yearLabel,offset));
+        }
+    }
+    ngOnDestroy() {
+        this.capitalGainTabSubscription.unsubscribe();
+    }
+    prepareDownload(){
+        this.finYear = 1;
+        this.getLastThreeFinYear();
+        this.capitalGainsService.getFundsCapitalGains(this.finYear-1)
+            .subscribe(capitalGain => {
+                this.capitalGain = capitalGain as CapitalGains;
+                this.funds = capitalGain.fundDetailsList;
+                this.download();
+            }, error => {
+                this.snackBarService.showSnackBar("Error Occurred, Please Refresh", "Okay", this.viewContainerRef);
+            });
+    }
+
+    download() {
+        var wrapperPdf = new CustomJspdf('p', 'pt');
+        var pdf = wrapperPdf.jspdf;
+        var totalPagesExp = "{total_pages_count_string}";
+
+        pdf.setFontSize(12);
+        wrapperPdf.myText("Investment Gain/Loss Statement", {align: "center"}, 0, 100);
+
+        pdf.autoTable([], [], {addPageContent: pageContent});
+
+        var columns = [{title: "Description", dataKey: "desc"},
+            {title: "Date", dataKey: "redeemDate"},
+            {title: "Units", dataKey: "units"},
+            {title: "Price      (Rs.)", dataKey: "price"},
+            {title: "Amount (Rs.)", dataKey: "amount"},
+            {title: "Date", dataKey: "purchaseDate"},
+            {title: "Units", dataKey: "purchaseUnits"},
+            {title: "Cost(Rs.)", dataKey: "purchasePrice"},
+            {title: "Short Term Gain", dataKey: "shortTermGain"},
+            {title: "Long Term Gain", dataKey: "longTermGain"}];
+        pdf.setFontSize(10);
+
+        let startY = 150;
+        var currentpage = 0;
+        for(let fund of this.funds){
+
+            let planDetails:string;
+            let fundDetails = fund.fundBasicDetails;
+            let option:string = "Option: " + fundDetails.divOption;
+            if(!isNullOrUndefined(fundDetails.plan) || !isNullOrUndefined(fundDetails.divFreq)){
+                planDetails = "Plan: ";
+                if(!isNullOrUndefined(fundDetails.divFreq)){
+                    planDetails += fundDetails.divFreq + " ";
+                }
+                if(!isNullOrUndefined(fundDetails.plan)){
+                    planDetails += fundDetails.plan;
+                }
+            }
+            planDetails += ", "+option;
+            pdf.setFontStyle('normal');
+            pdf.setFontSize(8);
+            pdf.text("Fund Name: "+fundDetails.fundName, 40, startY);
+            wrapperPdf.myText("Folio No: " + fundDetails.folioNo, {align: "right"}, 0, startY);
+            pdf.text(planDetails, 40, startY+10);
+            pdf.text("Status: "+ this.capitalGain.status, 40, startY+20);
+            wrapperPdf.myText("PAN: " + this.capitalGain.pan, {align: "right"}, 0, startY+20);
+
+
+            let redemptionList = fund.redemptionDetailsList;
+            var rows = [];
+            for(let redemption of redemptionList){
+                let longTermGain = "";
+                let shortTermGain = "";
+                if(!isNullOrUndefined(redemption.longTermGain)){
+                    longTermGain = redemption.longTermGain.toFixed(2)
+                }
+                if(!isNullOrUndefined(redemption.shortTermGain)){
+                    shortTermGain = redemption.shortTermGain.toFixed(2)
+                }
+                let formattedRedeemDate = new DatePipe("en-US").transform(redemption.redeemDate,'dd-MM-yyyy');
+                let formattedPurchaseDate = new DatePipe("en-US").transform(redemption.purchaseDate,'dd-MM-yyyy');
+                rows.push({desc:redemption.desc,redeemDate:formattedRedeemDate,units:redemption.units.toFixed(2),
+                    price:redemption.price.toFixed(2),amount:redemption.amount.toFixed(2),purchaseDate:formattedPurchaseDate,
+                    purchaseUnits:redemption.purchaseUnits.toFixed(2),purchasePrice:redemption.purchasePrice.toFixed(2),
+                    shortTermGain:shortTermGain,longTermGain:longTermGain})
+            }
+            let totalLongTermGain = "";
+            let totalShortTermGain = "";
+            if(!isNullOrUndefined(fund.totalLongTermGain)){
+                totalLongTermGain = fund.totalLongTermGain.toFixed(2)
+            }
+            if(!isNullOrUndefined(fund.totalShortTermGain)){
+                totalShortTermGain = fund.totalShortTermGain.toFixed(2)
+            }
+            rows.push({desc:"Total",redeemDate:"",units:"",
+                price:"",amount:"",purchaseDate:"",
+                purchaseUnits:"",purchasePrice:"",
+                shortTermGain:totalShortTermGain,longTermGain:totalLongTermGain});
+
+            pdf.setFillColor(41, 128, 185);
+            pdf.rect(40.25, startY+30, 515, 23, 'F');
+            pdf.setTextColor(255, 255, 255);
+            pdf.setFontStyle('bold');
+            wrapperPdf.textInWindow("Redemption/Switch-out", 0, startY+40, 275);
+            var splitTitle = pdf.splitTextToSize("Corresponding units in Purchase/Switch-In/Div-Reinvestment", 130);
+            pdf.text(290, startY+40, splitTitle);
+            splitTitle = pdf.splitTextToSize("Capital Gains/Losses", 91);
+            pdf.text(440, startY+40, splitTitle);
+
+            var pageContent = function (data) {
+                // HEADER
+                pdf.setFontSize(20);
+                pdf.setFontStyle('normal');
+                pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+                // FOOTER
+                if (currentpage < pdf.internal.getNumberOfPages()) {
+                    var str = "Page " + pdf.internal.getNumberOfPages();
+                    if (typeof pdf.putTotalPages === 'function') {
+                        str = str + " of " + totalPagesExp;
+                    }
+                    pdf.setFontSize(10);
+                    pdf.setFontStyle('normal');
+                    pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 25);
+                    currentpage = pdf.internal.getNumberOfPages();
+                }
+            };
+            var addHeaderFooter = function(){
+                // HEADER
+                pdf.setFontSize(20);
+                pdf.setTextColor(40);
+                pdf.setFontStyle('normal');
+                pdf.addImage(LogoImdData, 'JPEG', 40, 40, 85, 18);
+                // FOOTER
+                if (currentpage < pdf.internal.getNumberOfPages()) {
+                    var str = "Page " + pdf.internal.getNumberOfPages();
+                    if (typeof pdf.putTotalPages === 'function') {
+                        str = str + " of " + totalPagesExp;
+                    }
+                    pdf.setFontSize(10);
+                    pdf.setFontStyle('normal');
+                    pdf.text(str, 40, pdf.internal.pageSize.height - 25);
+                    currentpage = pdf.internal.getNumberOfPages();
+                }
+            };
+
+            var tableStyle = {
+                styles: {overflow: 'linebreak'},
+                columnStyles: {
+                    desc: {columnWidth: 66},
+                    redeemDate: {columnWidth: 50},
+                    units: {columnWidth: 50},
+                    price:{columnWidth: 50},
+                    amount:{columnWidth: 50},
+                    purchaseDate:{columnWidth: 50},
+                    purchaseUnits:{columnWidth: 50},
+                    purchasePrice:{columnWidth: 50},
+                    shortTermGain:{columnWidth: 50},
+                    longTermGain:{columnWidth: 50}
+                },
+                startY: startY+53,
+                addPageContent: pageContent,
+                pageBreak: 'avoid',
+                margin: {top: 90},
+                headerStyles: {cellPadding: {vertical: 7}, fontSize: 8},
+                bodyStyles: {cellPadding: {vertical: 6}, fontSize: 8, valign: 'middle'},
+                drawCell: function (cell, data) {
+                    if (data.row.index == rows.length - 1) {
+                        pdf.setFontStyle('bold');
+                    }
+                }
+            };
+            pdf.autoTable(columns, rows, tableStyle);
+            startY = pdf.autoTableEndPosY() + 70
+        }
+
+
+        pdf.setFontStyle('bold');
+        pdf.text("Your cumulative short term capital gain/loss is "+this.capitalGain.cumulativeShortTermGain.toFixed(2), 40, pdf.autoTableEndPosY() + 20);
+        pdf.text("Your cumulative long term capital gain/loss is "+this.capitalGain.cumulativeLongTermGain.toFixed(2), 40, pdf.autoTableEndPosY() + 30);
+        pdf.addPage();
+        addHeaderFooter();
+        pdf.setFontSize(8);
+        pdf.setFontStyle('normal');
+        var splitTitle = pdf.splitTextToSize(`${disclaimers.report_1}`+"\n\n"+`${disclaimers.report_2}`, 515);
+        pdf.text("Disclaimers:",40,100);
+        pdf.text(40, 110, splitTitle);
+        if (typeof pdf.putTotalPages === 'function') {
+            pdf.putTotalPages(totalPagesExp);
+        }
+        pdf.save('Capital Gains Report.pdf');
+    }
+}

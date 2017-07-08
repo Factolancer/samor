@@ -1,0 +1,210 @@
+import {Component, OnInit, trigger, transition, state, animate, style} from '@angular/core';
+import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+import {GoogleChart} from "../../shared/google-chart.directive";
+
+// google.load("visualization", "1.1", {packages:["corechart"]});
+
+@Component({
+    selector: 'demo',
+    templateUrl: './demo.component.html',
+    styleUrls: ['./demo.styles.css'],
+    providers: [GoogleChart],
+    animations: [
+        trigger('showhide', [
+            state('invisible', style({opacity: '0', visibility: 'hidden'})),
+            state('visible', style({opacity: '1', visibility: 'visible'})),
+            transition('invisible <=> visible', animate('2s linear'))
+        ])
+    ]
+})
+export class DemoComponent implements OnInit {
+
+    private balanceVisible = false;
+    private savningsEarningVisible = false;
+    private cashMagEarningVisible = false;
+    private differenceVisible = false;
+
+    balance: string = 'invisible';
+    saving: string = 'invisible';
+    cash: string = 'invisible';
+
+    heading = 'invisible';
+    index: number = 0;
+    i: number;
+    headingarray = [
+        "Earn more by investing in SavingsPlus",
+        "Double your savings from SavingsPlus",
+        "Benefits of bank account.. with more returns - SavingsPlus"
+    ]
+
+    constructor(private router: Router, private googlechart: GoogleChart) {
+        Observable.interval(2000)
+            .subscribe(x => {
+                //console.log(x);
+                // this.headingvisible = !this.headingvisible;
+                this.heading = (this.heading == 'visible') ? 'invisible' : 'visible';
+                if (x % 2 == 0){
+                    this.index = (x / 2) % 3
+                }
+            })
+    }
+
+    ngOnInit() { }
+
+    showBalance() {
+        this.balanceVisible = true;
+        this.balance = 'visible';
+    }
+
+    showSavingAcc() {
+        this.savningsEarningVisible = true;
+        this.saving = 'visible';
+    }
+
+    showCashMag() {
+        this.cashMagEarningVisible = true;
+        this.cash = 'visible'
+    }
+
+    showGraph(){
+        this.differenceVisible = true;
+
+    }
+
+    toFunds() {
+        this.router.navigate(['/cash/funds']);
+    }
+
+    public chartData = [
+        ["Month", 'Cash', 'Savings', 'SavingsPlus'],
+        ["Jan-16", 50000, 50166.66667, 50333.33333],
+        ["Feb-16", 100000, 100500.5556, 101002.2222],
+        ["Mar-16", 150000, 151002.2241, 152008.9037],
+        ["Apr-16", 200000, 201672.2315, 203355.6297],
+        ["May-16", 250000, 252511.1389, 255044.6673],
+        ["Jun-16", 300000, 303519.5094, 307078.2984],
+        ["Jul-16", 350000, 354697.9078, 359458.8204],
+        ["Aug-16", 400000, 406046.9008, 412188.5458],
+        ["Sep-16", 450000, 457567.0571, 465269.8028],
+        ["Oct-16", 500000, 509258.9473, 518704.9348],
+        ["Nov-16", 550000, 561123.1438, 572496.3011],
+        ["Dec-16", 600000, 613160.2209, 626646.2764],
+        ["Jan-17", 650000, 665370.755, 681157.2516],
+        ["Feb-17", 700000, 717755.3242, 736031.6332],
+        ["Mar-17", 750000, 770314.5086, 791271.8441],
+        ["Apr-17", 800000, 823048.8903, 846880.3231],
+        ["May-17", 850000, 875959.0533, 902859.5253],
+        ["Jun-17", 900000, 929045.5835, 959211.9221],
+        ["Jul-17", 950000, 982309.0687, 1015940.002],
+        ["Aug-17", 1000000, 1035750.099, 1073046.268],
+        ["Sep-17", 1050000, 1089369.266, 1130533.243],
+        ["Oct-17", 1100000, 1143167.164, 1188403.465],
+        ["Nov-17", 1150000, 1197144.387, 1246659.488],
+        ["Dec-17", 1200000, 1251301.535, 1305303.885],
+        ["Jan-18", 1250000, 1305639.207, 1364339.244],
+        ["Feb-18", 1300000, 1360158.004, 1423768.172],
+        ["Mar-18", 1350000, 1414858.531, 1483593.293],
+        ["Apr-18", 1400000, 1469741.393, 1543817.249],
+        ["May-18", 1450000, 1524807.198, 1604442.697],
+        ["Jun-18", 1500000, 1580056.555, 1665472.315],
+        ["Jul-18", 1550000, 1635490.077, 1726908.797],
+        ["Aug-18", 1600000, 1691108.377, 1788754.856],
+        ["Sep-18", 1650000, 1746912.072, 1851013.221],
+        ["Oct-18", 1700000, 1802901.779, 1913686.643],
+        ["Nov-18", 1750000, 1859078.118, 1976777.887],
+        ["Dec-18", 1800000, 1915441.711, 2040289.74]
+    ];
+
+    public cashData = [
+        ['Year', 'Savings', 'SavingsPlus', null, null],
+        ['2017', 13160, 26646, null, null],
+        ['2018', 51301, 105303, null, null],
+        ['2019', 115441, 240289, 'Difference', '124848']
+
+    ];
+    public cashData1 = [
+        ['Year', 'Savings', 'SavingsPlus'],
+        ['2017', 13160, 26646],
+        ['2018', 51301, 105303],
+        ['2019', 115441, 240289]
+
+    ];
+
+
+    public data = {
+        "cols": [{"id": "", "label": "Year", "pattern": "", "type": "string"},
+            {"id": "", "label": "BankDetails account", "pattern": "", "type": "number"},
+            {"id": "", "label": "", "pattern": "", "type": "number", "p": {"role": "annotation"}},
+            {"id": "", "label": "SavingsPlus", "pattern": "", "type": "number"},
+            {"id": "", "label": "", "pattern": "", "type": "number", "p": {"role": "annotation"}},
+            // {"id": "", "label": "", "pattern": "", "type": "number", "p": {"role": "annotationText"}},
+        ],
+        "rows": [
+            {
+                "c": [
+                    {"v": '2017', "f": null},
+                    {"v": 13160, "f": null},
+                    {"v": null, "f": null},
+                    {"v": 26646, "f": null},
+                    {"v": 26646, "f": null}
+                ]
+            },
+            {
+                "c": [
+                    {"v": '2018', "f": null},
+                    {"v": 51301, "f": null},
+                    {"v": 51301, "f": null},
+                    {"v": 105303, "f": null},
+                    {"v": 105303, "f": null}
+                ]
+            },
+            {
+                "c": [
+                    {"v": '2019', "f": null},
+                    {"v": 115441, "f": null},
+                    {"v": 115441, "f": null},
+                    {"v": 240289, "f": null},
+                    {"v": 240289, "f": null}
+                    // {"v": "Difference", "f": null},
+                    // {"v": 124848, "f": null}
+                ]
+            },
+        ]
+    }
+
+
+// public data_table = this.googlechart.createDataTable(this.cashData);
+
+
+    public line_ChartOptions = {
+        title: 'BankDetails account Vs SavingsPlus',
+        subtitle: 'Earn more than saving account',
+        vAxis: {
+            title: 'Earning'
+        },
+        curveType: 'function',
+        pointSize: 3,
+        legend: {position: 'bottom'},
+        width: 640,
+        height: 320,
+        series: {
+            0: {
+                annotations: {
+                    stemLength: 3,
+                    stemColor: 'white',
+                    position: 'down'
+                }
+            },
+            1: {
+                annotations: {
+                    stemLength: 5,
+                    stemColor: 'white'
+                }
+            }
+
+            // textStyle: {fontSize: 12, color: 'green' }
+        }
+    };
+
+}

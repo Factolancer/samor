@@ -1,0 +1,103 @@
+<!--Footer-->
+<footer class="footer">
+  <div class="top" >
+    <div fxLayout="row" fxLayoutAlign="space-between start"  class="wrapper">
+      <div fxFlex="70">Questions? Get in touch!</div>
+      <div fxFlex="15">
+        <md-icon class="md-14">&#xE325;</md-icon>
+        {{contact}}
+      </div>
+      <div fxFlex="15" class="right-align">
+        <md-icon class="md-14">&#xE0BE;</md-icon>
+        {{supEmail}}
+      </div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" class="wrapper">
+      <div fxFlex="15">
+        <div class="section-title">ABOUT US</div>
+        <ul dense>
+          <li><a routerLink="why-fincash">Why Fincash</a></li>
+          <li><a routerLink="team">Team</a></li>
+         <!-- <li><a routerLink="career">Careers</a></li>-->
+        </ul>
+      </div>
+      <div fxFlex="15" fxFlex.xs="50%">
+        <div class="section-title">PRODUCT SOLUTIONS</div>
+        <ul dense>
+          <li><a routerLink="cash">SavingsPlus</a></li>
+          <li><a routerLink="sip">SmartSIP</a></li>
+          <li><a routerLink="tax">TaxSaver</a></li>
+          <li><a routerLink="explore">Explore Funds</a></li>
+        </ul>
+      </div>
+      <div fxFlex="30" fxFlex.xs="100%">
+       <!-- <div class="section-title">RESOURCE CENTER</div>--> <!--sub--->
+        <div fxLayout="row" fxLayoutAlign="start">
+          <div fxFlex="50">
+            <div class="section-title">MUTUAL FUNDS</div>
+              <ul>
+                <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-asset-management-companies">Fund Houses</a></li>
+                <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-basics">MF Basics</a></li>
+                <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-financial-planning">Financial Planning</a></li>
+                <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-gold">Gold</a></li>
+                <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-retirement">Retirement</a></li>
+                <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-sip">SIP</a></li>
+                <li><a href="https://www.fincash.com/b/mutual-funds/mutual-fund-taxation">Taxation</a></li>
+                <li><a href="https://www.fincash.com/b/mutual-funds/type-mutual-funds">MF Types</a></li>
+              </ul>
+          </div>
+
+          <div fxFlex="50">
+            <div class="section-title">INSURANCE</div>
+            <ul >
+              <li><a href="https://www.fincash.com/b/insurance/life-insurance">Life Insurance</a></li>
+              <li><a href="https://www.fincash.com/b/insurance/health-insurance">Health Insurance</a></li>
+              <li><a href="https://www.fincash.com/b/insurance/general-insurance">Travel Insurance</a></li>
+              <li><a href="https://www.fincash.com/b/insurance/general-insurance">Vehicle Insurance</a></li>
+              <li><a href="https://www.fincash.com/b/insurance/general-insurance">House Insurance</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div fxFlex="15">
+        <div class="section-title">CALCULATORS</div>
+        <ul>
+          <li><a routerLink="tax/calculator">Tax</a></li>
+          <!--    <li><a routerLink="sip/calculator">SIP</a></li>-->
+          <li><a routerLink="sip/calculator/goals/questions/1">Retirement Planning</a></li>
+          <li><a routerLink="sip/calculator/goals/questions/2">Higher Education</a></li>
+          <li><a routerLink="sip/calculator/goals/questions/3">Marriage</a></li>
+          <li><a routerLink="sip/calculator/goals/questions/4">Buy House</a></li>
+          <li><a routerLink="sip/calculator/goals/questions/5">Buy Vehicle</a></li>
+          <li><a routerLink="sip/calculator/returns">Growth of SIP Investment</a></li>
+        </ul>
+      </div>
+      <div fxFlex="15">
+        <div class="section-title">LEGAL</div>
+        <ul dense>
+          <li><a routerLink="#">Privacy Policy</a></li>
+          <li><a routerLink="#">Terms &amp; Conditions</a></li>
+          <li><a routerLink="#">Disclaimers</a></li>
+        </ul>
+      </div>
+      <div fxFlex="10">
+        <div class="section-title">CONTACT US</div>
+        <div class="address">A -204, Technocity, Plot No X-4/1 & X-4/2,
+          TTC, MIDC, Mahape, Navi Mumbai - 400710
+        </div>
+        <div><a routerLink="#">Social Icons</a></div>
+      </div>
+    </div>
+
+    <div fxFlex="100" fxLayoutAlign="center" class="copyright">
+      <md-icon class="md-18">&#xE90C;</md-icon>{{copyYear}} Shepard Technologies Private Limited
+    </div>
+  </div>
+
+
+
+
+
+</footer>

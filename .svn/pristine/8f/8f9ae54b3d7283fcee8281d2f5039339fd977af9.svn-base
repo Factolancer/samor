@@ -1,0 +1,60 @@
+import { Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {DashboardDataService} from "./dashboard-data.service";
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  providers: [DashboardDataService]
+})
+
+export class DashboardComponent implements OnInit {
+  public invested:Boolean;
+  public showDistribution:Boolean = false;
+  private pf:Object;
+  portfolioDataAvailable: boolean = false;
+  pendingDataAvailable: boolean = false;
+
+  private pendings:Array<Object> = [];
+  constructor(public dataService: DashboardDataService) { };
+  check(){
+    console.log("checking");
+    this.showDistribution = !this.showDistribution;
+  }
+
+
+  ngOnInit() {
+    this.getPortfolio();
+    this.getPendingDetails();
+    this.invested = this.dataService.hasInvested()||false;
+  }
+
+  getPortfolio(){
+    console.log('portfolio');
+    this.dataService.getPortfolio()
+        .subscribe(
+            res=>{
+              this.pf = res;
+              this.portfolioDataAvailable = true;
+            },
+            err=>{console.log('an error occured')}
+        )
+  }
+  getPendingDetails(){
+    console.log('registration status called');
+    this.dataService.getPendingDetails()
+        .subscribe(
+            res=>{
+              console.log(res);
+              this.pendings = res;
+              this.pendingDataAvailable = true;
+            },
+            err=>{console.log('an error occured')}
+        )
+  }
+
+
+}
+
+

@@ -1,0 +1,54 @@
+import {NgModule} from "@angular/core";
+import {BrowserModule} from "@angular/platform-browser";
+import {routes, appRoutingProviders} from "./app.routes";
+import {SipModule} from "./sip";
+import {RiskModule} from "./risk";
+import {AppComponent} from "./app.component";
+import {HomeComponent} from "./home";
+import {ReCaptchaComponent} from "./components/angular2-recaptcha/angular2-recaptcha.component";
+import {CashModule} from "./cash/cash.module";
+import {FactsheetModule} from "./factsheet/factsheet.module";
+import {TaxModule} from "./tax/tax.module";
+import {WatchlistModule} from "./watchlist/watchlist.module";
+import {RiskProfilingModule} from "./risk-profiling/risk-profiling.module";
+import {UserModule} from "./user/user.module";
+import {SharedModule} from "./shared/shared.module";
+import {LoginModule} from "./login/login.module";
+import {LandingpageModule} from "./landingpage/landingpage.module";
+import {ProductModule} from "./product/product.module";
+import {StaticModule} from "./static/static.module";
+import {LocalStorageModule} from "angular-2-local-storage";
+import {OrderModule} from "./order/order.module";
+import {CartModule} from "./cart/cart.module";
+import {CoreModule} from "./core/core.module";
+import {CheckoutModule} from "./checkout/checkout.module";
+
+
+@NgModule({
+    imports: [SharedModule,
+        CoreModule.forRoot(),
+        BrowserModule,
+        routes,
+        CashModule,
+        SipModule,
+        FactsheetModule,
+        TaxModule,
+        WatchlistModule,
+        UserModule,
+        LoginModule,
+        LandingpageModule,
+        ProductModule,
+        CartModule,
+        LocalStorageModule.withConfig({
+            prefix: 'fincash',
+            storageType: 'localStorage'
+        })
+    ],
+    declarations: [AppComponent],
+    providers: [appRoutingProviders],
+    entryComponents: [],
+    bootstrap: [AppComponent]
+})
+
+export class AppModule {
+}

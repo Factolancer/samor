@@ -1,0 +1,73 @@
+<div class="wrapper" fxLayout="row" fxLayoutAlign="center center" xmlns="http://www.w3.org/1999/html">
+    <div fxFlex="100">
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="100" class="demoa-slide-box mar-tb-20">
+
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex="100" class="demoa-slide-box mar-tb-20">
+                        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around">
+                            <md-card fxFlex="42" class="no-padding" >
+                                <md-card-content>
+                                    <div fxLayout="column" fxLayoutAlign="center center">
+                                        <chart [options]="options"></chart>
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+
+                            <md-card fxFlex="42" class="no-padding">
+                                <md-card-content>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <div fxFlex class="no-padding  pad-tb-10 demob-slide-title"
+                                             style="height: 35px; width: 100px;">
+
+                                        </div>
+                                        <div fxFlex class="no-padding  pad-tb-10 demob-slide-title"><b>Savings Account
+                                            Earnings <br/>
+                                        </b>
+                                        </div>
+                                        <div fxFlex class="no-padding  pad-tb-10 demob-slide-title"><b>
+                                            SavingsPlus Earnings</b>
+                                        </div>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="center center" class="pad-lr-10">
+                                        <div fxFlex class="pad-tb-5">
+                                            <div class="demob-tag-size"><b>Earnings for a Quarter</b></div>
+                                            <div class="demob-tag-size"><b>Earnings for a Year</b></div>
+                                        </div>
+                                        <div fxFlex class="no-padding pad-tb-5">
+                                            <div class="demob-tag-size">₹ 1,000</div>
+                                            <div class="demob-tag-size">₹ 13,000</div>
+                                        </div>
+                                        <div fxFlex class="pad-tb-5">
+                                            <div class="demob-tag-size">₹ 2,000</div>
+                                            <div class="demob-tag-size">₹ 26,000</div>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <div fxFlex class="no-padding  pad-tb-15 demob-slide-bottom">
+                                            Extra Earnings from SavingsPlus <b>₹ 13,000</b>
+                                        </div>
+                                    </div>
+                                    <div fxFlex class="pad-tb-10">
+                                        <a routerLink="/cash/funds">
+                                            <button fxFlex="30" md-raised-button color="primary" class="cta-50" >INVEST</button>
+                                        </a>
+                                    </div>
+                                </md-card-content>
+                            </md-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+

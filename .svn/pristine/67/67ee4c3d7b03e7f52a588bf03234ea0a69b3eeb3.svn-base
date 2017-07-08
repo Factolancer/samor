@@ -1,0 +1,26 @@
+import {Injectable} from "@angular/core";
+import {Router, Resolve, ActivatedRouteSnapshot} from "@angular/router";
+import {Observable} from "rxjs";
+import {CompareService} from "./compare.service";
+import {Fund} from "../models/fund";
+
+@Injectable()
+export class CompareDataResolveService implements Resolve<any> {
+    constructor(private router: Router, private compareService: CompareService) {
+    }
+
+    resolve(route: ActivatedRouteSnapshot): Observable<boolean | Fund[]> {
+
+        // let id = ; // (+) converts string 'id' to a number
+        return this.compareService.getFundComparisonData().map(output => {
+            if (output) {
+                return output;
+            } else {
+                this.router.navigate(['/login']);
+                return false;
+            }
+        });
+
+
+    }
+}

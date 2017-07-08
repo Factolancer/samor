@@ -1,0 +1,143 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {HoldingReportService} from "./holding-report.service";
+import {Holdings} from "./holdings";
+import {ReportService} from "../report.service";
+import {LogoImdData} from "../constants";
+import {Subscription} from "rxjs";
+import {isNullOrUndefined} from "util";
+import {DatePipe} from "@angular/common";
+import {CustomJspdf} from "../transaction-report/jsPDFext";
+
+//declare let jsPDF;
+
+@Component({
+    selector: 'app-holding-report',
+    templateUrl: './holding-report.component.html',
+    styleUrls: ['../report.styles.scss'],
+    providers: [HoldingReportService]
+})
+export class HoldingReportComponent implements OnInit,OnDestroy {
+    funds: Holdings[];
+    currentDate: Date;
+    holdingTabSubscription:Subscription;
+    constructor(private holdingReportService: HoldingReportService, private reportService: ReportService) {
+
+    }
+
+    ngOnInit() {
+        this.holdingTabSubscription=this.reportService.holdingTabResult.subscribe((loadTab:boolean)=>{
+            if(loadTab == true){
+                this.currentDate = new Date();
+                this.holdingReportService.getHoldings()
+                    .subscribe(funds => {
+                        this.funds = funds as Holdings[];
+                    });
+            } else{
+                this.funds = [];
+            }
+        });
+    }
+
+    showTransactionDetails(fundId: number) {
+
+        this.reportService.setFundIndexResult(fundId);
+    }
+
+    ngOnDestroy() {
+        this.holdingTabSubscription.unsubscribe();
+    }
+    download() {
+
+        var columns = [{title: "Scheme", dataKey: "name"},
+            {title: "Folio No.", dataKey: "folioNo"},
+            {title: "Cost Value", dataKey: "costValue"},
+            {title: "Units", dataKey: "units"},
+            {title: "Current NAV", dataKey: "currNav"},
+            {title: "NAV Date", dataKey: "navDate"},
+            {title: "Current Value", dataKey: "currValue"},
+            {title: "Realized Gain/Loss", dataKey: "realizedGain"},
+            {title: "Unrealized Gain/Loss", dataKey: "unrealizedGain"},
+            {title: "Absolute Return(%)", dataKey: "absoluteReturn"}];
+
+        var rows = [];
+
+        for(let fund of this.funds){
+            let costValue:string = "";
+            let units:string = "";
+            let currNav:string = "";
+            let currValue:string = "";
+            let realizedGain:string = "";
+            let unrealizedGain:string = "";
+            let absoluteReturn:string = "";
+            let navDate:string;
+            var options = {
+                year: "numeric", month: "2-digit",
+                day: "2-digit"
+            };
+            if(!isNullOrUndefined(fund.costValue)){
+                costValue = fund.costValue.toFixed(2)
+            }
+            if(!isNullOrUndefined(fund.units)){
+                units = fund.units.toFixed(2)
+            }
+            if(!isNullOrUndefined(fund.currNav)){
+                currNav = fund.currNav.toFixed(2)
+            }
+            if(!isNullOrUndefined(fund.navDate)){
+                navDate = new DatePipe("en-US").transform(fund.navDate,'dd-MM-yyyy')
+            }
+            if(!isNullOrUndefined(fund.currValue)){
+                currValue = fund.currValue.toFixed(2)
+            }
+            if(!isNullOrUndefined(fund.realizedGain)){
+                realizedGain = fund.realizedGain.toFixed(2)
+            }
+            if(!isNullOrUndefined(fund.unrealizedGain)){
+                unrealizedGain = fund.unrealizedGain.toFixed(2)
+            }
+            if(!isNullOrUndefined(fund.absoluteReturn)){
+                absoluteReturn = fund.absoluteReturn.toFixed(2)
+            }
+            rows.push({name:fund.name,folioNo:fund.folioNo,costValue:costValue,units:units,currNav:currNav,
+                        navDate:navDate,currValue:currValue,realizedGain:realizedGain,unrealizedGain:unrealizedGain,
+                        absoluteReturn:absoluteReturn});
+        }
+        var wrapperPdf = new CustomJspdf('p', 'pt');
+        var pdf = wrapperPdf.jspdf;
+        var totalPagesExp = "{total_pages_count_string}";
+        var pageContent = function (data) {
+            // HEADER
+            pdf.setFontSize(20);
+            pdf.setFontStyle('normal');
+            pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+            // FOOTER
+            var str = "Page " + data.pageCount;
+            // Total page number plugin only available in jspdf v1.0+
+            if (typeof pdf.putTotalPages === 'function') {
+                str = str + " of " + totalPagesExp;
+            }
+            pdf.setFontSize(10);
+            pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 30);
+        };
+        pdf.setFontSize(12);
+        wrapperPdf.myText("Mutual Fund Holdings as on " + this.currentDate.getDate() + "/" + (this.currentDate.getMonth() + 1) + "/" + this.currentDate.getFullYear(), {align: "center"}, 0, 100);
+
+        var tableStyle = {
+            startY: 150,
+            styles: {overflow: 'linebreak'},
+            headerStyles: {rowHeight: 15, fontSize: 8},
+            addPageContent:pageContent,
+            bodyStyles: {rowHeight: 12, fontSize: 8, valign: 'middle'},
+            drawCell: function (cell, data) {
+                if (data.row.index == rows.length - 1) {
+                    pdf.setFontStyle('bold');
+                }
+            }
+        };
+        pdf.autoTable(columns, rows, tableStyle);
+        if (typeof pdf.putTotalPages === 'function') {
+            pdf.putTotalPages(totalPagesExp);
+        }
+        pdf.save('Holding Report.pdf');
+    }
+}

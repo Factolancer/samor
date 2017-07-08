@@ -1,0 +1,30 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MdToolbarModule } from '@angular2-material/toolbar';
+import { MdButtonModule } from '@angular2-material/button';
+import { MdCardModule } from '@angular2-material/card';
+import { MdInputModule, MdHint } from '@angular2-material/input';
+import { MdRadioModule } from '@angular2-material/radio';
+import { MdGridListModule } from '@angular2-material/grid-list';
+import { MdMenuModule } from '@angular2-material/menu';
+// import { } from '@angular2-material/datepicker';
+
+import { RegistrationComponent } from './registration.component';
+import { registrationrouting } from './registration.routing'
+
+@NgModule({
+  imports: [
+    CommonModule, FormsModule, registrationrouting, ReactiveFormsModule,
+      MdToolbarModule.forRoot(),
+      MdButtonModule.forRoot(),
+      MdCardModule.forRoot(),
+      MdInputModule.forRoot(),
+      MdRadioModule.forRoot(),
+      MdGridListModule.forRoot(),
+      MdMenuModule.forRoot()
+  ],
+  declarations: [RegistrationComponent]
+})
+export class RegistrationModule { }

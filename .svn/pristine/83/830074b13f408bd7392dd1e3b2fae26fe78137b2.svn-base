@@ -1,0 +1,30 @@
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {SmartSipFunds} from "./smart-sip-funds";
+
+@Component({
+
+    selector: 'app-smart-sip',
+    templateUrl: 'smart-sip.component.html',
+    styleUrls: ['smart-sip.component.css']
+})
+export class SmartSipComponent implements OnInit {
+
+    quickSipFunds: SmartSipFunds[];
+
+
+    proceed() {
+
+    }
+
+
+    constructor(private route: ActivatedRoute) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: { funds: SmartSipFunds[] }) => {
+            this.quickSipFunds = data.funds;
+        });
+    }
+
+}

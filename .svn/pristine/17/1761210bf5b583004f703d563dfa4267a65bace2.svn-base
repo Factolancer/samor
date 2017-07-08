@@ -1,0 +1,19 @@
+import {Component, OnInit} from "@angular/core";
+import {MdDialogRef} from "@angular/material";
+
+@Component({
+    selector: 'app-loading-dialog',
+    templateUrl: './loading-dialog.component.html',
+    styleUrls: ['./shared.styles.scss']
+})
+export class LoadingDialogComponent implements OnInit {
+
+    config: any;
+
+    constructor(public dialogRef: MdDialogRef<LoadingDialogComponent>) {
+    }
+
+    ngOnInit() {
+    }
+
+}

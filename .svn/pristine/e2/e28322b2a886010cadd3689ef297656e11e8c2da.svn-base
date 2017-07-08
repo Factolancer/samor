@@ -1,0 +1,22 @@
+import {Fund} from "../../models/fund";
+import {FundOption} from "../../models/fund-option";
+
+
+export class RedemptionFund {
+    constructor(public fund: Fund,
+                public options: FundOption[],
+                public selectedSoptRfnum: number,
+                public plan: string,
+                public option: string,
+                public selectedRedemptionMode: string,
+                public selectedAWPFrequency: string,
+                public selectedCreditDate: number,
+                public noOfInstallment: number,
+                public amount: number,
+                public plansList: string[],
+                public optionsList: string[],
+                public swpDatesList: string[],
+                public swpFrequencyList: string[],
+                public orderPlaced: boolean = false) {
+    }
+}

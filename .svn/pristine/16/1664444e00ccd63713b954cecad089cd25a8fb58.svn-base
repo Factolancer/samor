@@ -1,0 +1,63 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Transaction} from "../transaction";
+import {TransactionDetails} from "../transaction-details";
+import {Fund} from "../fund";
+import {Input} from "@angular/core/src/metadata/directives";
+import {ReportService} from "../report.service";
+import {Subscription} from "rxjs";
+import {TransactionType} from "./transaction-type";
+import {TransactionFilter} from "./transaction-filter";
+import {TransactionReportService} from "./transaction-report.service";
+
+@Component({
+    selector: 'app-transaction-report',
+    templateUrl: './transaction-report.component.html',
+    styleUrls: ['./transaction-report.component.css']
+})
+export class TransactionReportComponent implements OnInit,OnDestroy {
+
+    //@Input('fundIndex')fundIndex:number;
+    funds: Transaction[];
+    fundList:Fund[];
+    selectedFundId:number;
+    selectedTransType:number;
+    fundIndexSubscription:Subscription;
+    transactionTypes:TransactionType[];
+    startDate:Date;
+    endDate:Date;
+    constructor(private reportService:ReportService, private transactionReportService:TransactionReportService) {
+        this.fundIndexSubscription=this.reportService.fundIndexResult.subscribe((fundIndex:number)=>{
+            this.selectedFundId = fundIndex;
+            this.filterTransactions();
+        });
+    }
+
+    ngOnInit() {
+        this.fundList = [new Fund(0,"All"),new Fund(1,"HDFC Tax Saver - Growth"),
+                            new Fund(2,"Birla Sun Life Frontline Equity Fund - Dividend"),
+                            new Fund(3,"IDFC Arbitrage - Regular"),
+                            new Fund(4,"DHFL Pramerica Arbitrage Fund"),
+                            new Fund(5,"Principal Arbitrage Fund - Regular")];
+        this.transactionTypes = [new TransactionType(0,"All"),
+                                    new TransactionType(1,"Investment"),
+                                    new TransactionType(2,"Reinvestment"),
+                                    new TransactionType(3,"Redemption")];
+        this.selectedFundId = 0;
+        this.selectedTransType = 0;
+    }
+
+    getTransactions(transFilter:TransactionFilter) {
+
+        this.funds = this.transactionReportService.getTransactions(transFilter);
+
+    }
+
+    filterTransactions(){
+        let transFilter = new TransactionFilter(this.startDate,this.endDate,this.selectedFundId,this.selectedTransType);
+        this.getTransactions(transFilter);
+    }
+
+    ngOnDestroy(){
+        this.fundIndexSubscription.unsubscribe();
+    }
+}

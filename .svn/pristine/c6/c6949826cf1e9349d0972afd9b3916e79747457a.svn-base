@@ -1,0 +1,30 @@
+import { Component, OnInit } from '@angular/core';
+import {DashboardDataService} from "../dashboard-data.service";
+
+@Component({
+  selector: 'app-navigation-panel',
+  templateUrl: './navigation-panel.component.html',
+  styleUrls: ['./navigation-panel.component.scss'],
+  providers: [DashboardDataService]
+})
+export class NavigationPanelComponent implements OnInit {
+  invested:boolean;
+  constructor(public dataService: DashboardDataService) { }
+
+  ngOnInit() {
+    this.ifInvested();
+    /*    this.invested = this.dataService.hasInvested()||false;*/
+  }
+  ifInvested(){
+    console.log('nav invest status');
+    this.dataService.hasInvested()
+        .subscribe(
+            res=>{
+              this.invested  = res;
+              console.log(this.invested);
+            },
+            err=>{console.log('an error occured')}
+        )
+
+  }
+}

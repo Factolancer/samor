@@ -1,0 +1,247 @@
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {DatePipe} from "@angular/common";
+import {Subscription} from "rxjs/Subscription";
+
+import {HoldingReportService} from "./holding-report.service";
+import {Holdings} from "./holdings";
+import {ReportService} from "../report.service";
+import {LogoImdData} from "../constants";
+import {isNullOrUndefined} from "util";
+import {CustomJspdf} from "../transaction-report/jsPDFext";
+import {disclaimers} from "../../../properties/discalimers";
+import {ReportNumberPipe} from "../../shared/report-number.pipe";
+import {Logger} from "../../core/logger/logger";
+import {Redemption} from "../../redemption/models/redemption";
+import {RedemptionFund} from "../../redemption/models/redemption-fund";
+import {FundOption} from "../../models/fund-option";
+import {RedemptionService} from "../../core/services/redemption.service";
+import {SnackBarService} from "../../core/services/snack-bar.service";
+
+//declare let jsPDF;
+
+@Component({
+    selector: 'app-holding-report',
+    templateUrl: './holding-report.component.html',
+    styleUrls: ['../report.styles.scss'],
+    providers: [HoldingReportService]
+})
+export class HoldingReportComponent implements OnInit, OnDestroy {
+    funds: Holdings[];
+    currentDate: Date;
+    holdingTabSubscription: Subscription;
+    className: string;
+
+    constructor(private holdingReportService: HoldingReportService, private reportService: ReportService, private logger: Logger,
+                private redemptionService: RedemptionService, private snackBarService: SnackBarService, private viewContainerRef: ViewContainerRef) {
+        this.className = "HoldingReportComponent";
+    }
+
+    ngOnInit() {
+        this.holdingTabSubscription = this.reportService.holdingTabResult.subscribe((loadTab: boolean) => {
+            if (loadTab == true) {
+                this.currentDate = new Date();
+                this.holdingReportService.getHoldings()
+                    .subscribe(funds => {
+                        this.funds = funds as Holdings[];
+                    });
+            } else {
+                this.funds = [];
+            }
+        });
+
+    }
+
+    showTransactionDetails(fundId: number) {
+
+        this.reportService.setFundIndexResult(fundId);
+    }
+
+    ngOnDestroy() {
+        this.holdingTabSubscription.unsubscribe();
+    }
+
+    addToRedemptionList(fund: Holdings) {
+        let soptrfnum = fund.id;
+        let plan = fund.plan;
+        let option = new FundOption(soptrfnum, fund.name, fund.plan, fund.divFreq, fund.divOption, true, 100, true, []);
+        let folioNo = fund.folioNo;
+        let holdingMode = fund.modeOfHolding;
+        let totalUnits = fund.units;
+        let redeemableUnits = fund.units;
+        let currValue = fund.currValue;
+        let currNav = fund.currNav;
+        let navDate = fund.navDate;
+
+        let redData = this.redemptionService.redemptionData.getValue();
+        let redDataNew = (<any>Object).assign(redData); //Object.create(redData);
+
+        // Check if the fund already exists in the list
+        let values = redDataNew.fundsData.filter(x => (x.option.soptRfnum==soptrfnum && x.folioNo==folioNo));
+        this.logger.debug("NEW REDDATA ", redDataNew);
+        if (!isNullOrUndefined(values) && values.length > 0){
+            this.snackBarService.showSnackBar("Fund is already added for redemption", "OKAY", this.viewContainerRef)
+        }
+        else {
+            this.holdingReportService.getFundObject(soptrfnum, folioNo, holdingMode, totalUnits)
+                .subscribe(data => {
+                    let fund = data;
+                    let redFund = new RedemptionFund(fund, plan, option, folioNo, holdingMode, "", "", 1, 1, 0, true, false, totalUnits,
+                        redeemableUnits, currValue, currNav, navDate, "", 1, 1, 1, 1);
+                    // Push fund in the list
+                    redData.fundsData.push(redFund);
+                    this.redemptionService.redemptionData.next(redData);
+                    this.logger.debug(this.className, this.redemptionService.redemptionData.getValue());
+                });
+        }
+    }
+
+    download() {
+
+        var columns = [{title: "Scheme", dataKey: "name"},
+            {title: "Cost Value", dataKey: "costValue"},
+            {title: "Units", dataKey: "units"},
+            {title: "NAV\nAs On", dataKey: "currNav"},
+            {title: "Current Value", dataKey: "currValue"},
+            {title: "Realized Gain/Loss", dataKey: "realizedGain"},
+            {title: "Unrealized Gain/Loss", dataKey: "unrealizedGain"},
+            {title: "Absolute Return(%)", dataKey: "absoluteReturn"}];
+
+        var rows = [];
+
+        for (let fund of this.funds) {
+            let costValue: string = "";
+            let units: string = "";
+            let planDetails:string;
+            let currNav: string = "";
+            let currValue: string = "";
+            let realizedGain: string = "";
+            let unrealizedGain: string = "";
+            let absoluteReturn: string = "";
+            let folioNo: string = "";
+            let navDate: string = "";
+            let option:string = "Option - " + fund.divOption;
+            var options = {
+                year: "numeric", month: "2-digit",
+                day: "2-digit"
+            };
+            if (!isNullOrUndefined(fund.folioNo)) {
+                folioNo = "Folio No.- "+fund.folioNo
+            }
+            if(!isNullOrUndefined(fund.plan) || !isNullOrUndefined(fund.divFreq)){
+                planDetails = "Plan - ";
+                if(!isNullOrUndefined(fund.divFreq)){
+                    planDetails += fund.divFreq + " ";
+                }
+                if(!isNullOrUndefined(fund.plan)){
+                    planDetails += fund.plan;
+                }
+            }
+            if (!isNullOrUndefined(fund.costValue)) {
+                costValue = new ReportNumberPipe("en-US").transform(fund.costValue)
+            }
+            if (!isNullOrUndefined(fund.units)) {
+                units = new ReportNumberPipe("en-US").transform(fund.units)
+            }
+            if (!isNullOrUndefined(fund.currNav)) {
+                currNav = new ReportNumberPipe("en-US").transform(fund.currNav)
+            }
+            if (!isNullOrUndefined(fund.navDate)) {
+                navDate = new DatePipe("en-US").transform(fund.navDate, 'dd-MM-yyyy')
+            }
+            if (!isNullOrUndefined(fund.currValue)) {
+                currValue = new ReportNumberPipe("en-US").transform(fund.currValue)
+            }
+            if (!isNullOrUndefined(fund.realizedGain)) {
+                realizedGain = new ReportNumberPipe("en-US").transform(fund.realizedGain)
+            }
+            if (!isNullOrUndefined(fund.unrealizedGain)) {
+                unrealizedGain = new ReportNumberPipe("en-US").transform(fund.unrealizedGain)
+            }
+            if (!isNullOrUndefined(fund.absoluteReturn)) {
+                absoluteReturn = new ReportNumberPipe("en-US").transform(fund.absoluteReturn)
+            }
+            let schemeDetails:string = fund.name;
+            if(!isNullOrUndefined(planDetails)){
+                schemeDetails += "\n" + planDetails+", "+option;
+            }
+            schemeDetails += "\n" + folioNo;
+
+            rows.push({
+                name: schemeDetails, costValue: costValue, units: units, currNav: currNav + "\n" + navDate,
+                currValue: currValue, realizedGain: realizedGain, unrealizedGain: unrealizedGain,
+                absoluteReturn: absoluteReturn
+            });
+        }
+        var wrapperPdf = new CustomJspdf('p', 'pt');
+        var pdf = wrapperPdf.jspdf;
+        var totalPagesExp = "{total_pages_count_string}";
+        var pageContent = function (data) {
+            // HEADER
+            pdf.setFontSize(20);
+            pdf.setFontStyle('normal');
+            pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+            // FOOTER
+            var str = "Page " + data.pageCount;
+            if (typeof pdf.putTotalPages === 'function') {
+                str = str + " of " + totalPagesExp;
+            }
+            pdf.setFontSize(10);
+            pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 30);
+        };
+        pdf.setFontSize(12);
+        wrapperPdf.myText("Mutual Fund Holdings as on " + this.currentDate.getDate() + "/" + (this.currentDate.getMonth() + 1) + "/" + this.currentDate.getFullYear(), {align: "center"}, 0, 100);
+        var currentpage = 0;
+        var addHeaderFooter = function(){
+            // HEADER
+            pdf.setFontSize(20);
+            pdf.setTextColor(40);
+            pdf.setFontStyle('normal');
+            pdf.addImage(LogoImdData, 'JPEG', 40, 40, 85, 18);
+            // FOOTER
+            if (currentpage < pdf.internal.getNumberOfPages()) {
+                var str = "Page " + pdf.internal.getNumberOfPages();
+                if (typeof pdf.putTotalPages === 'function') {
+                    str = str + " of " + totalPagesExp;
+                }
+                pdf.setFontSize(10);
+                pdf.setFontStyle('normal');
+                pdf.text(str, 40, pdf.internal.pageSize.height - 25);
+                currentpage = pdf.internal.getNumberOfPages();
+            }
+        };
+        var tableStyle = {
+            startY: 150,
+            styles: {overflow: 'linebreak'},
+            columnStyles: {
+                name: {columnWidth: 165},
+                costValue: {columnWidth: 45},
+                units: {columnWidth: 45},
+                currNav:{columnWidth: 50},
+                currValue:{columnWidth: 60},
+                realizedGain:{columnWidth: 50},
+                unrealizedGain:{columnWidth: 58},
+                absoluteReturn:{columnWidth: 48}
+                },
+            headerStyles: {rowHeight: 15, fontSize: 8},
+            addPageContent: pageContent,
+            bodyStyles: {rowHeight: 12, fontSize: 8, valign: 'middle'},
+            drawCell: function (cell, data) {
+                if (data.row.index == rows.length - 1) {
+                    pdf.setFontStyle('bold');
+                }
+            }
+        };
+        pdf.autoTable(columns, rows, tableStyle);
+        pdf.addPage();
+        addHeaderFooter();
+        pdf.setFontSize(8);
+        pdf.setFontStyle('normal');
+        var splitTitle = pdf.splitTextToSize(`${disclaimers.report_1}` + "\n\n" + `${disclaimers.report_2}`, 515);
+        pdf.text("Disclaimers:", 40, 100);
+        pdf.text(40, 110, splitTitle);
+        if (typeof pdf.putTotalPages === 'function') {
+            pdf.putTotalPages(totalPagesExp);
+        }
+        pdf.save('Holding Report.pdf');
+    }
+}

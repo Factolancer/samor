@@ -1,0 +1,20 @@
+import {Component, OnInit} from '@angular/core';
+import {ExploreFundsService} from "../core/services/explore-funds.service";
+
+@Component({
+    selector: 'app-tax',
+    templateUrl: './tax.component.html',
+    styleUrls: ['./tax.styles.scss']
+})
+export class TaxComponent implements OnInit {
+
+    constructor(private exploreFundService: ExploreFundsService) {
+    }
+
+    ngOnInit() {
+    }
+
+    navigateToExplore() {
+        this.exploreFundService.navigateToELSSExplore();
+    }
+}

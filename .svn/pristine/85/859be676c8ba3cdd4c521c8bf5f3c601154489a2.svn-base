@@ -1,0 +1,56 @@
+import { Injectable } from '@angular/core';
+import {LogoImdData} from "./constants";
+
+@Injectable()
+export class PdfReportService {
+
+  constructor() { }
+
+  addTable(tableList, startY, pdf){
+      //var pdf = new jsPDF('p', 'pt');
+      var totalPagesExp = "{total_pages_count_string}";
+      var currentpage = 0;
+      var tableIdx = 0;
+      for(var idx in tableList){
+          var table = tableList[idx];
+          var pageContent = function (data) {
+              // HEADER
+              pdf.setFontSize(20);
+              pdf.setTextColor(40);
+              pdf.setFontStyle('normal');
+              pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+
+              // FOOTER
+              if (currentpage < pdf.internal.getNumberOfPages()) {
+                  var str = "Page " + pdf.internal.getNumberOfPages();
+                  if (typeof pdf.putTotalPages === 'function') {
+                      str = str + " of " + totalPagesExp;
+                  }
+                  pdf.setFontSize(10);
+                  pdf.setFontStyle('normal');
+                  pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 25);
+                  currentpage = pdf.internal.getNumberOfPages();
+
+
+              }
+          };
+          table.style.addPageContent = pageContent;
+          pdf.setFontStyle('normal');
+          pdf.setFontSize(8);
+          if (tableIdx == 0) {
+              table.style['startY'] = startY;
+              pdf.myText(table.title,{align: "center"}, 0, startY-5)
+          } else {
+              table.style['startY'] = pdf.autoTableEndPosY() + 40
+              pdf.myText(table.title,{align: "center"}, 0, pdf.autoTableEndPosY() + 25);
+          }
+
+          pdf.autoTable(table.columns, table.rows, table.style);
+          tableIdx++;
+      }
+      if (typeof pdf.putTotalPages === 'function') {
+          pdf.putTotalPages(totalPagesExp);
+      }
+
+  }
+}

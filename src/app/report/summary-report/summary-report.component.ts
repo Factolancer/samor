@@ -1,0 +1,111 @@
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {Holdings} from "../holding-report/holdings";
+import {LogoImdData} from "../constants";
+import {PdfReportService} from "../pdf-report.service";
+import {SummaryReportService} from "./summary-report.service";
+import {PortfolioAssetAllocation} from "./portfolio-asset-allocation";
+import {CustomJspdf} from "../transaction-report/jsPDFext";
+import {disclaimers} from "../../../properties/discalimers";
+import {isNullOrUndefined} from "util";
+import {ReportService} from "../report.service";
+import {SnackBarService} from "../../core/services/snack-bar.service";
+
+//declare let jsPDF;
+
+@Component({
+    selector: 'app-summary-report',
+    templateUrl: './summary-report.component.html',
+    styleUrls: ['../report.styles.scss'],
+})
+export class SummaryReportComponent implements OnInit {
+    assetClassAllocation: PortfolioAssetAllocation;
+
+    constructor(private summaryReportService:SummaryReportService, private snackBarService: SnackBarService, private viewContainerRef: ViewContainerRef) {}
+
+    ngOnInit() {
+         this.summaryReportService.getAssetAllocationDetails().subscribe(portfolioAllocation => {
+            this.assetClassAllocation = portfolioAllocation as PortfolioAssetAllocation;
+        }, error => {
+             this.snackBarService.showSnackBar("Error Occurred, Please Refresh", "Okay", this.viewContainerRef);
+         });
+    }
+    prepareDownload(){
+        this.summaryReportService.getAssetAllocationDetails().subscribe(portfolioAllocation => {
+            this.assetClassAllocation = portfolioAllocation as PortfolioAssetAllocation;
+            this.download();
+        }, error => {
+            this.snackBarService.showSnackBar("Error Occurred, Please Refresh", "Okay", this.viewContainerRef);
+        });
+
+    }
+
+    download() {
+        var columns = [{title: "Asset Class", dataKey: "assetClass"},
+            {title: "Invested Amount(Rs.)", dataKey: "investedAmt"},
+            {title: "Share(%)", dataKey: "share"},
+            {title: "Current Value(Rs.)", dataKey: "currValue"},
+            {title: "Share(%)", dataKey: "currShare"}];
+
+        var rows = [];
+        for(let assetClassDetail of this.assetClassAllocation.assetClassDetailsList){
+            rows.push({assetClass:assetClassDetail.assetClass,investedAmt:assetClassDetail.investedAmt.toFixed(2),
+                share:assetClassDetail.share.toFixed(2),currValue:assetClassDetail.currValue.toFixed(2),
+                currShare:assetClassDetail.currShare.toFixed(2)})
+        }
+
+        var wrapperPdf = new CustomJspdf('p', 'pt');
+        var pdf = wrapperPdf.jspdf;
+        var totalPagesExp = "{total_pages_count_string}";
+        var pageContent = function (data) {
+            // HEADER
+            pdf.setFontSize(20);
+            pdf.setFontStyle('normal');
+            pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+            // FOOTER
+            var str = "Page " + data.pageCount;
+            if (typeof pdf.putTotalPages === 'function') {
+                str = str + " of " + totalPagesExp;
+            }
+            pdf.setFontSize(10);
+            pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 30);
+        };
+
+
+        pdf.setFontSize(12);
+        wrapperPdf.myText("Portfolio Redemption Summary", {align: "center"}, 0, 100);
+        pdf.setFontStyle('normal');
+        pdf.setFontSize(10);
+        pdf.text("Current Amount: Rs."+this.assetClassAllocation.currentValue.toFixed(2), 40, 125);
+        pdf.text("Cost Value: Rs."+this.assetClassAllocation.costValue.toFixed(2), 40, 140);
+        pdf.text("Unrealized Gain: Rs."+this.assetClassAllocation.unrealizedGain.toFixed(2), 40, 155);
+        pdf.text("Realized Gain: Rs."+this.assetClassAllocation.realizedGain.toFixed(2), 40, 170);
+        pdf.setFontStyle('bold');
+        wrapperPdf.myText("Portfolio Allocation by Asset Class", {align: "center"}, 0, 190);
+
+
+        var tableStyle = {
+            startY:210,
+            addPageContent:pageContent,
+            headerStyles: {cellPadding: {vertical: 7}, fontSize: 8},
+            bodyStyles: {cellPadding: {vertical: 6}, fontSize: 8, valign: 'middle'},
+            drawCell: function (cell, data) {
+                if (data.row.index == rows.length - 1) {
+                    pdf.setFontStyle('bold');
+                }
+            }
+        };
+        pdf.autoTable(columns,rows,tableStyle);
+
+        pdf.setFontSize(8);
+        pdf.setFontStyle('normal');
+        var splitTitle = pdf.splitTextToSize(`${disclaimers.report_1}`+"\n\n"+`${disclaimers.report_2}`, 515);
+        pdf.text("Disclaimers:",40,pdf.autoTableEndPosY() + 40);
+        pdf.text(40, pdf.autoTableEndPosY() + 50, splitTitle);
+        if (typeof pdf.putTotalPages === 'function') {
+            pdf.putTotalPages(totalPagesExp);
+        }
+
+        pdf.save('Portfolio Redemption Summary Report.pdf');
+    }
+
+}

@@ -1,0 +1,30 @@
+import { Component, OnInit } from '@angular/core';
+import {GoogleChart} from '../../shared/google-chart.directive';
+
+@Component({
+    selector : 'app-chart',/*
+     directives: [GoogleChart],*/
+     templateUrl: './chart.component.html',
+     styleUrls: ['./chart.component.scss'],
+})
+export class ChartComponent implements OnInit {
+
+       public pie_ChartData = [
+                 ['Asset', 'Share'],
+                 ['Equity',   7],
+                 ['Debt',      2],
+                 ['Gold',  5] ];
+
+       public pie_ChartOptions  = {    
+         title: ''/*,
+         width: 600,
+         height: 500*/
+       };
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+

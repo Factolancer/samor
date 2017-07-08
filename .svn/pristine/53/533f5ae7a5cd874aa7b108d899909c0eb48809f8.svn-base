@@ -1,0 +1,38 @@
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+
+import {HoldingFilter, Holdings} from "./holdings";
+import {HttpService} from "../../core/services/http-service.service";
+import {Fund} from "../../models/fund";
+
+@Injectable()
+export class HoldingReportService {
+    funds: Holdings[];
+
+    constructor( private http:HttpService) {
+    }
+
+    getHoldings(holdingFilter:HoldingFilter): Observable<Holdings[]> {
+        return this.http.securePost('/report/getHoldingReport',holdingFilter)
+            .map(res => res as Holdings[]);
+    }
+
+    getFundObject(soptrfnum: number, folioNo: string, holdingMode: string, holdingUnits: number) {
+        let holdingFund = {
+            "soptrfnum": soptrfnum,
+            "folioNo": folioNo,
+            "holdingMode": holdingMode,
+            "holdingUnits": holdingUnits
+        };
+        return this.http.securePost('/redeem/getFundObjOfHoldingFund', holdingFund)
+            .map(obj => obj);
+    }
+
+    getFundById(fundId:number){
+        return this.http.securePost('/fund/getFundBySoptRfnum',{soptrfnum:fundId })
+    }
+
+    checkPurchaseAllowed(fundId:number){
+        return this.http.securePost('/fund/checkPurchaseAllowed',{soptrfnum:fundId })
+    }
+}

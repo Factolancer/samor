@@ -1,0 +1,36 @@
+<div class="forgot-pass-dialog">
+    <div fxLayout="row" fxLayoutAlign="center center" class="forgot-pass-header" md-dialog-title>
+        <div fxFlex="95">
+            FORGOT YOUR PASSWORD?
+        </div>
+        <div fxFlex="5" class="close-dialog">
+            <md-icon class="md-18 clickable" (click)="closeClicked()">&#xE888;</md-icon>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="forgot-pass-text" md-dialog-title>
+        <div fxFlex="100">
+            Enter your E-mail id to reset your password
+        </div>
+    </div>
+    <div *ngIf="!isEmailValid" fxFlex="50%" fxFlexOffset="25%" fxLayoutAlign="center center" class="error">Invalid email-id</div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="forgot-pass-content">
+        <div fxFlex="70" fxAlign="center">
+            <div fxFlex="90" fxFlexOffset="5">
+                <form [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPassword()">
+                    <div fxLayout="column">
+                        <br/><br/><br/><br/>         
+                        <md-input-container fxFlex="100">
+                            <input md-input formControlName="email"  required  placeholder="Enter your e-mail id">
+                        </md-input-container>
+                        <br/>
+                        <div fxFlex="80%"  fxLayoutAlign="center center" class="forgot-pass-button">
+                            <button fxFlex="100%"  md-raised-button color="primary" class="forgot-pass-button" style="height:50px;font-size:16px:padding-top:10px" [disabled]="!forgotPasswordForm.valid">
+                                SEND MAIL
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

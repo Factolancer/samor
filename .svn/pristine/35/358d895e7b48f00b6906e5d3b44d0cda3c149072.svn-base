@@ -1,0 +1,15 @@
+
+export class Address {
+    constructor(
+        amtid: string,
+        addresstype: string,
+        address1: string,
+        address2: string,
+        pin: string,
+        city: string,
+        district: string,
+        state: string,
+        country: string,
+        landmark?: string
+    ) {}
+}

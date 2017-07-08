@@ -1,0 +1,98 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80">
+        <div fxLayout="column" fxLayoutAlign="center center" class="pad-tb-35">
+            <div fxFlex class="center-align heading-32-blue">Fund Comparison</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="10px">
+            <div fxFlex>
+                <md-card class="parameters-head heading-14">Parameters</md-card>
+                <md-card class="no-padding parameters">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="40">
+
+                        </div>
+                        <div fxFlex="80">
+                            <md-card class="sub" *ngFor="let param of funds[0] | keys">{{param.key}}</md-card>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+            <div fxFlex>
+                <md-card class="fund-1">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="80" class="heading-14">Axis Bank Debit Fund</div>
+                        <div fxFlex="20">
+                            <button md-icon-button="" class="watchlist-icon-btn"
+                                    (click)="addToWatchlist(funds[0]['id'])">
+                                <md-icon class="md-24 watchlist-icon">&#xE8F4;</md-icon><!--EYE ICON-->
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="no-padding fund-detail">
+                    <table class="fund-table">
+                        <tr *ngFor="let param of funds[0] | keys" class="fund-data">
+                            <td class="text">
+                                {{param.value}}
+                            </td>
+                        </tr>
+                    </table>
+                </md-card>
+                <app-add-to-cart-button [btnText]="'Add to Cart'"
+                                        [fundId]="funds[0]['id']"
+                                        [cssClass]="'cta-50'"></app-add-to-cart-button>
+            </div>
+            <div fxFlex>
+                <md-card class="fund-2">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="80" class="heading-14">ICICI Prudential saving fund</div>
+                        <div fxFlex="20">
+                            <button md-icon-button="" class="watchlist-icon-btn"
+                                    (click)="addToWatchlist(funds[1]['id'])">
+                                <md-icon class="md-24 watchlist-icon">&#xE8F4;</md-icon><!--EYE ICON-->
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="no-padding fund-detail">
+                    <table class="fund-table">
+                        <tr *ngFor="let param of funds[0] | keys" class="fund-data">
+                            <td class="text">
+                                {{funds[1][param.key]}}
+                            </td>
+                        </tr>
+                    </table>
+                </md-card>
+                <app-add-to-cart-button [btnText]="'Add to Cart'"
+                                        [fundId]="funds[1]['id']"
+                                        [cssClass]="'cta-50'"></app-add-to-cart-button>
+            </div>
+            <div fxFlex>
+                <md-card class="fund-3">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="80" class="heading-14">IDBI India Top 100 Equity Fund</div>
+                        <div fxFlex="20">
+                            <button md-icon-button="" class="watchlist-icon-btn"
+                                    (click)="addToWatchlist(funds[2]['id'])">
+                                <md-icon class="md-24 watchlist-icon">&#xE8F4;</md-icon><!--EYE ICON-->
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="no-padding fund-detail">
+                    <table class="fund-table">
+                        <tr *ngFor="let param of funds[0] | keys" class="fund-data">
+                            <td class="text">
+                                {{funds[2][param.key]}}
+                            </td>
+                        </tr>
+                    </table>
+                </md-card>
+                <app-add-to-cart-button [btnText]="'Add to Cart'"
+                                        [fundId]="funds[2]['id']"
+                                        [cssClass]="'cta-50'"></app-add-to-cart-button>
+
+            </div>
+        </div>
+    </div>
+</div>

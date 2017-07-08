@@ -1,0 +1,9 @@
+/**
+ * Created by fincash on 25-11-2016.
+ */
+
+export class Holdings{
+    constructor(public id: number,
+                public name: String) {
+    }
+}

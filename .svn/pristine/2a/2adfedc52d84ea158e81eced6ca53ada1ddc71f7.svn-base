@@ -1,0 +1,37 @@
+<!--<chart type="StockChart" [options]="options"></chart>-->
+
+
+<div [hidden]="transactionDataAvailable" class="loading">
+  <img src="../../../assets/img/loading.gif">
+</div>
+
+<div class="transaction-container" *ngIf="transactionDataAvailable" fxLayout="column">
+  <div class="title" align="center"  >Transaction History</div>
+  <div fxLayout="row">
+    <table>
+      <th>Fund</th>    <th>Date</th>     <th>Amount</th>     <th>Status</th>
+      <tr *ngFor="let transaction of transactions|slice:from:to">
+        <td >{{transaction.name}}</td>
+        <td >{{transaction.date | date}}</td>
+        <td >{{transaction.amount | currency:'INR':true:'1.0-0'}}</td>
+        <td >{{transaction.status}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="transactionDataAvailable" fxLayout="row" fxLayoutAlign="end">
+  <table >
+    <tr>
+      <td><button class="page-number-btn" (click)="prev()" [disabled]="noPrev">Prev</button> </td>
+      <td><button class="page-number-btn" (click)="prevSeries()" [disabled]="noPrev">...</button></td>
+
+      <td *ngFor="let page of pages">
+        <button class="page-number-btn clickable" [ngClass]="{active:currentPage==page?true:false}"  (click)="goto(page)">{{page}}</button>
+      </td>
+
+      <td><button class="page-number-btn clickable" value="{{page}}" (click)="nextSeries()" [disabled]="noNext">...</button></td>
+      <td><button class="page-number-btn" (click)="next()" [disabled]="noNext">Next</button></td>
+    </tr>
+  </table>
+</div>

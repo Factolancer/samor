@@ -1,0 +1,21 @@
+<div class="grey-back">
+    <div class="col-md-8 col-md-offset-2">
+        <table class="table">
+            <thead class="table-header">
+                <th class="table-element">Folio</th>
+                <th class="table-element">Fund</th>
+                <th class="table-element">IRR</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of irrData">
+                <td class="table-element">{{data.folioNo}}</td>
+                <td class="table-element">{{data.fundName}}</td>
+                <td class="table-element">{{data.xirr}}%</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-2 text-right">
+        <span (click)="download()" class="clickable"><i class="material-icons">&#xE2C4;</i></span>
+    </div>
+</div>

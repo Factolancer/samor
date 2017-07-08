@@ -1,0 +1,93 @@
+
+import {AbstractControl, AsyncValidatorFn, Validator} from "@angular/forms";
+import {Http} from "@angular/http";
+import {Observable} from "rxjs";
+import {LoginService} from "../core/services/login.service";
+import {Router} from "@angular/router";
+import {IAppConfig} from "../../environments/environment";
+import {Logger} from "../core/logger/logger";
+import {HttpService} from "../core/services/http-service.service";
+import {LocalStorageService} from "angular-2-local-storage";
+import {JwtHelper} from "angular2-jwt";
+
+export class ExistingUserValidator implements Validator{
+
+    constructor(public loginService: LoginService){}
+
+    validate( c : AbstractControl ) : /*Promise<{[key : string] : any}>|*/Observable<{[key : string] : any}> {
+        return this.abc(c.value).debounceTime(500).distinctUntilChanged().first();
+    }
+
+     /*validateUserExistance(username: string) {
+        return new Observable(observer => {
+            this.loginService.doesUserExists(username)
+                .subscribe(data => {
+                    if (data['doesUserExists']){
+                        observer.next({"userExists": true});
+                    }
+                    else {
+                        observer.next(null);
+                    }
+                });
+        });
+    }*/
+
+    static validateUserExistance(loginService: LoginService): AsyncValidatorFn{
+        return (control: AbstractControl): Observable<any> => {
+            return loginService.doesUserExists(control.value)
+                .map(data => {
+                    console.log("data " + data);
+                    return ( data ? {'inValid': control.value} : null);
+                })
+        }
+    }
+
+     abc(control: AbstractControl): {[key: string]: any} {
+         // let loginService: LoginService;
+         // loginService = new LoginService(new Router, IAppConfig,Logger, HttpService, LocalStorageService, JwtHelper)
+             return this.loginService.doesUserExists(control.value)
+                 .subscribe(data => {
+                     return data['doesUserExists'] ? {'userExists': true} : null;
+                 })
+    }
+}
+
+export class CustomAsyncValidator {
+    constructor() {
+    }
+
+    static calcValueValid(logger: Logger, minValue: number): AsyncValidatorFn {
+        return (control: AbstractControl): Observable<any> => {
+            logger.debug("Calling calc valid function");
+            const val = control.value;
+            return Observable.of({'minValue': {'requiredValue': minValue, 'actualValue': val}});
+        };
+    }
+
+}
+
+/*
+export class AsyncValidator {
+
+    static isEmailCorrect(http: Http): AsyncValidatorFn {
+        return (control: AbstractControl): {[key: string]: any} => {
+            const val = control.value; //typeof control.value.length > 0 ? control.value : 0;
+            let url = 'https://api.mailgun.net/v2/address/validate?address=' + val;
+            url = url + '&api_key=pubkey-b492fb4e9e8ad8f2ce0c2ae87e12272c';
+            http.get(url).subscribe(response => {
+                    console.log("mailgun response >>>" + response.json().is_valid)
+                    if (!response.json().is_valid) {
+                        return {"Please provide a valid email": true};
+                    } else {
+                        return null;
+                    }
+                },
+                error => {
+                    console.error("Error Occured! :( " + error.error);
+                }
+            )
+
+        };
+    }
+}
+*/

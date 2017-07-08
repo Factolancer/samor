@@ -1,0 +1,106 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Params, ActivatedRoute, Router} from "@angular/router";
+import {FundSearchResults} from "./fund-search-results";
+import {Title} from "@angular/platform-browser";
+import {FundSearchInput} from "./fund-search-input";
+import {Subscription} from "rxjs";
+import {ExploreFundsService} from "./explore-funds.service";
+import {CompareService} from "../compare/compare.service";
+import {CompareGuard} from "../compare/compare.guard";
+import {ExploreFundConstants} from "./explore-funds.constants";
+import {ComparisonFund} from "../compare/comparisonFund";
+
+
+@Component({
+    selector: 'app-explore-funds',
+    templateUrl: './explore-funds.component.html',
+    styleUrls: ['./explore-funds.styles.scss']
+})
+export class ExploreFundsComponent implements OnInit, OnDestroy {
+
+
+    searchResults: FundSearchResults;
+    searchInputSubscription: Subscription;
+    compareFundSubscription: Subscription;
+    showFilterContent: boolean;
+    searchType: string;
+    pageHeading: string;
+    compareFundList: ComparisonFund[];
+
+    constructor(private route: ActivatedRoute, private router: Router,
+                private exploreFundsService: ExploreFundsService, private titleService: Title,
+                private compareService: CompareService, private compareGaurd: CompareGuard) {
+        //for managing fund search criteria changes
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput.subscribe(
+            (searchInput: FundSearchInput) => {
+                //console.log("inside switch map!");
+                this.exploreFundsService.search(searchInput).subscribe(results => {
+                    this.searchResults = results;
+                    this.exploreFundsService.setFundSearchResult(results);
+                    //this.exploreFundsService.setTotalFundCount(this.searchResults.numFound);
+                });
+            });
+
+        //for managing fund compare criteria changes
+        this.compareFundSubscription = this.compareService.compareData.subscribe(fundList => {
+            console.log(fundList);
+            this.compareFundList = fundList;
+        });
+    }
+
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            this.searchType = params['searchType'];
+        });
+
+        if ([ExploreFundConstants.SIP_FUNDS, ExploreFundConstants.ELSS_FUNDS,
+                ExploreFundConstants.ALL_FUNDS].indexOf(this.searchType) != -1) {
+            this.setPageTitle();
+            this.showFilterContent = false;
+            let searchInput = this.exploreFundsService.getDefaultFundSearchInput();
+            searchInput.searchType = this.searchType;
+            this.exploreFundsService.setFundSearchInput(searchInput);
+        } else {
+            this.router.navigateByUrl('/sip');
+        }
+    }
+
+
+    setPageTitle() {
+        let title;
+        switch (this.searchType) {
+            case ExploreFundConstants.ALL_FUNDS:
+                title = "All Funds";
+                break;
+            case ExploreFundConstants.ELSS_FUNDS:
+                title = "ELSS Funds";
+                break;
+            case ExploreFundConstants.SIP_FUNDS:
+                title = "SIP Funds";
+                break;
+        }
+        this.pageHeading = title;
+        this.titleService.setTitle(title);
+    }
+
+    compare() {
+        //this.compareService.setFundIdList([[10, "sumit"], [10, "sumit"], [10, "sumit"]]);
+        this.compareGaurd.allow = true;
+        this.router.navigateByUrl("/compare");
+    }
+
+    displayComparisonFunds() {
+        alert(this.compareService.getFundIdList());
+    }
+
+    ngOnDestroy() {
+        // this.exploreFundsService.setFundSearchInput(this.exploreFundsService.getDefaultFundSearchInput());
+        this.searchInputSubscription.unsubscribe();
+        this.compareFundSubscription.unsubscribe();
+    }
+
+    clearList() {
+        this.compareService.removeAllFromCompare();
+    }
+
+}

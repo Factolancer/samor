@@ -1,0 +1,29 @@
+/*
+'use strict';
+
+var express = require('express');
+var controller = require('./user.controller');
+var config = require('../../config/environment');
+var auth = require('../../auth/auth.service');
+
+var router = express.Router();
+
+router.get('/', auth.hasRole(['admin']), controller.index);
+router.get('/:id/get-user-permissions', auth.hasRole(['admin']), controller.getUserPermissions);
+router.get('/get-paginition/:page/:limit/:sortBy/:order/:query?', auth.hasRole(['admin', 'client']), controller.getPaginition);
+router.delete('/:id', auth.hasRole(['admin']), controller.destroy);
+router.get('/me', auth.isAuthenticated(), controller.me);
+router.get('/get-users-by-roles/:role', auth.isAuthenticated(), controller.getUsersByRole);
+router.get('/:id/get-users-mapped-users', auth.isAuthenticated(), controller.getUserMappedUsers);
+router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
+router.put('/reset-password', controller.reset);
+router.put('/:id', auth.hasRole(['admin', 'client']), controller.update);
+router.put('/:id/activate-inactivate', auth.hasRole(['admin', 'client']), controller.activateInactivate);
+router.put('/delete/delete-user-rights', auth.hasRole(['client']), controller.deleteUserRight);
+router.get('/:id', auth.isAuthenticated(), controller.show);
+router.post('/', auth.hasRole(['admin', 'client']), controller.createUser);
+router.post('/reassign-user', auth.hasRole(['admin', 'client']), controller.reassignUser);
+router.post('/reset-password', controller.resetPassword);
+
+module.exports = router;
+*/

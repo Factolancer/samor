@@ -1,0 +1,115 @@
+/**
+ * Created by Fincash on 23-01-2017.
+ */
+
+var jwtJson = require('jwt-simple'),
+    httpClient = require('http'),
+    config = require('../../config/environment');
+exports.index = function (req, res) {
+    var path = req.path;
+    var userId = '';
+    if(path.indexOf('/')!=-1){
+      var paths =  path.split('/');
+      userId = paths[1];
+      var  tempPath = '';
+      for(var i=0; i<paths.length;i++){
+          if(i!=1){
+              tempPath = tempPath +'/'+ paths[i];
+          }
+      }
+      path  = tempPath.substring(1);
+    }
+    console.log(path);
+    console.log(userId);
+
+    var requestData = req.body;
+    console.log(requestData);
+    var kycObject = {};
+    var kycresult = requestData.result;
+    var MFKYC = requestData.MFKYC;
+    var resArray = kycresult.split("|");
+    if(resArray.length>=3){
+        kycObject['aadhar'] = resArray[0];
+        kycObject['kycStatus'] = resArray[1];
+        kycObject['pan']  = resArray[2].toUpperCase();
+        if (resArray[3]) {
+            kycObject['responseCode']  = resArray[3];
+        }
+    }
+
+    if (MFKYC != "" && MFKYC.length>0) {
+        var mfkycArray = MFKYC.split("|");
+        kycObject['panName'] = mfkycArray[0]
+        kycObject['aadharName'] = mfkycArray[1]
+        kycObject['fatherName'] = mfkycArray[2]
+        kycObject['gender'] = mfkycArray[3]
+        kycObject['maritalStatus'] = mfkycArray[4]
+        kycObject['dob'] = mfkycArray[5]
+        kycObject['nationality'] = mfkycArray[6]
+        kycObject['pekrn'] = mfkycArray[8]
+        kycObject['residentialStatus'] = mfkycArray[10]
+        kycObject['addressL1'] = mfkycArray[11] + mfkycArray[12]
+        kycObject['addressL2'] = mfkycArray[13]
+        kycObject['city'] = mfkycArray[14]
+        kycObject['state'] = mfkycArray[15]
+        kycObject['pincode'] = mfkycArray[16]
+        kycObject['mob'] = mfkycArray[17]
+        kycObject['email'] = mfkycArray[18]
+        kycObject['tel'] = mfkycArray[20]
+        kycObject['fax'] = mfkycArray[21]
+        kycObject['maidenName'] = mfkycArray[22]
+        kycObject['motherName'] = mfkycArray[23]
+        kycObject['occupation'] = mfkycArray[24]
+        kycObject['addressType'] = mfkycArray[25]
+    }
+
+    if(kycObject.kycStatus.toLowerCase()=='y' || (kycObject.responseCode && kycObject.responseCode.toLowerCase()=='ks100')) {
+        kycObject['success'] = true;
+
+        /*var addresssObj = {}
+        addresssObj['address1'] = kycObject.addressL1;
+        addresssObj['address2'] = kycObject.addressL2;
+        addresssObj['pin'] = kycObject.pincode;
+        addresssObj['city'] = kycObject.city;
+        addresssObj['state'] = kycObject.state;
+        addresssObj['country'] = 'India';
+        var eKYCObject = { 'userid' : userId, 'residentialstatus' : kycObject.residentialStatus, 'occupation' : kycObject.occupation, 'addressType' : kycObject.addressType ,'address': addresssObj};
+        var post_options = {
+            host: config.playServer.ip,
+            port: config.playServer.port,
+            path: '/postUserEkycData',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        // Set up the request
+        var post_req = httpClient.request(post_options, function(res) {
+            res.setEncoding('utf8');
+            res.on('data', function (chunk) {
+            });
+        });
+        post_req.write(eKYCObject);
+        post_req.end();*/
+
+    }else{
+        kycObject['success'] = false;
+    }
+
+    console.log(kycObject);
+    if(kycObject['success'] = true){
+        var encodedPath = jwtJson.encode("{success : true}",userId,'HS256');
+        path = path + '/'+encodedPath;
+    }else{
+        var encodedPath = jwtJson.encode(JSON.stringify(kycObject),userId,'HS256');
+        path = path + '/'+encodedPath;
+    }
+
+    console.log("redirecting  user >>>> " + path);
+    res.redirect(path);
+
+};
+
+
+
+//module.exports = router;

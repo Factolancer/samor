@@ -1,0 +1,298 @@
+<div class="wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="70">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-25">
+            <div fxFlex="80" class="center-align">
+                <div class="heading-32-dark-grey">Registration & KYC
+                </div>
+                <div class="sub-heading-16-medium-grey" style="padding-bottom: 15px;">
+                    <hr/>
+                    Upload Documents
+                </div>
+            </div>
+        </div>
+
+        <div class="pad-lr-60">
+            <div fxLayout="column">
+                <!--<div fxFlex="100" [ngClass]="{'section-header-expanded': true}">
+                    <div fxLayout="row">
+                        <div fxFlex="100" class="center-align">
+                            <span>{{heading.uploadSectionHeading}}</span>
+                        </div>
+                    </div>
+                </div>-->
+
+                <div fxFlex="100" class="column-heading">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="65">Document</div>
+                        <div fxFlex="20">Upload</div>
+                        <div fxFlex="15">Status</div>
+                    </div>
+                </div>
+
+                <div *ngIf="!kycDone" fxFlex="100" class="section-content pad-tb-20">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="60" fxFlexOffset="2">
+                            <div fxLayout="column">
+                                <div>Photograph</div>
+                                <div>
+                                    <i class="upload_explanation">
+                                        Scanned Image of Recent Passport Size Photograph
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="20" class="right-align">
+                            <div *ngIf="!photoUploadDisable">
+                                <form (ngSubmit)="photoFileChangeEvent($event)">
+                                    <label [ngClass]="{'light-grey-text': photoUploadDisable}" for="passport_photo">
+                                        Select File &nbsp;
+                                        <img src="../../../../assets/img/upload_button.svg">
+                                    </label>
+                                    <input id="passport_photo" type="file"
+                                           accept="image/*, .pdf"
+                                           (change)="photoFileChangeEvent($event)" style="display: none">
+                                </form>
+                            </div>
+                            <div *ngIf="photoUploadDisable" class="medium-grey-text">
+                                Document Approved
+                            </div>
+                        </div>
+                        <div fxFlex="10" class="right-align">
+                            <a [href]="photoimagepath" target="_blank" *ngIf="photodmtid.length>0">
+                                <md-icon *ngIf="photodmtid.length>0"
+                                         [ngClass]="{'material-icons': true, 'md-20': true, 'md-green': true}">
+                                    check_circle
+                                </md-icon>
+                            </a>
+                            <md-progress-bar mode="indeterminate" *ngIf="photoUploadInProgress"></md-progress-bar>
+                        </div>
+                        <div fxFlex="5"></div>
+                    </div>
+                </div>
+
+                <div *ngIf="!kycDone" fxFlex="100" class="section-content pad-tb-20">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="60" fxFlexOffset="2">
+                            <div fxLayout="column">
+                                <div>
+                                    PAN Card
+                                </div>
+                                <div>
+                                    <i class="upload_explanation">
+                                        Self-Attested Image of PAN Card – {{pan}}
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="20" class="right-align">
+                            <div *ngIf="!panUploadDisable">
+                                <form (ngSubmit)="panFileChangeEvent($event)">
+                                    <label [ngClass]="{'light-grey-text': photoUploadDisable}" for="pan">
+                                        Select File &nbsp;
+                                        <img src="../../../../assets/img/upload_button.svg">
+                                    </label>
+                                    <input id="pan" type="file" accept="image/*, .pdf"
+                                           (change)="panFileChangeEvent($event)" style="display: none">
+                                </form>
+                            </div>
+                            <div *ngIf="panUploadDisable" class="medium-grey-text">
+                                Document Approved
+                            </div>
+                        </div>
+                        <div fxFlex="10" class="right-align">
+                            <a [href]="panimagepath" target="_blank" *ngIf="pandmtid.length>0">
+                                <md-icon *ngIf="pandmtid.length>0"
+                                         [ngClass]="{'material-icons': true, 'md-20': true, 'md-green': true}">
+                                    check_circle
+                                </md-icon>
+                            </a>
+                            <md-progress-bar mode="indeterminate" *ngIf="panUploadInProgress"></md-progress-bar>
+                        </div>
+                        <div fxFlex="5"></div>
+                    </div>
+                </div>
+
+                <div *ngIf="!kycDone" fxFlex="100" class="section-content pad-tb-20">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="60" fxFlexOffset="2">
+                            <div fxLayout="column">
+                                <div>
+                                    Proof of Address
+                                    <md-icon class="md-14 md-brand-secondary"
+                                             mdTooltip={{tooltips.uploadSectionAddress}}>
+                                        &#xE88E;
+                                    </md-icon>
+                                </div>
+                                <div>
+                                    <i class="upload_explanation">
+                                        Self-Attested Image of document with address as {{address}}
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="20" class="right-align">
+                            <div *ngIf="!addressUploadDisable">
+                                <form [formGroup]="addressForm" (ngSubmit)="addressFileChangeEvent($event)">
+                                    <!--{{addressForm.controls['proofList'].invalid}}-->
+                                    <md-select placeholder="Address proof" [(ngModel)]="addresscndrfnum"
+                                               formControlName="proofList">
+                                        <md-option *ngFor="let proof of addressProofs" [value]="proof.cndrfnum">
+                                            {{proof.cndname}}
+                                        </md-option>
+                                    </md-select>
+                                    <md-hint class="errorMessage"
+                                             *ngIf="addressForm.controls['proofList'].invalid && addressForm.controls['addressProof'].touched">
+                                        Please select document type from the list
+                                    </md-hint>
+                                    &nbsp;
+                                    <label [ngClass]="{'light-grey-text': photoUploadDisable}" for="proof_of_address"
+                                           *ngIf="addressForm.controls['proofList'].valid">
+                                        <img src="../../../../assets/img/upload_button.svg">
+                                    </label>
+                                    <input id="proof_of_address"
+                                           formControlName="addressProof" type="file"
+                                           accept="image/*, .pdf"
+                                           (change)="addressFileChangeEvent($event)" style="display: none">
+                                </form>
+                            </div>
+                            <div *ngIf="addressUploadDisable" class="medium-grey-text">
+                                Document Approved
+                            </div>
+                        </div>
+                        <div fxFlex="10" class="right-align">
+                            <a [href]="addressimagepath" target="_blank"
+                               *ngIf="addressdmtid.length>0 && !addressInProgress">
+                                <md-icon *ngIf="addressdmtid.length>0"
+                                         [ngClass]="{'material-icons': true, 'md-20': true, 'md-green': true}">
+                                    check_circle
+                                </md-icon>
+                            </a>
+                            <md-progress-bar mode="indeterminate" *ngIf="addressInProgress"></md-progress-bar>
+                        </div>
+                        <div fxFlex="5"></div>
+                    </div>
+                </div>
+
+                <div fxFlex="100" class="section-content pad-tb-20">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="60" fxFlexOffset="2">
+                            <div fxLayout="column">
+                                <div>
+                                    Personalized Cancelled Cheque
+                                    <md-icon class="md-14 md-brand-secondary"
+                                             mdTooltip={{tooltips.uploadSectionCheque}}>
+                                        &#xE88E;
+                                    </md-icon>
+                                </div>
+                                <div>
+                                    <i class="upload_explanation">
+                                        Scanned Image of Cancelled Cheque with your Name on it for a/c no {{bank}}
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="20" class="right-align">
+                            <div *ngIf="!bankUploadDisable">
+                                <form [formGroup]="bankForm">
+                                    <md-select placeholder="Account proof" [(ngModel)]="bankcndrfnum"
+                                               formControlName="proofList">
+                                        <md-option *ngFor="let proof of bankProofs" [value]="proof.cndrfnum">
+                                            {{proof.cndname}}
+                                        </md-option>
+                                    </md-select>
+                                    <md-hint class="errorMessage"
+                                             *ngIf="bankForm.controls['proofList'].invalid && bankForm.controls['bankProof'].touched">
+                                        Please select document type from the list
+                                    </md-hint>
+                                    &nbsp;
+                                    <label for="cheque" *ngIf="bankForm.controls['proofList'].valid">
+                                        <img src="../../../../assets/img/upload_button.svg">
+                                    </label>
+                                    <input id="cheque" formControlName="bankProof" type="file" accept="image/*, .pdf"
+                                           (change)="chequeFileChangeEvent($event)" style="display: none">
+                                </form>
+                            </div>
+                            <div *ngIf="bankUploadDisable" class="medium-grey-text">
+                                Document Approved
+                            </div>
+                        </div>
+                        <div fxFlex="10" class="right-align">
+                            <a [href]="bankimagepath" target="_blank" *ngIf="bankdmtid.length>0 && !bankInProgress">
+                                <md-icon *ngIf="bankdmtid.length>0"
+                                         [ngClass]="{'material-icons': true, 'md-20': true, 'md-green': true}">
+                                    check_circle
+                                </md-icon>
+                            </a>
+                            <md-progress-bar mode="indeterminate" *ngIf="bankInProgress"></md-progress-bar>
+                        </div>
+                        <div fxFlex="5"></div>
+                    </div>
+                </div>
+
+                <div fxFlex="100" class="section-content pad-tb-20">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="60" fxFlexOffset="2">
+                            <div fxLayout="column">
+                                <div>
+                                    Signature
+                                    <md-icon class="md-14 md-brand-secondary"
+                                             mdTooltip={{tooltips.uploadSectionSignature}}>
+                                        &#xE88E;
+                                    </md-icon>
+                                </div>
+                                <div>
+                                    <i class="upload_explanation">
+                                        Scanned Image of Signature on a Plain Sheet of Paper of the size of a
+                                        business/visiting card which will be used to digitally sign BSE Registration
+                                        form
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="20" class="right-align">
+                            <!--<form (ngSubmit)="signatureFileChangeEvent($event)">-->
+                            <div *ngIf="!signatureUploadDisable">
+                                <label for="signature">
+                                    Select File &nbsp;
+                                    <img src="../../../../assets/img/upload_button.svg">
+                                </label>
+                                <input [disabled]="signatureUploadDisable" id="signature" type="file"
+                                       accept="image/*, .pdf"
+                                       (change)="signatureFileChangeEvent($event)" style="display: none">
+                            </div>
+                            <div *ngIf="signatureUploadDisable" class="medium-grey-text">
+                                Document Approved
+                            </div>
+                            <!--</form>-->
+                        </div>
+                        <div fxFlex="10" class="right-align">
+                            <a [href]="signatureimagepath" target="_blank" *ngIf="signaturedmtid.length>0">
+                                <md-icon *ngIf="signaturedmtid.length>0"
+                                         [ngClass]="{'material-icons': true, 'md-20': true, 'md-green': true}">
+                                    check_circle
+                                </md-icon>
+                            </a>
+                            <md-progress-bar mode="indeterminate" *ngIf="signatureInProgress"></md-progress-bar>
+                        </div>
+                        <div fxFlex="5"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button md-raised-button color="primary" (click)="completeRegistration()">PROCEED</button>
+        </div>
+
+        <div fxLayout="column" class="pad-lr-60">
+            <div class="heading-16-grey">Guidelines for document upload:</div>
+            <ol type="1" class="pad-lr-10 medium-grey-text font-12">
+                <li>All the files format should be PDF/JPG/JPEG/PNG.</li>
+                <li>Please upload a clear image preferably of aspect ratio 4:3.</li>
+                <li>Signature and Photograph should be clear and occupy around 80% of the image.</li>
+                <li>Maximum file size is 5MB.</li>
+            </ol>
+        </div>
+    </div>
+</div>

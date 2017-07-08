@@ -1,0 +1,54 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+import {SearchResults} from "./search-results";
+import {SearchInput} from "./search-input";
+import {Subject, Observable} from "rxjs";
+
+
+@Injectable()
+export class SearchService {
+    private searchInputSource = new Subject<SearchInput>();
+    searchInput = this.searchInputSource.asObservable();
+
+    searchResults: Observable<SearchResults> = this.searchInput.switchMap(
+        (searchInput: SearchInput) => {
+            alert("going for search!");
+            this.search(searchInput)
+        });
+
+    constructor(private httpService: HttpService) {
+    }
+
+    searchFund(searchInput: SearchInput) {
+        searchInput.from = 0;
+        searchInput.sortElement = "drat";
+        searchInput.sortOrder = "desc";
+        this.setSearchInput(searchInput);
+    }
+
+
+    sort(searchInput: SearchInput) {
+        searchInput.from = 0;
+        this.setSearchInput(searchInput);
+    }
+
+    changePage(searchInput: SearchInput) {
+        this.setSearchInput(searchInput);
+    }
+
+    search(searchInput: SearchInput) {
+        this.httpService.post("/searchFund", searchInput).map(output => {
+            return output as SearchResults
+        });
+    }
+
+    getFilterData(path: string) {
+        return this.httpService.get(path);
+    }
+
+    setSearchInput(searchInput: SearchInput) {
+        this.searchInputSource.next(searchInput);
+    }
+
+
+}

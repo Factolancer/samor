@@ -1,0 +1,26 @@
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {SearchComponent} from './search.component';
+import {SearchService} from "./search.service";
+import {FormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
+import {HttpService} from "../services/http-service.service";
+import {AmcFilterComponent} from './filters/amc-filter.component';
+import {MdCheckboxModule} from "@angular2-material/checkbox";
+import {FundAgeFilterComponent} from './filters/fund-age-filter.component';
+import {FundRatingFilterComponent} from './filters/fund-rating-filter.component';
+
+
+@NgModule({
+    imports: [
+        CommonModule,
+        FormsModule,
+        HttpModule,
+        MdCheckboxModule,
+    ],
+    exports: [SearchComponent, AmcFilterComponent, FundAgeFilterComponent, FundRatingFilterComponent],
+    providers: [SearchService, HttpService],
+    declarations: [SearchComponent, AmcFilterComponent, FundAgeFilterComponent, FundRatingFilterComponent]
+})
+export class SearchModule {
+}

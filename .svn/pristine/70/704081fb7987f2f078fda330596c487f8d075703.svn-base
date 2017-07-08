@@ -1,0 +1,66 @@
+/**
+ * Created by Fincash on 06-02-2017.
+ */
+export class ChartOptions{
+
+    public assetOptions:Object = {
+
+        title: {text: ''},
+        chart: {zoomType: 'x', type: 'pie', height: 250, width: 400},
+        credits: {enabled: false},
+        colors:["#74E1E1","#90ED7D","#f7a35c"],
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '<span style="text-transform: capitalize;">{point.name}</span>:{point.percentage:.1f}%'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: null,
+            pointFormat: '<span style="color:{point.color};text-transform: capitalize">{point.name}</span>: <b>{point.y}</b><br/>'
+        },
+        series :[{
+            name: '',
+            colorByPoint: true,
+            allowPointSelect: true,
+            data:[]
+        }]
+    };
+    public assetBreakupOptions:Object = {
+        title: {text: ''},
+        chart: {zoomType: 'x', type: 'pie', height: 250, width: 400},
+        credits: {enabled: false},
+        colors:["#FF4C4C","#023F5B","#6ACBAE", "#00BED5","#9AC872", "#63D8DD","#FD2F58","#F9A640",
+            "#653F6C","#33A47E","#0A8BAA", "#EB6586", "#849F62"],
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: false,
+                    format: '<span style="text-transform: capitalize;">{point.name}</span>:{point.percentage:.1f}%',
+                },
+                showInLegend: true
+            }
+        },
+        legend: {
+            itemStyle: {
+                fontSize:'10px'
+            },
+            borderWidth: 1
+        },
+        tooltip: {
+            headerFormat: null,
+            pointFormat: '<span style="color:{point.color}; text-transform: capitalize">{point.name}</span>: <b>INR {point.y} <br/>({point.percentage:.1f}%)</br><br/>'
+        },
+        series :[{
+            name: '',
+            colorByPoint: true,
+            allowPointSelect: true,
+            data:[]
+        }]
+    };
+
+
+
+}

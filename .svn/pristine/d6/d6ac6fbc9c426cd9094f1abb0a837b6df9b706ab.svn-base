@@ -1,0 +1,24 @@
+import {Injectable} from "@angular/core";
+import {Router, Resolve, ActivatedRouteSnapshot} from "@angular/router";
+import {Observable} from "rxjs";
+import {HttpService} from "../core/services/http-service.service";
+import {LookUpService} from "../core/services/lookup.service";
+
+@Injectable()
+export class LookUpResoveService implements Resolve<boolean | JSON[]> {
+    constructor(private router: Router, public lookupService: LookUpService) {
+    }
+
+    resolve(route: ActivatedRouteSnapshot): Observable<boolean | JSON[]> {
+
+        // return this.lookupService.
+        return this.lookupService.getByGroup("COUNTRY").map(output => {
+            if (output) {
+                console.log(output);
+                return output as JSON[];
+            } else {
+
+            }
+        });
+    }
+}

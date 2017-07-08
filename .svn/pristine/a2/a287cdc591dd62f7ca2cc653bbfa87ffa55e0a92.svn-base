@@ -1,0 +1,32 @@
+import {Injectable} from "@angular/core";
+import {Logger} from "../logger/logger";
+import {Observable} from "rxjs";
+import {HttpService} from "./http-service.service";
+import {SnackBarService} from "./snack-bar.service";
+
+@Injectable()
+export class IsBasicDetailsUpdatedService {
+
+    isbasicDetailsupdated: boolean;
+    className: string;
+    constructor(public logger: Logger, public httpService: HttpService, public snackBarService : SnackBarService) {
+        this.className = "IsBasicDetailsUpdatedService"
+    }
+
+    public checkIfBasicDetailsUpdated() : Observable<boolean>{
+        return this.httpService.get('/user/checkIfBasicDetailsUpdated')
+            .map(response => {
+                this.logger.debug(this.className, response.isbasicdetailsupdated)
+                this.isbasicDetailsupdated = response.isbasicdetailsupdated;
+
+                if (this.isbasicDetailsupdated){
+                    return true
+                }
+                else {
+                    this.snackBarService.setGuardMessage("Some personal information is missing")
+                    return false
+                }
+            });
+
+    }
+}

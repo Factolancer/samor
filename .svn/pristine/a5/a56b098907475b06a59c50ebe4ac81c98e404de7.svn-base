@@ -1,0 +1,8 @@
+
+export const Heading = {
+    basicSectionHeading: 'Personal Detail',
+    kycSectionHeading: 'Address Detail',
+    bankSectionHeading: 'Bank Detail',
+    otherSectionHeading: 'FATCA Detail',
+    uploadSectionHeading: 'Upload Documents'
+};

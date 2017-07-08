@@ -1,0 +1,227 @@
+import {Component, HostListener, Inject, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {Subscription} from "rxjs/Subscription";
+import "rxjs/add/operator/take";
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+import {
+    ActivatedRoute,
+    NavigationCancel,
+    NavigationEnd,
+    NavigationError,
+    NavigationStart,
+    Router,
+    RoutesRecognized
+} from "@angular/router";
+import {LoginService} from "../services/login.service";
+import {Logger} from "../logger/logger";
+import {CartService} from "../services/cart.service";
+import {HeaderService} from "../services/header.service";
+import {URLAccessGuard} from "../guards/urlAccess.guard";
+import {MdSidenav} from "@angular/material";
+import {LocalStorageService} from "angular-2-local-storage";
+import {KycStatusService} from "../services/kycstatus.service";
+import {YES_NO_ARRAY} from "../../constants/CNDGroup";
+import {isNullOrUndefined} from "util";
+
+@Component({
+    selector: 'fincash-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss']
+})
+export class HeaderComponent implements OnInit, OnDestroy {
+
+    @ViewChild('sidenav') sidenav: MdSidenav;
+    private loginSubscription: Subscription;
+    private headerVisibilitySubscription: Subscription;
+
+    hideHeader:Observable<boolean>;
+
+    isLoggedIn: boolean;
+    private className: string;
+    state: boolean ;
+    allowStateChange: boolean;
+    routerChangeSubs : Subscription;
+    navTimerSubs : Subscription;
+    autoOnNavigationSubs : Subscription;
+    customerNameObservable: Observable<string>;
+    color : string;
+    mode : string;
+    barValueObservable : Observable<number>;
+    barBufferValueObservable  : Observable<number>;
+    showProgressObservable : Observable<boolean>;
+    autoOnNavigationObservable : Observable<boolean>;
+    barStyle : any;
+
+    solMenub:boolean;
+    calcMenub:boolean;
+    resCentMenub:boolean;
+    showAccMenub:boolean;
+
+    investedSub: Subscription;
+    userVerifiedSub: Subscription;
+    invested:boolean;
+    showInstaLink:boolean;
+    userVerifiedOservable: Observable<boolean>;
+
+    constructor(private logger: Logger, private loginService: LoginService, private cartService: CartService, private kycStatusService: KycStatusService,
+                private router: Router, private route: ActivatedRoute, @Inject(APP_CONFIG) private config: IAppConfig,
+                private headerService: HeaderService, private urlAccessGuard: URLAccessGuard, private localStorageService: LocalStorageService) {
+        this.isLoggedIn = false;
+        this.allowStateChange = false;
+        this.className = 'HeaderComponent';
+        this.customerNameObservable = this.loginService.customerName.asObservable();
+        this.color = this.headerService.pBarColor;
+        this.mode = this.headerService.mode;
+        this.barBufferValueObservable = this.headerService.barBufferValue.asObservable();
+        this.barValueObservable = this.headerService.barValue.asObservable();
+        this.showProgressObservable =  this.headerService.showBarProgress.asObservable();
+        this.autoOnNavigationObservable = this.headerService.autoOnNavigationSubject.asObservable();
+        this.barStyle = {};
+        this.solMenub = this.calcMenub = this.resCentMenub = false;
+        this.hideHeader = this.headerService.headerVisibilitySubject.asObservable();
+        this.showAccMenub = true;
+        this.userVerifiedOservable = this.loginService.userVerified.asObservable();
+        this.invested = false;
+    }
+
+    @HostListener("window:scroll", ['$event'])
+    onWindowScroll(evnt) {
+        if (document.body.scrollTop == 0 && this.allowStateChange)
+            this.state = false;
+    }
+
+
+    onScroll(event : any) {
+        if (this.allowStateChange) {
+            this.state = true;
+        }
+    }
+
+    onScrollUp(event : any) {
+        if (this.allowStateChange) {
+            this.state = false;
+        }
+    }
+
+    logUserIn() {
+        this.router.navigate([this.config.dloginUrl]);
+    }
+
+    userSignUp() {
+        this.router.navigate([this.config.signupUrl]);
+    }
+
+    logUserOut() {
+        this.loginService.invalidateToken().subscribe(()=>{
+            this.loginService.logOutUser();
+            this.cartService.resetCart();
+        });
+        this.localStorageService.clearAll("orderM[0-9]");
+    }
+
+    routerRegister(){
+            this.routerChangeSubs = this.router.events.subscribe((evt) => {
+                if(evt instanceof  NavigationStart){
+                    this.headerService.progressBarShowHide(true,true);
+                    //this.logger.debug(this.className,"  NavigationStart   ");
+                    this.barStyle = {'max-height': '65px'};
+                    this.headerService.incrementProgress(true);
+                    this.navTimerSubs  = Observable.interval(50).subscribe(()=>{
+                        this.headerService.incrementProgress(true);
+                    })
+                }
+                if(evt instanceof  RoutesRecognized){
+                    //this.logger.debug(this.className,"  RoutesRecognized   ");
+                    let  _navEndSubs = Observable.interval(500).take(1).subscribe(()=>{
+                        if(this.navTimerSubs){
+                            this.navTimerSubs.unsubscribe();
+                            this.navTimerSubs  = Observable.interval(50).subscribe(()=>{
+                                this.headerService.incrementProgress(true);
+                            })
+                        }
+                        _navEndSubs.unsubscribe();
+                    })
+
+
+                }
+                if (evt instanceof NavigationEnd) {
+                    //this.logger.debug(this.className,"  NavigationEnd   ");
+                    let  _navEndSubs = Observable.interval(1000).take(1).subscribe(()=>{
+                        if(this.navTimerSubs){
+                            this.navTimerSubs.unsubscribe();
+                        }
+                        _navEndSubs.unsubscribe();
+                        this.barStyle = {};
+                        this.headerService.resetProgressBar();
+                    });
+                    this.sidenav.close();
+                }
+
+                if(evt instanceof NavigationCancel || NavigationError){
+                    //this.logger.debug(this.className,"  NavigationCancel or NavigationError ");
+                    if(this.navTimerSubs){
+                        this.navTimerSubs.unsubscribe()
+                    }
+                    this.barStyle = {};
+                    //this.headerService.resetProgressBar();
+                }
+            });
+    }
+
+    ngOnInit() {
+        this.routerRegister();
+        this.loginSubscription = this.loginService.loginObservable.subscribe((isLoggedIn: boolean) => {
+            this.isLoggedIn = isLoggedIn;
+        });
+
+        this.headerVisibilitySubscription = this.headerService.headerVisibilityObservable.subscribe(value => {
+            this.allowStateChange = value;
+            if(!value){
+                this.state = false;
+            }
+        });
+
+        this.investedSub = this.loginService.userObservable.subscribe((userObject) => {
+            if (userObject && !isNullOrUndefined(userObject.foliocount) && userObject.foliocount > 0) {
+                this.invested = true;
+            } else {
+                this.invested = false;
+            }
+            if (userObject && !isNullOrUndefined(userObject.isVerified) && userObject.isVerified == YES_NO_ARRAY[0].value){
+                this.showInstaLink = true;
+            }
+        });
+
+        /*this.kycStatusService.checkIndividual().subscribe((isIndividual) => {
+            if (isIndividual) {
+                this.showInstaLink = true;
+            }
+        });*/
+
+    }
+
+    changePassword() {
+        this.urlAccessGuard.allow = true;
+        this.router.navigate(['/auth/password-assistance/forgot']);
+    }
+
+    ngOnDestroy() {
+        this.loginSubscription.unsubscribe();
+        this.headerVisibilitySubscription.unsubscribe()
+        if(this.routerChangeSubs){
+            this.routerChangeSubs.unsubscribe();
+        }
+        if(this.navTimerSubs){
+            this.navTimerSubs.unsubscribe();
+        }
+        if(this.autoOnNavigationSubs) {
+            this.autoOnNavigationSubs.unsubscribe();
+        }
+        if (this.investedSub) {
+            this.investedSub.unsubscribe();
+        }
+        if (this.userVerifiedSub) {
+            this.userVerifiedSub.unsubscribe();
+        }
+    }
+}

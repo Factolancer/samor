@@ -1,0 +1,27 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Enter your investment details</h1>
+        </div>
+    </section>
+    <section class="data-body">
+        <app-checkout-product-view *ngFor="let item of checkoutData.products" [_product]="item"
+                                   class="checkout-product"></app-checkout-product-view>
+        <select required>
+            <option *ngFor="let nominee of checkoutData.nomineeList" [value]="nominee">{{nominee}}</option>
+        </select>
+
+        <select required>
+            <option *ngFor="let bank of checkoutData.bankList" [value]="bank">{{bank}}</option>
+        </select>
+    </section>
+    <section class="data-foot">
+        <div class="row">
+            <div class="col-md-12">
+                <button color="primary" md-raised-button="" class="md-primary float-right" ng-reflect-color="primary"
+                        routerLink="summary">Continue Checkout
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

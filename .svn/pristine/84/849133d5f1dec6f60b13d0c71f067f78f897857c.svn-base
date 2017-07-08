@@ -1,0 +1,30 @@
+import {Injectable} from "@angular/core";
+import {Router, Resolve, ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
+import {Observable} from "rxjs/Observable";
+import {SummaryUserInfo} from "./models/summary-user-info";
+import {RedemptionService} from "../core/services/redemption.service";
+import {Redemption} from "./models/redemption";
+import {isNullOrUndefined} from "util";
+
+
+@Injectable()
+export class InstantRedemptionResolveService implements Resolve<Redemption> {
+
+
+    constructor(private router: Router, private redemptionService: RedemptionService) {
+    }
+
+    resolve(route: ActivatedRouteSnapshot,state: RouterStateSnapshot): Observable<Redemption> | Redemption {
+
+        return this.redemptionService.getInstaRedeemFunds().map(output => {
+            if (!isNullOrUndefined(output)) {
+                return output as Redemption;
+            } else {
+                // can route for this case
+                //this.router.navigate(['/cart']);
+                return new Redemption(null,null,null,null,null,null);
+            }
+        });
+    }
+
+}

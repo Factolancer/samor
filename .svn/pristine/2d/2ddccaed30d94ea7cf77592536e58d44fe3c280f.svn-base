@@ -1,0 +1,25 @@
+import {CanActivate, Router} from "@angular/router";
+import {Injectable} from "@angular/core";
+@Injectable()
+export class URLAccessGuard implements CanActivate {
+
+    constructor(private router: Router) {
+
+    }
+
+    //must be set to true for navigation to succeed
+    allow = false;
+
+    canActivate() {
+        if (this.allow) {
+            this.allow = false;
+            return true;
+        }
+        else {
+            // start a new navigation to redirect to login page
+            this.router.navigate(['/']);
+            // abort current navigation
+            return false;
+        }
+    }
+}

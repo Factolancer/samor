@@ -1,0 +1,9 @@
+
+export class Contact {
+    constructor(
+        email: string,
+        mob: string,
+        tel?: string,
+        fax?: string
+    ) {}
+}

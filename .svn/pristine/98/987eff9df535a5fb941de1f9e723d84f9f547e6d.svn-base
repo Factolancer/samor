@@ -1,0 +1,139 @@
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutWrap.lt-md="true" class="wrapper mar-t-25">
+    <div fxFlex="85" fxHide.lt-md="" class="center-align heading-32-dark-grey">
+        Portfolio Statements
+    </div>
+
+    <div fxLayout="row" fxFlex="98vw" fxHide.gt-sm=""  fxLayoutAlign="start center" class="pad-tb-15 center-align bg-secondary heading-24-white">
+        <div fxFlex="15" class="pad-lr-20"><i class="material-icons circular-white-border pad-5">&#xE2C4;</i></div>
+        <div fxFlex="80"><span class="center-align">Download Reports</span></div>
+    </div>
+    <br/>
+    <div fxFlex="100" fxHide.gt-sm="" class="center-align report-container">
+        <md-card class="no-padding">
+           <!-- <md-card-title class="bg-lgray pad-tb-20 pad-lr-10 left-align heading-24-dark-grey"><b><i>Report</i></b></md-card-title>-->
+            <md-card-content  class="pad-lr-10 pad-b-10 pad-t-10">
+                <div fxLayoutAlign="start center">
+                    <div fxFlex class="left-align report-title">Investment Summary</div>
+                    <div fxFlex class="right-align" >
+                        <button md-raised-button (click)="summaryReport.prepareDownload()">
+                            <md-icon class="circular-gray-border">&#xE2C4;</md-icon><br/>
+                            <i class="txt-0-8">Download</i>
+                        </button>
+                    </div>
+                </div><hr/>
+                <div fxLayoutAlign="start center">
+                        <div fxFlex class="left-align report-title">Holding</div>
+                        <div fxFlex class="right-align" >
+                         <button md-raised-button (click)="holdingReport.prepareDownload()">
+                            <md-icon class="circular-gray-border">&#xE2C4;</md-icon><br/>
+                            <i class="txt-0-8">Download</i>
+                         </button>
+                        </div>
+                </div><hr/>
+                <div fxLayoutAlign="start center">
+                    <div fxFlex class="left-align report-title">Transaction</div>
+                    <div fxFlex class="right-align" >
+                        <button md-raised-button (click)="transactionReport.prepareDownload()">
+                            <md-icon class="circular-gray-border">&#xE2C4;</md-icon><br/>
+                            <i class="txt-0-8">Download</i>
+                        </button>
+                    </div>
+                </div><hr/>
+                <div fxLayoutAlign="start center">
+                    <div fxFlex class="left-align report-title">Capital Gains</div>
+                    <div fxFlex class="right-align" >
+                        <button md-raised-button (click)="capitalGainReport.prepareDownload()">
+                            <md-icon class="circular-gray-border">&#xE2C4;</md-icon><br/>
+                            <i class="txt-0-8">Download</i>
+                        </button>
+                    </div>
+                </div><hr/>
+                <div fxLayoutAlign="start center">
+                    <div fxFlex class="left-align report-title">IRR</div>
+                    <div fxFlex class="right-align" >
+                        <button md-raised-button (click)="irrReport.prepareDownload()">
+                            <md-icon class="circular-gray-border">&#xE2C4;</md-icon><br/>
+                            <i class="txt-0-8">Download</i>
+                        </button>
+                    </div>
+                </div>
+            </md-card-content>
+
+        </md-card>
+
+    </div>
+
+    <div fxFlex="5" fxHide.lt-md="" class="right-align ">
+        <button md-mini-fab color="primary" *ngIf="selectedTab==0" (click)="summaryReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>
+        <button md-mini-fab color="primary" *ngIf="selectedTab==1" (click)="holdingReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>
+        <button md-mini-fab color="primary" *ngIf="selectedTab==2" (click)="transactionReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>
+        <button md-mini-fab color="primary" *ngIf="selectedTab==3" (click)="capitalGainReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>
+        <!--<button md-mini-fab color="primary" *ngIf="selectedTab==4" (click)="assetAllocationReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>-->
+        <button md-mini-fab color="primary" *ngIf="selectedTab==5" (click)="irrReport.download()">
+            <md-icon>&#xE2C4;</md-icon>
+        </button>
+    </div>
+</div>
+<div fxLayout="row" fxHide.lt-md=""  fxLayoutAlign="center center" class="wrapper mar-tb-30">
+    <div fxFlex="90">
+        <md-tab-group class="report-tab-header" [(selectedIndex)]="selectedTab" (selectChange)="loadTab()">
+            <md-tab label="Summary">
+                <app-summary-report #summaryReport></app-summary-report>
+            </md-tab>
+            <md-tab label="Holding">
+                <app-holding-report #holdingReport></app-holding-report>
+            </md-tab>
+            <md-tab label="Transaction">
+                <app-transaction-report #transactionReport></app-transaction-report>
+            </md-tab>
+            <md-tab label="Capital Gains">
+                <app-capital-gains-report #capitalGainReport></app-capital-gains-report>
+            </md-tab>
+            <md-tab label="Asset Allocation">
+                <app-asset-allocation #assetAllocationReport [currentTab]="selectedTab"></app-asset-allocation>
+            </md-tab>
+            <md-tab label="IRR">
+                <app-irr-report #irrReport></app-irr-report>
+            </md-tab>
+        </md-tab-group>
+    </div>
+
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper mar-t-25">
+    <div fxFlex="90">
+        <span (click)="seeDisclaimers()" class="disclaimer-text clickable">Disclaimers: This is a computer generated report and
+            does not require a signature.The information in this report includes information taken from the Registrar...<u>read more</u></span>
+    </div>
+</div>
+
+<div *ngIf="redData.fundsData.length>0">
+    <button md-raised-button="" color="accent" class="redeem-button"
+            (click)="goToRedeem()" (mouseover)="showRedemptinoList=true">Redeem &nbsp;
+        {{redData.fundsData.length}}
+    </button>
+    <div *ngIf="showRedemptinoList" class="redeem-list"
+         (mouseleave)="showRedemptinoList=false">
+        <div *ngFor="let fund of redData.fundsData;let index = index; let last= last;">
+            <div fxLayout="row" fxLayoutAlign="start start" class="list-text">
+                <div fxFlex="95">{{fund.fundName}}</div>
+                <div fxFlex="5" class="clickable" (click)="removeFundFromRedemption(index)">
+                    <md-icon class="md-14">&#xE888;</md-icon>
+                </div>
+            </div>
+            <md-divider *ngIf="!last"></md-divider>
+        </div>
+        <div class="top-bar">
+            <button md-button="" class="remove-button" (click)="removeAllFromRedemption()">Remove All</button>
+        </div>
+    </div>
+</div>

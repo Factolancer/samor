@@ -1,0 +1,179 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-20">
+            <div fxFlex="97" class="center-align heading-32-dark-grey">Fund Comparison</div>
+            <div fxFlex="3" align="end" class="clickable">
+                <div class="back-button" (click)="back()">
+                    <div class="icon">
+                        <md-icon class="md-16">&#xE5C4;</md-icon>
+                    </div>
+                    <div class="text">Back</div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="10px" class="grey-back pad-30">
+            <div fxFlex>
+                <md-card class="parameters-head heading-14">Parameters</md-card>
+                <md-card class="no-padding parameters">
+                    <div>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40" class="dark-grey-text bold">
+                                Basics
+                            </div>
+                            <div fxFlex="80">
+                                <md-card class="no-padding">
+                                    <div class="fund-data min-h-40"><p>Current NAV</p></div>
+                                    <div class="fund-data min-h-40">
+                                        <p>Fincash Rating
+                                            <md-icon class="md-12" mdTooltip={{ratingDisclaimerText}}>
+                                                &#xE88E;</md-icon>
+                                        </p>
+                                    </div>
+                                    <div class="fund-data min-h-40"><p>Category</p></div>
+                                    <div class="fund-data min-h-40"><p>Plan Options</p></div>
+                                </md-card>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                    </div>
+                    <div>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40" class="dark-grey-text bold">
+                                Performance
+                            </div>
+                            <div fxFlex="80">
+                                <md-card class="no-padding">
+                                    <div class="fund-data min-h-40"><p>3 Month Return</p></div>
+                                    <div class="fund-data min-h-40"><p>1 Year Return</p></div>
+                                    <div class="fund-data min-h-40"><p>3 Year Return</p></div>
+                                    <div class="fund-data min-h-40"><p>5 Year Return</p></div>
+                                </md-card>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                    </div>
+                    <div>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40" class="dark-grey-text bold">
+                                Portfolio
+                            </div>
+                            <div fxFlex="80">
+                                <md-card class="no-padding">
+                                    <div class="fund-data min-h-40"><p>Asset Allocation</p></div>
+                                </md-card>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                    </div>
+                    <div>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40" class="dark-grey-text bold">
+                                Other Details
+                            </div>
+                            <div fxFlex="80">
+                                <md-card class="no-padding">
+                                    <div class="fund-data min-h-40"><p>AUM</p></div>
+                                    <div class="fund-data min-h-40"><p>Min SIP Investment</p></div>
+                                    <div class="fund-data min-h-40"><p>Min Lumpsum Investment</p></div>
+                                    <div class="fund-data min-h-40"><p>Benchmark</p></div>
+                                    <div class="fund-data min-h-65"><p>Exit Load</p></div>
+                                </md-card>
+                            </div>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+            <div fxFlex *ngFor="let fund of funds;let index= index;">
+                <md-card class="fund-{{index+1}}">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="80" class="heading-14">{{fund.basicFactsheet.name}}</div>
+                        <div fxFlex="20">
+                            <!--<button md-icon-button="" class="watchlist-icon-btn" mdTooltip="Add To Watchlist"
+                                    (click)="addToWatchlist(fund.id)">
+                                <md-icon class="md-24 watchlist-icon">&#xE8F4;</md-icon>&lt;!&ndash;EYE ICON&ndash;&gt;
+                            </button>-->
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="no-padding fund-detail">
+                    <div class="fund-table">
+                        <div class="fund-data min-h-40">
+                            <p>
+                                <app-nav [navValue]="fund.basicFactsheet.nav"
+                                         [navValueChange]="fund.basicFactsheet.navValueChange"
+                                         [navPercentChange]="fund.basicFactsheet.navPercentChange"
+                                ></app-nav>
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p><span [innerHTML]="fund.rating | rating"></span></p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p>
+                                {{fund.category}} {{fund.basicFactsheet.subCategory}}
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p>
+                                TBD
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p>
+                                {{fund.basicFactsheet.ret3mn | returns:true}}
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p>
+                                {{fund.basicFactsheet.ret1yr | returns:true}}
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p>
+                                {{fund.basicFactsheet.ret3yr | returns:true}}
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p>
+                                {{fund.basicFactsheet.ret5yr | returns:true}}
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p>
+                                TBD
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p>
+                                {{fund.aum | currency:'INR':true:'1.0-0'}} Cr
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p>
+                                {{fund.basicFactsheet.minSIPAmt | sipAmount}}
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p>
+                                {{fund.basicFactsheet.minLumpsum | currency:'INR':true:'1.0-0'}}
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-40">
+                            <p>
+                                TBD
+                            </p>
+                        </div>
+                        <div class="fund-data min-h-65">
+                            <p>
+                                {{fund.basicFactsheet.exitLoad}}
+                            </p>
+                        </div>
+                    </div>
+                </md-card>
+                <app-add-to-cart-button [btnText]="'ADD TO CART'"
+                                        [fund]="funds[0]"
+                                        [_cssClass]="'cta-50'"></app-add-to-cart-button>
+            </div>
+        </div>
+    </div>
+</div>

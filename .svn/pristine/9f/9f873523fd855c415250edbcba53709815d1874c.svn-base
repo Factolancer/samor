@@ -1,0 +1,49 @@
+<div fxLayout="row" fxLayoutAlign="center" class="mar-t-60">
+    <div fxFlex="40">
+
+        <div class="forgot-pass-container" >
+            <div fxLayout="row" fxLayoutAlign="center center" class="forgot-pass-header" md-dialog-title>
+                <div fxFlex="95">
+                    FORGOT YOUR PASSWORD?
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center" class="forgot-pass-text" md-dialog-title>
+                <div fxFlex="100">Enter your E-mail id to reset your password</div>
+            </div>
+
+
+            <div fxLayout="row" *ngIf=!emailSent  fxLayoutAlign="center center" class="forgot-pass-content" [ngClass]="{flipOut:emailSent}">
+                <div fxFlex="70" fxAlign="center">
+
+                    <form [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPassword()" fxFlex="90" fxFlexOffset="5">
+                        <div fxLayout="column">
+                            <md-input-container fxFlex="100">
+                                <input mdInput formControlName="email"  required  placeholder="Enter your e-mail id">
+                                <md-hint align="end" class="error" *ngIf="forgotPasswordForm.controls['email'].touched&&forgotPasswordForm.controls['email'].invalid">
+                                    <span *ngIf="forgotPasswordForm.controls['email'].value.length">Please enter valid email</span>
+                                    <span *ngIf="!forgotPasswordForm.controls['email'].value.length">Email is required</span>
+                                </md-hint>
+                            </md-input-container>
+                            <br/>
+                            <div fxFlex="80%"  fxLayoutAlign="center center" class="forgot-pass-button">
+                                <button fxFlex="100%"  md-raised-button color="primary" class="forgot-pass-button" style="height:50px;font-size:16px:padding-top:10px" [disabled]="!forgotPasswordForm.valid">
+                                    SEND MAIL
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div *ngIf=emailSent class="email-sent-container" [ngClass]="{flipIn:emailSent}" fxlayput="column" fxLayputAlign="center">
+
+                <p align="center">
+                    <span><i class="material-icons success" >check</i></span>
+                    <span>An email has been sent. Please refer the mail</span>
+                </p>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

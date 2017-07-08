@@ -1,0 +1,106 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80" fxFlex.xs="100">
+        <md-card class="card mar-tb-35">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center stretch">
+                <div fxFlex="25" class="left-pane">
+                    <div class="icon"><img src="{{goal.imagePath}}" alt="{{goal.name}}"></div>
+                    <div class="highlight">{{goal.name}}</div>
+                </div>
+                <div fxFlex="75" class="right-pane">
+                    <div class="result-body">
+                        <form [formGroup]="calcFormGroup" #form="ngForm">
+                            <div fxLayout="row" fxLayoutWrap fxLayoutAlign="space-around center" class="highlight" >
+                                <div fxFlex="40" fxFlex.xs="100" class="result-text">Our Assessment</div>
+                                <div fxFlex="15" fxFlex.xs="40" class="dark-grey-text bold">Years to go</div>
+                                <div fxFlex="5" fxFlex.xs="50">
+                                    <md-input-container align="end">
+                                        <input mdInput type="number" [formControl]="calcFormGroup.get('first')"
+                                               autocomplete="off"/>
+                                    </md-input-container>
+                                </div>
+                                <div fxFlex="15" fxFlex.xs="40" class="dark-grey-text bold">SIP Amount</div>
+                                <div fxFlex="15" fxFlex.xs="50">
+                                    <md-input-container align="end">
+                                        <input mdInput type="number" [formControl]="calcFormGroup.get('second')"
+                                               autocomplete="off"/>
+                                        <span mdPrefix>&#x20B9;</span>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div class="result-questions">
+                                <div class="">
+                                    <md-icon class="md-14" mdTooltip="{{questions[2].helperText}}"
+                                             *ngIf="questions[2].helperText">
+                                        &#xE88E;</md-icon>
+                                    {{questions[2].statement}}
+                                    <md-input-container align="end">
+                                        <input mdInput
+                                               type="number"
+                                               maxlength="{{questions[2].maxLength}}"
+                                               [formControl]="calcFormGroup.get('third')" autocomplete="off"/>
+                                        <span mdPrefix [innerHTML]="questions[2].prefix"></span>
+                                        <span mdSuffix [innerHTML]="questions[2].suffix"></span>
+                                    </md-input-container>
+                                </div>
+
+                                <div class="">
+                                    <md-icon class="md-14" *ngIf="questions[3].helperText"
+                                             mdTooltip="{{questions[3].helperText}}">
+                                        &#xE88E;</md-icon>
+                                    {{questions[3].statement}}
+                                    <md-input-container align="end">
+                                        <input mdInput
+                                               type="number"
+                                               maxlength="{{questions[3].maxLength}}"
+                                               [formControl]="calcFormGroup.get('fourth')" autocomplete="off"/>
+                                        <span mdPrefix [innerHTML]="questions[3].prefix"></span>
+                                        <span mdSuffix [innerHTML]="questions[3].suffix"></span>
+                                    </md-input-container>
+                                </div>
+                                <div class="pad-tb-5">
+                                    <md-checkbox [checked]="true" (change)="inflationAdjustment($event.checked)">Adjust
+                                        for
+                                        inflation
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="pad-lr-25 heading-14">Your SIP Performance
+                            <hr/>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="90" class="pad-10">
+                                <chart [options]="options" (load)="saveChartInstance($event.context)"></chart>
+                            </div>
+                        </div>
+                        <div fxFlex class="highlight result-text pad-15">
+                            Your total investment amount is {{investedAmount | currency:'INR':true:'1.0-0'}} and
+                            Expected amount after {{years}} Years is {{amount | currency:'INR':true:'1.0-0'}}.
+                            <span class="focus-text"> Net Profit of {{amount-investedAmount | currency:'INR':true:'1.0-0'}}</span>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="10px" class="pad-tb-15">
+                        <div fxFlex="15" fxFlex.xs="40">
+                            <button md-raised-button="" routerLink="/calculator/sip" class="hollow-cta-36">Start Again
+                            </button>
+                        </div>
+                        <div fxFlex="15" fxFlex.xs="40">
+                            <button md-raised-button="" routerLink="/sip/smartsip" class="cta-36" color="primary">Invest
+                                Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </md-card>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" class=" wrapper">
+    <div fxFlex="60">
+        <span (click)="seeDisclaimers()" class="disclaimer-text clickable">Disclaimers: The projections and charts are based
+        upon the basic information you have provided and are simulated based on expected long term returns...<u>read more</u></span>
+    </div>
+</div>

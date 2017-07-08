@@ -1,0 +1,69 @@
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Router} from "@angular/router";
+import {Observable, Subscription} from "rxjs";
+import {DemoService} from "./demo.service";
+
+@Component({
+    selector: 'demo',
+    templateUrl: './demo.component.html',
+    styleUrls: ['./../cash.styles.scss']
+})
+export class DemoComponent implements OnInit, OnDestroy {
+    heading = 'invisible';
+    //index: number = 0;
+    //timeStep: number = 500;
+    //multiplier: number = 1;
+    //private data: Observable<number>;
+    private anyErrors: boolean;
+    private finished: boolean;
+    private subjectSubs : Subscription;
+    elCount: number;
+    constructor(private router: Router, private demoService:DemoService) {
+        /*Observable.interval(2000).subscribe(x => {
+                this.heading = (this.heading == 'visible') ? 'invisible' : 'visible';
+                if (x % 2 == 0)
+                    this.index = (x / 2) % 3
+            })*/
+    }
+    data1Timer:Subscription;
+    values: Array<any> = [];
+    demoData1:Array<any> =  [
+        ['1 Jan', 'Salary', '₹ 70,000', '₹ 70,000'],
+        ['9 Jan', 'Expense 1', '₹ 20,000', '₹ 50,000'],
+        ['15 Jan', 'Expense 2', '₹ 10,000', '₹ 40,000'],
+        ['1 Feb', 'Salary', '₹ 70,000', '₹ 1,10,000'],
+        ['8 Feb', 'Expense 1', '₹ 7,000', '₹ 1,03,000'],
+        ['20 Feb', 'Expense 2', '₹ 15,000', '₹ 88,000'],
+        ['1 Mar', 'Salary', '₹ 70,000', '₹ 1,58,000'],
+        ['10 Mar', 'Expense 1', '₹ 10,000', '₹ 1,48,000'],
+        ['15 Mar', 'Expense 2', '₹ 15,000', '₹ 1,33,000']
+    ];
+    ngOnInit() {
+
+        this.data1Timer = Observable.timer(0, 1000).subscribe(t => {
+            this.values = this.values.concat(this.demoData1[t]);
+            if (this.values.length == this.demoData1.length*this.demoData1[0].length) {
+
+                this.data1Timer.unsubscribe();
+                let tempSub = Observable.timer(2000).subscribe( tv => {
+                    this.finished = true;
+                    this.demoService.setAnimationNo(1);
+                    tempSub.unsubscribe();
+                    }
+                )
+            }
+        });
+
+        this.subjectSubs = this.demoService.animation.subscribe(value =>{
+            console.log("el count"+ value);
+            this.elCount = value;
+        });
+
+    }
+
+    ngOnDestroy(){
+        this.subjectSubs.unsubscribe();
+    }
+
+
+}

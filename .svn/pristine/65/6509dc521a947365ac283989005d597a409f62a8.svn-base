@@ -1,0 +1,9 @@
+import {ProductEnum} from "../enum/product-enum";
+import {InvestmentTypeEnum} from "../enum/investment-type-enum";
+import {CheckoutFund} from "./checkout-fund";
+export interface CheckoutProduct {
+    productName: ProductEnum,
+    investmentType: InvestmentTypeEnum,
+    investmentAmount?: number,
+    funds: CheckoutFund[];
+}

@@ -1,0 +1,122 @@
+import {Injectable, Inject} from "@angular/core";
+import {Http, Response, Headers, RequestOptions} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+import {Subject} from "rxjs/Subject";
+import "rxjs/add/operator/catch";
+import "rxjs/add/operator/timeout";
+import "rxjs/add/operator/retry";
+import {Logger} from "../logger/logger";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {LoginService} from "./login.service";
+import {isNullOrUndefined} from "util";
+
+@Injectable()
+export class HttpService {
+
+    className: string;
+    private requests: any;
+    public httpErrorSubject: Subject<any>;
+    public httpErrorObservable: Observable<any>;
+    httpTimeout : number;
+    retryCount : number;
+    constructor(private http: Http, private logger: Logger, @Inject(APP_CONFIG) private config: IAppConfig, private loginService : LoginService) {
+        this.className = "HttpService";
+        this.httpTimeout = 60000;
+        this.retryCount = 3;
+        this.requests = {};
+        this.httpErrorSubject = new Subject<any>();
+        this.httpErrorObservable = this.httpErrorSubject.asObservable();
+    }
+
+
+    uget(path: string): Observable<any> {
+        let headers = this.setHeader();
+        let options = new RequestOptions({headers: headers});
+        path = this.config.playAPIUrl + path;
+        this.logger.debug(this.className, path);
+        return this.http.get(path, options).retry(this.retryCount).timeout(this.httpTimeout)
+            .map(this.uextractData.bind(this))
+            .catch(this.handleError.bind(this));
+    }
+
+    upost(path: string, data: any): Observable<any> {
+        let headers = this.setHeader();
+        let options = new RequestOptions({headers: headers})
+        path = this.config.playAPIUrl + path;
+        this.logger.debug(this.className, path);
+        this.logger.debug(this.className, data);
+        return this.http.post(path, data, options).retry(this.retryCount).timeout(this.httpTimeout)
+            .map(this.uextractData.bind(this))
+            .catch(this.handleError.bind(this))
+    }
+
+    get(path: string, _timeout? : number, _retry? : number): Observable<any> {
+        let headers = this.setHeader();
+        let options = new RequestOptions({headers: headers});
+        path = this.config.playAPIUrl + '/secure' + path;
+        let timeout = this.httpTimeout;
+        if(!isNullOrUndefined(_timeout)){
+            timeout = _timeout;
+        }
+        let retry = this.retryCount;
+        if(!isNullOrUndefined(_retry)){
+            retry = _retry;
+        }
+        return this.http.get(path, options).retry(retry).timeout(timeout)
+            .map(this.extractData.bind(this))
+            .catch(this.handleError.bind(this));
+    }
+
+    post(path: string, data: any, _timeout? : number,_retry? : number): Observable<any> {
+        let headers = this.setHeader();
+        let options = new RequestOptions({headers: headers});
+        path = this.config.playAPIUrl + '/secure' + path;
+        this.logger.debug(this.className, path)
+        this.logger.debug(this.className, data);
+        let timeout = this.httpTimeout;
+        if(!isNullOrUndefined(_timeout)){
+            timeout = _timeout;
+        }
+
+        let retry = this.retryCount;
+        if(!isNullOrUndefined(_retry)){
+            retry = _retry;
+        }
+
+        return this.http.post(path, data, options).retry(retry).timeout(timeout)
+            .map(this.extractData.bind(this))
+            .catch(this.handleError.bind(this))
+    }
+
+    private setHeader() {
+        let getToken = this.loginService.getToken()
+        let token = getToken ? getToken : "";
+        // this.logger.debug(this.className, " setHeader Token " + token);
+        let headers = new Headers({'Authorization': `Bearer ${token}`});
+        return headers;
+    }
+
+    private uextractData(res: Response) {
+        let body = res.json();
+        return body || {};
+    }
+
+
+    private extractData(res: Response) {
+        //this.logger.debug(this.className, "URL >> " + res.url);
+        // this.logger.debug(this.className, "responseHeaders >> " + JSON.stringify(res.headers));
+        let body = res.json();
+        this.loginService.processToken(res,false)
+        return body || {};
+    }
+
+    private handleError(error: any) {
+        // In a real world app, we might use a remote logging infrastructure
+        // We'd also dig deeper into the error to get a better message
+        let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        this.logger.error(this.className, errMsg);
+        this.httpErrorSubject.next(errMsg);
+    }
+}
+

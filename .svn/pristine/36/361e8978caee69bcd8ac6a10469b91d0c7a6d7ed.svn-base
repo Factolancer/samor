@@ -1,0 +1,23 @@
+import {Fund} from "../models/fund";
+import {ProductInvestment} from "../models/product-investment";
+import {SubOption} from "../cart/PlanOption";
+import {DeductionDate} from "../cart/DeductionDate";
+import {MinInvestment} from "./min-investment";
+export interface CheckoutFund {
+    fund: Fund;
+    productInvestment: ProductInvestment;
+    planList:any[];
+    divOptionList:any[];
+    selectedPlanId:number;
+    selectedOptionId:string;
+    selectedFreq:string;
+    selectedDate:number;
+
+    investmentModeList?: string[];
+    optionList?: string[];
+    frequency?: string[];
+    subOptionList?: SubOption[];
+    deductionDateList?: DeductionDate[];
+    minInvestmentList:MinInvestment[];
+    durationList?: string[];
+}

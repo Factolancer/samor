@@ -1,0 +1,146 @@
+import {Component, OnDestroy, OnInit, ViewContainerRef} from "@angular/core";
+import {Router} from "@angular/router";
+import {MdDialog, MdDialogConfig} from "@angular/material/typings/dialog";
+import {Fund} from "../models/fund";
+import {CartService} from "../core/services/cart.service";
+import {InvestmentModeEnum} from "../enum/investment-mode-enum";
+import {ConfirmationDialogComponent} from "../shared/confirmation-dialog.component";
+import {isNullOrUndefined} from "util";
+import {Subscription} from "rxjs/Subscription";
+import {URLAccessGuard} from "../core/guards/urlAccess.guard";
+import {Logger} from "../core/logger/logger";
+import {SnackBarService} from "../core/services/snack-bar.service";
+import {TitleService} from "../core/services/title.service";
+import {Observable} from "rxjs/Observable";
+import {HeaderService} from "../core/services/header.service";
+import {FactsheetService} from "../factsheet/factsheet.service";
+import {BasicFactsheetComponent} from "../factsheet/basic-factsheet.component";
+import {MdDialogRef} from "@angular/material";
+
+@Component({
+    selector: 'app-cart',
+    templateUrl: './cart.component.html',
+    styleUrls: ['./cart.styles.scss']
+})
+export class CartComponent implements OnInit, OnDestroy {
+
+    emptyCartObservable: Observable<boolean>;
+    notemptyCartObservable: Observable<boolean>;
+    cartItems: Fund[];
+    investmentMode = InvestmentModeEnum;
+    cartSubscription: Subscription;
+    className: string;
+    factsheetDialogRef: MdDialogRef<BasicFactsheetComponent>;
+
+    constructor(private cartService: CartService, private dialog: MdDialog, public factsheetService: FactsheetService,
+                private urlAccessGaurd: URLAccessGuard, private viewContainerRef: ViewContainerRef,
+                private snackBarService: SnackBarService, private router: Router, private logger: Logger,
+                private titleService: TitleService, private headerService: HeaderService) {
+        this.className = "CartComponent";
+        this.cartItems = [];
+        this.emptyCartObservable = this.cartService.emptyCartSubject.asObservable();
+        this.notemptyCartObservable = this.cartService.notemptyCartSubject.asObservable();
+
+    }
+
+    ngOnInit() {
+        this.cartSubscription = this.cartService.cartObservable.subscribe(cart => {
+            this.cartItems = cart.funds;
+        });
+
+        this.titleService.setTitle("cart");
+    }
+
+    ngOnDestroy() {
+        this.cartSubscription.unsubscribe();
+    }
+
+    removeFund(fund: Fund, index: number) {
+        let updatedList = this.cartItems.filter((item, idx) => idx != index);
+        //this.cartItems = this.cartItems.filter((item, idx) => idx != index);
+        let removeFundObservable = this.cartService.removeFundFromCart(updatedList, true);
+        if (removeFundObservable != null) {
+            removeFundObservable.subscribe(res => {
+                    if (res['success']) {
+                        this.cartItems = updatedList;
+                        this.snackBarService.showSnackBar("Fund successfully deleted from cart!", "Okay", this.viewContainerRef);
+                    } else if (res['message']) {
+                        this.snackBarService.showSnackBar(res['message'], "Okay", this.viewContainerRef);
+                    }
+                }
+            )
+        }
+    }
+
+    validate() {
+        let investmentModeSelected = true;
+        for (let fund of this.cartItems) {
+            if (isNullOrUndefined(fund.investmentMode) || fund.investmentMode.length == 0) {
+                investmentModeSelected = false;
+
+            }
+        }
+        if (!investmentModeSelected) {
+            this.snackBarService.showSnackBar("Please Select Investment Mode", "Okay", this.viewContainerRef);
+        } else {
+            this.headerService.onDemandProgressBar();
+            this.cartService.updateCartData(this.cartItems).subscribe(result => {
+                this.logger.debug(this.className, " validate()", ['/checkout/init'], result);
+                this.headerService.cancelOnDemandProgressBar();
+                this.urlAccessGaurd.allow = true;
+                this.router.navigate(['/checkout/init']);
+                //this.logger.debug(this.className," validate()" , "navigated ", result);
+            });
+
+        }
+    }
+
+    investmentModeUpdate(fund: Fund, index: number) {
+        //console.log(fund);
+        let fundFoundCount = 0;
+        this.cartItems.forEach(item => {
+            if (item.id == fund.id && item.investmentMode == fund.investmentMode) {
+                fundFoundCount++;
+            }
+        });
+
+        if (fundFoundCount > 1) {
+            let config = new MdDialogConfig();
+            config.width = "25vw";
+            config.disableClose = true;
+            config.viewContainerRef = this.viewContainerRef;
+
+            let confirmationConfig = {
+                confirmationTitle: "Attention!",
+                confirmationText: fund.name + " cant't have same investment mode twice, would you like to remove the " + fund.investmentMode + " fund?",
+                confirmationActions: [['Y', "Yes", "hollow-cta-36"], ['N', "No", "hollow-cta-36"]]
+            }
+
+            let dialogRef = this.dialog.open(ConfirmationDialogComponent, config);
+            dialogRef.componentInstance.config = confirmationConfig;
+            dialogRef.afterClosed().subscribe(result => {
+                if (result[0] == 'Y') {
+                    this.removeFund(fund, index);
+                } else {
+                    //toggle back the investment mode
+                    //  console.log(this.cartItems[index].investmentMode);
+                    this.cartItems[index].investmentMode == InvestmentModeEnum[InvestmentModeEnum.SIP] ?
+                        this.cartItems[index].investmentMode = InvestmentModeEnum[InvestmentModeEnum.LUMPSUM] :
+                        this.cartItems[index].investmentMode = InvestmentModeEnum[InvestmentModeEnum.SIP];
+                    //console.log(this.cartItems[index].investmentMode);
+                }
+
+                //console.log(this.cartItems[index]);
+            });
+        }
+    }
+
+    viewFactSheet(fund: Fund) {
+        let config = this.factsheetService.getFactsheetDialogConfig();
+        config.viewContainerRef = this.viewContainerRef;
+        this.factsheetDialogRef = this.dialog.open(BasicFactsheetComponent, config);
+        this.factsheetDialogRef.componentInstance.fund = fund;
+
+    }
+
+}

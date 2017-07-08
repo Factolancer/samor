@@ -1,0 +1,40 @@
+<div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="center" class="investment-step-container pad-tb-20">
+  <div align="center" fxFlex="100" class="sub-heading pad-tb-20 title">
+    <div class="wrapper"><span class="colr-bs">3 Easy Steps</span> to START INVESTING</div>
+  </div>
+
+  <div fxFlex="100" class="content">
+    <div class="wrapper">
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayout.sm="column" fxFlex="100" >
+        <div fxFlex="50" fxFlex.lt-md="100" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center center" fxLayoutAlign.lt-md="stretch stretch" *ngFor="let investment of investments, let indx=index">
+          <div fxFlex="80" fxFlex.lt-md="100">
+            <p ngClass.gt-sm="mar-l-60" ngClass.lt-md="center-align" class="type-title">{{investment.title}}</p>
+            <div fxLayout="row" class="body mar-b-10" *ngFor="let step of investment.steps, let i=index">
+              <div fxFlex="10" fxLayout="column" fxLayoutAlign="center center" class="mar-r-20 pos-rel">
+                <p  class="num no-margin">{{i+1}}</p>
+              </div>
+              <div fxLayout="row" class="mgrey-border pad-tb-10" fxFlex="90">
+                <div fxFlex="50">
+                  <figure class="no-margin">
+                    <img src="{{step.image}}">
+                    <figcaption>{{step.title}}</figcaption>
+                  </figure>
+                </div>
+                <div fxFlex="50" fxLayout="column" fxLayoutAlign="center" class="colr-dg">
+                  <p class="pad-lr-5">{{step.details}}</p>
+                </div>
+              </div>
+            </div>
+            <button ngClass.gt-sm="mar-l-60" ngClass.lt-md="center-align" class="std-btn mar-tb-20 pad-lr-40 pad-tb-10" [routerLink]=investment.routerUrl>{{investment.btnTxt}}</button>
+          </div>
+          <!--vertical line-->
+          <div *ngIf="indx+1<investments.length" fxFlex="15" fxFlex.lt-md="0" class="vline" ></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+</div>

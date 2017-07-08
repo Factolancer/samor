@@ -1,0 +1,49 @@
+<form>
+    <md-input-container class="search-input">
+    <span md-suffix="" class="search-bar-icon pad-lr-5 clickable" (click)="searchForKeyword()">
+        <md-icon class="md-30">&#xE8B6;</md-icon>
+    </span>
+        <input mdInput type="text" #query
+               (change)="searchForKeyword()"
+               [formControl]="searchBarControl"
+               [mdAutocomplete]="auto"
+               placeholder="Search for Funds">
+        <!---->
+        <!--<md-hint align="end" (click)="searchForKeyword($event)" class="clickable search-btn">Enter</md-hint>-->
+    </md-input-container>
+    <!--<button md-mini-fab="" class="search-btn" color="primary" (click)="searchForKeyword($event)">
+        <md-icon class="md-30">&#xE8B6;</md-icon>
+    </button>-->
+
+    <md-autocomplete #auto="mdAutocomplete">
+        <md-option *ngFor="let suggestion of searchSuggestions | async" [value]="suggestion">
+            {{ suggestion.name }}
+        </md-option>
+    </md-autocomplete>
+</form>
+
+
+<!--<form>
+<md-input-container class="search-input">
+    <span md-suffix="" class="search-bar-icon pad-lr-5 clickable" (click)="searchForKeyword($event)">
+        <md-icon class="md-30">&#xE8B6;</md-icon>
+    </span>
+    <input mdInput type="text" #query (change)="searchForKeyword($event)"
+           [formControl]="searchBarControl"
+           (input)="searchBarInput()"
+           [(ngModel)]="queryString"
+           [mdAutocomplete]="auto"
+           placeholder="Search for Funds">
+    <md-hint align="end" (click)="searchForKeyword($event)" class="clickable search-btn">Enter</md-hint>
+</md-input-container>
+<!--<button md-mini-fab="" class="search-btn" color="primary" (click)="searchForKeyword($event)">
+    <md-icon class="md-30">&#xE8B6;</md-icon>
+</button>
+
+<md-autocomplete #auto="mdAutocomplete">
+    <md-option *ngFor="let suggestion of searchSuggestions | async" [value]="suggestion.name"
+               (select)="searchForKeyword('btn-click',$event)">
+        {{ suggestion.name }}
+    </md-option>
+</md-autocomplete>
+</form>-->

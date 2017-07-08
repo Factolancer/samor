@@ -1,0 +1,49 @@
+import { Component, OnInit } from '@angular/core';
+import {WatchlistProduct} from "./watchlist-product";
+import {ActivatedRoute} from "@angular/router";
+import {FundDetails} from "../cart/fund-details";
+import {Scheme} from "./scheme";
+
+@Component({
+  selector: 'app-watchlist',
+  templateUrl: './watchlist.component.html',
+  styleUrls: ['./watchlist.component.css']
+})
+export class WatchlistComponent implements OnInit {
+
+  watchlistProducts: Scheme[];
+  fundName: String;
+  currentFund: Scheme;
+
+  constructor(private route: ActivatedRoute) {
+  }
+
+  ngOnInit() {
+    this.route.data.forEach((data: { watchlistProducts: Scheme[] }) => {
+      this.watchlistProducts = data.watchlistProducts;
+      console.log("data >>>  ");
+      console.log(data)
+    });
+  }
+
+  fundSelected(fund: Scheme){
+    this.fundName = fund.name;
+  }
+
+  removeProduct(value: any) {
+     this.watchlistProducts = this.watchlistProducts.filter(scheme => scheme.scheme_id != value);
+  }
+
+  selectFund(fund: Scheme) {
+    this.currentFund = fund;
+    // this.onFundSelected.emit(fund);
+    console.log(fund);
+  }
+
+  isSelected(fund: Scheme): boolean {
+    if (!this.currentFund) {
+      return false;
+    }
+    return this.currentFund.scheme_name === fund.scheme_name ? true : false;
+  }
+}

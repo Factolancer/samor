@@ -1,0 +1,122 @@
+import { Component, OnInit }    from '@angular/core';
+import {DashboardDataService} from "../dashboard-data.service";
+
+@Component({
+    selector: 'app-chart',
+    styleUrls: ['./chart.component.scss'],
+    templateUrl: './chart.component.html',
+    providers: [DashboardDataService]
+})
+export class ChartComponent implements OnInit{
+
+    investmentDataAvailable: boolean = false;
+    constructor(public dataService: DashboardDataService) { }
+
+    errorMessage: string;
+    options: Object;
+    point: any;
+    isDrilled : boolean = false;
+    drilled:any;
+
+    asset:Array<Object> =[];
+    assetBreak:any = {};
+    assetOptions:Object;
+    assetBreakupOptions:Object;
+
+    back(){
+        this.assetOptions['series'][0]['data'] = this.asset;
+        this.options = this.assetOptions;
+        this.isDrilled = false;
+    }
+    onPointSelect (e) {
+        this.point = e.context.y;
+        this.options = [];
+        this.assetBreakupOptions['series'][0]['data'] = this.assetBreak[e.context.name];
+        this.assetBreakupOptions['series'][0]['name'] = 'Fund distribution in '+e.context.name;
+        this.options = this.assetBreakupOptions;
+        this.isDrilled = true;
+    }
+    ngOnInit(){
+
+        this.assetOptions = {
+
+            title: {text: ''},
+            chart: {zoomType: 'x', type: 'pie', height: 250},
+            credits: {enabled: false},
+            plotOptions: {
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}: {point.percentage:.1f}'
+                    }
+                }
+            },
+            tooltip: {
+                /*headerFormat: '<span style="font-size:18px">{series.name}</span><br>',*/
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b> of total<br/>'
+            },
+            series :[{
+                name: '',
+                colorByPoint: true,
+                allowPointSelect: true,
+                data:[]
+            }]
+        };
+        this.assetBreakupOptions = {
+
+            title: {text: ''},
+            chart: {zoomType: 'x', type: 'pie', height: 250},
+            credits: {enabled: false},
+            plotOptions: {
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}: {point.y}'
+                    }
+                }
+            },
+            tooltip: {
+                /*headerFormat: '<span style="font-size:18px">{series.name}</span><br>',*/
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.percentage:.1f}%</b> of total<br/>'
+            },
+            series :[{
+                name: '',
+                colorByPoint: true,
+                allowPointSelect: true,
+                data:[]
+            }]
+        };
+        this.getInvestmentDetails();
+    }
+
+
+    getInvestmentDetails(){
+        this.dataService.getInvestmentDetails()
+            .subscribe(
+                res=>{
+                    for (var x in res[0]) {
+                        this.asset.push({'name':res[0][x]['name'], 'y':res[0][x]['value']});
+                    }
+                    for(var property in res[1]) {
+
+                        this.assetBreak[property] = [];
+
+                        if(res[1].hasOwnProperty(property)){
+                            for(var i in res[1][property]){
+                                this.assetBreak[property].push({'name':res[1][property][i]['name'],'y': res[1][property][i]['value']
+                                });
+                            }
+                        }
+                    }
+
+                    this.assetOptions['series'][0]['data'] = this.asset;
+                    this.options = this.assetOptions;
+                    this.investmentDataAvailable = true;
+                },
+                err=>{console.log('an error occured')}
+            )
+
+    }
+
+
+}

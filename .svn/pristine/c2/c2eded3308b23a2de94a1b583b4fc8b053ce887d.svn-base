@@ -1,0 +1,28 @@
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from "@angular/router";
+import {CheckoutComponent} from "./checkout.component";
+import {CheckoutResolveService} from "./CheckoutResolveService";
+import {SummaryComponent} from "./summary/summary.component";
+
+const checkoutRoutes: Routes = [
+    {
+        path: 'checkout',
+        children: [
+            {
+                path: 'init',
+                component: CheckoutComponent,
+                resolve: {
+                    checkoutData: CheckoutResolveService
+                }
+            },
+            {
+                path: 'summary',
+                component: SummaryComponent
+            }
+        ]
+    }
+];
+
+export const checkoutRouting: ModuleWithProviders = RouterModule.forChild(checkoutRoutes);
+
+

@@ -1,0 +1,96 @@
+import {Component, OnInit} from "@angular/core";
+import {Holdings} from "../holding-report/holdings";
+import {LogoImdData} from "../constants";
+import {PdfReportService} from "../pdf-report.service";
+
+declare let jsPDF;
+
+@Component({
+    selector: 'app-summary-report',
+    templateUrl: './summary-report.component.html',
+    styleUrls: ['../report.styles.scss'],
+})
+export class SummaryReportComponent implements OnInit {
+    funds: Holdings[];
+
+    constructor() {
+
+    }
+
+    ngOnInit() {
+    }
+
+    download() {
+        var columns = [{title: "Asset Class", dataKey: "asset_class"},
+            {title: "Invested Amount", dataKey: "investedAmt"},
+            {title: "Share(%)", dataKey: "investShare"},
+            {title: "Current Value", dataKey: "currValue"},
+            {title: "Share(%)", dataKey: "currShare"}];
+
+        var rows = [{asset_class: "Equity Funds"},
+            {asset_class: "Debt Funds"},
+            {asset_class: "Liquid Funds"},
+            {asset_class: "Hybrid Funds"},
+            {asset_class: "Gold"},
+            {asset_class: "Total"}];
+
+        var pdf = new jsPDF('p', 'pt');
+        var totalPagesExp = "{total_pages_count_string}";
+        var pageContent = function (data) {
+            // HEADER
+            pdf.setFontSize(20);
+            pdf.setFontStyle('normal');
+            pdf.addImage(LogoImdData, 'JPEG', data.settings.margin.left, 40, 85, 18);
+            // FOOTER
+            var str = "Page " + data.pageCount;
+            // Total page number plugin only available in jspdf v1.0+
+            if (typeof pdf.putTotalPages === 'function') {
+                str = str + " of " + totalPagesExp;
+            }
+            pdf.setFontSize(10);
+            pdf.text(str, data.settings.margin.left, pdf.internal.pageSize.height - 30);
+        };
+
+
+        pdf.setFontSize(12);
+        pdf.myText("Portfolio Summary", {align: "center"}, 0, 100);
+        pdf.setFontStyle('normal');
+        pdf.setFontSize(10);
+        pdf.text("Invested Amount: Rs.", 40, 125);
+        pdf.text("Current Value: Rs.", 40, 135);
+        pdf.text("Unrealized Gain: Rs.", 40, 145);
+        pdf.text("Realized Gain: Rs.", 40, 155);
+        pdf.setFontStyle('bold');
+        pdf.myText("Portfolio Allocation by Asset Class", {align: "center"}, 0, 175);
+
+
+        var tableStyle = {startY:190,addPageContent:pageContent};
+        pdf.autoTable(columns,rows,tableStyle);
+
+        if (typeof pdf.putTotalPages === 'function') {
+            pdf.putTotalPages(totalPagesExp);
+        }
+        pdf.save('Portfolio Summary Report.pdf');
+    }
+
+    testPdfService(){
+        /*var columns = [{title: "Asset Class", dataKey: "asset_class"},
+            {title: "Invested Amount", dataKey: "investedAmt"},
+            {title: "Share(%)", dataKey: "investShare"},
+            {title: "Current Value", dataKey: "currValue"},
+            {title: "Share(%)", dataKey: "currShare"}];
+
+        var rows = [{asset_class: "Equity Funds"},
+            {asset_class: "Debt Funds"},
+            {asset_class: "Liquid Funds"},
+            {asset_class: "Hybrid Funds"},
+            {asset_class: "Gold"},
+            {asset_class: "Total"}];
+        var tableStyle = {margin: {top: 90}};
+        var pdf = new jsPDF('p', 'pt');
+        var table1 = {"rows":rows, "columns":columns,"style":tableStyle,"title":"Table Title"};
+        this.pdfReportService.addTable([table1,table1,table1,table1],100,pdf);
+        pdf.save("Test12.pdf");*/
+    }
+
+}

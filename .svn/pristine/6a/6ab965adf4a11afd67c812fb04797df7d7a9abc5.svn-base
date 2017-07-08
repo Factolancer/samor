@@ -1,0 +1,11 @@
+import {Routes, RouterModule} from "@angular/router";
+import {SipComponent} from "./sip.component";
+
+const sipRoutes: Routes = [
+
+  {path: 'sip', component: SipComponent}
+
+];
+
+export const sipModuleRoute = RouterModule.forChild(sipRoutes);
+export const sipRoutedComponents = [SipComponent];

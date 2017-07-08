@@ -1,0 +1,23 @@
+import {NgModule} from "@angular/core";
+import {SipCalculatorModule} from "./sip/sip-calculator.module";
+import {calculatorRouting} from "./calculator.routes";
+import {TaxCalculatorModule} from "./tax/tax-calculator.module";
+import {ChartModule} from "angular2-highcharts";
+import {HighchartsStatic} from "angular2-highcharts/dist/HighchartsService";
+
+export function highChartsFactory() {
+    var hc = require('highcharts');
+    return hc;
+}
+@NgModule({
+    imports: [
+        SipCalculatorModule,
+        TaxCalculatorModule,
+        ChartModule,
+        calculatorRouting
+    ],
+    providers: [{provide : HighchartsStatic, useFactory : highChartsFactory}]
+})
+
+export class CalculatorModule {
+}

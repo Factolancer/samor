@@ -1,0 +1,22 @@
+export class FundDisplay {
+
+    isListView?: boolean;
+    from?: number;
+    rows?: number;
+    totalCount?: number;
+    caller?: string;
+
+
+    constructor(isListView?: boolean,
+                from?: number,
+                rows?: number,
+                totalCount?: number,
+                caller?: string,) {
+
+        this.isListView = isListView || true;
+        this.from = from || 0;
+        this.rows = rows || 5;
+        this.caller = caller || '';
+        this.totalCount = totalCount || 0;
+    }
+}

@@ -1,0 +1,4 @@
+<div id="pie_chart" class="pieChartLayout" [chartData]="data" [chartOptions]="pieChartOptions"
+     chartType="PieChart" GoogleChart >
+</div>
+<span (click)="download()" class="clickable"><i class="material-icons">&#xE2C4;</i></span>

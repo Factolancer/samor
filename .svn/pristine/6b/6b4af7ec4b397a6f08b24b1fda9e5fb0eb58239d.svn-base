@@ -1,0 +1,25 @@
+import {NgModule} from "@angular/core";
+import {SearchComponent} from "./search.component";
+import {SearchService} from "./search.service";
+import {HttpService} from "../services/http-service.service";
+import {AmcFilterComponent} from "./filters/amc-filter.component";
+import {AumFilterComponent} from "./filters/aum-filter.component";
+import {AgeFilterComponent} from "./filters/age-filter.component";
+import {CategoryFilterComponent} from "./filters/category-filter.component";
+import {RatingFilterComponent} from "./filters/rating-filter.component";
+import {MoreDataComponent} from "./filters/more-data.component";
+import {SharedModule} from "../shared/shared.module";
+
+
+@NgModule({
+    imports: [
+        SharedModule
+    ],
+    exports: [SearchComponent, AmcFilterComponent, AgeFilterComponent,
+        RatingFilterComponent, CategoryFilterComponent, AumFilterComponent, MoreDataComponent],
+    providers: [SearchService, HttpService],
+    declarations: [SearchComponent, AmcFilterComponent, AgeFilterComponent,
+        RatingFilterComponent, CategoryFilterComponent, AumFilterComponent, MoreDataComponent]
+})
+export class SearchModule {
+}

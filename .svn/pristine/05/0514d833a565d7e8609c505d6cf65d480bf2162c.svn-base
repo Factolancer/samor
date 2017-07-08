@@ -1,0 +1,48 @@
+import {Injectable, ViewContainerRef, Inject} from "@angular/core";
+import {MdSnackBarConfig, MdSnackBar} from "@angular/material";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Logger} from "../logger/logger";
+
+@Injectable()
+export class SnackBarService {
+
+    guardMessageSubject: BehaviorSubject<string[]>;
+    guardMessageObservable: Observable<string[]>;
+
+    className: string
+    constructor(private mdSnackBar: MdSnackBar, @Inject(APP_CONFIG) private config: IAppConfig, public logger: Logger) {
+        this.className = "SnackBarService"
+        this.guardMessageSubject = new BehaviorSubject<string[]>([]);
+        this.guardMessageObservable = this.guardMessageSubject.asObservable();
+    }
+
+    showSnackBar(message: string, action: any, viewContainerRef: ViewContainerRef) {
+        let config = new MdSnackBarConfig();
+        config.duration = this.config.snackBarTime;
+        config.viewContainerRef = viewContainerRef;
+        this.mdSnackBar.open(message, action, config);
+    }
+
+    showIndefiniteSnackBar(message: string, action: any, viewContainerRef: ViewContainerRef) {
+        let config = new MdSnackBarConfig();
+        config.duration = 86400000;
+        config.viewContainerRef = viewContainerRef;
+        return this.mdSnackBar.open(message, action, config);
+    }
+
+    resetGuardMessages(){
+        this.guardMessageSubject.next([]);
+    }
+
+    setGuardMessage(message: string) {
+        let newValue = this.guardMessageSubject.getValue();
+        newValue.push(message);
+
+        this.logger.debug(this.className, newValue)
+        this.guardMessageSubject.next(newValue);
+    }
+
+
+}

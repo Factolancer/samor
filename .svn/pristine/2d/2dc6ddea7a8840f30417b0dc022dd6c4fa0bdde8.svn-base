@@ -1,0 +1,10 @@
+/**
+ * Created by fincash on 10-02-2017.
+ */
+
+export class SubOption{
+    constructor(public optionId:number,
+                public optionName:string){
+
+    }
+}

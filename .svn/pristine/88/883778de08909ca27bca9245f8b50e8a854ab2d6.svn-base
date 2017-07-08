@@ -1,0 +1,60 @@
+import {OpaqueToken} from "@angular/core";
+export let APP_CONFIG = new OpaqueToken('environment');
+export interface IAppConfig {
+    playAPIUrl: string,
+    defaultAfterLogin: string,
+    defaultAfterLogout: string,
+    dloginUrl: string,
+    signupUrl: string,
+    checkkycUrl: string,
+    returnUrlParam: string,
+    kycReturnBaseUrl: string,
+    paymentFallbackUrl: string,
+    eKYCUrl: string,
+    eKYCAuthToken: string,
+    eKYCAuthTokenCode : string,
+    eKYCAMCS : [string],
+    authToken: string,
+    cartToken: string,
+    staticImagePath: string,
+    snackBarTime: number,
+    kycGuard : any,
+    bankGuard : any,
+    FATCAGuard : any,
+    addressGuard : any,
+    userBasicGuard : any;
+    snapshotApi : any,
+    fileUploadApi: any,
+    uploadPath: any
+}
+
+export const AppConfig: IAppConfig = {
+    playAPIUrl: "http://uat.fincash.com:2930",
+    // playAPIUrl: "http://localhost:9000",
+    defaultAfterLogin: '/dashboard',
+    defaultAfterLogout: '/',
+    dloginUrl: '/auth/login',
+    signupUrl: '/auth/signup',
+    checkkycUrl: '/kyc',
+    returnUrlParam: 'returnUrl',
+    paymentFallbackUrl: '/checkout/order',
+    kycReturnBaseUrl: 'http://uat.fincash.com/api/kyc',
+    eKYCUrl: 'https://eiscuat1.camsonline.com/ekycuat3/eKYCVal_Aadhar.aspx',
+    /*eKYCUrl:'https://eiscweb.camsonline.com/ekyc3/eKYCVal_Aadhar.aspx' */
+    eKYCAuthToken: 'fincash|UECH_SHEP|HzK6$g3|',
+    /*eKYCAuthToken:'fincash|EKYC_SHEP|HGde$56|'*/
+    eKYCAuthTokenCode: '|MFKYC2',
+    eKYCAMCS : ['B', 'D', 'F', 'G', 'H', 'K', 'L', 'P', 'T'],
+    authToken: 'id_token',
+    cartToken: 'cartId',
+    staticImagePath: 'http://uat.fincash.com',
+    snackBarTime: 2000,
+    kycGuard : { storagekey : 'kycguardpath', navigate : '/registration/kyc'},
+    bankGuard: { storagekey : 'bankguardpath', navigate : '/registration/bank'},
+    FATCAGuard: { storagekey : 'fatcaguardpath', navigate : '/registration/fatca'},
+    addressGuard: { storagekey : 'addressguardpath', navigate : '/registration/address'},
+    userBasicGuard : { storagekey : 'userbasicguardpath', navigate : '/registration/basic'},
+    snapshotApi: 'http://uat.fincash.com/api/file/snapshot',
+    fileUploadApi: 'http://uat.fincash.com/api/file/upload',
+    uploadPath: 'http://uat.fincash.com/app-uploads'
+};

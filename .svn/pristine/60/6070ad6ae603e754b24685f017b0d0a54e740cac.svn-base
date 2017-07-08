@@ -1,0 +1,37 @@
+<div *ngIf="!serverError['topPerformer']"  [hidden]="performersDataAvailable" class="loading">
+  <img src="../../../assets/img/loading.gif">
+</div>
+<!--
+<div *ngIf="serverError['topPerformer']" class="error">
+  <span>Internal server error, apology! Please check your connection or try after some time.</span>
+</div>-->
+
+<div class="top-performer-container" *ngIf="performersDataAvailable && performers.length>0">
+  <div class="highlight" align="center" >Top Performers in your Portfolio</div>
+  <div fxLayout="row" class="content" *ngIf="performers.length>0">
+      <table>
+          <tbody>
+          <tr *ngFor="let performer of performers, let i=index" class="clickable" mdTooltip="{{performer.fundName}}"
+              mdTooltipPosition="right">
+              <ng-template [ngIf]="i<topPerformerCount">
+                  <td (click)="active=i" class="truncate">
+                      <span>{{performer.fundName}}</span><br/>
+                      <i class="txt-9">Plan-{{performer.divFreq}} {{performer.plan}}, Option-
+                          {{performer.divOption}}</i>
+                  </td>
+                  <td>
+              <span>
+                (<span [ngClass]="{decrease: performer.fundReturn < 0 , increase:performer.fundReturn >0}">{{performer.fundReturn | number : '1.2-2'}}%</span>
+                 <span>
+                  <md-icon *ngIf="performer.fundReturn > 0" class="upArrow">&#xE5D8;</md-icon>
+                  <md-icon *ngIf="performer.fundReturn<0" class="downArrow">&#xE5DB;</md-icon>)
+                </span>
+             </span>
+                  </td>
+              </ng-template>
+          </tr>
+          </tbody>
+
+      </table>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<h1>Are you kidding me?</h1>
+<div class="grey-back">
+    <form [formGroup]="signUpForm" (ngSubmit)="onSignUp()">
+        <div fxLayout="column">
+            <md-input-container fxFlex>
+                <input md-input required formControlName="email" placeholder="Email Id" onblur="checkUsername()">
+            </md-input-container>
+            <md-input-container fxFlex>
+                <input md-input required formControlName="mob" placeholder="Mobile No.">
+            </md-input-container>
+            <div formGroupName="password" fxLayout="column">
+                <md-input-container fxFlex>
+                    <input md-input required type="password" formControlName="enter_password" placeholder="Password">
+                </md-input-container>
+                <md-input-container fxFlex>
+                    <input md-input required type="password" formControlName="confirm_password" placeholder="Confirm Password"
+                           onpaste="return false">
+                </md-input-container>
+            </div>
+            <div fxFlex fxAlign="center">
+                <button md-raised-button color="primary" [disabled]="!signUpForm.valid">Start Investing</button>
+            </div>
+        </div>
+    </form>
+</div>

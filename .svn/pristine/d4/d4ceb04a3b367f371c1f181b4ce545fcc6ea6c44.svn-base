@@ -1,0 +1,18 @@
+import {NgModule} from "@angular/core";
+import {AdvancedFactsheetComponent} from "./advanced-factsheet.component";
+import {BasicFactsheetComponent} from "./basic-factsheet.component";
+import {factsheetRouting} from "./factsheet.routes";
+import {SharedModule} from "../shared/shared.module";
+import {FactsheetService} from "./factsheet.service";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        factsheetRouting,
+    ],
+    exports: [BasicFactsheetComponent],
+    providers: [FactsheetService],
+    declarations: [BasicFactsheetComponent, AdvancedFactsheetComponent]
+})
+export class FactsheetModule {
+}

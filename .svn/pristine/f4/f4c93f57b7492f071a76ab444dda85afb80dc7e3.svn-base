@@ -1,0 +1,30 @@
+/**
+ * Created by Fincash on 04-02-2017.
+ */
+import {Pipe, PipeTransform} from '@angular/core';
+
+@Pipe({
+    name: 'date'
+})
+export class DatePipe implements PipeTransform {
+
+    transform(value: any, args?: any): any {
+
+        let months:Array<String> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        let inputType:Array<string> = ['object', 'date', 'string'];
+        console.log("type of "+"--"+ typeof value);
+        if(inputType.indexOf((typeof value).toLowerCase()) == -1 ){
+            return "No Data";  // for to display for invalid date format
+        }
+        value = new Date(value);
+        let y = value.getFullYear();
+        let m = value.getMonth();
+        let d = value.getDate();
+
+        let date = d + " "+ months[m]+" "+y;   // format to d-MMM-YYYY, set format hear
+
+        return date;
+    }
+
+}

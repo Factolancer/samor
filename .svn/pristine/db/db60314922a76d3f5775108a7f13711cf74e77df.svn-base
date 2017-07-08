@@ -1,0 +1,121 @@
+import {Component, OnInit, EventEmitter} from "@angular/core";
+import {Input, Output} from "@angular/core/src/metadata/directives";
+import {CheckoutProduct} from "../checkout-product";
+import {ProductEnum} from "../../enum/product-enum";
+import {InvestmentTypeEnum} from "../../enum/investment-type-enum";
+import {FormGroup, FormArray, FormControl, Validators} from "@angular/forms";
+import {NumberValidator} from "../../validator";
+
+@Component({
+    selector: 'app-checkout-product-view',
+    templateUrl: './checkout-product-view.component.html',
+    styleUrls: ['./checkout-product-view.component.css']
+})
+export class CheckoutProductViewComponent implements OnInit {
+
+    product: CheckoutProduct;
+    productEnum = ProductEnum;
+    investmentTypeEnum = InvestmentTypeEnum;
+    isFincashProduct = true;
+    isSIP = true;
+    productFormGroup: FormGroup;
+    productFormErrors: any;
+
+    @Input() set _product(checkoutProduct: CheckoutProduct) {
+
+        this.product = checkoutProduct;
+
+        //used to check if the product is a fincash promoted solution or not?
+        if (checkoutProduct.productName == this.productEnum.SIP || checkoutProduct.productName == this.productEnum.LUMPSUM) {
+            this.isFincashProduct = false;
+        }
+
+        //use to check the investment type LUMPSUM/SIP
+        if (checkoutProduct.investmentType == this.investmentTypeEnum.LUMPSUM) {
+            this.isSIP = false;
+        }
+    }
+
+    @Input() set _formGroup(value: FormGroup) {
+        this.productFormGroup = value;
+    }
+
+    @Input() set _formErrors(value: any) {
+        this.productFormErrors = value;
+    }
+
+    @Output() remove = new EventEmitter();
+    @Output() update = new EventEmitter();
+
+    removeProduct() {
+        this.remove.emit();
+    }
+
+    removeFund(fundIndex: number) {
+        this.product.funds = this.product.funds.filter((fund, index) => index != fundIndex);
+        this.productFormErrors.funds = this.productFormErrors.funds.filter((fund, index) => index != fundIndex);
+        let fundArray = this.productFormGroup.get('funds') as FormArray;
+        fundArray.removeAt(fundIndex);
+        if (fundArray.length > 0) {
+            this.calculateAmounts();
+        } else {
+            this.removeProduct();
+        }
+
+    }
+
+    calculateAmounts() {
+        let productInvestment = 0;
+        let productMinInvestment = 0;
+
+        let fundArray = this.productFormGroup.get('funds') as FormArray;
+        fundArray.value.forEach(fund => {
+            productInvestment += +fund.investmentAmount;
+        });
+
+        this.product.funds.forEach(fund=> {
+            productMinInvestment += +fund.minInvestment;
+        });
+
+        let productInvestmentControl = this.productFormGroup.get('investmentAmount') as FormControl;
+        productInvestmentControl.setValue(productInvestment);
+        productInvestmentControl.setValidators(Validators.compose([Validators.required, NumberValidator.minValue(productMinInvestment), NumberValidator.isHundredMultiple]));
+        this.productFormErrors.investmentAmount = '';
+        this.update.emit();
+    }
+
+    distributeAmount() {
+        let productMinInvestment = 0;
+        let minInvArray = [];
+        this.product.funds.forEach(fund=> {
+            productMinInvestment += +fund.minInvestment;
+            minInvArray.push(fund.minInvestment);
+        });
+
+        let productInvestmentControl = this.productFormGroup.get('investmentAmount') as FormControl;
+        let amount = productInvestmentControl.value;
+        if (amount >= productMinInvestment && amount % 100 == 0) {
+            amount -= productMinInvestment;
+            amount /= 100;
+            let index = 0;
+            while (amount) {
+                if (index >= this.product.funds.length)
+                    index = 0;
+                minInvArray[index] += 100;
+                amount--;
+                index++;
+            }
+
+            let fundArray = this.productFormGroup.get('funds') as FormArray;
+            minInvArray.forEach((value, index) => fundArray.at(index).get('investmentAmount').setValue(value));
+            this.update.emit();
+        }
+
+    }
+
+    constructor() {
+    }
+
+    ngOnInit() {
+    }
+}

@@ -1,0 +1,48 @@
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {Input} from "@angular/core/src/metadata/directives";
+import {BasicFactsheetComponent} from "../../factsheet/basic-factsheet.component";
+import {MdDialog, MdDialogRef} from "@angular/material";
+import {FactsheetService} from "../../factsheet/factsheet.service";
+import {Fund} from "../../models/fund";
+
+@Component({
+    selector: 'app-smart-sip-card',
+    templateUrl: './smart-sip-card.component.html',
+    styleUrls: ['../sip.styles.scss']
+})
+export class SmartSipCardComponent implements OnInit {
+
+    //inputs
+    @Input() set funds(funds: Fund[]) {
+        this._funds = funds || [];
+        this.selectedFunds = this._funds;
+    }
+
+    _funds: Fund[];
+    selectedFunds: Fund[];
+    factsheetDialogRef: MdDialogRef<BasicFactsheetComponent>;
+
+    constructor(public viewContainerRef: ViewContainerRef, public dialog: MdDialog, public factsheetService: FactsheetService) {
+    }
+
+    changeFundComposition(checked: boolean, fundItem: Fund) {
+        if (checked) {
+            this.selectedFunds.push(fundItem);
+        } else {
+            this.selectedFunds = this.selectedFunds.filter(selectedFund => selectedFund.id != fundItem.id);
+        }
+
+        //console.log(this.selectedFunds);
+    }
+
+    viewFactSheet(fund: Fund) {
+        let config = this.factsheetService.getFactsheetDialogConfig();
+        config.viewContainerRef = this.viewContainerRef;
+        this.factsheetDialogRef = this.dialog.open(BasicFactsheetComponent, config);
+        this.factsheetDialogRef.componentInstance.basicFactSheet = fund.basicFactsheet;
+    }
+
+    ngOnInit() {
+    }
+
+}

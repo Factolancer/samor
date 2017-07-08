@@ -1,0 +1,8 @@
+
+
+.floating-header{
+  position: fixed;
+  z-index: 999;/*make sure it's z-index is more than it's children and more than body*/
+  width:100%;
+  top:0;
+}

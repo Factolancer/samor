@@ -1,0 +1,36 @@
+import {Component, OnInit} from "@angular/core";
+import {Router} from "@angular/router";
+import {MdDialogRef, MdDialog} from "@angular/material";
+import {FormBuilder, FormGroup, Validators, AbstractControl} from "@angular/forms";
+import {EmailValidator} from "../validator";
+import {HttpService} from "../services/http-service.service";
+
+@Component({
+  selector: 'app-forgot-pass',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss']
+})
+
+export class ForgotPasswordComponent implements OnInit {
+
+    forgotPasswordForm: FormGroup;
+    userData: any;
+    isEmailValid:Boolean = true;
+
+    constructor(public router: Router, public http: HttpService, public dialogref: MdDialogRef<ForgotPasswordComponent>,
+              private fb: FormBuilder) { }
+
+    closeClicked() {
+            this.dialogref.close();
+    }
+    onForgotPassword(){
+      console.log("See a doctor! U shouldn't forget anything, atleast me!");
+      this.isEmailValid = false;
+      this.dialogref.close();
+    }
+    ngOnInit() {
+      this.forgotPasswordForm = this.fb.group({
+          email: ['', Validators.compose([Validators.required, EmailValidator.isValidMailFormat])]          
+      })
+    }
+  }

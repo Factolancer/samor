@@ -1,0 +1,22 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">{{calculatorTitle}}</h1>
+        </div>
+    </section>
+    <section class="grey-back">
+        <md-grid-list cols="2" gutterSize="20px" rowHeight="250px" *ngIf="!showGoals">
+            <md-grid-tile (click)="showGoalOptions()" class="clickable">
+                <img src="public/images/sip/calc/amount.png">Calculate the right amount for your SIP!
+            </md-grid-tile>
+            <md-grid-tile routerLink="returns" class="clickable">
+                <img src="public/images/sip/calc/returns.png">Calculate returns on your SIP Investments!
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="3" gutterSize="5px" rowHeight="250px" *ngIf="showGoals">
+            <md-grid-tile class="clickable" *ngFor="let goal of sipGoals; let i= index;"
+                          (click)="selectGoal(goal)"><img src="{{goal.imagePath}}"> {{goal.name}}
+            </md-grid-tile>
+        </md-grid-list>
+    </section>
+</div>

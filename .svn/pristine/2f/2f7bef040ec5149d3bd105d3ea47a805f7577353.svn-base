@@ -1,0 +1,33 @@
+var passport = require('passport');
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var config = require('../../config/environment');
+
+exports.setup = function () {
+
+    var strategyConfig = {};
+    strategyConfig['clientID'] = config.passport.google.CLIENT_ID;
+    strategyConfig['clientSecret'] = config.passport.google.CLIENT_SECRET;
+    strategyConfig['callbackURL'] = config.DOMAIN+config.passport.google.CALLBACK;
+    console.log(strategyConfig);
+  passport.use(new GoogleStrategy(strategyConfig,
+    function(accessToken, refreshToken, profile, done) {
+        /*console.log("token >>> " + accessToken);
+        console.log("refresh token >>> " + refreshToken);
+        console.log(profile);*/
+        var userObject = {};
+        userObject['name'] =  profile.displayName;
+        userObject['email']  = profile.emails[0].value;
+        userObject['provider']  = 'google';
+        userObject['id'] = profile.id;
+        userObject['facebook'] = profile._json;
+        //console.log(userObject)
+        return done(null,userObject)
+    }
+  ));
+};
+
+
+exports.processCallback = function (req, res) {
+    console.log(" success case handling processcallback for google redirecting home page");
+    res.redirect('/');
+}

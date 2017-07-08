@@ -1,0 +1,15 @@
+import {Bank} from "../models/bank";
+import {FilterData} from "./filters/filter-data";
+import {Fund} from "../models/fund";
+
+
+export class FundSearchResults {
+    constructor(public numFound: number,
+                public funds: Fund[],
+                public ratingFilterData?: FilterData[],
+                public aumFilterData?: FilterData[],
+                public amcFilterData?: FilterData[],
+                public ageFilterData?: FilterData[],
+                public categoryFilterData?: FilterData[]) {
+    }
+}

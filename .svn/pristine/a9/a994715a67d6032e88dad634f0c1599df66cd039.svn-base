@@ -1,0 +1,54 @@
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {SmartSipFunds} from "./smart-sip-funds";
+import {CartItem} from "../../models/cart-item";
+import {ProductEnum} from "../../enum/product-enum";
+import {InvestmentTypeEnum} from "../../enum/investment-type-enum";
+import {CartService} from "../../cart/cart.service";
+import {_catch} from "rxjs/operator/catch";
+
+@Component({
+
+    selector: 'app-smart-sip',
+    templateUrl: 'smart-sip.component.html',
+    styleUrls: ['smart-sip.component.css']
+})
+export class SmartSipComponent implements OnInit {
+
+    quickSipFunds: SmartSipFunds[];
+
+
+    proceed(selectedFunds: any) {
+        let productType;
+        let fundIdArray = [];
+
+        if (selectedFunds.length < 3) {
+            productType = ProductEnum[ProductEnum.SIP];
+        } else {
+            productType = ProductEnum[ProductEnum.SMART_SIP];
+        }
+
+        selectedFunds.forEach(fund => fundIdArray.push(fund.id));
+
+        let cartItem = <CartItem>{
+            product: productType,
+            investmentType: InvestmentTypeEnum[InvestmentTypeEnum.SIP],
+            fundIds: fundIdArray
+        };
+
+        this.cartService.addToCart(cartItem).subscribe(output=> {
+            alert(output.response);
+        });
+    }
+
+
+    constructor(private route: ActivatedRoute, private cartService: CartService) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: { funds: SmartSipFunds[] }) => {
+            this.quickSipFunds = data.funds;
+        });
+    }
+
+}

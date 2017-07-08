@@ -1,0 +1,44 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Enter your investment details</h1>
+        </div>
+    </section>
+    <section class="data-body">
+        <form [formGroup]="checkoutForm" novalidate>
+            <app-checkout-product-view *ngFor="let item of checkoutData.products" [_product]="item"
+                                       class="checkout-product"
+                                       (remove)="removeProduct($event)"
+                                       (update)="doInvestmentAmountUpdate()"
+                                       [_productFromGroup]="products"></app-checkout-product-view>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Total Investment Amount:</label>
+                    <label>{{checkoutData.totalInvestmentAmount | currency:'INR':true:'1.0-0'}}</label>
+                </div>
+                <div class="col-md-4">
+                    <label>Nominee:</label>
+                    <select required [(ngModel)]="checkoutData.selectedNominee" [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let nominee of checkoutData.nomineeList" [value]="nominee">{{nominee}}</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Bank Account:</label>
+                    <select [(ngModel)]="checkoutData.selectedBank" required [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let bank of checkoutData.bankList" [value]="bank">{{bank}}</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </section>
+    <section class="data-foot">
+        <div class="row">
+            <div class="col-md-12">
+                <button color="primary" md-raised-button="" class="md-primary float-right" (click)="onCheckoutSubmit()"
+                        ng-reflect-color="primary"
+                >Continue Checkout
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

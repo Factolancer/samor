@@ -1,0 +1,65 @@
+import {Component, OnInit, OnDestroy, Inject, OnChanges} from "@angular/core";
+import {Subscription} from "rxjs";
+import {APP_CONFIG, IAppConfig} from "../../environments/environment";
+import {Router, ActivatedRoute, NavigationEnd} from "@angular/router";
+import {LoginService} from "../login/login.service";
+import {Logger} from "../shared/logger/logger";
+
+@Component({
+  selector: 'fincash-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
+})
+export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
+
+  loggedSubscription: Subscription;
+  logoutSubscription: Subscription;
+  logged  : boolean;
+  routerSubscription : Subscription;
+  className : string;
+
+  constructor(private logger: Logger,private loginService: LoginService, private router: Router,  private route: ActivatedRoute , @Inject(APP_CONFIG) private config: IAppConfig) {
+      this.logged  = false
+      this.className = 'HeaderComponent';
+  }
+
+  checkLoggedIn(){
+    this.loggedSubscription = this.loginService.userLoggedIn().subscribe(value => {
+      this.logged = value;
+    });
+  }
+
+  logUserIn() {
+    this.router.navigate([this.config.dloginUrl]);
+  }
+
+  userSignUp() {
+    this.router.navigate([this.config.signupUrl]);
+  }
+
+  logUserOut() {
+    this.logoutSubscription = this.loginService.logOutUser().subscribe(value => {
+      if (value) {
+        this.router.navigate([this.config.defaultAfterLogout]);
+      }
+    });
+  }
+
+  ngOnChanges(){
+      this.logger.debug(this.className,"on changes called of header component");
+  }
+
+  ngOnInit() {
+    this.checkLoggedIn();
+    this.routerSubscription = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event) => {
+      this.logger.debug(this.className,event)
+      this.checkLoggedIn();
+    });
+  }
+
+  ngOnDestroy(){
+    this.routerSubscription.unsubscribe();
+    if(this.loggedSubscription) this.loggedSubscription.unsubscribe();
+    if(this.logoutSubscription) this.logoutSubscription.unsubscribe();
+  }
+}

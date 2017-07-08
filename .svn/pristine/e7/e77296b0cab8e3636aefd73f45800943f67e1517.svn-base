@@ -1,0 +1,79 @@
+<!--Header starts-->
+<header class="floating-header" infinite-scroll
+        [infiniteScrollDistance]="100"
+        [infiniteScrollUpDistance]="200"
+        [infiniteScrollThrottle]="200"
+        (scrolled)="onScroll($event)"
+        (scrolledUp)="onScrollUp($event)"
+        [ngClass]="{'hide':state}">
+    <md-toolbar class="header">
+        <span><a routerLink="/"><img src="../assets/img/logo.png"></a></span>
+        <span class="nav">
+             <a md-button="" class="nav-btn" [md-menu-trigger-for]="solutionsMenu">
+                 SOLUTIONS <md-icon class="md-16">&#xE313;</md-icon>
+             </a>
+             <a md-button="" class="nav-btn" routerLink="/explore">EXPLORE FUNDS</a>
+             <a md-button="" class="nav-btn" [md-menu-trigger-for]="calculatorMenu">CALCULATORS <md-icon
+                     class="md-16">&#xE313;</md-icon>
+             </a>
+             <a md-button="" class="nav-btn" [md-menu-trigger-for]="resourceCenterMenu">RESOURCE CENTER<md-icon
+                     class="md-16">&#xE313;</md-icon>
+             </a>
+        </span>
+
+        <span style="flex: 1 1 auto"></span>
+        <span>
+            <button md-icon-button="" class="mar-lr-10 clickable" routerLink="/cart">
+                <app-cart-navigation-icon [cssClass]="'md-28'"></app-cart-navigation-icon>
+            </button>
+        </span>
+        <span *ngIf="!isLoggedIn">
+            <button (click)="logUserIn()" class="login-btn-area clickable">
+                <span class="text">LOG IN</span>
+            </button>
+            <button (click)="userSignUp()" class="signup-btn-area clickable">
+                <span class="text">SIGN UP</span>
+            </button>
+        </span>
+        <span *ngIf="isLoggedIn">
+           <!-- <button md-icon-button="" class="clickable">
+                <md-icon class="md-20">&#xE7F4;</md-icon>
+            </button>-->
+            <!--<button md-icon-button="" class="clickable" routerLink="/cart">
+               <app-cart-navigation-icon [cssClass]="'md-20'"></app-cart-navigation-icon>
+           </button>-->
+            <button md-icon-button="" class="clickable" [md-menu-trigger-for]="myAccountMenu">
+                <md-icon class="md-28">&#xE853;</md-icon>
+                <!-- <md-icon class="md-24">&#xE313;</md-icon>-->
+            </button>
+        </span>
+
+        <md-menu #solutionsMenu="mdMenu" y-position="below" class="menu">
+            <a md-menu-item routerLink="/sip">SmartSIP</a>
+            <a md-menu-item routerLink="/tax">TaxSaver</a>
+            <a md-menu-item routerLink="/cash">SavingsPlus</a>
+        </md-menu>
+        <md-menu #calculatorMenu="mdMenu" y-position="below" class="menu">
+            <a md-menu-item routerLink="calculator/tax">Tax</a>
+            <a md-menu-item routerLink="calculator/sip">SIP</a>
+            <a md-menu-item routerLink="calculator/sip/goals/questions/1">Retirement Planning</a>
+            <a md-menu-item routerLink="calculator/sip/goals/questions/2">Higher Education</a>
+            <a md-menu-item routerLink="calculator/sip/goals/questions/3">Marriage Expense Calculator</a>
+            <a md-menu-item routerLink="calculator/sip/goals/questions/4">Buy House</a>
+            <a md-menu-item routerLink="calculator/sip/goals/questions/5">Buy Vehicle</a>
+            <a md-menu-item routerLink="calculator/sip/returns">Growth of SIP Investment</a>
+        </md-menu>
+        <md-menu #resourceCenterMenu="mdMenu" y-position="below" class="menu">
+            <a md-menu-item href="https://www.fincash.com/b/mutual-funds" target="_blank">Mutual Funds</a>
+            <a md-menu-item href="https://www.fincash.com/b/insurance" target="_blank">Insurance</a>
+        </md-menu>
+        <md-menu #myAccountMenu="mdMenu" y-position="below" class="menu">
+            <a md-menu-item routerLink="/dashboard">Dashboard</a>
+            <a md-menu-item routerLink="#">Change Password</a>
+            <!--<a md-menu-item routerLink="/watchlist">Watchlist</a>-->
+            <a md-menu-item (click)="logUserOut()">Logout</a>
+        </md-menu>
+
+    </md-toolbar>
+</header>
+<!--Header Ends -->

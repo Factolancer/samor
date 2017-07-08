@@ -1,0 +1,22 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "../services/http-service.service";
+
+@Injectable()
+export class CompareService {
+
+    private idList: number[]
+
+
+    constructor(private httpService: HttpService) {
+    }
+
+
+    setIdList(idList: number[]) {
+        this.idList = idList;
+    }
+
+    getFundComparisonData() {
+        return this.httpService.post('/fund/getComparisonData', {"idList": this.idList});
+    }
+
+}

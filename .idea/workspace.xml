@@ -1,0 +1,2460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" readonly="true" id="4e39c367-82ef-4ad9-9c40-be94deee2401" name="Default" comment="&#10;&#10;not required">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/webpack.dev.js" afterPath="$PROJECT_DIR$/config/webpack.dev.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/config/environment/development.js" afterPath="$PROJECT_DIR$/server/config/environment/development.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/core/core.module.ts" afterPath="$PROJECT_DIR$/src/app/core/core.module.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/environments/environment.ts" afterPath="$PROJECT_DIR$/src/environments/environment.ts" />
+    </list>
+    <ignored path="migration-project.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/dist/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="migration-project" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
+      <file leaf-file-name="instant-redemption.component.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/redemption/instant-redemption.component.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4004">
+              <caret line="182" column="42" lean-forward="false" selection-start-line="182" selection-start-column="42" selection-end-line="182" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="instant-redemption.component.ts" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/app/redemption/instant-redemption.component.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="224" column="79" lean-forward="true" selection-start-line="224" selection-start-column="79" selection-end-line="224" selection-end-column="79" />
+              <folding>
+                <element signature="e#0#85#0" expanded="true" />
+                <element signature="n#!!block;n#updateErrorMessages#0;n#InstantRedemptionComponent#0" expanded="false" />
+                <element signature="n#!!block;n#changeRelComposition#0;n#InstantRedemptionComponent#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="redemption.service.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/core/services/redemption.service.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="123" column="87" lean-forward="true" selection-start-line="123" selection-start-column="87" selection-end-line="123" selection-end-column="87" />
+              <folding>
+                <element signature="e#7150#7476#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urlAccess.guard.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/core/guards/urlAccess.guard.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="352">
+              <caret line="16" column="24" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="27" selection-end-column="1" />
+              <folding>
+                <element signature="e#0#52#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="checkoutUrlAccess.guard.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/core/guards/checkoutUrlAccess.guard.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="88">
+              <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+              <folding>
+                <element signature="e#0#52#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="checkout.component.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/checkout/checkout.component.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="348">
+              <caret line="824" column="43" lean-forward="true" selection-start-line="824" selection-start-column="43" selection-end-line="824" selection-end-column="43" />
+              <folding>
+                <element signature="e#0#77#0" expanded="true" />
+                <element signature="n#!!block;n#ngOnInit#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#populateNomineeData#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#prepareDisplayDataLists#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#prepareOptionsList#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#prepareSIPFrequencyList#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#isProductTagVisible#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#getSchemeFolioNo#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#prepareSIPDatesList#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#setInstallmentAndAmountChk#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#setFormFieldDefaults#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#setDefaultNomineeAndBank#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#checkOutFormInitialisation#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#updateErrorMessages#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#updateModelValues#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#investmentModeChangeTrigger#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#checkAdditionalPurchase#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#investmentModeUpdate#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="n#!!block;n#removeFund#0;n#CheckoutComponent#0" expanded="false" />
+                <element signature="e#40211#40954#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/core/guards/index.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="550">
+              <caret line="25" column="26" lean-forward="false" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#57#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="summary.component.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/checkout/summary/summary.component.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="806">
+              <caret line="228" column="42" lean-forward="false" selection-start-line="228" selection-start-column="42" selection-end-line="228" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="checkout.routes.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/checkout/checkout.routes.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="550">
+              <caret line="26" column="31" lean-forward="true" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+              <folding>
+                <element signature="e#0#50#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="SCSS File" />
+        <option value="JavaScript File" />
+        <option value="TypeScript File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>resolv</find>
+      <find>resolve</find>
+      <find>resolve.</find>
+      <find>resolve.s</find>
+      <find>afterclose</find>
+      <find>isnull</find>
+      <find>resolve.ser</find>
+      <find>p</find>
+      <find>page</find>
+      <find>pageno</find>
+      <find>pagenot</find>
+      <find>state</find>
+      <find>A</find>
+      <find>Aa</find>
+      <find>Aadhar</find>
+      <find>Aadhar.</find>
+      <find>showPaymentInfo</find>
+      <find>postUserEkycData</find>
+      <find>b</find>
+      <find>bro</find>
+      <find>brow</find>
+      <find>brows</find>
+      <find>browse</find>
+      <find>browser</find>
+      <find>browser-</find>
+      <find>browser-no</find>
+      <find>ti</find>
+      <find>tim</find>
+      <find>timer</find>
+      <find>URLAccessGuard</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>= true;</replace>
+      <replace>http.secureGet</replace>
+      <replace>http.securePost</replace>
+      <replace>fchttpservice.secureGet</replace>
+      <replace>fchttpservice.securePost</replace>
+      <replace>nomineeForm</replace>
+      <replace>basicForm</replace>
+      <replace>nomineeAddress</replace>
+      <replace>userNominee.nomineeAddress</replace>
+      <replace>nomineeForm.controls['nomineeAddress']</replace>
+      <replace>boolean;</replace>
+      <replace>dark-grey-text bold</replace>
+      <replace>redemptionData</replace>
+      <replace>userService.addressSubject.getValue()</replace>
+      <replace>grey-border-lr</replace>
+      <replace>pad-5</replace>
+      <replace>pad-10</replace>
+      <replace>pad-t-10 pad-lr-10 pad-b-5</replace>
+      <replace>redemptionService</replace>
+      <replace>RedemptionModeEnum</replace>
+      <replace>swpFunds</replace>
+      <replace>redData</replace>
+      <replace>redemptionAmountControl</replace>
+      <replace>redemptionMode</replace>
+      <replace>RedemptionOrderSummary</replace>
+      <replace>getRedemptionStateSubject()</replace>
+      <replace>address</replace>
+      <replace>relianceInstaFunds[index]</replace>
+      <replace>fundGroup</replace>
+      <replace>Aadhaar</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>D:\workspace\migration-project\src\app\user</dir>
+      <dir>D:\workspace\migration-project\src\app\factsheet</dir>
+      <dir>D:\workspace\migration-project\src\app\sip</dir>
+      <dir>D:\workspace\migration-project\node_modules</dir>
+      <dir>D:\workspace\migration-project\src\app\checkout</dir>
+      <dir>D:\workspace\migration-project\src\app\calculators\sip</dir>
+      <dir>D:\workspace\migration-project\src\app\cart</dir>
+      <dir>D:\workspace\migration-project\src\app\registration</dir>
+      <dir>D:\workspace\migration-project\src\app\redemption</dir>
+      <dir>D:\workspace\migration-project\server</dir>
+      <dir>D:\workspace\migration-project</dir>
+      <dir>D:\workspace\migration-project\src\app</dir>
+      <dir>D:\workspace\migration-project\src</dir>
+    </dirStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/app/redemption/red-summary-data-resolve-service.ts" />
+        <option value="$PROJECT_DIR$/src/app/checkout/checkout-data-resolve-service.ts" />
+        <option value="$PROJECT_DIR$/src/app/checkout/summary-data-resolve-service.ts" />
+        <option value="$PROJECT_DIR$/src/app/watchlist/WatchlistResolveService.ts" />
+        <option value="$PROJECT_DIR$/src/app/dashboard/navigation-panel/navigation-panel.component.html" />
+        <option value="$PROJECT_DIR$/src/app/shared/page-not-found.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/shared/browser-not-supported.component.ts" />
+        <option value="$PROJECT_DIR$/src/assets/img/dashboard/navigation-panel/instant.svg" />
+        <option value="$PROJECT_DIR$/src/app/shared/shared.styles.scss" />
+        <option value="$PROJECT_DIR$/src/app/shared/page-not-found.component.html" />
+        <option value="$PROJECT_DIR$/src/app/shared/shared.module.ts" />
+        <option value="$PROJECT_DIR$/src/app/shared/abc.html" />
+        <option value="$PROJECT_DIR$/src/app/redemption/redemption.component.ts" />
+        <option value="$PROJECT_DIR$/config/webpack.prod.js" />
+        <option value="$PROJECT_DIR$/src/app/shared/browser-not-supported.component.html" />
+        <option value="$PROJECT_DIR$/src/browser-not-supported.html" />
+        <option value="$PROJECT_DIR$/src/environments/environment.ts" />
+        <option value="$PROJECT_DIR$/src/app/kyc-status/constants/validation-message.ts" />
+        <option value="$PROJECT_DIR$/src/app/registration/ekyc.component.html" />
+        <option value="$PROJECT_DIR$/src/properties/title.ts" />
+        <option value="$PROJECT_DIR$/src/app/kyc-status/aadhar-kyc/aadhar-kyc.component.html" />
+        <option value="$PROJECT_DIR$/src/app/validators/validator.ts" />
+        <option value="$PROJECT_DIR$/src/app/registration/constants/validationmessages.ts" />
+        <option value="$PROJECT_DIR$/src/app/models/userLogin.ts" />
+        <option value="$PROJECT_DIR$/src/app/core/header/header.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/core/core.module.ts" />
+        <option value="$PROJECT_DIR$/src/app/checkout/summary/summary.component.ts" />
+        <option value="10.1.0.101/main.bundle.js" />
+        <option value="$PROJECT_DIR$/src/app/core/services/utility.service.ts" />
+        <option value="$PROJECT_DIR$/src/app/report/transaction-report/transaction-report.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/1st.spec.ts" />
+        <option value="$PROJECT_DIR$/server/views/browser-not-supported.html" />
+        <option value="$PROJECT_DIR$/src/app/registration/registration.component.html" />
+        <option value="$PROJECT_DIR$/src/app/registration/registration.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/registration/sections/bank-section/bank-section.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/registration/sections/kyc-section/kyc-section.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/registration/sections/nominee-section/nominee-section.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/registration/sections/other-section/other-section.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/redemption/redemption.routes.ts" />
+        <option value="$PROJECT_DIR$/src/app/core/guards/individualUser.guard.ts" />
+        <option value="$PROJECT_DIR$/src/app/core/services/kycstatus.service.ts" />
+        <option value="$PROJECT_DIR$/src/app/dashboard/navigation-panel/navigation-panel.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/redemption/redemption.component.html" />
+        <option value="$PROJECT_DIR$/src/app/redemption/instant-redemption.component.html" />
+        <option value="$PROJECT_DIR$/src/app/core/guards/checkoutUrlAccess.guard.ts" />
+        <option value="$PROJECT_DIR$/src/app/core/guards/index.ts" />
+        <option value="$PROJECT_DIR$/src/app/checkout/checkout.routes.ts" />
+        <option value="$PROJECT_DIR$/src/app/checkout/checkout.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/redemption/instant-redemption.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/core/services/redemption.service.ts" />
+        <option value="$PROJECT_DIR$/src/app/user/password/password.component.ts" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/node_modules" />
+    <handled-path value="$PROJECT_DIR$/server/node_modules" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource ProjectPane="true" />
+      <autoscrollFromSource ProjectPane="true" />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="migration-project">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="migration-project">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="migration-project">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="public">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="migration-project">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="environments">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="user" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="user" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="password" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="redemption" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kyc-status" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kyc-status" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aadhar-kyc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="guards" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="checkout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migration-project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="checkout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="summary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="vcs.Subversion" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
+    <property name="typescript-compiler-editor-notification" value="false" />
+    <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
+    <property name="js.eslint.eslintPackage" value="" />
+    <property name="list.type.of.created.stylesheet" value="SCSS" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SearchEverywhereHistoryKey" value="changepa&#9;null&#9;null&#10;getbirla&#9;null&#9;null&#10;instant.svg&#9;FILE&#9;file://D:/workspace/migration-project/src/assets/img/dashboard/navigation-panel/instant.svg&#10;heading-1&#9;null&#9;null&#10;finca&#9;null&#9;null&#10;logout&#9;null&#9;null&#10;pan&#9;null&#9;null&#10;panv&#9;null&#9;null&#10;checkout&#9;FILE&#9;file://D:/workspace/migration-project/src/app/checkout/checkout.component.ts&#10;transactionc&#9;null&#9;null&#10;scheme&#9;FILE&#9;file://D:/workspace/migration-project/src/app/constants/SchemeCodes.ts&#10;consta&#9;FILE&#9;file://D:/workspace/migration-project/src/app/report/constants.ts" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="220" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="219" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="220" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="219" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="220" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder4" value="4" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth5" value="219" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder5" value="5" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="63" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth1" value="71" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="160" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="63" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="63" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth5" value="897" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder5" value="5" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\workspace\migration-project\src\app\core\services" />
+      <recent name="D:\workspace\migration-project\src\app\redemption" />
+      <recent name="D:\workspace\migration-project\src" />
+      <recent name="D:\workspace\migration-project" />
+      <recent name="D:\workspace\migration-project\" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workspace\migration-project\src" />
+      <recent name="D:\workspace\migration-project\src\assets\img\social-icons" />
+      <recent name="D:\workspace\migration-project\src\assets\img\dashboard\navigation-panel" />
+      <recent name="D:\workspace\migration-project\src\app\redemption" />
+      <recent name="D:\workspace\migration-project\src\app\registration\sections\bank-section" />
+    </key>
+  </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="svn" revision="6191">D:\workspace\migration-project\src\app\cash\cashfunds\cashfunds.component.html</PATH>
+          <PATH vcs="svn" revision="6191">D:\workspace\migration-project\src\app\cash\cashfunds\savings-plus-card.component.html</PATH>
+          <PATH vcs="svn" revision="6191">D:\workspace\migration-project\src\app\cash\cash.component.html</PATH>
+          <PATH vcs="svn" revision="6191">D:\workspace\migration-project\src\app\report\constants.ts</PATH>
+          <PATH vcs="svn" revision="6191">D:\workspace\migration-project\src\styles\web.scss</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="JavaScript Debug.101">
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="cucumber.js" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" value="" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
+    <configuration default="false" name="Local 3000" type="JavascriptDebugType" factoryName="JavaScript Debug" uri="http://localhost:3000/">
+      <method />
+    </configuration>
+    <configuration default="false" name="Local 80" type="JavascriptDebugType" factoryName="JavaScript Debug" uri="http://localhost/">
+      <method />
+    </configuration>
+    <configuration default="false" name="101" type="JavascriptDebugType" factoryName="JavaScript Debug" uri="http://10.1.0.101/">
+      <method />
+    </configuration>
+    <list size="3">
+      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.Local 3000" />
+      <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.Local 80" />
+      <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.101" />
+    </list>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration" myUseAcceleration="nothing" cleanupOnStartRun="true">
+    <configuration>C:\Users\Fincash\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+    <option name="sshConnectionType" value="PASSWORD" />
+    <option name="sshUserName" value="paresh" />
+    <option name="UPDATE_DEPTH" value="infinity" />
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\workspace\migration-project" />
+          <option name="myCopyRoot" value="D:\workspace\migration-project" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\workspace\migration-project\.idea" />
+          <option name="myCopyRoot" value="D:\workspace\migration-project\.idea" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\workspace\migration-project" />
+          <option name="myCopyRoot" value="D:\workspace\migration-project" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4e39c367-82ef-4ad9-9c40-be94deee2401" name="Default" comment="" />
+      <created>1473922728344</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1473922728344</updated>
+      <workItem from="1473922729841" duration="15883000" />
+      <workItem from="1474001719518" duration="18798000" />
+      <workItem from="1474261771704" duration="18427000" />
+      <workItem from="1474347758396" duration="27522000" />
+      <workItem from="1474433506456" duration="29209000" />
+      <workItem from="1474519645638" duration="33110000" />
+      <workItem from="1474605235496" duration="5058000" />
+      <workItem from="1474875123459" duration="637000" />
+      <workItem from="1474883001553" duration="8357000" />
+      <workItem from="1474953449754" duration="17450000" />
+      <workItem from="1475037094095" duration="23184000" />
+      <workItem from="1475123888917" duration="11845000" />
+      <workItem from="1475209501673" duration="20694000" />
+      <workItem from="1475387886841" duration="20873000" />
+      <workItem from="1475469000832" duration="25794000" />
+      <workItem from="1475500587947" duration="6840000" />
+      <workItem from="1475555551224" duration="9656000" />
+      <workItem from="1475643437493" duration="16344000" />
+      <workItem from="1475728785980" duration="14450000" />
+      <workItem from="1476073982491" duration="8955000" />
+      <workItem from="1476092503919" duration="8034000" />
+      <workItem from="1476128370816" duration="15297000" />
+      <workItem from="1476186739779" duration="2027000" />
+      <workItem from="1476188801815" duration="12297000" />
+      <workItem from="1476246977114" duration="10367000" />
+      <workItem from="1476269330113" duration="12860000" />
+      <workItem from="1476333423322" duration="24084000" />
+      <workItem from="1476419551914" duration="19754000" />
+      <workItem from="1476679725549" duration="25498000" />
+      <workItem from="1476765786554" duration="20017000" />
+      <workItem from="1476852167105" duration="16329000" />
+      <workItem from="1476938914347" duration="89000" />
+      <workItem from="1476939094716" duration="20347000" />
+      <workItem from="1477026373741" duration="8292000" />
+      <workItem from="1477283754322" duration="23845000" />
+      <workItem from="1477371959371" duration="17142000" />
+      <workItem from="1477457370451" duration="13567000" />
+      <workItem from="1477542555481" duration="3489000" />
+      <workItem from="1477629689945" duration="2161000" />
+      <workItem from="1478523732548" duration="1952000" />
+      <workItem from="1478592248912" duration="1568000" />
+      <workItem from="1478671455764" duration="5440000" />
+      <workItem from="1478689517770" duration="5423000" />
+      <workItem from="1478778389825" duration="7472000" />
+      <workItem from="1478859422434" duration="7652000" />
+      <workItem from="1479112030926" duration="6138000" />
+      <workItem from="1479191339135" duration="3052000" />
+      <workItem from="1479273105416" duration="239000" />
+      <workItem from="1479273568015" duration="1299000" />
+      <workItem from="1479385581690" duration="1122000" />
+      <workItem from="1479468286642" duration="1901000" />
+      <workItem from="1479708618761" duration="3361000" />
+      <workItem from="1479737292082" duration="776000" />
+      <workItem from="1479789732168" duration="1008000" />
+      <workItem from="1479796538620" duration="9033000" />
+      <workItem from="1479876921953" duration="17896000" />
+      <workItem from="1479964199301" duration="33000" />
+      <workItem from="1479964289073" duration="10875000" />
+      <workItem from="1480049747256" duration="5264000" />
+      <workItem from="1480333415697" duration="1307000" />
+      <workItem from="1480395353908" duration="5377000" />
+      <workItem from="1480479949748" duration="17044000" />
+      <workItem from="1480567317085" duration="15439000" />
+      <workItem from="1480654978216" duration="7745000" />
+      <workItem from="1480912324460" duration="11621000" />
+      <workItem from="1480999431274" duration="11922000" />
+      <workItem from="1481085796933" duration="3822000" />
+      <workItem from="1481173002738" duration="3750000" />
+      <workItem from="1481259553195" duration="5409000" />
+      <workItem from="1481519596526" duration="6810000" />
+      <workItem from="1481609288914" duration="9833000" />
+      <workItem from="1481690352604" duration="171000" />
+      <workItem from="1481690587628" duration="1177000" />
+      <workItem from="1481696310511" duration="8330000" />
+      <workItem from="1481776942022" duration="13369000" />
+      <workItem from="1481863388044" duration="10544000" />
+      <workItem from="1481953400996" duration="2111000" />
+      <workItem from="1482121461511" duration="9255000" />
+      <workItem from="1482208266008" duration="18098000" />
+      <workItem from="1482295047226" duration="23898000" />
+      <workItem from="1482381437351" duration="4968000" />
+      <workItem from="1482467590289" duration="21195000" />
+      <workItem from="1482729399305" duration="22991000" />
+      <workItem from="1482813798271" duration="10403000" />
+      <workItem from="1482899212836" duration="16109000" />
+      <workItem from="1482985037849" duration="3462000" />
+      <workItem from="1483072023691" duration="10646000" />
+      <workItem from="1483331260237" duration="18716000" />
+      <workItem from="1483417394032" duration="21379000" />
+      <workItem from="1483504808015" duration="27011000" />
+      <workItem from="1483591110938" duration="16275000" />
+      <workItem from="1483677040420" duration="11656000" />
+      <workItem from="1483764881598" duration="4507000" />
+      <workItem from="1483938462928" duration="7153000" />
+      <workItem from="1484023569670" duration="17532000" />
+      <workItem from="1484111431828" duration="1396000" />
+      <workItem from="1484115144183" duration="22923000" />
+      <workItem from="1484196443834" duration="17448000" />
+      <workItem from="1484283092615" duration="5253000" />
+      <workItem from="1484543568371" duration="19397000" />
+      <workItem from="1484570158037" duration="8242000" />
+      <workItem from="1484623132523" duration="2045000" />
+      <workItem from="1484625215640" duration="1087000" />
+      <workItem from="1484628306187" duration="5813000" />
+      <workItem from="1484635606906" duration="28328000" />
+      <workItem from="1484832528337" duration="2898000" />
+      <workItem from="1484887995886" duration="6275000" />
+      <workItem from="1484986017237" duration="18497000" />
+      <workItem from="1485233460724" duration="24819000" />
+      <workItem from="1485319287901" duration="16493000" />
+      <workItem from="1485494888630" duration="9027000" />
+      <workItem from="1485578507211" duration="14114000" />
+      <workItem from="1485751701394" duration="2814000" />
+      <workItem from="1485756984966" duration="5373000" />
+      <workItem from="1485837501794" duration="23057000" />
+      <workItem from="1485924597315" duration="576000" />
+      <workItem from="1485925310516" duration="7518000" />
+      <workItem from="1485935687184" duration="19354000" />
+      <workItem from="1486013476294" duration="33962000" />
+      <workItem from="1486183670841" duration="17612000" />
+      <workItem from="1486354716661" duration="33378000" />
+      <workItem from="1486447200052" duration="19757000" />
+      <workItem from="1486484472904" duration="4676000" />
+      <workItem from="1486528742178" duration="23443000" />
+      <workItem from="1486577315408" duration="28000" />
+      <workItem from="1486618926249" duration="27715000" />
+      <workItem from="1486705270904" duration="23216000" />
+      <workItem from="1486733525789" duration="816000" />
+      <workItem from="1487219886463" duration="32019000" />
+      <workItem from="1487306693779" duration="14276000" />
+      <workItem from="1487395267488" duration="22239000" />
+      <workItem from="1487566108617" duration="33152000" />
+      <workItem from="1487652711012" duration="23826000" />
+      <workItem from="1487739507670" duration="21313000" />
+      <workItem from="1487779889529" duration="185000" />
+      <workItem from="1487826013695" duration="37509000" />
+      <workItem from="1487912720203" duration="24178000" />
+      <workItem from="1488172559549" duration="18095000" />
+      <workItem from="1488256760081" duration="26017000" />
+      <workItem from="1488344692242" duration="11959000" />
+      <workItem from="1488431212389" duration="12797000" />
+      <workItem from="1488517216097" duration="26302000" />
+      <workItem from="1488605019390" duration="17566000" />
+      <workItem from="1488626961950" duration="16031000" />
+      <workItem from="1488775709188" duration="26177000" />
+      <workItem from="1488862884403" duration="29246000" />
+      <workItem from="1488948366671" duration="19000" />
+      <workItem from="1488948571789" duration="18636000" />
+      <workItem from="1489035898255" duration="25334000" />
+      <workItem from="1489121940524" duration="27483000" />
+      <workItem from="1489471124222" duration="4975000" />
+      <workItem from="1489499805704" duration="26447000" />
+      <workItem from="1489586966267" duration="5826000" />
+      <workItem from="1489641893023" duration="25974000" />
+      <workItem from="1489726993283" duration="4389000" />
+      <workItem from="1489736550111" duration="27475000" />
+      <workItem from="1489987073016" duration="110000" />
+      <workItem from="1489987400452" duration="17946000" />
+      <workItem from="1490071448056" duration="122000" />
+      <workItem from="1490071762335" duration="19748000" />
+      <workItem from="1490160615957" duration="20171000" />
+      <workItem from="1490245794562" duration="20408000" />
+      <workItem from="1490330316366" duration="19467000" />
+      <workItem from="1490587928788" duration="12578000" />
+      <workItem from="1490623235939" duration="317000" />
+      <workItem from="1490676396267" duration="3647000" />
+      <workItem from="1490762957014" duration="2190000" />
+      <workItem from="1490849124117" duration="3559000" />
+      <workItem from="1490937173438" duration="13811000" />
+      <workItem from="1491280519832" duration="23493000" />
+      <workItem from="1491368355836" duration="16803000" />
+      <workItem from="1491456211094" duration="6095000" />
+      <workItem from="1491466201336" duration="12934000" />
+      <workItem from="1491542647736" duration="6326000" />
+      <workItem from="1491802794003" duration="19578000" />
+      <workItem from="1491887267182" duration="13509000" />
+      <workItem from="1491972641585" duration="5797000" />
+      <workItem from="1492058445036" duration="10100000" />
+      <workItem from="1492087152958" duration="70000" />
+      <workItem from="1492087355306" duration="679000" />
+      <workItem from="1492403349830" duration="23955000" />
+      <workItem from="1492490893206" duration="19469000" />
+      <workItem from="1492576909389" duration="19264000" />
+      <workItem from="1492602248087" duration="28215000" />
+      <workItem from="1492750499825" duration="9166000" />
+      <workItem from="1492847802985" duration="1374000" />
+      <workItem from="1493011346489" duration="24076000" />
+      <workItem from="1493095998044" duration="26296000" />
+      <workItem from="1493182169194" duration="2124000" />
+      <workItem from="1493184546347" duration="16923000" />
+      <workItem from="1493270457870" duration="13258000" />
+      <workItem from="1493356161959" duration="13028000" />
+      <workItem from="1493699852067" duration="9396000" />
+      <workItem from="1493787180242" duration="72000" />
+      <workItem from="1493787507904" duration="20525000" />
+      <workItem from="1493875931089" duration="22323000" />
+      <workItem from="1493959806170" duration="15537000" />
+      <workItem from="1494216505237" duration="20948000" />
+      <workItem from="1494307451558" duration="26321000" />
+      <workItem from="1494392324705" duration="15947000" />
+      <workItem from="1494481154264" duration="23666000" />
+      <workItem from="1495434277315" duration="3848000" />
+      <workItem from="1495515455363" duration="12772000" />
+      <workItem from="1495602163376" duration="16156000" />
+      <workItem from="1495686860451" duration="16786000" />
+      <workItem from="1495775110434" duration="19984000" />
+      <workItem from="1495865071884" duration="20399000" />
+      <workItem from="1496041910015" duration="11139000" />
+      <workItem from="1496121182288" duration="1533000" />
+      <workItem from="1496207546540" duration="3981000" />
+      <workItem from="1496292643219" duration="1972000" />
+      <workItem from="1496465254673" duration="2879000" />
+      <workItem from="1496638549152" duration="5885000" />
+      <workItem from="1496725116587" duration="19724000" />
+      <workItem from="1496811102561" duration="12193000" />
+      <workItem from="1496898528446" duration="31571000" />
+      <workItem from="1496986747192" duration="35356000" />
+      <workItem from="1497415746784" duration="11750000" />
+      <workItem from="1497501429510" duration="4614000" />
+      <workItem from="1497849560924" duration="562000" />
+      <workItem from="1497850205603" duration="8003000" />
+      <workItem from="1497935457902" duration="7846000" />
+      <workItem from="1498019905083" duration="23441000" />
+      <workItem from="1498106758142" duration="11213000" />
+      <workItem from="1498118387008" duration="12634000" />
+      <workItem from="1498192554179" duration="24141000" />
+      <workItem from="1498451051348" duration="11083000" />
+      <workItem from="1498538876720" duration="22371000" />
+      <workItem from="1498625480996" duration="9641000" />
+      <workItem from="1498710522770" duration="19098000" />
+      <workItem from="1498744821972" duration="1394000" />
+      <workItem from="1498797689023" duration="35399000" />
+      <workItem from="1499058452818" duration="10319000" />
+      <workItem from="1499144254484" duration="8351000" />
+      <workItem from="1499229670268" duration="16248000" />
+      <workItem from="1499318191871" duration="6157000" />
+      <workItem from="1499402604692" duration="10717000" />
+    </task>
+    <task id="LOCAL-00416" summary="&#10;&#10;SavingsPlus changes">
+      <created>1496931106122</created>
+      <option name="number" value="00416" />
+      <option name="presentableId" value="LOCAL-00416" />
+      <option name="project" value="LOCAL" />
+      <updated>1496931106122</updated>
+    </task>
+    <task id="LOCAL-00417" summary="&#10;&#10;not required">
+      <created>1496931283107</created>
+      <option name="number" value="00417" />
+      <option name="presentableId" value="LOCAL-00417" />
+      <option name="project" value="LOCAL" />
+      <updated>1496931283107</updated>
+    </task>
+    <task id="LOCAL-00418" summary="&#10;&#10;not required">
+      <created>1496931384144</created>
+      <option name="number" value="00418" />
+      <option name="presentableId" value="LOCAL-00418" />
+      <option name="project" value="LOCAL" />
+      <updated>1496931384144</updated>
+    </task>
+    <task id="LOCAL-00419" summary="&#10;&#10;not required">
+      <created>1496932459122</created>
+      <option name="number" value="00419" />
+      <option name="presentableId" value="LOCAL-00419" />
+      <option name="project" value="LOCAL" />
+      <updated>1496932459122</updated>
+    </task>
+    <task id="LOCAL-00420" summary="&#10;&#10;not required">
+      <created>1496934597111</created>
+      <option name="number" value="00420" />
+      <option name="presentableId" value="LOCAL-00420" />
+      <option name="project" value="LOCAL" />
+      <updated>1496934597111</updated>
+    </task>
+    <task id="LOCAL-00421" summary="&#10;&#10;not required">
+      <created>1496935002111</created>
+      <option name="number" value="00421" />
+      <option name="presentableId" value="LOCAL-00421" />
+      <option name="project" value="LOCAL" />
+      <updated>1496935002111</updated>
+    </task>
+    <task id="LOCAL-00422" summary="&#10;&#10;not required">
+      <created>1496937757106</created>
+      <option name="number" value="00422" />
+      <option name="presentableId" value="LOCAL-00422" />
+      <option name="project" value="LOCAL" />
+      <updated>1496937757106</updated>
+    </task>
+    <task id="LOCAL-00423" summary="&#10;&#10;not required">
+      <created>1496938126123</created>
+      <option name="number" value="00423" />
+      <option name="presentableId" value="LOCAL-00423" />
+      <option name="project" value="LOCAL" />
+      <updated>1496938126123</updated>
+    </task>
+    <task id="LOCAL-00424" summary="&#10;&#10;login check gurard">
+      <created>1496996610111</created>
+      <option name="number" value="00424" />
+      <option name="presentableId" value="LOCAL-00424" />
+      <option name="project" value="LOCAL" />
+      <updated>1496996610111</updated>
+    </task>
+    <task id="LOCAL-00425" summary="&#10;&#10;not required">
+      <created>1496999145110</created>
+      <option name="number" value="00425" />
+      <option name="presentableId" value="LOCAL-00425" />
+      <option name="project" value="LOCAL" />
+      <updated>1496999145110</updated>
+    </task>
+    <task id="LOCAL-00426" summary="&#10;&#10;not required">
+      <created>1497008372111</created>
+      <option name="number" value="00426" />
+      <option name="presentableId" value="LOCAL-00426" />
+      <option name="project" value="LOCAL" />
+      <updated>1497008372111</updated>
+    </task>
+    <task id="LOCAL-00427" summary="HttpService handling 200 response,&#10;redemptionService retry 0 for orders,&#10;Redirection from registration/kyc to registration/basic,&#10;Irr tooltip">
+      <created>1497364325112</created>
+      <option name="number" value="00427" />
+      <option name="presentableId" value="LOCAL-00427" />
+      <option name="project" value="LOCAL" />
+      <updated>1497364325112</updated>
+    </task>
+    <task id="LOCAL-00428" summary="&#10;&#10;not required">
+      <created>1497364382109</created>
+      <option name="number" value="00428" />
+      <option name="presentableId" value="LOCAL-00428" />
+      <option name="project" value="LOCAL" />
+      <updated>1497364382109</updated>
+    </task>
+    <task id="LOCAL-00429" summary="&#10;Error Handling on subscribe:&#10;checkout, dashboard, redemption, registration, report">
+      <created>1497436771127</created>
+      <option name="number" value="00429" />
+      <option name="presentableId" value="LOCAL-00429" />
+      <option name="project" value="LOCAL" />
+      <updated>1497436771127</updated>
+    </task>
+    <task id="LOCAL-00430" summary="&#10;&#10;not required">
+      <created>1497536557121</created>
+      <option name="number" value="00430" />
+      <option name="presentableId" value="LOCAL-00430" />
+      <option name="project" value="LOCAL" />
+      <updated>1497536557122</updated>
+    </task>
+    <task id="LOCAL-00431" summary="&#10;dd/MM/yyyy -&gt; dd/mm/yyyy&#10;Plan &amp; Option in redemptionSummary">
+      <created>1497859047127</created>
+      <option name="number" value="00431" />
+      <option name="presentableId" value="LOCAL-00431" />
+      <option name="project" value="LOCAL" />
+      <updated>1497859047130</updated>
+    </task>
+    <task id="LOCAL-00432" summary="folio number in redemption summary">
+      <created>1497859529116</created>
+      <option name="number" value="00432" />
+      <option name="presentableId" value="LOCAL-00432" />
+      <option name="project" value="LOCAL" />
+      <updated>1497859529116</updated>
+    </task>
+    <task id="LOCAL-00433" summary="&#10;&#10;not required">
+      <created>1497872619197</created>
+      <option name="number" value="00433" />
+      <option name="presentableId" value="LOCAL-00433" />
+      <option name="project" value="LOCAL" />
+      <updated>1497872619197</updated>
+    </task>
+    <task id="LOCAL-00434" summary="resetting redemption cart in 'resetCart'">
+      <created>1497939688115</created>
+      <option name="number" value="00434" />
+      <option name="presentableId" value="LOCAL-00434" />
+      <option name="project" value="LOCAL" />
+      <updated>1497939688115</updated>
+    </task>
+    <task id="LOCAL-00435" summary="&#10;added subscriptions to observables">
+      <created>1497941593122</created>
+      <option name="number" value="00435" />
+      <option name="presentableId" value="LOCAL-00435" />
+      <option name="project" value="LOCAL" />
+      <updated>1497941593122</updated>
+    </task>
+    <task id="LOCAL-00436" summary="Insta Redemption Page">
+      <created>1498229287116</created>
+      <option name="number" value="00436" />
+      <option name="presentableId" value="LOCAL-00436" />
+      <option name="project" value="LOCAL" />
+      <updated>1498229287116</updated>
+    </task>
+    <task id="LOCAL-00437" summary="&#10;UI changes for instant redemption">
+      <created>1498469179238</created>
+      <option name="number" value="00437" />
+      <option name="presentableId" value="LOCAL-00437" />
+      <option name="project" value="LOCAL" />
+      <updated>1498469179254</updated>
+    </task>
+    <task id="LOCAL-00438" summary="&#10;&#10;not required">
+      <created>1498479371109</created>
+      <option name="number" value="00438" />
+      <option name="presentableId" value="LOCAL-00438" />
+      <option name="project" value="LOCAL" />
+      <updated>1498479371109</updated>
+    </task>
+    <task id="LOCAL-00439" summary="&#10;&#10;not required">
+      <created>1498482489138</created>
+      <option name="number" value="00439" />
+      <option name="presentableId" value="LOCAL-00439" />
+      <option name="project" value="LOCAL" />
+      <updated>1498482489138</updated>
+    </task>
+    <task id="LOCAL-00440" summary="&#10;&#10;not required">
+      <created>1498546697115</created>
+      <option name="number" value="00440" />
+      <option name="presentableId" value="LOCAL-00440" />
+      <option name="project" value="LOCAL" />
+      <updated>1498546697116</updated>
+    </task>
+    <task id="LOCAL-00441" summary="&#10;&#10;not required">
+      <created>1498548618107</created>
+      <option name="number" value="00441" />
+      <option name="presentableId" value="LOCAL-00441" />
+      <option name="project" value="LOCAL" />
+      <updated>1498548618108</updated>
+    </task>
+    <task id="LOCAL-00442" summary="&#10;&#10;not required">
+      <created>1498558156110</created>
+      <option name="number" value="00442" />
+      <option name="presentableId" value="LOCAL-00442" />
+      <option name="project" value="LOCAL" />
+      <updated>1498558156110</updated>
+    </task>
+    <task id="LOCAL-00443" summary="&#10;&#10;Insta redeem pop up">
+      <created>1498571401108</created>
+      <option name="number" value="00443" />
+      <option name="presentableId" value="LOCAL-00443" />
+      <option name="project" value="LOCAL" />
+      <updated>1498571401108</updated>
+    </task>
+    <task id="LOCAL-00444" summary="&#10;&#10;not required">
+      <created>1498630074109</created>
+      <option name="number" value="00444" />
+      <option name="presentableId" value="LOCAL-00444" />
+      <option name="project" value="LOCAL" />
+      <updated>1498630074109</updated>
+    </task>
+    <task id="LOCAL-00445" summary="&#10;&#10;not required">
+      <created>1498633970107</created>
+      <option name="number" value="00445" />
+      <option name="presentableId" value="LOCAL-00445" />
+      <option name="project" value="LOCAL" />
+      <updated>1498633970107</updated>
+    </task>
+    <task id="LOCAL-00446" summary="&#10;&#10;not required">
+      <created>1498715065221</created>
+      <option name="number" value="00446" />
+      <option name="presentableId" value="LOCAL-00446" />
+      <option name="project" value="LOCAL" />
+      <updated>1498715065222</updated>
+    </task>
+    <task id="LOCAL-00447" summary="&#10;&#10;not required">
+      <created>1498719005107</created>
+      <option name="number" value="00447" />
+      <option name="presentableId" value="LOCAL-00447" />
+      <option name="project" value="LOCAL" />
+      <updated>1498719005107</updated>
+    </task>
+    <task id="LOCAL-00448" summary="&#10;&#10;not required">
+      <created>1498733044115</created>
+      <option name="number" value="00448" />
+      <option name="presentableId" value="LOCAL-00448" />
+      <option name="project" value="LOCAL" />
+      <updated>1498733044115</updated>
+    </task>
+    <task id="LOCAL-00449" summary="&#10;InstaMax amounts from APIs">
+      <created>1498745946319</created>
+      <option name="number" value="00449" />
+      <option name="presentableId" value="LOCAL-00449" />
+      <option name="project" value="LOCAL" />
+      <updated>1498745946320</updated>
+    </task>
+    <task id="LOCAL-00450" summary="&#10;&#10;not required">
+      <created>1498804384124</created>
+      <option name="number" value="00450" />
+      <option name="presentableId" value="LOCAL-00450" />
+      <option name="project" value="LOCAL" />
+      <updated>1498804384124</updated>
+    </task>
+    <task id="LOCAL-00451" summary="&#10;&#10;not required">
+      <created>1498809211112</created>
+      <option name="number" value="00451" />
+      <option name="presentableId" value="LOCAL-00451" />
+      <option name="project" value="LOCAL" />
+      <updated>1498809211112</updated>
+    </task>
+    <task id="LOCAL-00452" summary="&#10;&#10;not required">
+      <created>1498810666108</created>
+      <option name="number" value="00452" />
+      <option name="presentableId" value="LOCAL-00452" />
+      <option name="project" value="LOCAL" />
+      <updated>1498810666108</updated>
+    </task>
+    <task id="LOCAL-00453" summary="&#10;&#10;not required">
+      <created>1498826487146</created>
+      <option name="number" value="00453" />
+      <option name="presentableId" value="LOCAL-00453" />
+      <option name="project" value="LOCAL" />
+      <updated>1498826487146</updated>
+    </task>
+    <task id="LOCAL-00454" summary="Nominee DOB check &amp; Aadhar-&gt;Aadhaar text change">
+      <created>1498835759109</created>
+      <option name="number" value="00454" />
+      <option name="presentableId" value="LOCAL-00454" />
+      <option name="project" value="LOCAL" />
+      <updated>1498835759109</updated>
+    </task>
+    <task id="LOCAL-00455" summary="&#10;isVerified">
+      <created>1498848971113</created>
+      <option name="number" value="00455" />
+      <option name="presentableId" value="LOCAL-00455" />
+      <option name="project" value="LOCAL" />
+      <updated>1498848971113</updated>
+    </task>
+    <task id="LOCAL-00456">
+      <created>1498861350112</created>
+      <option name="number" value="00456" />
+      <option name="presentableId" value="LOCAL-00456" />
+      <option name="project" value="LOCAL" />
+      <updated>1498861350112</updated>
+    </task>
+    <task id="LOCAL-00457" summary="&#10;&#10;not required">
+      <created>1498862846113</created>
+      <option name="number" value="00457" />
+      <option name="presentableId" value="LOCAL-00457" />
+      <option name="project" value="LOCAL" />
+      <updated>1498862846113</updated>
+    </task>
+    <task id="LOCAL-00458" summary="&#10;&#10;not required">
+      <created>1499064269119</created>
+      <option name="number" value="00458" />
+      <option name="presentableId" value="LOCAL-00458" />
+      <option name="project" value="LOCAL" />
+      <updated>1499064269119</updated>
+    </task>
+    <task id="LOCAL-00459" summary="&#10;&#10;not required">
+      <created>1499075101105</created>
+      <option name="number" value="00459" />
+      <option name="presentableId" value="LOCAL-00459" />
+      <option name="project" value="LOCAL" />
+      <updated>1499075101105</updated>
+    </task>
+    <task id="LOCAL-00460" summary="&#10;&#10;not required">
+      <created>1499171458112</created>
+      <option name="number" value="00460" />
+      <option name="presentableId" value="LOCAL-00460" />
+      <option name="project" value="LOCAL" />
+      <updated>1499171458113</updated>
+    </task>
+    <task id="LOCAL-00461" summary="Change title to &quot;Fincash.com&quot;">
+      <created>1499231764125</created>
+      <option name="number" value="00461" />
+      <option name="presentableId" value="LOCAL-00461" />
+      <option name="project" value="LOCAL" />
+      <updated>1499231764125</updated>
+    </task>
+    <task id="LOCAL-00462" summary="&#10;Error msg on registration page&#10;Individual guard">
+      <created>1499250683141</created>
+      <option name="number" value="00462" />
+      <option name="presentableId" value="LOCAL-00462" />
+      <option name="project" value="LOCAL" />
+      <updated>1499250683141</updated>
+    </task>
+    <task id="LOCAL-00463">
+      <created>1499347800111</created>
+      <option name="number" value="00463" />
+      <option name="presentableId" value="LOCAL-00463" />
+      <option name="project" value="LOCAL" />
+      <updated>1499347800112</updated>
+    </task>
+    <task id="LOCAL-00464" summary="&#10;&#10;not required">
+      <created>1499410011113</created>
+      <option name="number" value="00464" />
+      <option name="presentableId" value="LOCAL-00464" />
+      <option name="project" value="LOCAL" />
+      <updated>1499410011113</updated>
+    </task>
+    <option name="localTasksCounter" value="465" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="3160417000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="7" />
+    <layout>
+      <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25602755" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22157589" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32979977" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24744609" sideWeight="0.50792813" order="12" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37343928" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34392735" sideWeight="0.49568966" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24947146" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28036323" sideWeight="0.49207187" order="11" side_tool="false" content_ui="tabs" x="961" y="45" width="958" height="912" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4370034" sideWeight="0.49469778" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31782067" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3280363" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932693" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <MESSAGE value="&#10;&#10;Copying nominee address for fresh user" />
+    <MESSAGE value="&#10;&#10;Merging of saved CHeckoutData &amp; data from cart" />
+    <MESSAGE value="&#10;&#10;Add to redeem" />
+    <MESSAGE value="&#10;&#10;Redemption on 8th may" />
+    <MESSAGE value="&#10;&#10;redemption validations" />
+    <MESSAGE value="Redemption changes frontend" />
+    <MESSAGE value="&#10;&#10;dialog changes" />
+    <MESSAGE value="&#10;&#10;SavingsPlus changes" />
+    <MESSAGE value="&#10;&#10;login check gurard" />
+    <MESSAGE value="HttpService handling 200 response,&#10;redemptionService retry 0 for orders,&#10;Redirection from registration/kyc to registration/basic,&#10;Irr tooltip" />
+    <MESSAGE value="&#10;Error Handling on subscribe:&#10;checkout, dashboard, redemption, registration, report" />
+    <MESSAGE value="&#10;dd/MM/yyyy -&gt; dd/mm/yyyy&#10;Plan &amp; Option in redemptionSummary" />
+    <MESSAGE value="folio number in redemption summary" />
+    <MESSAGE value="resetting redemption cart in 'resetCart'" />
+    <MESSAGE value="&#10;added subscriptions to observables" />
+    <MESSAGE value="Insta Redemption Page" />
+    <MESSAGE value="&#10;UI changes for instant redemption" />
+    <MESSAGE value="&#10;&#10;Insta redeem pop up" />
+    <MESSAGE value="&#10;InstaMax amounts from APIs" />
+    <MESSAGE value="Nominee DOB check &amp; Aadhar-&gt;Aadhaar text change" />
+    <MESSAGE value="&#10;isVerified" />
+    <MESSAGE value="Change title to &quot;Fincash.com&quot;" />
+    <MESSAGE value="&#10;&#10;error msg on registration page" />
+    <MESSAGE value="&#10;Error msg on registration page&#10;Individual guard" />
+    <MESSAGE value="&#10;&#10;not required" />
+    <option name="LAST_COMMIT_MESSAGE" value="&#10;&#10;not required" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/sections/basic-section/basic-section.component.ts</url>
+          <line>137</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/sip/smart-sip/smart-sip-fund-resolve.service.ts</url>
+          <line>13</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/sip/smart-sip/smart-sip-fund-resolve.service.ts</url>
+          <line>16</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/cash/demo/demo.component.ts</url>
+          <line>19</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/sections/basic-section/basic-section.component.ts</url>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/app.component.ts</url>
+          <line>30</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/sections/basic-section/basic-section.component.ts</url>
+          <line>59</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/ekyc.component.ts</url>
+          <line>44</line>
+          <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/userdata.service.ts</url>
+          <line>171</line>
+          <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/sections/other-section/other-section.component.ts</url>
+          <line>172</line>
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/services/kycstatus.service.ts</url>
+          <line>23</line>
+          <option name="timeStamp" value="105" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/services/kycstatus.service.ts</url>
+          <line>19</line>
+          <option name="timeStamp" value="106" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/sections/basic-section/basic-section.component.ts</url>
+          <line>151</line>
+          <option name="timeStamp" value="108" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/kyc-status/kyc-status.component.ts</url>
+          <line>242</line>
+          <option name="timeStamp" value="111" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/kyc-status/kyc-status.component.ts</url>
+          <line>261</line>
+          <option name="timeStamp" value="112" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/kyc-status/kyc-status.component.ts</url>
+          <line>125</line>
+          <option name="timeStamp" value="125" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/core/guards/kyc.guard.ts</url>
+          <line>22</line>
+          <option name="timeStamp" value="131" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>195</line>
+          <option name="timeStamp" value="139" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>149</line>
+          <option name="timeStamp" value="140" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>132</line>
+          <option name="timeStamp" value="141" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>201</line>
+          <option name="timeStamp" value="142" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>212</line>
+          <option name="timeStamp" value="143" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>102</line>
+          <option name="timeStamp" value="144" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>95</line>
+          <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>197</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>74</line>
+          <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>150</line>
+          <option name="timeStamp" value="151" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>151</line>
+          <option name="timeStamp" value="152" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>146</line>
+          <option name="timeStamp" value="153" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/calculators/sip/goal-based.component.ts</url>
+          <line>126</line>
+          <option name="timeStamp" value="154" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/kyc-status/kyc-status.component.ts</url>
+          <line>398</line>
+          <option name="timeStamp" value="159" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>http://localhost:3000/main.bundle.js</url>
+          <line>5726</line>
+          <option name="timeStamp" value="163" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>http://localhost:3000/main.bundle.js</url>
+          <line>5723</line>
+          <option name="timeStamp" value="164" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/sections/nominee-section/nominee-section.component.ts</url>
+          <line>180</line>
+          <option name="timeStamp" value="168" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/sections/nominee-section/nominee-section.component.ts</url>
+          <line>127</line>
+          <option name="timeStamp" value="171" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/sections/nominee-section/nominee-section.component.ts</url>
+          <line>124</line>
+          <option name="timeStamp" value="172" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/sections/nominee-section/nominee-section.component.ts</url>
+          <line>160</line>
+          <option name="timeStamp" value="173" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redemption.component.ts</url>
+          <line>127</line>
+          <option name="timeStamp" value="220" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/checkout/checkout.component.ts</url>
+          <line>118</line>
+          <option name="timeStamp" value="233" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/checkout/checkout.component.ts</url>
+          <line>178</line>
+          <option name="timeStamp" value="237" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/checkout/checkout.component.ts</url>
+          <line>212</line>
+          <option name="timeStamp" value="242" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/checkout/checkout.component.ts</url>
+          <line>308</line>
+          <option name="timeStamp" value="246" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/checkout/checkout.component.ts</url>
+          <line>364</line>
+          <option name="timeStamp" value="247" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/checkout/checkout.component.ts</url>
+          <line>318</line>
+          <option name="timeStamp" value="248" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/checkout/checkout.component.ts</url>
+          <line>331</line>
+          <option name="timeStamp" value="250" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/checkout/checkout.component.ts</url>
+          <line>123</line>
+          <option name="timeStamp" value="251" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redemption.component.ts</url>
+          <line>167</line>
+          <option name="timeStamp" value="254" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redemption.component.ts</url>
+          <line>306</line>
+          <option name="timeStamp" value="257" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/core/services/redemption.service.ts</url>
+          <line>64</line>
+          <option name="timeStamp" value="265" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redemption.component.ts</url>
+          <line>73</line>
+          <option name="timeStamp" value="268" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redemption.component.ts</url>
+          <line>78</line>
+          <option name="timeStamp" value="269" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redemption.component.ts</url>
+          <line>347</line>
+          <option name="timeStamp" value="279" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redemption.component.ts</url>
+          <line>339</line>
+          <option name="timeStamp" value="280" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redeem-fund-search-bar.component.ts</url>
+          <line>123</line>
+          <option name="timeStamp" value="290" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redeem-fund-search-bar.component.ts</url>
+          <line>126</line>
+          <option name="timeStamp" value="292" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redemption.component.ts</url>
+          <line>68</line>
+          <option name="timeStamp" value="296" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redemption-summary.component.ts</url>
+          <line>187</line>
+          <option name="timeStamp" value="299" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/core/services/redemption.service.ts</url>
+          <line>50</line>
+          <option name="timeStamp" value="300" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/core/services/redemption.service.ts</url>
+          <line>57</line>
+          <option name="timeStamp" value="301" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/core/services/redemption.service.ts</url>
+          <line>56</line>
+          <option name="timeStamp" value="302" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/registration/userdata.service.ts</url>
+          <line>82</line>
+          <option name="timeStamp" value="303" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/validators/validator.ts</url>
+          <line>19</line>
+          <option name="timeStamp" value="306" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/core/guards/urlAccess.guard.ts</url>
+          <line>14</line>
+          <option name="timeStamp" value="313" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/redemption.component.ts</url>
+          <line>137</line>
+          <option name="timeStamp" value="315" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/redemption/instant-redemption.component.ts</url>
+          <line>64</line>
+          <option name="timeStamp" value="330" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/report/transaction-report/transaction-report.component.ts</url>
+          <line>226</line>
+          <option name="timeStamp" value="331" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/report/transaction-report/transaction-report.component.ts</url>
+          <line>233</line>
+          <option name="timeStamp" value="332" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/report/transaction-report/transaction-report.component.ts</url>
+          <line>237</line>
+          <option name="timeStamp" value="333" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/report/transaction-report/transaction-report.component.ts</url>
+          <line>240</line>
+          <option name="timeStamp" value="334" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/report/transaction-report/transaction-report.component.ts</url>
+          <line>254</line>
+          <option name="timeStamp" value="335" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/core/services/utility.service.ts</url>
+          <line>71</line>
+          <option name="timeStamp" value="336" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="338" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/app/core/services/cookie/services/cookies.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-220">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/core/services/cookie/services/cookies.backend.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/core/services/cookie/services/base-cookie-options.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/config/environment/development.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="594">
+          <caret line="42" column="65" lean-forward="true" selection-start-line="42" selection-start-column="65" selection-end-line="42" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/config/environment/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="652">
+          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/report/transaction-report/transaction-report.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1760">
+          <caret line="101" column="66" lean-forward="false" selection-start-line="101" selection-start-column="66" selection-end-line="101" selection-end-column="66" />
+          <folding>
+            <element signature="e#0#77#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/core/services/utility.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1034">
+          <caret line="92" column="78" lean-forward="false" selection-start-line="92" selection-start-column="78" selection-end-line="92" selection-end-column="78" />
+          <folding>
+            <element signature="n#!!block;n#parseString#0;n#UtilityService#0" expanded="false" />
+            <element signature="n#!!block;n#scrollToTop#0;n#UtilityService#0" expanded="false" />
+            <element signature="n#!!block;n#redirectionByWindow#0;n#UtilityService#0" expanded="false" />
+            <element signature="n#!!block;n#openByWindow#0;n#UtilityService#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/1st.spec.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="2" column="3" lean-forward="false" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/report/report.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="21" column="24" lean-forward="false" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/views/browser-not-supported.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="7" column="7" lean-forward="true" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/views/view-controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="12" column="23" lean-forward="false" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/properties/title.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="23" column="48" lean-forward="false" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/cash/demo/demo.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="60" column="41" lean-forward="false" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/registration/registration.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="524">
+          <caret line="31" column="49" lean-forward="false" selection-start-line="31" selection-start-column="49" selection-end-line="31" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/registration/sections/bank-section/bank-section.module.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/registration/userdata.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="162" column="4" lean-forward="false" selection-start-line="162" selection-start-column="4" selection-end-line="162" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/registration/registration.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="569">
+          <caret line="100" column="18" lean-forward="true" selection-start-line="100" selection-start-column="18" selection-end-line="100" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/registration/sections/basic-section/basic-section.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="463">
+          <caret line="233" column="44" lean-forward="true" selection-start-line="233" selection-start-column="44" selection-end-line="233" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#189#0" expanded="true" />
+            <element signature="e#6922#6960#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/registration/sections/other-section/other-section.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-132">
+          <caret line="59" column="15" lean-forward="false" selection-start-line="59" selection-start-column="15" selection-end-line="59" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#178#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/registration/sections/nominee-section/nominee-section.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4158">
+          <caret line="250" column="67" lean-forward="false" selection-start-line="250" selection-start-column="67" selection-end-line="250" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#163#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/registration/sections/kyc-section/kyc-section.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4400">
+          <caret line="277" column="67" lean-forward="false" selection-start-line="277" selection-start-column="67" selection-end-line="277" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@angular/common/src/platform_id.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="25" column="24" lean-forward="false" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="12492" column="10" lean-forward="false" selection-start-line="12492" selection-start-column="10" selection-end-line="12492" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/core/services/browser-support.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="40" column="31" lean-forward="true" selection-start-line="40" selection-start-column="31" selection-end-line="40" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/assets/img/landingpage/industry.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/registration/sections/bank-section/bank-section.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="105" column="0" lean-forward="true" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/redemption/redemption.routes.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="748">
+          <caret line="44" column="32" lean-forward="false" selection-start-line="44" selection-start-column="32" selection-end-line="44" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/core/guards/individualUser.guard.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="21" column="41" lean-forward="false" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/core/services/kycstatus.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="22" column="11" lean-forward="false" selection-start-line="22" selection-start-column="11" selection-end-line="22" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/dashboard/navigation-panel/navigation-panel.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="21" column="28" lean-forward="false" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/dashboard/navigation-panel/navigation-panel.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="924">
+          <caret line="49" column="17" lean-forward="false" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#77#0" expanded="false" />
+            <element signature="e#2191#2395#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/kyc-status/aadhar-kyc/aadhar-kyc.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/api/kyc/kyc-controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="38" column="10" lean-forward="true" selection-start-line="38" selection-start-column="10" selection-end-line="38" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/karma.conf.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/karma.conf.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-550">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/kyc-status/aadhar-kyc/aadhar-kyc.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3190">
+          <caret line="165" column="54" lean-forward="false" selection-start-line="165" selection-start-column="54" selection-end-line="165" selection-end-column="54" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/redemption/redemption.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#77#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/redemption/redemption.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3058">
+          <caret line="139" column="148" lean-forward="false" selection-start-line="139" selection-start-column="148" selection-end-line="139" selection-end-column="148" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/redemption/instant-redemption.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4004">
+          <caret line="182" column="42" lean-forward="false" selection-start-line="182" selection-start-column="42" selection-end-line="182" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/core/guards/urlAccess.guard.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="16" column="24" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="27" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/core/guards/index.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="25" column="26" lean-forward="false" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/checkout/summary/summary.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="806">
+          <caret line="228" column="42" lean-forward="false" selection-start-line="228" selection-start-column="42" selection-end-line="228" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/checkout/checkout.routes.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="26" column="31" lean-forward="true" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/core/guards/checkoutUrlAccess.guard.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/checkout/checkout.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="824" column="43" lean-forward="true" selection-start-line="824" selection-start-column="43" selection-end-line="824" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#77#0" expanded="true" />
+            <element signature="n#!!block;n#ngOnInit#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#populateNomineeData#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#prepareDisplayDataLists#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#prepareOptionsList#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#prepareSIPFrequencyList#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#isProductTagVisible#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#getSchemeFolioNo#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#prepareSIPDatesList#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#setInstallmentAndAmountChk#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#setFormFieldDefaults#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#setDefaultNomineeAndBank#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#checkOutFormInitialisation#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#updateErrorMessages#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#updateModelValues#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#investmentModeChangeTrigger#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#checkAdditionalPurchase#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#investmentModeUpdate#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="n#!!block;n#removeFund#0;n#CheckoutComponent#0" expanded="false" />
+            <element signature="e#40211#40954#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/core/services/redemption.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="123" column="87" lean-forward="true" selection-start-line="123" selection-start-column="87" selection-end-line="123" selection-end-column="87" />
+          <folding>
+            <element signature="e#7150#7476#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/node_modules/aws-sdk/clients/iam.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="1079" column="19" lean-forward="false" selection-start-line="1079" selection-start-column="19" selection-end-line="1079" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/user/password/password.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="9" column="18" lean-forward="true" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/redemption/instant-redemption.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="224" column="79" lean-forward="true" selection-start-line="224" selection-start-column="79" selection-end-line="224" selection-end-column="79" />
+          <folding>
+            <element signature="e#0#85#0" expanded="true" />
+            <element signature="n#!!block;n#updateErrorMessages#0;n#InstantRedemptionComponent#0" expanded="false" />
+            <element signature="n#!!block;n#changeRelComposition#0;n#InstantRedemptionComponent#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

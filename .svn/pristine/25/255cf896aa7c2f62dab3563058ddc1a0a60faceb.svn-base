@@ -1,0 +1,21 @@
+import {NgModule} from "@angular/core";
+import {sipCalculatorRouting} from "./sip-calculator.routes";
+import {SharedModule} from "../../shared/shared.module";
+import {ChartModule} from "angular2-highcharts";
+import {SipCalcComponent} from "./sip-calc.component";
+import {GoalBasedComponent} from "./goal-based.component";
+import {SipCalcGoalComponent} from "./sip-calc-goal.component";
+import {ReturnsBasedComponent} from "./returns-based.component";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        ChartModule.forRoot(require('highcharts')),
+        sipCalculatorRouting
+    ],
+    providers: [],
+    declarations: [SipCalcComponent, GoalBasedComponent, SipCalcGoalComponent, ReturnsBasedComponent],
+})
+
+export class SipCalculatorModule {
+}

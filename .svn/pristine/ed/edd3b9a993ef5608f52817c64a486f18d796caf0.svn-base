@@ -1,0 +1,21 @@
+<div class="row journey">
+    <div class="col-sm-2 col-sm-offset-3 no-padding">
+        <div class="journey-line">
+            <div class="grey-circle"></div>
+            <span class="text">Select Funds</span>
+        </div>
+    </div>
+    <div class="col-sm-2 no-padding">
+        <div class="journey-line">
+            <div class="grey-circle"></div>
+            <span class="text">Investment Portfolio</span>
+        </div>
+    </div>
+    <div class="col-sm-2 no-padding">
+        <div class="journey-line">
+            <div class="grey-circle"></div>
+            <span class="text">Investment Summary</span>
+            <div class="grey-circle" style="left:95%;"></div>
+        </div>
+    </div>
+</div>

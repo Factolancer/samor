@@ -1,0 +1,10 @@
+export const RedemptionValidationMessages = {
+
+    redemptionAmountOrUnit: {
+        required: '*required',
+        minValue: 'Min Amount is ',
+        maxValue: 'Max Amount is ',
+        isMultiple: 'Amount in multiple of '
+    }
+
+};

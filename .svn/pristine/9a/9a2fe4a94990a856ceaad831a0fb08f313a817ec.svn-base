@@ -1,0 +1,69 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <md-card class="mar-tb-5 report-card no-padding">
+        <div fxLayout="row" fxLayoutAlign="center center" class="summary-heading">
+            <div fxFlex="50">Portfolio Summary</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between" class="summary-card1" *ngIf="assetClassAllocation">
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Current Value</span>
+                    <span class="summary-details mar-t-10">Rs.{{assetClassAllocation.currentValue}}</span>
+                </div>
+            </div>
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Cost Value</span>
+                    <span class="summary-details mar-t-10">Rs.{{assetClassAllocation.costValue}}</span>
+                </div>
+            </div>
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Unrealized Gain</span>
+                    <span class="summary-details mar-t-10">Rs.{{assetClassAllocation.unrealizedGain}}</span>
+                </div>
+            </div>
+            <div fxFlex>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <span class="allocation-header">Realized Gain</span>
+                    <span class="summary-details mar-t-10">Rs.{{assetClassAllocation.realizedGain}}</span>
+                </div>
+            </div>
+        </div>
+    </md-card>
+
+    <div fxLayout="row" fxLayoutAlign="center center" class="portfolio-allocation-heading summary-heading mar-t-20">
+        <span fxFlex><b>Portfolio Allocation by Asset Class</b></span>
+    </div>
+    <md-card class="report-card no-padding">
+        <div fxLayout="row" fxLayoutAlign="center center" class="allocation-header mar-tb-20 pad-lr-30">
+            <div fxFlex="15">
+                Asset Class
+            </div>
+            <div fxFlex="15" class="right-align">
+                Invested Amount
+            </div>
+            <div fxFlex="20" class="right-align">
+                Share(%)
+            </div>
+            <div fxFlex="20" class="right-align">
+                Current Value
+            </div>
+            <div fxFlex="20" class="right-align">
+                Share(%)
+            </div>
+        </div>
+    </md-card>
+    <md-card class="report-card no-padding mar-tb-5">
+
+        <div *ngIf="assetClassAllocation">
+            <div *ngFor="let assetClassDetail of assetClassAllocation.assetClassDetailsList; let i = index" fxLayout="row"
+                 fxLayoutAlign="center center" class="allocation-details pad-lr-30" [ngClass]="{lastRow: i==assetClassAllocation.assetClassDetailsList.length-1}">
+                <span fxFlex="15" class="asset-class">{{assetClassDetail.assetClass}}</span>
+                <span fxFlex="15" class="asset-class-details right-align">{{assetClassDetail.investedAmt}}</span>
+                <span fxFlex="20" class="asset-class-details right-align">{{assetClassDetail.share}}</span>
+                <span fxFlex="20" class="asset-class-details right-align">{{assetClassDetail.currValue}}</span>
+                <span fxFlex="20" class="asset-class-details right-align">{{assetClassDetail.currShare}}</span>
+            </div>
+        </div>
+    </md-card>
+</div>

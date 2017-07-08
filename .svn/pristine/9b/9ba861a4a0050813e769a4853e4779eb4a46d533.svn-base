@@ -1,0 +1,23 @@
+import {NgModule} from "@angular/core";
+import {ExploreFundsComponent} from "./explore-funds.component";
+import {FundPaginationPanelComponent} from "./fund-pagination-panel.component";
+import {FundViewPanelComponent} from "./fund-view-panel.component";
+import {FundComponent} from "./fund.component";
+import {exploreFundRouting} from "./explore-funds.routes";
+import {ExploreFundsService} from "./explore-funds.service";
+import {SharedModule} from "../shared/shared.module";
+import {FactsheetModule} from "../factsheet/factsheet.module";
+import {SearchModule} from "../search/search.module";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        exploreFundRouting,
+        FactsheetModule,
+        SearchModule,
+    ],
+    providers: [ExploreFundsService],
+    declarations: [ExploreFundsComponent, FundComponent, FundViewPanelComponent, FundPaginationPanelComponent]
+})
+export class ExploreFundsModule {
+}

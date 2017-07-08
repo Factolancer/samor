@@ -1,0 +1,26 @@
+import {Component, OnInit} from '@angular/core';
+import {FundService} from "../fund.service";
+import {Router, ActivatedRoute, Params} from "@angular/router";
+import {AdvancedFactsheet} from "../models/advanced-factsheet";
+
+@Component({
+    selector: 'app-advanced-factsheet',
+    templateUrl: './advanced-factsheet.component.html',
+    styleUrls: ['./advanced-factsheet.component.css']
+})
+export class AdvancedFactsheetComponent implements OnInit {
+
+    advancedFactsheet: AdvancedFactsheet;
+
+    constructor(private router: Router, private route: ActivatedRoute, private fundService: FundService) {
+    }
+
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            let id = +params['id']; // (+) converts string 'id' to a number
+            this.fundService.getAdvancedFactsheet(id).subscribe(output =>
+                this.advancedFactsheet = output.json() as AdvancedFactsheet)
+        });
+    }
+
+}

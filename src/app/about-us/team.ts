@@ -1,0 +1,98 @@
+/**
+ * Created by Fincash on 20-02-2017.
+ */
+
+export const TeamMembers = [
+    {
+        "name":"Deepak Vyas",
+        "image": "/assets/img/team/deepak.jpg",
+        "role": "Senior Product Manager – Investments",
+        "bio" :"Worked with Verizon, RBS and Career Point.<br/> IIT Bombay  (’07 batch)",
+        "profNetLink":"https://www.linkedin.com/in/vyasdeepak/"},
+    {
+        "name":"Rupesh Verma",
+        "image": "/assets/img/team/rupesh.jpg",
+        "role": "Product Manager – Investments",
+        "bio" :"Worked with Toppr.com.<br/>IIT Guwahati (’15 Batch)",
+        "profNetLink":"https://in.linkedin.com/in/rupesh-verma-85924977"},
+    {
+        "name":"Nagarajan Ramaswamy",
+        "image": "/assets/img/team/nagrajan.jpg",
+        "role": "Head- Operations and Solutions",
+        "bio" :"Worked with Standard Chartered, Capital First, Wealth India Financial Services & Scope International",
+        "profNetLink":"https://in.linkedin.com/in/nagarajan-ramaswamy-79b48420  "},
+    {
+        "name":"Paresh Nagore",
+        "image": "/assets/img/team/paresh.jpg",
+        "role": "Software Developer",
+        "bio" :"Worked with Wipro Technologies.<br/>IIT Delhi (’14 Batch)",
+        "profNetLink":"https://www.linkedin.com/in/pareshnagore"},
+    {
+        "name":"Priyabrata Behera",
+        "image": "/assets/img/team/priyabrata.jpg",
+        "role": "Software Developer",
+        "bio" :"Worked with Retaillending.com & Toppr.com.<br/>IIT Guwahati (’15 Batch)",
+        "profNetLink":"https://www.linkedin.com/in/priyabratabehera"},
+    {
+        "name":"Sagar Sharma",
+        "image": "/assets/img/team/sagar.jpg",
+        "role": "Software Developer",
+        "bio" :"Worked with Nomura.<br/> BIT Mesra (’15 Batch)",
+        "profNetLink":"https://in.linkedin.com/in/sagar252"},
+    {
+        "name":"Sumit Agarwal",
+        "image": "/assets/img/team/sumit.jpg",
+        "role": "Software Developer",
+        "bio" :"Worked with Nomura.<br/> BIT Mesra (’15 Batch)",
+        "profNetLink":"https://in.linkedin.com/in/sumitagarwal24"},
+    {
+        "name":"Atul Kumar",
+        "image": "/assets/img/team/atul.jpg",
+        "role": "User Experience Designer",
+        "bio" :"Worked with Commonfloor.com.<br/> National Institute of Design, Ahmedabad",
+        "profNetLink":"https://www.linkedin.com/in/atul-kumar-2a726016"},
+    {
+        "name":"Alexi Almeida",
+        "image": "/assets/img/team/alexi.jpg",
+        "role": "Digital Marketing Manager",
+        "bio" :"Over 11 years of experience in digital marketing operations.",
+        "profNetLink":"https://www.linkedin.com/in/alexi-almeida-bba9a07b/"},
+    {
+        "name":"Rohini Hiremath",
+        "image": "/assets/img/team/rohini.jpg",
+        "role": "Content Strategist",
+        "bio" :"Worked with Vocal Europe and Inner Secrets",
+        "profNetLink":"https://www.linkedin.com/in/rohini-hiremath-a3b41277"},
+    {
+        "name":"Surabhi Puri",
+        "image": "/assets/img/team/surabhi.jpg",
+        "role": "Content Strategist",
+        "bio" :"Worked with healthkart.com and askmebazar.com",
+        "profNetLink":"https://www.linkedin.com/in/surabhi-puri-7b816a9a"}
+];
+
+export const TeamFounders = [
+    {
+        "name":"Gaurav Perti",
+        "image": "/assets/img/team/gaurav-perti.jpg",
+        "role": "Co-founder & CEO",
+        "bio" : "Gaurav has over 12 years experience across Financial Markets, Wealth Management, Insurance and Distribution. " +
+        "He has worked with Standard Chartered Bank(SCB) for over 10 years in" +
+        " roles such as Head-Business Banking and Head-Investments. He has done various roles in Wealth Management ranging " +
+        "from Product Management to Research to Sales & Distribution. Additionally, he has won the Best Structured Products House(India)" +
+        " for SCB in the years 2007, 2009, 2010 and 2011. He has also been a part of the team " +
+        "that won the \"CNBC Best Financial Advisor Award\" for SCB in the years 2012, 2013 & 2014. " +
+        "Gaurav has done a PGDM from IIM Lucknow and holds a Bachelors of Technology(B.Tech) from IIT Bombay. "},
+    {
+        "name":"Pawan Kumar",
+        "image": "/assets/img/team/pawan-kumar.jpg",
+        "role": "Co-founder & CTO",
+        "bio" : "Pawan has over 11 years of experience in Technology with over 7 years in technology-based startups." +
+        " His experience spans FinTech, a payment e-commerce firm where he worked across platforms such as web," +
+        " mobile and SMS. He has also worked as a CTO(Chief Technology Officer) at Zibika.com (Insurance Web Aggregator)," +
+        " Head- Technology at magicbricks.com, and Product Head at Naaptol.com. He has played a key role in product research, " +
+        "end-to-end development and managing delivery of the key products in the Indian Internet space while handling heavy volumes " +
+        "of traffic. Pawan holds a Bachelors degree in Engineering from IIT Bombay."}
+];
+
+

@@ -1,0 +1,68 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Subject, Observable, Subscription} from "rxjs";
+import {Fund} from "../models/fund";
+import {ExploreFundsService} from "../core/services/explore-funds.service";
+import {Logger} from "../core/logger/logger";
+import {Route} from "@angular/router";
+import {FundSearchInput} from "./fund-search-input";
+import {ExploreFundConstants} from "./explore-funds.constants";
+
+@Component({
+    selector: 'app-fund-search-bar',
+    templateUrl: './fund-search-bar.component.html',
+    styleUrls: ['./explore-funds.styles.scss']
+})
+export class FundSearchBarComponent implements OnInit, OnDestroy {
+
+
+    searchSuggestions: Observable<Fund[]>;
+    private searchTermStream = new Subject<string>();
+    queryString: string = "";
+
+    searchInputSubscription: Subscription;
+    searchInput: FundSearchInput;
+
+
+    constructor(private exploreFundsService: ExploreFundsService, private logger: Logger) {
+    }
+
+    searchBarInput() {
+        this.searchTermStream.next(this.queryString);
+    }
+
+
+    searchForKeyword(event: any) {
+        if (event.keyCode == 13 || event.type == "click") {
+            let defaultSearchInput = this.exploreFundsService.getDefaultFundSearchInput();
+            defaultSearchInput.q = this.queryString;
+            defaultSearchInput.r = this.searchInput.r;
+            defaultSearchInput.qt = ExploreFundConstants.SEARCH_QUERY;
+            this.exploreFundsService.navigateToExplore(defaultSearchInput);
+        }
+    }
+
+    ngOnInit() {
+
+        this.searchSuggestions = this.searchTermStream
+            .debounceTime(300)
+            .distinctUntilChanged()
+            .switchMap((term: string) => this.exploreFundsService.getFundAutoCompleteData(term).map(res => {
+                this.logger.debug(res)
+                return res;
+            }));
+
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput.subscribe(
+            (searchInput: FundSearchInput) => {
+                this.queryString = searchInput.q;
+                this.searchInput = searchInput;
+            }
+        )
+
+    }
+
+    ngOnDestroy() {
+        this.searchTermStream.unsubscribe();
+        this.searchInputSubscription.unsubscribe();
+    }
+
+}

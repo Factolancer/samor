@@ -1,0 +1,35 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="50" class="confirmation">
+        <md-card class="no-padding">
+            <div class="head" fxLayout="row" fxLayoutAlign="start center">
+                <div fxFlex="10" class="pad-10"><img src="../../../assets/img/fund/warn-bell.svg"></div>
+                <div fxFlex="90" class="pad-lr-10">We are unable to process your order in the following funds due to
+                    certain issues.
+                </div>
+            </div>
+            <div class="body">
+                <div fxLayout="row" fxLayoutAlign="center center" class="table-head">
+                    <div fxFlex="70" class="left-align">Fund</div>
+                    <div fxFlex="30">Investment Mode</div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" *ngFor="let fund of errorFunds" class="table-body">
+                    <div fxFlex="70" class="left-align">{{fund.fund.name}} <span>({{fund.selectedPlan}}) &nbsp;&nbsp;({{fund.selectedOption}})</span>
+                    </div>
+                    <div fxFlex="30">{{fund.selectedInvestmentMode}}</div>
+                </div>
+            </div>
+            <div class="foot">
+                <div [ngClass]="{'small-line': !allFailed}">We will shortly get in touch with you.</div>
+                <div *ngIf="!allFailed">You can proceed to place your order with the remaining funds.</div>
+            </div>
+        </md-card>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="pad-tb-20">
+            <div fxFlex="30">
+                <button md-button="" class="hollow-cta-36" (click)="goToCart()">GO BACK TO CART</button>
+            </div>
+            <div fxFlex="30">
+                <button md-raised-button="" class="cta-36" [disabled]="allFailed" color="primary" (click)="payNow()">PAY NOW</button>
+            </div>
+        </div>
+    </div>
+</div>

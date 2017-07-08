@@ -1,0 +1,57 @@
+import {Injectable, ViewContainerRef, ApplicationRef} from '@angular/core';
+import {Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import { tokenNotExpired } from 'angular2-jwt';
+import {MdDialogConfig, MdDialog, MdDialogRef} from "@angular/material";
+import {LoginComponent} from "./login/login.component";
+import {LoginService} from "./login/login.service";
+import {JwtHelper} from "angular2-jwt";
+
+
+@Injectable()
+export class AuthGuard implements CanActivate {
+
+    // logInDialogRef: MdDialogRef<LoginComponent>;
+    viewContainerRef: ViewContainerRef;
+    // loginService: LoginService;
+    public result: any;
+
+    constructor(private appRef: ApplicationRef, private loginService: LoginService, private router: Router,
+                public jwtHelper: JwtHelper) {
+        this.viewContainerRef = appRef.components[0].instance.viewContainerRef;
+        // this.logInDialogRef = appRef.components[0].instance.loginDialogRef
+    }
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        if (this.userLoggedIn()) {
+            return true;
+        }
+
+        // this.router.navigate(['/login']);
+        this.loginService
+            .loginUser(this.viewContainerRef)
+            .subscribe(res => {this.result = res; this.router.navigate([state.url])},
+                       error => {console.log(error)});
+
+        if (this.userLoggedIn()) {
+            this.router.navigate([state.url]);
+            return true;
+        }
+        //this.router.navigate([state.url])
+        return false;
+    }
+
+    userLoggedIn() {
+        // console.log("Checking status");
+        let token = localStorage.getItem("id_token");
+        if (token === "null" || token === "undefined" || token == null)
+            return false;
+        else {
+            let decoded = this.jwtHelper.decodeToken(token);
+            if (!decoded.username.includes("Anonymous")) {
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+}

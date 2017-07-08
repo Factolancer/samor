@@ -1,0 +1,14 @@
+
+export class Bank{
+    constructor(
+        bank_name: string,
+        ifsc: string,
+        city: string,
+        state: string,
+        district?: string,
+        branch?: string,
+        address?: string,
+        micr?: string,
+        contact?: string
+    ) {}
+}

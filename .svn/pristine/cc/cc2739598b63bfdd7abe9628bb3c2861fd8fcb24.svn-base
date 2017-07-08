@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-md-11">
+        <span *ngIf="_allowTotals && fundDisplay.totalCount>0" >Showing <b>{{fundDisplay.from + 1}}</b>-
+            <span *ngIf="fundDisplay.from+fundDisplay.rows >= fundDisplay.totalCount"><b>{{fundDisplay.totalCount}}</b></span>
+            <span *ngIf="fundDisplay.from+fundDisplay.rows < fundDisplay.totalCount"><b>{{fundDisplay.from+fundDisplay.rows}}</b></span>
+                of <b>{{fundDisplay.totalCount}}</b> results
+        </span>
+        <select (change)="setRowsToDisplay($event.target.value)" *ngIf="_allowRowChange">
+            <option value="10">10</option>
+            <option value="15">15</option>
+        </select>
+    </div>
+    <div class="col-md-1">
+        <button *ngIf="_allowViewChange" color="accent" md-icon-button="" class="md-accent float-right"
+                ng-reflect-color="accent"
+                (click)="toggleView()">
+            <!--grid-icon-->
+            <md-icon class="md-24 material-icons" *ngIf="fundDisplay.isListView">&#xE3EC;</md-icon>
+            <!--list-icon-->
+            <md-icon class="md-24 material-icons" *ngIf="!fundDisplay.isListView">
+                &#xE8EF;</md-icon>
+        </button>
+    </div>
+</div>

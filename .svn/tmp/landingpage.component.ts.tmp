@@ -1,0 +1,47 @@
+import {Component, OnInit, OnDestroy, Inject} from "@angular/core";
+import {Logger} from "../core/logger/logger";
+import {Router} from "@angular/router";
+import {IAppConfig, APP_CONFIG} from "../../environments/environment";
+import {HeaderService} from "../core/services/header.service";
+import {TitleService} from "../core/services/title.service";
+
+
+@Component({
+    selector: 'app-landingpage',
+    templateUrl: 'landingpage.component.html',
+    styleUrls: ['./landingpage.component.scss']
+})
+export class LandingpageComponent implements OnInit, OnDestroy {
+
+    constructor(private logger: Logger, private router: Router, @Inject(APP_CONFIG) private config: IAppConfig,
+                private headerService: HeaderService, private titleService: TitleService) {
+    }
+
+    minAge: number = 18;
+    maxAge: number = 60;
+    minExpns: number = 5000;
+    maxExpns: number = 200000;
+    stepExpns: number = 5000;
+    defaultExpns: number = 5000;
+
+    ngOnInit() {
+        this.headerService.autoHideHeader(true);
+        this.titleService.setTitle("home");
+    }
+
+    carouselContent = [
+        {"url": this.config.staticImagePath + "/assets/img/landingpage/investing_blurred.jpg"},
+        {"url": this.config.staticImagePath + "/assets/img/landingpage/investing.jpg"  },
+        {"url": this.config.staticImagePath + "/assets/img/landingpage/sip-investment.jpg"},
+        {"url": this.config.staticImagePath + "/assets/img/landingpage/industry.jpg"}
+    ];
+
+    calculate(age: number, expense: number) {
+        this.logger.info('age', age, 'expense', expense);
+        this.router.navigate(['/calculator/sip/goals/questions/1', {'a': age, 'e': expense}]);
+    }
+
+    ngOnDestroy() {
+        this.headerService.resetHeaderHiding()
+    }
+}

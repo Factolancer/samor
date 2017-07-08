@@ -1,0 +1,49 @@
+import {Component, Input, OnDestroy} from "@angular/core";
+import {ExploreFundsService} from "./explore-funds.service";
+import {FundSearchResults} from "./fund-search-results";
+import {Subscription} from "rxjs";
+import {ExploreFundConstants} from "./explore-funds.constants";
+
+@Component({
+    selector: 'app-fund-view-panel',
+    templateUrl: './fund-view-panel.component.html'
+})
+export class FundViewPanelComponent implements OnDestroy {
+
+
+    @Input() allowTotals: boolean = true;
+    @Input() allowRowChange: boolean = true;
+    @Input() allowViewChange: boolean = true;
+    searchResultsSubscription: Subscription;
+    searchInputFrom: number;
+    searchInputRows: number;
+    totalNumFound: number;
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+        this.searchResultsSubscription = this.exploreFundsService.fundSearchResult.subscribe(
+            (searchResults: FundSearchResults) => {
+                let searchInput = exploreFundsService.getFundSearchInput();
+                this.searchInputFrom = searchInput.from;
+                this.searchInputRows = searchInput.rows;
+                this.totalNumFound = searchResults.numFound;
+            });
+    }
+
+    setRowsToDisplay(selectedRows: string) {
+        let searchInput = this.exploreFundsService.getFundSearchInput();
+        searchInput.rows = +selectedRows;
+        searchInput.queryType = ExploreFundConstants.PAGE_QUERY;
+        this.exploreFundsService.setFundSearchInput(searchInput);
+    }
+
+
+    toggleView() {
+        //this.fundDisplay.isListView = !this.fundDisplay.isListView;
+    }
+
+
+    ngOnDestroy() {
+        this.searchResultsSubscription.unsubscribe();
+    }
+
+}

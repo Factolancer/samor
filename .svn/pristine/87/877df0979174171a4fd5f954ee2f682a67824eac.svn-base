@@ -1,0 +1,17 @@
+import {NgModule} from "@angular/core";
+import {SipCalculatorModule} from "./sip/sip-calculator.module";
+import {calculatorRouting} from "./calculator.routes";
+import {ChartModule} from "angular2-highcharts";
+import {TaxCalculatorModule} from "./tax/tax-calculator.module";
+
+@NgModule({
+    imports: [
+        SipCalculatorModule,
+        TaxCalculatorModule,
+        ChartModule.forRoot(require('highcharts')),
+        calculatorRouting
+    ],
+})
+
+export class CalculatorModule {
+}

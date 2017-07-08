@@ -1,0 +1,117 @@
+/**
+ * Created by Fincash on 15-03-2017.
+ */
+
+import {Component, ElementRef, Input, OnInit, OnDestroy} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {Subscription} from "rxjs/Subscription";
+import {Carousel} from "../models/carousel";
+
+@Component({
+    selector: '[carousel]',
+    template: `
+             <ul class="carousel">
+             <button (click)="prev()" class="prev"><i *ngIf="hideBlurred" class="material-icons prev" >keyboard_arrow_left</i></button>
+             <button (click)="next()" class="next"><i  *ngIf="hideBlurred" class="material-icons next" >keyboard_arrow_right</i></button>
+             
+                <li  [ngClass]="{'sharpen':hideBlurred}" class="blurred" fxFlex="row" fxLayoutAlign="center center">
+                     <img src="{{image.url}}" alt="{{image.alt || 'banner'}}">
+                </li>
+            </ul>
+  `,
+    styles: [`    
+                .blurred{filter:blur(10px); -webkit-filter:blur(10px);}
+                .sharpen{filter:blur(0);-webkit-filter:blur(0);}
+                ul{margin:0 !important; padding: 0 !important; position: relative;}
+                .prev{position:absolute; top:45%;left:0; }
+                .next{position:absolute; top:45%;right:0; }
+                .prev,.next{
+                    background-color: transparent;
+                    border: 0;
+                    cursor: pointer;
+                    outline: none;
+                    color: white;
+                    font-size: 1.8em;
+                    z-index:5;
+                }
+                .prev:hover,.next:hover{
+                background-color: rgba(0,0,0,0.15);
+                }
+                i{border-radius: 50%;}
+                ul.carousel{
+                    overflow:hidden;
+                    width:100%;
+                    text-align: center;
+                    position:relative;  
+                    background-color:rgba(0,0,0,0.35);
+                }                
+                ul.carousel img{
+                    display:block;
+                    width:100%;
+                    max-width:100%;
+                    height:auto;}
+               
+  `],
+})
+
+export class CarouselComponent implements OnInit, OnDestroy {
+    @Input('carousel') carouselContent: Carousel[];
+
+    /*make sure url passed do have absolute path*/
+    hideBlurred :boolean;
+    carouselTimer: Subscription;
+    image: any ;
+    i: number;
+    length: number;
+    duration:number;
+
+    constructor(private el: ElementRef) {
+        this.hideBlurred  = false;
+        this.duration = 9000;
+    }
+
+
+
+    ngOnInit() {
+        if(this.carouselContent){
+            this.length = this.carouselContent.length;
+            this.image = this.carouselContent[0];
+            if(this.carouselContent[0].url.indexOf("blur")>=0){
+                this.carouselContent = this.carouselContent.slice(1, this.length+1);
+            }
+            this.i = -1;
+            this.start();
+        }
+    };
+
+    start() {
+        this.carouselTimer = Observable.timer(1500, this.duration).subscribe(t => {
+            this.length = this.carouselContent.length;
+            this.hideBlurred = true;
+            this.i = (this.i + 1) % this.length;
+            this.image = this.carouselContent[this.i];
+            this.image.alt = this.image.url.split('/').pop().split('.')[0] + '_banner';
+        });
+    }
+
+    pause(){
+        if(this.carouselTimer)
+            this.carouselTimer.unsubscribe();
+    }
+    next(){
+        this.pause();
+        this.i = (this.i + 1) % this.length;
+        this.image = this.carouselContent[this.i];
+    }
+    prev(){
+        this.pause();
+        this.i = ((this.i - 1) + this.length)%this.length;
+        this.image = this.carouselContent[this.i];
+    }
+    ngOnDestroy() {
+        if (this.carouselTimer)
+            this.carouselTimer.unsubscribe();
+    }
+}
+
+

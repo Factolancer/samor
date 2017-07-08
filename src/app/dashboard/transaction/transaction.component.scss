@@ -1,0 +1,104 @@
+@import "../../../styles/styles";
+
+.transaction-container {
+  margin-bottom: 20px;
+  border: solid 1px #d6d6d6;
+  .highlight {
+    background-color: $light-grey;
+    padding: 10px;
+    font-size: 16px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    th, td {
+      text-align: center;
+      font-size: 12px;
+
+      i {
+        font-size: 0.8em;
+      }
+    }
+    th {
+      background-color: $medium-grey;
+      height: 50px;
+      vertical-align: middle
+    }
+    tbody {
+      tr {
+        height: 50px;
+      }
+      .pay-now{
+          text-align: left;
+      }
+      .cancel{
+          text-align: right;
+      }
+      td{
+          .oval{
+              border-radius: 10px;
+              line-height: 25px;
+              min-width: 0px;
+              width: 80px;
+              padding: 0px;
+          }
+          .cancel-txn{
+              padding: 5px 10px;
+              margin-left: 10px;
+              width: 70px;
+              background-color: $light-grey;color:$dark-grey;border:1px solid $brand-secondary;
+              font-size: 12px;
+              font-weight: 500;
+              outline: none;
+                &:hover{
+                     cursor: pointer;
+                     background-color: $material-warn;color:$white;border:1px solid $material-warn;
+                 }
+                &:active{
+                 @include ripple();
+                 }
+          }
+            .cancel-mar{
+                margin-right: 36px;
+            }
+      }
+      tr:nth-child(odd) {
+        background-color: $light-grey;
+      }
+
+    }
+  }
+}
+
+//pagination styling
+.pagination {
+
+  .page-number-btn {
+    background-color: $white;
+    color: $brand-secondary;
+    margin: 0 0 0 0;
+    text-align: center;
+    padding: 0 15px;
+    border: 0;
+    height: 25px;
+    cursor: pointer;
+    outline: none;
+    &:disabled {
+      background-color: $light-grey;
+      cursor: not-allowed;
+    }
+    &:hover, &.active {
+      background-color: $brand-secondary;
+      color: $white;
+    }
+  }
+  table, tr, td {
+    border: 1px solid $dark-grey;
+  }
+  table {
+    border-collapse: collapse;
+  }
+
+}
+
+.scroll-x{display: block; overflow-x: auto;white-space: nowrap;}

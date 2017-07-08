@@ -1,0 +1,96 @@
+<div [formGroup]="productFormGroup">
+    <div class="row">
+        <div class="col-md-6">
+            <h3 style="margin-top:0px">{{productEnum[product.productName]}}</h3>
+        </div>
+        <div class="col-md-6" *ngIf="isFincashProduct">
+            <button md-raised-button="" class="pull-right"
+                    (click)="removeProduct()">Remove
+                {{productEnum[product.productName]}}
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <md-input placeholder="{{productEnum[product.productName]}} Investment Amount" required
+                      formControlName="investmentAmount" (change)="distributeAmount()">
+                <span md-prefix>&#x20B9;</span><!--Rupee icon-->
+                <md-hint *ngIf="productFormErrors.investmentAmount" class="errorMessage">
+                    {{productFormErrors.investmentAmount}}
+                </md-hint>
+            </md-input>
+        </div>
+        <div class="col-md-4">
+            <md-checkbox align="start" *ngIf="isSIP" formControlName="startPaymentToday">
+                Make First Payment Today
+            </md-checkbox>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table>
+                <thead class="table-header">
+                <td class=" table-element">Fund</td>
+                <td class="table-element">Sub Option</td>
+                <td class="table-element" *ngIf="isSIP">Monthly Deduction Date</td>
+                <td class="table-element" *ngIf="isSIP">Duration (in months)</td>
+                <td class="table-element">Investment Amount</td>
+                <td class=" table-element" *ngIf="!isFincashProduct">Action</td>
+                </thead>
+                <tbody>
+                <tr *ngFor="let fundGroup of productFormGroup.controls.funds.controls; let index=index;"
+                    class="table-row">
+                    <td class="table-element left-align">
+                        <md-icon class="material-icons md-14 clickable">&#xE88E;</md-icon> <!--Info Icon-->
+                        {{product.funds[index].name}}
+                    </td>
+                    <td class="table-element">
+                        <select [formControl]="fundGroup.controls.selectedSubOption" required>
+                            <option *ngFor="let subOption of product.funds[index].subOptionList" value="{{subOption}}">
+                                {{subOption}}
+                            </option>
+                        </select>
+                        <md-hint *ngIf="productFormErrors.funds[index].selectedSubOption" class="errorMessage">
+                            {{productFormErrors.funds[index].selectedSubOption}}
+                        </md-hint>
+                    </td>
+                    <td class="table-element" *ngIf="isSIP">
+                        <select [formControl]="fundGroup.controls.selectedDeductionDate" required>
+                            <option *ngFor="let deductionDate of product.funds[index].deductionDateList"
+                                    value="{{deductionDate}}">
+                                {{deductionDate}}
+                            </option>
+                        </select>
+                        <md-hint *ngIf="productFormErrors.funds[index].selectedDeductionDate" class="errorMessage">
+                            {{productFormErrors.funds[index].selectedDeductionDate}}
+                        </md-hint>
+                    </td>
+                    <td class="table-element" *ngIf="isSIP">
+                        <md-input placeholder="{{productEnum[product.productName]}} Investment Period" required
+                                  [formControl]="fundGroup.controls.investmentDuration">
+                            <md-hint *ngIf="productFormErrors.funds[index].investmentDuration" class="errorMessage">
+                                {{productFormErrors.funds[index].investmentDuration}}
+                            </md-hint>
+                        </md-input>
+                    </td>
+                    <td class="table-element">
+                        <md-input [formControl]="fundGroup.controls.investmentAmount" required
+                                  (change)="calculateAmounts()">
+                            <span md-prefix>&#x20B9;</span><!--Rupee icon-->
+                            <md-hint *ngIf="productFormErrors.funds[index].investmentAmount" class="errorMessage">
+                                {{productFormErrors.funds[index].investmentAmount}}
+                            </md-hint>
+                        </md-input>
+                    </td>
+                    <td class="table-element" *ngIf="!isFincashProduct">
+                        <button md-icon-button=""
+                                (click)="removeFund(index)">
+                            <i class="material-icons">&#xE14C;</i><!--Clear icon-->
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

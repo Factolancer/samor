@@ -1,0 +1,88 @@
+@import "../../styles/partials/web-partials";
+
+.login-dialog {
+  margin: 0px;
+  @include fadeInElement(1s);
+
+  .login-header {
+    background-color: $brand-secondary;
+    color: $white;
+    @include heading(24px, 500);
+    width: 100%;
+    line-height: 60px;
+    text-align: center;
+  }
+
+  .login-content {
+    border:0.5px solid $medium-grey;
+    padding: 0 24px 10px;
+    md-tab-group{min-height: 300px;}
+  }
+
+  .login-button {
+    width: 100%;
+    //background-color: $brand-secondary;
+    color: $white;
+    @include heading(18px, 400);
+    text-align: center;
+    line-height: 50px;
+  }
+
+  .login-redirect {
+    @include heading(11px, 300);
+    color: black;
+    cursor: pointer;
+  }
+
+  .forgot-password {
+    @include heading(11px, 400);
+    color: black;
+    margin-left: 240px;
+    cursor: pointer;
+    padding-top: 5px;
+  }
+  .close-dialog {
+    margin-top: -50px;
+  }
+
+  .google-fb-button {
+    @include heading(14px, 400);
+    color: $white;
+    line-height: 45px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .login-google {
+    background-color: $google-color;
+  }
+  .login-google:before {
+    border-right: #BB3F30 1px solid;
+    //background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png') 6px 6px no-repeat;
+  }
+  .login-google:hover, .login-google:focus {
+    background: #E74B37;
+  }
+
+  .login-facebook {
+    background-color: $facebook-color;
+    background-image: linear-gradient($facebook-color, #3B55A0);
+    text-shadow: 0 -1px 0 #354C8C;
+  }
+  .login-facebook:before {
+    border-right: #364e92 1px solid;
+    //background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_facebook.png') 6px 6px no-repeat;
+  }
+  .login-facebook:hover, .login-facebook:focus {
+    background-color: #5B7BD5;
+    background-image: linear-gradient(#5B7BD5, #4864B1);
+  } 
+}
+.error{
+  @include fadeInElement(1s);
+  color: $error;
+}
+
+
+
+

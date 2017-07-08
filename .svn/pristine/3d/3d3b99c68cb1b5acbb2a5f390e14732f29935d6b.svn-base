@@ -1,0 +1,25 @@
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {Fund} from "../models/fund";
+
+@Component({
+    selector: 'app-compare',
+    templateUrl: './compare.component.html',
+    styleUrls: ['./compare.styles.scss']
+})
+export class CompareComponent implements OnInit {
+
+    funds: Fund[];
+
+    constructor(private route: ActivatedRoute) {
+    }
+
+    ngOnInit() {
+        this.route.data.forEach((data: any) => {
+            console.log(data.comparisonData);
+            this.funds = data.comparisonData;
+        });
+
+    }
+
+}

@@ -1,0 +1,62 @@
+import {FormControl, ValidatorFn, AbstractControl} from "@angular/forms";
+import {HttpService} from "./services/http-service.service";
+
+
+export class EmailValidator {
+
+    static isValidMailFormat(control: FormControl) {
+        let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+
+        if (control.value != "" && (control.value.length <= 5 || !EMAIL_REGEXP.test(control.value))) {
+            return {"isValidMailFormat": control.value};
+        }
+
+        return null;
+    }
+
+    static isEmailCorrect(control: FormControl) {
+        var httpserivce: HttpService;
+        var url = 'https://api.mailgun.net/v2/address/validate?address=' + control.value;
+        url = url + '&api_key=pubkey-b492fb4e9e8ad8f2ce0c2ae87e12272c'
+        httpserivce.get(url)
+            .subscribe(response => {
+                    console.log(response.json().is_valid)
+                    if (!response.json().is_valid) {
+                        return {"Please provide a valid email": true};
+                    }
+
+
+                }
+            )
+        return null;
+    }
+
+}
+
+export class NumberValidator {
+
+    /**
+     * Validator that requires controls to have a minimum value.
+     */
+    static minValue(minValue: number): ValidatorFn {
+        return (control: AbstractControl): {[key: string]: any} => {
+            const val = control.value; //typeof control.value.length > 0 ? control.value : 0;
+            return val < minValue ?
+            {'minValue': {'requiredValue': minValue, 'actualValue': val}} :
+                null;
+        };
+    }
+
+    /**
+     * Validator that requires controls to have a value multiple of 100.
+     */
+    static isHundredMultiple(): ValidatorFn {
+        return (control: AbstractControl): {[key: string]: any} => {
+            console.log(control);
+            const val = control.value; //typeof control.value.length > 0 ? control.value : 0;
+            return val % 100 ?
+            {'hundredMultiple': {'actualValue': val}} :
+                null;
+        };
+    }
+}

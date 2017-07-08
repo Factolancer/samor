@@ -1,0 +1,122 @@
+import {Component, OnInit, ViewContainerRef, Inject} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {CheckoutService} from "../checkout.service";
+import {HttpService} from "../../services/http-service.service";
+import {InvestmentModeEnum} from "../../enum/investment-mode-enum";
+import {CheckoutFund} from "../checkout-fund";
+import {Checkout} from "../checkout";
+import {SnackBarService} from "../../services/snack-bar.service";
+import {disclaimers} from "../../../properties/discalimers";
+import html2canvas from "html2canvas";
+import {Logger} from "../../shared/logger/logger";
+import {SummaryUserInfo} from "../summary-user-info";
+import {OrderSummary} from "../order-summary";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+import {PaymentObject} from "../payment-object";
+import {Location, PlatformLocation} from "@angular/common";
+import {URLAccessGuard} from "../../gaurds/urlAccess.guard";
+
+@Component({
+    selector: 'app-summary',
+    templateUrl: './summary.component.html',
+    styleUrls: ['../checkout.styles.scss']
+})
+export class SummaryComponent implements OnInit {
+
+    checkoutData: Checkout;
+    sipFunds: CheckoutFund[];
+    lumpsumFunds: CheckoutFund[];
+    agreementSelected: boolean;
+    disclaimerList: string[];
+    sipDisclaimerText: string;
+    className: string;
+    summaryUserInfo: SummaryUserInfo;
+
+    constructor(private route: ActivatedRoute, private router: Router, private logger: Logger,
+                private checkoutService: CheckoutService, private httpService: HttpService,
+                private viewContainerRef: ViewContainerRef, private snackBarService: SnackBarService,
+                @Inject(APP_CONFIG) private config: IAppConfig, private location: Location,
+                private platformLocation: PlatformLocation, private urlAccessGuard: URLAccessGuard) {
+        this.agreementSelected = false;
+        this.className = "SummaryComponent";
+        this.sipDisclaimerText = "Note: First SIP Installment will be deducted today"
+    }
+
+    ngOnInit() {
+        this.sipFunds = [];
+        this.lumpsumFunds = [];
+        this.checkoutData = this.checkoutService.checkoutData;
+
+        this.route.data.forEach((data: {userInfo: SummaryUserInfo}) => {
+            this.summaryUserInfo = data.userInfo;
+        });
+
+
+        this.checkoutData.fundsData.forEach(fund => {
+            if (fund.selectedInvestmentMode == InvestmentModeEnum[InvestmentModeEnum.SIP]) {
+                this.sipFunds.push(fund);
+            } else {
+                this.lumpsumFunds.push(fund);
+            }
+        });
+        this.disclaimerList = [`${disclaimers.summary_1}`, `${disclaimers.summary_2}`, `${disclaimers.summary_3}`, `${disclaimers.summary_4}`, `${disclaimers.summary_5}`]
+
+    }
+
+    proceed() {
+        if (this.agreementSelected) {
+            document.body.scrollTop = 0;
+            let screenShot = this.getSS();
+
+            this.checkoutService.invest().subscribe(orderResponse => {
+                this.logger.debug(this.className, orderResponse);
+                let orderSummary = orderResponse  as OrderSummary;
+                let errorFound = false;
+                orderSummary.subOrderList.forEach(subOrder => {
+                    if (subOrder.orderProcessed == 1) {
+                        errorFound = true;
+                    }
+                });
+
+                if (errorFound) {
+                    this.router.navigate(['/cart']);
+                } else {
+                    this.logger.debug(this.className, this.route);
+                    let paymentUrl = this.platformLocation['location'].origin + this.config.paymentFallbackUrl;
+                    this.checkoutService.getPaymentLink(new PaymentObject(orderSummary.orderId, paymentUrl)).subscribe(paymentResponse => {
+                        let responsePaymentObj = paymentResponse as PaymentObject;
+                        this.logger.debug(this.className, responsePaymentObj);
+                        window.location.replace(responsePaymentObj.bseUrl);
+                    })
+                }
+            })
+        } else {
+            this.snackBarService.showSnackBar("Please accept the terms and conditions", "Okay", this.viewContainerRef);
+        }
+    }
+
+    getSS() {
+        html2canvas(document.body, {svgRendering: true}).then(canvas => {
+            return canvas.toDataURL("image/png");
+
+            //formData.append("name", "MySS");
+            //formData.append("image", img);
+            //console.log(formData);
+            // window.open(img);
+            //var body = {"name": img};
+            /*this.httpService.post('/getSS', body).subscribe(response => {
+             console.log(response);
+             });*/
+        });
+        //console.log(canvas);
+        //var formData = new FormData();
+
+
+    }
+
+    back() {
+        this.urlAccessGuard.allow = true;
+        this.router.navigate(['init'], {relativeTo: this.route.parent});
+
+    }
+}

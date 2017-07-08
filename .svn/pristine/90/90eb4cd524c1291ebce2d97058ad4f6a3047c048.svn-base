@@ -1,0 +1,8 @@
+/**
+ * Created by Fincash on 28-02-2017.
+ */
+export const StaticRoutes = [
+    "privacy-policy",
+    "terms-conditions",
+    "disclaimers"
+];

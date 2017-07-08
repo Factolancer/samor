@@ -1,0 +1,58 @@
+<div class="insta-dialog">
+    <div fxLayout="column">
+        <div fxFlex="100">
+            <div fxLayout="row" fxLayoutAlign="center center" class="title">
+                <div fxFlex="95">
+                    <div>Split Order Option</div>
+                    <div class="heading-16">Instant + Normal Redemption</div>
+                </div>
+                <div fxFlex="5">
+                    <md-icon class="md-18 clickable" (click)="dialogRef.close()">&#xE888;</md-icon>
+                </div>
+            </div>
+        </div>
+        <div fxFlex="100" class="body pad-lr-20 pad-tb-20">
+            <span class="italic">Instant Redemption Products have a</span> <span class="bold">limit of Rs. 50,000 or 90%</span><span class="italic">of Current Market Value per AMC.</span> <span class="bold">Instant redemption</span> <span class="italic">amount gets credited within 30 mins.</span>  <span class="bold"> Normal Redmption</span> <span class="italic">amount will be credited to your account on the next working day.</span>
+        </div>
+        <div fxFlex="100" class="table-header pad-tb-20">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <div fxFlex="45" class="center-align">Fund Name</div>
+                <div fxFlex="30" class="left-align">Instant &nbsp;&nbsp;&nbsp; + &nbsp;&nbsp;&nbsp; Normal</div>
+                <div fxFlex="25">Only Normal Amount</div>
+            </div>
+        </div>
+        <div fxFlex="100">
+            <div fxLayout="column">
+                <div fxFlex="100" class="pad-tb-10" *ngFor="let fund of config.funds">
+                    <div fxLayout="row" fxLayoutAlign="center center" >
+                        <div fxFlex="45">
+                            <div fxLayout="column" class="pad-lr-10">
+                                <div fxFlex="100" class="dark-grey-text bold">{{fund['fundName']}}</div>
+                                <div fxFlex="100" class="dark-grey-text heading-12 italic">Plan: <span>{{fund['plan']}}</span> Option: <span>{{fund['option']}}</span></div>
+                                <div fxFlex="100">{{fund['folioNo']}}</div>
+                            </div>
+                        </div>
+                        <div fxFlex="12" class="left-align">
+                            {{fund['instaAmount'] | round | currency:'INR':true:'1.0-0'}}
+                        </div>
+                        <div fxFlex="12" class="left-align">
+                            {{fund['normalAmount'] | round | currency:'INR':true:'1.0-0'}}
+                        </div>
+                        <div fxFlex="6"></div>
+                        <div fxFlex="25" class="center-align">
+                            {{(fund['instaAmount'] + fund['normalAmount']) | round | currency:'INR':true:'1.0-0'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div fxFlex="100" class="table-footer pad-tb-25">
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+                <div *ngFor="let action of config.confirmationActions" fxFlex="40">
+                    <button md-button="" (click)="dialogRef.close(action)" class="{{action[2]}}">{{action[1]}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

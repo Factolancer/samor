@@ -1,0 +1,199 @@
+<div class="col-md-8 col-md-offset-2 ">
+  <section class="data-head">
+
+  </section>
+  <section class="data-body">
+    <div class="col-md-12"><label>Portfolio Summary</label></div>
+    <div class="col-md-12"><label>Total Portfolio Value:</label> </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <tr>
+            <th colspan="3" style="text-align: center;">Portfolio Movement</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>Date</th>
+            <th>Total Portfolio Value</th>
+          </tr>
+          <tr>
+            <td>Beginning Portfolio Value</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Ending Portfolio Value</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <tr>
+            <th colspan="5" style="text-align: center;">Portfolio Allocation by Asset Class</th>
+          </tr>
+
+          <tr>
+            <td>Asset Class</td>
+            <td>Beginning Amount</td>
+            <td>Value(%)</td>
+            <td>End Amount</td>
+            <td>Value(%)</td>
+          </tr>
+          <tr>
+            <td>Equity Funds</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Debt Funds</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Liquid Funds</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Hybrid Funds</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Gold</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <tr>
+            <th colspan="11" style="text-align: center;">Mutual Fund Holdings</th>
+          </tr>
+          <tr>
+            <th>Product</th>
+            <th>Folio No.</th>
+            <th>Cost Value</th>
+            <th>Units</th>
+            <th>Current NAV/Price</th>
+            <th>Current Date</th>
+            <th>Current Value</th>
+            <th>Realized Gain/Loss</th>
+            <th>Unrealized Gain/Loss</th>
+            <th>Absolute Return(%)</th>
+            <th>Weighted Holding Period(days)</th>
+          </tr>
+          <tr>
+            <td><a href="report/transaction/1">Product 1</a></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><a href="report/transaction/2">Product 2</a></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><a href="report/transaction/3">Product 3</a></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Product 4</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Product 5</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Grand Total</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </section>
+  <section class="data-foot">
+
+  </section>
+</div>

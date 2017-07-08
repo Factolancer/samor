@@ -1,0 +1,10 @@
+.list-style {
+    list-style: none;
+    text-align: right;
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+.pad-10 {
+    padding: 10px;
+}

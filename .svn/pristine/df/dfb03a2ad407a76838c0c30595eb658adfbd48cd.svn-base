@@ -1,0 +1,88 @@
+import {Component, OnInit} from "@angular/core";
+import {Router} from "@angular/router";
+import {Observable} from 'rxjs';
+import {FormBuilder, FormGroup, Validators, AbstractControl} from "@angular/forms";
+import {PANValidator} from "../validator";
+import {HttpService} from "../services/http-service.service";
+
+@Component({
+  selector: 'kyc-status',
+  templateUrl: './kyc-status.component.html',
+  styleUrls: ['./kyc-status.component.scss']
+})
+
+export class CheckKYCComponent implements OnInit {
+
+  otpVerified:boolean = false;
+  otpSent:boolean = false;
+  validPhone:boolean = false;
+  kycCompliant:boolean;
+  panGiven:boolean = false;
+
+  pan: string;
+  KYCStatusForm: FormGroup;
+  PhoneValidationForm: FormGroup;
+  OTPValidationForm: FormGroup;
+  constructor(public router: Router, public http: HttpService, private fb: FormBuilder) { }
+
+  goTo(link){
+    this.router.navigateByUrl(link);
+  }
+  onSendOTP(){
+    console.log("OTP sent, please check mobile");
+    this.otpSent = true;
+    console.log(this.otpSent);
+  }
+  resendBtnState:boolean = true;
+  resendBtndisableDuration = 5000;
+  resendOTP(){
+    console.log('resending otp');
+    this.resendBtnState = false;
+
+    let timer = Observable.timer(this.resendBtndisableDuration);
+    timer.subscribe(t=>this.resendBtnState = !this.resendBtnState);
+  }
+
+  onValidateOTP(){
+    console.log("Success!");
+    this.otpSent = false;
+    this.validPhone = true;
+    this.otpVerified = true;
+    return false;
+  }
+  checkPAN(){
+    console.log("Right PAN!");
+    this.pan = this.KYCStatusForm.controls['pan'].value;
+    this.http.post('/user/checkKYC', {"pan": this.pan})
+        .subscribe(
+            response => {
+              console.log(response);
+              this.kycCompliant = (response.statusCode=="KS100") ? true : false;
+              this.panGiven = true;
+            },
+            error => {
+              console.log("Error occurred in KYC status checking " + error.error);
+            }
+        )
+
+  }
+  proceed(){
+    this.router.navigateByUrl('registration');
+  }
+
+  mobLength:number = 10;
+  PANLength:number = 10;
+  ngOnInit() {
+
+    this.PhoneValidationForm = this.fb.group({
+      mob: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern('^[0-9]{10}$')])]
+    });
+    this.KYCStatusForm = this.fb.group({
+      pan: ['', Validators.compose([Validators.required, Validators.minLength(10),PANValidator.isValidPANFormat])]
+    });
+    this.OTPValidationForm = this.fb.group({
+      otp: ['', Validators.compose([Validators.required])]
+    })
+
+  }
+}

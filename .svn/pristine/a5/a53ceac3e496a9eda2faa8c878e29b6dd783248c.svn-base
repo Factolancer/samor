@@ -1,0 +1,118 @@
+import {Component, OnInit, style, state, animate, transition, trigger} from '@angular/core';
+import {NgForm, FormGroup, Validators, FormControl, FormBuilder, Validator, FormControlName} from '@angular/forms';
+import {Subscription} from "rxjs";
+
+import {User} from "../../../models/user";
+import {UserService} from '../../userdata.service';
+import {HttpService} from "../../../services/http-service.service";
+import {Heading} from "../../constants/headings";
+import {Logger} from "../../../shared/logger/logger";
+
+@Component({
+    selector: 'upload-section',
+    templateUrl: './upload-section.component.html',
+    styleUrls: ['../../registration.styles.scss'],
+    animations: [
+        trigger('ShowHide', [
+            state('show', style({opacity: '1', height: '*', visibility: 'visible'})),
+            state('hide', style({opacity: '0', height: '0px', visibility: 'collapse'})),
+            transition('show <=> hide', [
+                animate('500ms ease-in-out')
+            ])
+        ])
+    ]
+})
+export class UploadSectionComponent implements OnInit {
+
+    uploadForm: FormGroup;
+    uploadsaved = false;
+    uploadcollapsed = true;
+    state: string = 'hide';
+    public heading = Heading;
+
+    user: User
+    usersubscription: Subscription;
+    filesToUpload: Array<File>;
+    photoFile: File;
+    panFile: File;
+    addressFile: File;
+    signatureFile: File;
+    chequeFile: File;
+
+    className: string;
+    constructor(private fb: FormBuilder, public userService: UserService, public http: HttpService, public logger: Logger) {
+        this.className = "UploadDoc"
+        this.userService.currentUser.subscribe(
+            result => {
+                this.user = result
+            }
+        )
+        this.filesToUpload = [];
+    }
+
+    ngOnInit() {
+        this.uploadForm = this.fb.group({});
+        // this.uploadForm = this.fb.group({
+        //   passport_photo: ['', Validators.compose([Validators.required])],
+        //   pan_card: ['', Validators.compose([Validators.required])],
+        //   proof_of_address: ['', Validators.compose([Validators.required])],
+        //   signature: ['', Validators.compose([Validators.required])],
+        //   cancelled_cheque: ['', Validators.compose([Validators.required])]
+        // });
+    }
+
+    onUploadDocSaved() {
+        this.uploadsaved = true;
+        let formData = new FormData();
+        for (var i = 0; i < this.filesToUpload.length; i++) {
+            formData.append("attachment", this.filesToUpload[i], this.filesToUpload[i].name);
+        }
+
+        console.log(this.filesToUpload);
+        // this.http.post('http://localhost:9000/mailgun', formData)
+        //     .subscribe(maildata => {
+        //         alert("file has been saved to location: " + maildata.text());
+        //     });
+
+        this.toggleUploadDocs();
+    }
+
+    toggleUploadDocs() {
+        if (this.uploadcollapsed == true) this.uploadcollapsed = false;
+        else this.uploadcollapsed = true;
+
+        this.state = (this.state === 'hide' ? 'show' : 'hide')
+    }
+
+    fileChangeEvent(fileInput: any){
+        this.filesToUpload = <Array<File>> fileInput.target.files;
+    }
+    photoFileChangeEvent(event: any){
+        this.photoFile = <File> event.target.file;
+        this.logger.debug(this.className, event.srcElement.files)
+        //this.photoFile[0].name = 'userid_photo_time';
+        // this.filesToUpload[0] = this.photoFile[0];
+    }
+    panFileChangeEvent(fileInput: any){
+        this.panFile = <File> fileInput.target.files;
+        //this.photoFile[0].name = 'userid_pan_time';
+        this.filesToUpload[1] = this.panFile[0];
+    }
+    addressFileChangeEvent(fileInput: any){
+        this.addressFile = <File> fileInput.target.files;
+        //this.photoFile[0].name = 'userid_addressproof_time';
+        this.filesToUpload[2] = this.addressFile[0];
+    }
+    signatureFileChangeEvent(fileInput: any){
+        this.signatureFile = <File> fileInput.target.files;
+        // console.log(this.signatureFile.size < 1024*1024 ? true : false);
+        //this.photoFile[0].name = 'userid_signature_time';
+        this.filesToUpload[3] = this.signatureFile[0];
+    }
+    chequeFileChangeEvent(fileInput: any){
+        this.chequeFile = <File> fileInput.target.files;
+        //this.photoFile[0].name = 'userid_cancelledcheque_time';
+        this.filesToUpload[4] = this.chequeFile[0];
+    }
+
+}

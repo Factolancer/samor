@@ -1,0 +1,93 @@
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Subscription} from "rxjs";
+import {ExploreFundConstants} from "../explore-funds.constants";
+import {ExploreFundsService} from "../explore-funds.service";
+import {FundSearchInput} from "../fund-search-input";
+
+@Component({
+    selector: 'app-chips',
+    templateUrl: './chips.component.html',
+    styleUrls: ['./filters.styles.scss']
+})
+export class ChipsComponent implements OnInit, OnDestroy {
+
+    searchInputSubscription: Subscription;
+    searchInput: FundSearchInput;
+    chipsDisplayList: [string, string, string][] = [];
+
+    constructor(private exploreFundsService: ExploreFundsService) {
+        this.searchInputSubscription = this.exploreFundsService.fundSearchInput
+            .subscribe(searchInput => {
+                this.searchInput = searchInput;
+
+                if (searchInput.queryType == ExploreFundConstants.SEARCH_QUERY) {
+                    this.chipsDisplayList = [];
+                }
+
+                //populating chips display list
+                this.chipsDisplayList = [];
+
+                //AMC
+
+                //Category
+                if (this.searchInput.category.length > 0) {
+                    this.searchInput.category.forEach(cat => {
+                        this.chipsDisplayList.push([ExploreFundConstants.CATEGORY_FILTER, cat, cat]);
+                    })
+                }
+
+                //Sub-category
+
+                //AUM
+                if (this.searchInput.aumRange.length > 0 && this.searchInput.aumRange != "[0 TO 20000]") {
+                    let range: string[] = this.searchInput.aumRange.split(' ');
+                    this.chipsDisplayList.push([ExploreFundConstants.AUM_FILTER, this.searchInput.aumRange, range[0].substring(1) + " - " + range[2].substring(0, range[2].length - 1)])
+                }
+                //rating
+                if (this.searchInput.rating.length > 0) {
+                    this.searchInput.rating.forEach(rating => {
+                        this.chipsDisplayList.push([ExploreFundConstants.RATING_FILTER, rating.toString(), rating + " Star"]);
+                    })
+                }
+                //Age
+                if (this.searchInput.age != 0) {
+                    this.chipsDisplayList.push([ExploreFundConstants.AGE_FILTER, this.searchInput.age.toString(), this.searchInput.age + " years & Up"]);
+                }
+
+                //
+
+            });
+    }
+
+
+    removeFilter(data: [string, string, string], index: number) {
+        this.chipsDisplayList = this.chipsDisplayList.filter((data, idx) => idx != index);
+
+        switch (data[0]) {
+            case ExploreFundConstants.AGE_FILTER:
+                this.searchInput.age = 0;
+                break;
+            case ExploreFundConstants.RATING_FILTER:
+                this.searchInput.rating = this.searchInput.rating.filter(rate => rate != +data[1]);
+                break;
+            case ExploreFundConstants.CATEGORY_FILTER:
+                this.searchInput.category = this.searchInput.category.filter(cat => cat != data[1]);
+                break;
+            case ExploreFundConstants.AUM_FILTER:
+                this.searchInput.aumRange = "[0 TO 20000]";
+                break;
+            default:
+                break;
+        }
+
+        this.exploreFundsService.filterFunds(this.searchInput);
+    }
+
+    ngOnInit() {
+    }
+
+    ngOnDestroy() {
+        this.searchInputSubscription.unsubscribe();
+    }
+
+}

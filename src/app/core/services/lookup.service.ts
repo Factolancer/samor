@@ -1,0 +1,19 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "./http-service.service";
+import {Observable} from "rxjs/Observable";
+import {Logger} from "../logger/logger";
+
+@Injectable()
+export class LookUpService {
+
+
+    constructor(public httpService: HttpService, private logger: Logger) {
+    }
+
+    getByGroup(group: string): Observable<any> {
+        return this.httpService.get('/lookup/byGroup/' + group).map(res => {
+            return res;
+        })
+    }
+
+}

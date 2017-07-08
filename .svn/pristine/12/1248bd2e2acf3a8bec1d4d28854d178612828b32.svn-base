@@ -1,0 +1,30 @@
+<div fxLayout="row" fxLayoutAlign="center">
+
+  <div fxFlex="40" class="questionnaire-box">
+    <md-card>
+      <md-card-title>Investor Risk Profiling</md-card-title>
+      <md-card-content>
+        <div class="qa-set">
+          <div class="question">
+            <span>{{qaSet.question}}</span>
+          </div>
+          <div class="hint-option">
+            <span class="hint">( {{qaSet.hint}} )</span>
+            <div class="options" *ngFor="let option of qaSet.options">
+              <span><md-checkbox>{{option.option}}</md-checkbox></span>
+            </div>
+          </div>
+        </div>
+        <md-card-actions fxLayout="row" fxLayoutAlign="center">
+          <button md-raised-button color="primary" class="submit">Confirm</button>
+        </md-card-actions>
+      </md-card-content>
+    </md-card>
+
+  </div>
+
+
+
+
+
+</div>

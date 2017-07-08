@@ -1,0 +1,19 @@
+<app-user-journey fxHide.xs="true" [position]=1></app-user-journey>
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxLayout="column" fxFlex="80" fxFlex.lt-md="100" fxLayoutAlign.lt-md="stretch stretch">
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-tb-15 center-align">
+            <div fxFlex ngClass.gt-sm="heading-32-dark-grey" ngClass.lt-md="heading-24-dark-grey center-align">Invest In SmartSIP Equity Funds</div>
+        </div>
+        <div ngClass.gt-sm="grey-back pad-30" ngClass.lt-md="pad-10" fxFlex >
+            <app-smart-sip-card fxLayout="column" fxLayoutAlign="center center" #smartSipFunds
+                                [funds]="quickSipFunds"></app-smart-sip-card>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="pad-20">
+            <div fxFlex="20" fxFlex.lt-md="90">
+                <button class="cta-50" color="primary" md-raised-button (click)="proceed(smartSipFunds.selectedFunds)">
+                    PROCEED
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

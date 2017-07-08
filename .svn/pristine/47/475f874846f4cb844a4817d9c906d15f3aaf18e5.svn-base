@@ -1,0 +1,48 @@
+<section class="data-body">
+    <div class="col-md-11 text-center">
+        <label>Mutual Fund Holdings as on {{currentDate|date:'dd/MM/yyyy'}}</label>
+    </div>
+    <div class="col-md-1 text-right">
+        <span (click)="download()" class="clickable"><i class="material-icons">&#xE8AD;</i></span>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered">
+            <tr>
+                <th>Scheme</th>
+                <th>Folio No.</th>
+                <th>Cost Value</th>
+                <th>Units</th>
+                <th>Current NAV/Price</th>
+                <th>NAV Date</th>
+                <th>Current Value</th>
+                <th>Realized Gain/Loss</th>
+                <th>Unrealized Gain/Loss</th>
+                <th>Absolute Return(%)</th>
+            </tr>
+            <tr *ngFor="let fund of funds">
+                <td><span (click)="showTransactionDetails(fund.id)" class="fundName">{{fund.name}}</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Grand Total</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</section>

@@ -1,0 +1,32 @@
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Logger} from "../core/logger/logger";
+import {ExploreFundsService} from "../core/services/explore-funds.service";
+import {TitleService} from "../core/services/title.service";
+import {HeaderService} from "../core/services/header.service";
+
+@Component({
+    selector: 'app-partners',
+    templateUrl: './partners.component.html',
+    styleUrls: ['./about-us.styles.scss']
+})
+export class PartnersComponent implements OnInit, OnDestroy {
+
+    //  investmentMode: InvestmentType;
+
+    constructor(private logger: Logger, private exploreFundService: ExploreFundsService,
+                private titleService: TitleService, private headerService: HeaderService) {
+        //  this.investmentType = InvestmentType.sip;
+    }
+
+    ngOnInit() {
+        this.titleService.setTitle("partners");
+        this.titleService.setMetaTags("partners");
+    }
+
+    navigateToAMC(amcName: string) {
+        this.exploreFundService.navigateToAmc(amcName);
+    }
+
+    ngOnDestroy() {
+    }
+}

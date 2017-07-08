@@ -1,0 +1,57 @@
+import { Contact } from './contact';
+import { Address } from './address';
+import { Bank } from './bank';
+import { Nominee } from './nominee';
+import {UserBanks} from "./user-banks";
+
+export class User{
+
+    constructor(
+        public userBasic: {
+            firstName: string,
+            middleName?: string,
+            lastName: string,
+            pan: string;
+            panName: string;
+            fatherName: string;
+            motherName: string;
+            contact: Contact;
+            dob: string;
+            gender: string;
+            maritalStatus?: string;
+        },
+        public userAddress: {
+            currentAddress: Address;
+            permanentAddress: Address;
+            nominee?: Nominee[];
+        },
+
+        public userBank: {          //UserBanks
+            holderName: string;
+            accountType: string;
+            bank: Bank;
+            accountNumber: string;
+            acccount?: any;
+        },
+
+        public userFatca:{
+            income: string;
+            occupation: string;
+            nationality: string;
+            birthCountry: string;
+            birthCity: string;
+            isIndianTaxPayer?: string;
+            taxCountry: string;
+            tin?: string;
+            politicallyExposed: string;
+            politicallyRelated: string;
+        },
+        public Docs?: {
+            passport_photo?: File;
+            pan_card?: File;
+            proof_of_address?: File;
+            signature?: File;
+            cancelled_cheque?: File;
+        }
+    ){ }
+}

@@ -1,0 +1,19 @@
+'use strict';
+
+var express = require('express');
+var passport = require('passport');
+var passportController = require("./passport")
+var router = express.Router();
+
+router
+  .get('/', passport.authenticate('facebook', {
+    scope: ['email'],
+    failureRedirect: '/auth/signup',
+    session: false
+  }))
+  .get('/callback', passport.authenticate('facebook', {
+    failureRedirect: '/auth/signup',
+    session: false
+  }),passportController.processCallback);
+
+module.exports = router;

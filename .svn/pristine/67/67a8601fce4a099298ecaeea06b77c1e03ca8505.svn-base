@@ -1,0 +1,540 @@
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {SipCalcQuestion} from "./sip-calc-question";
+import {SipCalcGoal} from "./sip-calc-goal";
+import {Params, ActivatedRoute, Router} from "@angular/router";
+import {SipGoalQuestions} from "./questions";
+import {SipGoals} from "./goals";
+import {CalculationKeys} from "./calculation-keys";
+import {Logger} from "../../core/logger/logger";
+import {MdDialog} from "@angular/material";
+import {disclaimers} from "../../../properties/discalimers";
+import {TitleService} from "../../core/services/title.service";
+import {DialogService} from "../../core/services/dialog.service";
+import {FormGroup, FormControl, Validators, FormBuilder} from "@angular/forms";
+import {SIPCalcValidationMessages} from "./sip-calc-validations";
+import {NumberValidator} from "../../validators/validator";
+import {SnackBarService} from "../../core/services/snack-bar.service";
+import {HttpService} from "../../core/services/http-service.service";
+
+@Component({
+    selector: 'app-goal-based',
+    templateUrl: './results-goal-based.component.html',
+    styleUrls: ['./sip-calc.styles.scss'],
+})
+export class ResultsGoalBasedComponent implements OnInit {
+
+    chart: any;
+    orientation: string;
+    questions: SipCalcQuestion[];
+    goal: SipCalcGoal;
+    goalId: any;
+    principal: number = 0;
+    years: number = 0;
+    amount: number = 0;
+    inflation: number = 0;
+    rate: number = 0;
+    options: any;
+    xCategories: Array<any> = [];
+    amountGraphData: Array<any> = [];
+    adjustedAmount = 0;
+    inflationAdjustmentToolTip = "";
+    considerInflation: boolean;
+    showReCalculateButton: boolean;
+    retire: number = 60;
+    lifeExp: number = 85;
+    calcFormGroup: FormGroup;
+    calcFormErrors: any;
+    className: string;
+
+
+    constructor(private router: Router, private route: ActivatedRoute, public logger: Logger,
+                private viewContainerRef: ViewContainerRef, private dialog: MdDialog,
+                private titleService: TitleService, private dialogService: DialogService,
+                private fb: FormBuilder, private snackBarService: SnackBarService, private httpService: HttpService) {
+    }
+
+    saveChartInstance(chartInstance: any) {
+        // this.logger.debug(chartInstance);
+        this.chart = chartInstance;
+    }
+
+    inflationAdjustment(value: any) {
+        this.considerInflation = value;
+        this.calculate();
+        this.chart.series[0].setData(this.amountGraphData);
+    }
+
+    setOption(minVal: number) {
+
+        let xToolTip = this.goal.xToolTip;
+        let yToolTip = this.goal.yToolTip;
+
+        this.options = {
+            title: {text: ''},
+            credits: {enabled: false},
+            exporting: {enabled: false},
+            chart: {
+                width: 600,
+                height: 230
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            },
+            xAxis: {
+                //min: minVal,
+                categories: [],
+                title: {
+                    text: this.goal.xAxisName,
+                    style: {'fontSize': '11px'}
+                }
+
+            },
+            colors: ["#77ba78", "#BF3235", "black"],
+            yAxis: {
+                title: {
+                    text: 'Amount(in INR.)',
+                    style: {'fontSize': '11px'}
+                },
+                labels: {
+                    formatter: function () {
+                        var val = this.value;
+                        if (val >= 10000000) val = (val / 10000000).toFixed(1) + 'Cr';
+                        else if (val >= 100000) val = (val / 100000).toFixed(1) + 'Lac';
+                        else if (val >= 1000) val = (val / 1000).toFixed(1) + 'k';
+                        return val;
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function () {
+                    var valy = this.point.y;
+                    if (valy >= 10000000) valy = (valy / 10000000).toFixed(2) + 'Cr';
+                    else if (valy >= 100000) valy = (valy / 100000).toFixed(2) + 'Lac';
+                    else if (valy >= 1000) valy = (valy / 1000).toFixed(2) + 'k';
+                    var valx = this.point.x;
+                    return xToolTip + ' <b>' + valx + '</b> ' + yToolTip + " INR " + ' <b>' + valy + '</b>';
+                    //return val;
+                }
+            },
+            legend: {
+                align: 'top',
+                verticalAlign: 'top',
+                layout: 'horizontal',
+                x: 100
+            },
+            series: [{
+                name: 'Amount',
+                data: []
+            }]
+        };
+    }
+
+    calculate() {
+        this.showReCalculateButton = false;
+        this.questions.forEach(question => {
+            switch (question.calculationKey) {
+                case CalculationKeys.inflation:
+                    this.inflation = question.answer;
+                    break;
+                case CalculationKeys.amount:
+                    this.amount = question.answer;
+                    break;
+                case CalculationKeys.rate:
+                    this.rate = question.answer;
+                    break;
+                case CalculationKeys.years:
+                    this.years = question.answer;
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        this.setOption(this.years);
+
+        if (this.goalId == 1) {
+
+            let retireAge = this.retire;
+            let currentAge = 0;
+            let expectedAge = this.lifeExp;
+            let expenses = 0;
+            let applicableRate = 0;
+
+            if (this.considerInflation) {
+                applicableRate = (this.rate - this.inflation) / 100;
+            } else {
+                applicableRate = this.rate / 100;
+            }
+
+            this.questions.forEach(question => {
+                if (question.id == 1)
+                    currentAge = +question.answer;
+                else if (question.id == 2)
+                    expenses = +question.answer;
+            });
+
+            this.years = retireAge - currentAge;
+            let postRetirementYears = expectedAge - retireAge;
+
+            let inflationCalculationFactor = 1 + (this.inflation / 100);
+            let rateCalculationFactor = 1 + (this.rate / 100);
+            let num = expenses * (this.rate / 100) *
+                (((inflationCalculationFactor / rateCalculationFactor) ** postRetirementYears) - 1 ) *
+                ((inflationCalculationFactor ** (this.years + 1)) / rateCalculationFactor);
+            let denom = rateCalculationFactor * ((rateCalculationFactor ** this.years) - 1 ) *
+                ((inflationCalculationFactor / rateCalculationFactor) - 1);
+            let amount = num / denom;
+
+            let graphAmount: number = 0;
+
+            this.amountGraphData = [];
+
+            let xAxisVal = currentAge + 1;
+            for (let graphTime = 1; graphTime <= this.years; graphTime++) {
+                graphAmount += ((amount * 12) * ((1 + this.rate / 100) ** graphTime));
+                this.amountGraphData.push([xAxisVal, Math.ceil(graphAmount)]);
+                xAxisVal += 1;
+            }
+
+            for (let graphTime = 1; graphTime < postRetirementYears; graphTime++) {
+                graphAmount = (graphAmount * (1 + this.rate / 100)) - ( 12 * expenses * (( 1 + this.inflation / 100) ** (this.years + graphTime)));
+                this.amountGraphData.push([xAxisVal, Math.ceil(graphAmount)]);
+                xAxisVal += 1;
+            }
+
+            this.amountGraphData.push([xAxisVal, 0]);
+            this.principal = Math.ceil(amount);
+
+
+        } else {
+
+            //calculations for all other goals
+            let applicableRate: number;
+            if (this.considerInflation) {
+                applicableRate = (this.rate - this.inflation) / 100;
+                this.adjustedAmount = this.amount * ((1 + this.inflation / 100) ** this.years);
+            } else {
+                applicableRate = this.rate / 100;
+                this.adjustedAmount = this.amount;
+            }
+
+            let months: number = this.years * 12;
+            let compoundFrequency: number = 12;
+            let calculationFactor: number = (1 + applicableRate) ** (1 / compoundFrequency);
+            let numerator: number = calculationFactor - 1;
+            let denom: number = (calculationFactor ** months - 1) * calculationFactor;
+            let principalValue: number = this.adjustedAmount * numerator / denom;
+
+            //calculation for graph
+            let graphAmount: number = 0;
+
+            this.amountGraphData = [];
+            let xAxisVal = 1;
+            for (let graphTime = 1; graphTime <= months; graphTime++) {
+                graphAmount += ((principalValue) * ((1 + applicableRate) ** (graphTime / 12)));
+                if (graphTime % 12 == 0) {
+                    this.amountGraphData.push([xAxisVal, Math.ceil(graphAmount)]);
+                    xAxisVal += 1;
+                }
+            }
+
+            this.principal = Math.ceil(principalValue);
+
+            if (this.considerInflation)
+                this.inflationAdjustmentToolTip = "Amount INR " + this.amount + " is adjusted for inflation";
+        }
+
+        this.options.xAxis.categories = this.xCategories;
+        this.options.series[0].data = this.amountGraphData;
+
+    }
+
+
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            this.goalId = +params['id'];
+            this.questions = SipGoalQuestions[this.goalId - 1];
+            this.goal = SipGoals[this.goalId - 1];
+            this.considerInflation = true;
+            this.showReCalculateButton = false;
+            this.titleService.setTitle("sip_calculator_goal", {goal: this.goal.name});
+            this.titleService.setMetaTags("sip_calculator_goal", {goal: this.goal.name});
+            this.initializeForm();
+            this.calculate();
+        });
+
+        this.className = "ResultsGoalBasedComponent";
+    }
+
+    initializeForm() {
+
+        this.logger.debug(this.className, "Initializing form!");
+
+        if (this.goal.id == 1) {
+            this.calcFormGroup = this.fb.group({
+                first: [this.questions[0].answer,
+                    Validators.compose([Validators.required, NumberValidator.minValue(this.questions[0].min), NumberValidator.maxValue(this.questions[0].max)])],
+                second: [this.questions[1].answer,
+                    Validators.compose([Validators.required, NumberValidator.minValue(this.questions[1].min), NumberValidator.maxValue(this.questions[1].max)])],
+                third: [this.questions[2].answer,
+                    Validators.compose([Validators.required, NumberValidator.minValue(this.questions[2].min), NumberValidator.maxValue(this.questions[3].answer - 1)])],
+                fourth: [this.questions[3].answer,
+                    Validators.compose([Validators.required, NumberValidator.minValue(this.questions[2].answer + 1), NumberValidator.maxValue(this.questions[3].max)])],
+                retire: [this.retire,
+                    Validators.compose([Validators.required, NumberValidator.minValue(this.questions[0].answer + 1), NumberValidator.maxValue(this.lifeExp - 1)])],
+                expectancy: [this.lifeExp,
+                    Validators.compose([Validators.required, NumberValidator.minValue(this.retire + 1), NumberValidator.maxValue(120)])],
+            });
+
+            this.calcFormErrors = {
+                first: '',
+                second: '',
+                third: '',
+                fourth: '',
+                retire: '',
+                expectancy: ''
+            };
+
+
+            let firstControl = this.calcFormGroup.get('first') as FormControl;
+            let retireControl = this.calcFormGroup.get('retire') as FormControl;
+            let expectancyControl = this.calcFormGroup.get('expectancy') as FormControl;
+
+            firstControl.valueChanges.subscribe(data => {
+                this.logger.debug(this.className, data);
+
+                retireControl.clearValidators();
+                retireControl.setValidators(Validators.compose([Validators.required, NumberValidator.minValue(+data + 1), NumberValidator.maxValue(+expectancyControl.value - 1)]));
+
+                if (!retireControl.valid && firstControl.valid) {
+                    retireControl.updateValueAndValidity();
+                }
+
+            });
+
+            retireControl.valueChanges.subscribe(data => {
+                this.logger.debug(this.className, data);
+
+                firstControl.clearValidators();
+                firstControl.setValidators(Validators.compose([Validators.required, NumberValidator.minValue(18), NumberValidator.maxValue(+data - 1)]));
+//                 firstControl.updateValueAndValidity();*/
+                expectancyControl.clearValidators();
+                expectancyControl.setValidators(Validators.compose([Validators.required, NumberValidator.minValue(+data + 1), NumberValidator.maxValue(120)]));
+
+                if (!expectancyControl.valid && retireControl.valid) {
+                    expectancyControl.updateValueAndValidity();
+                }
+
+                if (!firstControl.valid && retireControl.valid) {
+                    firstControl.updateValueAndValidity();
+                }
+
+            });
+
+            expectancyControl.valueChanges.subscribe(data => {
+                this.logger.debug(this.className, data);
+
+                //firstControl.markAsDirty();
+
+                retireControl.clearValidators();
+                retireControl.setValidators(Validators.compose([Validators.required, NumberValidator.minValue(+firstControl.value + 1), NumberValidator.maxValue(+data - 1)]));
+                if (!retireControl.valid && expectancyControl.valid) {
+                    retireControl.updateValueAndValidity();
+                }
+            });
+
+
+        } else {
+            this.calcFormGroup = this.fb.group({
+                first: [this.questions[0].answer,
+                    Validators.compose([Validators.required, NumberValidator.minValue(this.questions[0].min), NumberValidator.maxValue(this.questions[0].max)])],
+                second: [this.questions[1].answer,
+                    Validators.compose([Validators.required, NumberValidator.minValue(this.questions[1].min), NumberValidator.maxValue(this.questions[1].max)])],
+                third: [this.questions[2].answer,
+                    Validators.compose([Validators.required, NumberValidator.minValue(this.questions[2].min), NumberValidator.maxValue(this.questions[3].answer - 1)])],
+                fourth: [this.questions[3].answer,
+                    Validators.compose([Validators.required, NumberValidator.minValue(this.questions[2].answer + 1), NumberValidator.maxValue(this.questions[3].max)])],
+            });
+
+            this.calcFormErrors = {
+                first: '',
+                second: '',
+                third: '',
+                fourth: '',
+            };
+        }
+
+        this.calcFormGroup.valueChanges
+            .subscribe(data => {
+                if (!this.calcFormGroup) {
+                    return;
+                } else {
+                    //this.updateValidators() &&
+                    this.updateErrorMessages();
+                    if (this.calcFormGroup.valid) {
+                        this.calculate();
+                        this.chart.series[0].setData(this.amountGraphData);
+                    } else {
+                        this.logger.debug(this.className, this.calcFormErrors);
+                        this.snackBarService.showSnackBar("Please enter valid values!", "OKAY", this.viewContainerRef);
+                    }
+                }
+            });
+
+        let thirdControl = this.calcFormGroup.controls['third'];
+        let fourthControl = this.calcFormGroup.controls['fourth'];
+        thirdControl.valueChanges.subscribe(data => {
+            this.logger.debug(this.className, "first control changed", data);
+            fourthControl.clearValidators();
+            fourthControl.setValidators(Validators.compose([Validators.required, NumberValidator.minValue(+data + 1), NumberValidator.maxValue(this.questions[3].max)]));
+            if (thirdControl.valid && !fourthControl.valid) {
+                fourthControl.updateValueAndValidity();
+            }
+
+        });
+
+        fourthControl.valueChanges.subscribe(data => {
+
+            this.logger.debug(this.className, "second control changed", data);
+            thirdControl.clearValidators();
+            let inflationMax = (+data - 1) > this.questions[2].max ? this.questions[2].max : (+data - 1)
+            thirdControl.setValidators(Validators.compose([Validators.required, NumberValidator.minValue(this.questions[2].min), NumberValidator.maxValue(inflationMax)]));
+            if (fourthControl.valid && !thirdControl.valid) {
+                thirdControl.updateValueAndValidity();
+            }
+        });
+
+    }
+
+
+    /*updateValidators(): boolean {
+     if (this.goal.id == 1) {
+     const form = this.calcFormGroup;
+
+     this.logger.debug(this.className, "updating validators");
+     this.logger.debug(this.className, "My Age: ", +firstControl.value);
+     this.logger.debug(this.className, "Retire: ", this.retire);
+     this.logger.debug(this.className, "Life Expectancy: ", this.lifeExp);
+
+
+     if (+firstControl.value > 18 &&
+     +firstControl.value < this.retire &&
+     +retireControl.value < this.lifeExp &&
+     +expectancyControl.value < 120) {
+
+     return true;
+     }
+     else {
+     return false;
+     }
+
+     }
+
+
+     }*/
+
+    updateErrorMessages() {
+
+        const form = this.calcFormGroup;
+        this.logger.debug(this.className, "updating message");
+        this.logger.debug(this.className, form);
+        this.logger.debug(this.className, "Retire: ", this.retire);
+        this.logger.debug(this.className, "Life Expectancy: ", this.lifeExp);
+
+        //First Validation
+        let firstControl = form.get('first') as FormControl;
+        if (firstControl && firstControl.dirty && !firstControl.valid) {
+            this.calcFormErrors.first = '';
+            const messages = SIPCalcValidationMessages.fields
+            for (const key in firstControl.errors) {
+                this.calcFormErrors.first += this.prepareErrorMessage(messages, firstControl, key)
+            }
+        }
+        this.questions[0].answer = firstControl.value;
+
+        //Second Validation
+        let secondControl = form.get('second') as FormControl;
+        if (secondControl && secondControl.dirty && !secondControl.valid) {
+            this.calcFormErrors.second = '';
+            const messages = SIPCalcValidationMessages.fields
+            for (const key in secondControl.errors) {
+                this.calcFormErrors.second += this.prepareErrorMessage(messages, secondControl, key)
+            }
+        }
+        this.questions[1].answer = secondControl.value;
+
+
+        //Third Validation
+        let thirdControl = form.get('third') as FormControl;
+        if (thirdControl && thirdControl.dirty && !thirdControl.valid) {
+            this.calcFormErrors.third = '';
+            const messages = SIPCalcValidationMessages.fields
+            for (const key in thirdControl.errors) {
+                this.calcFormErrors.third += this.prepareErrorMessage(messages, thirdControl, key)
+            }
+        }
+
+        this.questions[2].answer = thirdControl.value;
+
+        //Fourth Validation
+        let fourthControl = form.get('fourth') as FormControl;
+        if (fourthControl && fourthControl.dirty && !fourthControl.valid) {
+            this.calcFormErrors.fourth = '';
+            const messages = SIPCalcValidationMessages.fields
+            for (const key in fourthControl.errors) {
+                this.calcFormErrors.fourth += this.prepareErrorMessage(messages, fourthControl, key)
+            }
+        }
+        this.questions[3].answer = fourthControl.value;
+
+        if (this.goal.id == 1) {
+            let retireControl = form.get('retire') as FormControl;
+            let lifeExpControl = form.get('expectancy') as FormControl;
+            this.retire = +retireControl.value;
+            this.lifeExp = +lifeExpControl.value;
+
+
+            if (retireControl && retireControl.dirty && !retireControl.valid) {
+                this.calcFormErrors.retire = '';
+                const messages = SIPCalcValidationMessages.fields
+                for (const key in retireControl.errors) {
+                    this.calcFormErrors.retire += this.prepareErrorMessage(messages, retireControl, key)
+                }
+            }
+
+            if (lifeExpControl && lifeExpControl.dirty && !lifeExpControl.valid) {
+                this.calcFormErrors.expectancy = '';
+                const messages = SIPCalcValidationMessages.fields
+                for (const key in lifeExpControl.errors) {
+                    this.calcFormErrors.expectancy += this.prepareErrorMessage(messages, lifeExpControl, key)
+                }
+            }
+
+        }
+
+    }
+
+
+    prepareErrorMessage(messages: any, control: FormControl, key: string) {
+        switch (key) {
+            case "minValue":
+                return messages[key] + control.errors[key].requiredValue + ' ';
+            case "maxValue":
+                return messages[key] + control.errors[key].requiredValue + ' ';
+            default:
+                return messages[key] + ' ';
+        }
+    }
+
+
+    seeDisclaimers() {
+        let disclaimerText: string[] = [`${disclaimers.calculator_1}`, `${disclaimers.calculator_2}`,
+            `${disclaimers.calculator_3}`, `${disclaimers.calculator_4}`]
+        this.dialogService.showDisclaimers(disclaimerText, this.viewContainerRef);
+    }
+
+}

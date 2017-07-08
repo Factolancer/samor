@@ -1,0 +1,120 @@
+/**
+ * Created by Fincash on 10-02-2017.
+ */
+import {Component, OnInit, OnDestroy, Inject, ViewChild, ElementRef} from "@angular/core";
+import {Router} from "@angular/router";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+
+import {HttpService} from "../../services/http-service.service";
+import {OTPService} from "../otp-service";
+
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+
+import {PANValidator, AadharValidator, EmailValidator} from "../../validators/validator";
+import {Observable, Subscription} from "rxjs";
+import {LoginService} from "../../services/login.service";
+
+import {ValidationMessages} from '../constants/validation-message';
+
+@Component({
+    selector: 'aadhar-kyc',
+    templateUrl: './aadhar-kyc.component.html',
+    styleUrls: ['./aadhar-kyc.component.scss']
+})
+
+export class AadharKYCComponent implements OnInit,OnDestroy {
+
+    @ViewChild('finalform') finalform: ElementRef;
+    aadharResloading : boolean =  false;
+
+    constructor(public router: Router, private http: HttpService, private _fb: FormBuilder, private userService: OTPService, @Inject(APP_CONFIG) private config: IAppConfig, private loginservice: LoginService) {
+    }
+
+    validationMessages = ValidationMessages;
+
+    AadharKYCStatusForm: FormGroup;
+    userDetails: any;
+    aadharLength: number = AadharValidator.maxLength;
+    panLength: number = PANValidator.maxLength;
+    mobLength: number = 10;
+
+    eKYCUrl: string;
+    kycReturnBaseUrl: string;
+    eKYCAuthToken: string;
+
+    ekyc_data: string;
+    aadhaar: any;
+    ekycReturnUrl: string;
+    submitted: boolean;
+
+    ngOnInit() {
+        this.userDetails = this.userService.getUserDetails();
+
+        this.AadharKYCStatusForm = this._fb.group({
+            aadhar: [this.userDetails.aadhar || '', Validators.compose([Validators.required, AadharValidator.isValidAadhaarFormat])],
+            mob: [this.userDetails.mob || '', Validators.compose([Validators.required, Validators.pattern('^[0-9]{10}$')])],
+            email: [this.userDetails.email || '', Validators.compose([Validators.required, EmailValidator.isValidMailFormat])],
+            pan: [this.userDetails.pan || '', Validators.compose([Validators.required, Validators.minLength(10), PANValidator.isValidPANFormat])],
+
+        });
+
+        this.AadharKYCStatusForm.valueChanges.subscribe(data => this.onValueChanged(data));
+
+        this.eKYCUrl = this.config.eKYCUrl;
+        this.kycReturnBaseUrl = this.config.kycReturnBaseUrl;
+        this.eKYCAuthToken = this.config.eKYCAuthToken;
+    }
+
+    onValueChanged(data?: any) {
+        if (!this.AadharKYCStatusForm || this.AadharKYCStatusForm.pristine || !this.AadharKYCStatusForm.dirty) {
+            return;
+        }
+        const form = this.AadharKYCStatusForm;
+
+        for (const field in this.formErrors) {
+            // clear previous error message (if any)
+            this.formErrors[field] = '';
+            const control = form.get(field);
+
+            if (control && control.touched && !control.valid) {
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrors[field] = messages[key] + ' ';
+                }
+            }
+        }
+
+
+    }
+
+    formErrors = {
+        'aadhar': '',
+        'mob': '',
+        'email': '',
+        'pan': ''
+    };
+
+
+    checkKYC() {
+        this.submitted = true;
+        let userData = this.AadharKYCStatusForm.value;
+        this.aadhaar = userData.aadhar;
+        this.ekycReturnUrl = this.kycReturnBaseUrl + '/';
+
+        this.ekyc_data = userData.pan + '|' + userData.email + '|' + userData.mob + '|' + this.eKYCAuthToken;
+
+        let userObject = this.loginservice.getUserObject();
+        this.ekycReturnUrl = this.ekycReturnUrl + userObject.id + '/kyc/response';
+        Observable.timer(3000).subscribe(t => {
+            this.finalform.nativeElement.submit();
+
+        });
+
+    }
+
+    ngOnDestroy() {
+
+    }
+
+}
+

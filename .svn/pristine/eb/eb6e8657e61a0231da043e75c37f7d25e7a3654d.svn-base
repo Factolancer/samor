@@ -1,0 +1,24 @@
+import {SipCalcGoal} from "./sip-calc-goal";
+
+export const SipGoals: SipCalcGoal[] = [
+    <SipCalcGoal> {
+        id: 1,
+        name: "Retirement Planning",
+        imagePath: "public/images/sip/calc/retirement.png",
+        goalParagraph: `I am planning for retirement. My current age is _ years.
+        I am planning to retire at _ and I will need _ at the time of retirement.
+        I am expecting average long term inflation rate as _. 
+        And long term growth rate in the equity market would be _.`
+    },
+    <SipCalcGoal> {id: 2, name: "Higher Education of child", imagePath: "public/images/sip/calc/education.png"},
+    <SipCalcGoal> {id: 3, name: "Marriage of a child", imagePath: "public/images/sip/calc/marriage.png"},
+    <SipCalcGoal> {id: 4, name: "Buying a house", imagePath: "public/images/sip/calc/house.png"},
+    <SipCalcGoal> {id: 5, name: "Buying a car", imagePath: "public/images/sip/calc/car.png"},
+    <SipCalcGoal> {id: 6, name: "Any Other", imagePath: "public/images/sip/calc/other.png"},
+];
+
+export const CheckReturns: SipCalcGoal = <SipCalcGoal> {
+    id: 1,
+    name: "checkReturns",
+    imagePath: "public/images/sip/calc/returns.png"
+};

@@ -1,0 +1,170 @@
+<div fxLayout="row" fxLayoutAlign="center center"  class="wrapper">
+    <div fxFlex="90">
+        <!--<app-user-journey></app-user-journey>-->
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <div fxFlex class="heading-32-blue pad-tb-15">Enter your investment details</div>
+        </div>
+        <form [formGroup]="checkoutFormGroup" (ngSubmit)="onCheckoutSubmit()">
+            <div fxFlex class="grey-back pad-20">
+                <md-card class="checkout-product-head">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="30">Fund</div>
+                        <div fxFlex="20">Plan Option</div>
+                        <div fxFlex="10">Investment Mode</div>
+                        <div fxFlex="10">SIP Date</div>
+                        <div fxFlex="15">SIP Duration</div>
+                        <div fxFlex="10">Investment Amount</div>
+                        <div fxFlex="5">Action</div>
+                    </div>
+                </md-card>
+                <md-card class="checkout-product-item">
+                    <div fxLayout="row" fxLayoutAlign="start start"
+                         *ngFor="let fundGroup of checkoutFormGroup.controls.fundsData.controls; let index= index">
+                        <!--Fund-->
+                        <div fxFlex="30">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <div fxFlex="8">
+                                    <md-icon class="md-14" mdTooltip="Exit load description!">&#xE88E;</md-icon>
+                                </div>
+                                <!--Info Icon-->
+
+                                <div fxFlex="92">
+                                    {{checkoutData.fundsData[index].fund.name}} <br/>
+                                    <span class="product-tag">
+                                        <md-icon class="md-10">&#xE88E;</md-icon>
+                                        SmartSIP
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Plan Option-->
+                        <div fxFlex="20">
+                            <md-select [formControl]="fundGroup.controls.selectedSubOption">
+                                <md-option *ngFor="let subOption of checkoutData.fundsData[index].subOptionList"
+                                           [value]="subOption">{{subOption}}
+                                </md-option>
+                            </md-select>
+                            <md-hint *ngIf="checkoutFormErrors.fundsData[index].selectedSubOption"
+                                     class="errorMessage">
+                                {{checkoutFormErrors.fundsData[index].selectedSubOption}}
+                            </md-hint>
+                        </div>
+                        <!--Investment Mode-->
+                        <div fxFlex="10">
+                            <md-select [formControl]="fundGroup.controls.investmentMode"
+                                       (onClose)="investmentModeUpdate(checkoutData.fundsData[index].fund,index)"
+                                       (onOpen)="investmentModeChangeTrigger(index)">
+                                <md-option [value]="investmentMode.SIP">{{investmentMode[investmentMode.SIP]}}
+                                </md-option>
+                                <md-option [value]="investmentMode.LUMPSUM">
+                                    {{investmentMode[investmentMode.LUMPSUM]}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <!--SIP Date-->
+                        <div fxFlex="10">
+                            <div *ngIf="fundGroup.controls.investmentMode.value == investmentMode.SIP">
+                                <md-select [formControl]="fundGroup.controls.selectedDeductionDate">
+                                    <md-option
+                                            *ngFor="let deductionDate of checkoutData.fundsData[index].deductionDateList"
+                                            [value]="deductionDate">{{deductionDate}}
+                                    </md-option>
+                                </md-select>
+                                <md-hint *ngIf="checkoutFormErrors.fundsData[index].selectedDeductionDate"
+                                         class="errorMessage">
+                                    {{checkoutFormErrors.fundsData[index].selectedDeductionDate}}
+                                </md-hint>
+                            </div>
+                        </div>
+                        <!--Duration-->
+                        <div fxFlex="15">
+                            <div *ngIf="fundGroup.controls.investmentMode.value == investmentMode.SIP">
+                                <md-select [formControl]="fundGroup.controls.investmentDuration">
+                                    <md-option [value]="1">1 Year</md-option>
+                                    <md-option [value]="2">2 Years</md-option>
+                                    <md-option [value]="3">3 Years</md-option>
+                                    <md-option [value]="4">4 Years</md-option>
+                                    <md-option [value]="5">5 Years</md-option>
+                                </md-select>
+                                <!--<md-input placeholder=""
+                                          [formControl]="fundGroup.controls.investmentDuration">
+                                    <md-hint *ngIf="checkoutFormErrors.fundsData[index].investmentDuration"
+                                             class="errorMessage">
+                                        {{checkoutFormErrors.fundsData[index].investmentDuration}}
+                                    </md-hint>
+                                </md-input>-->
+                            </div>
+                        </div>
+                        <!--Investment Amount-->
+                        <div fxFlex="10">
+                            <md-input-container floatingPlaceholder="false" align="end">
+                                <input md-input [formControl]="fundGroup.controls.investmentAmount"
+                                       placeholder="Min Amount ({{checkoutData.fundsData[index].fund.minInvestment}})">
+                                <span md-prefix>&#x20B9;</span><!--Rupee icon-->
+                                <md-hint *ngIf="checkoutFormErrors.fundsData[index].investmentAmount"
+                                         class="errorMessage">
+                                    {{checkoutFormErrors.fundsData[index].investmentAmount}}
+                                </md-hint>
+                            </md-input-container>
+                        </div>
+                        <!--Action-->
+                        <div fxFlex="5" style="text-align: center">
+                            <button type="button" class="remove-btn clickable"
+                                    (click)="removeFund(checkoutData.fundsData[index].fund, index)">
+                                <md-icon class="md-14">&#xE888;</md-icon><!--Clear icon-->
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="20" class="add-funds">
+                        <button type="button" md-button="" routerLink="/explore/all">
+                            <md-icon class="md-18">&#xE147;</md-icon>
+                            Add Funds
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <md-card class="no-border no-padding mar-tb-20">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex>
+
+                    </div>
+                    <div fxFlex class="pad-tb-20">
+                        Nominee:
+                        <md-select formControlName="selectedNominee">
+                            <md-option *ngFor="let nominee of checkoutData.nomineeList" [value]="nominee">
+                                {{nominee}}
+                            </md-option>
+                        </md-select>
+                        <md-hint *ngIf="checkoutFormErrors.selectedNominee" class="errorMessage">
+                            {{checkoutFormErrors.selectedNominee}}
+                        </md-hint>
+                    </div>
+                    <div fxFlex class="pad-tb-20">
+                        Bank:
+                        <md-select formControlName="selectedBank">
+                            <md-option *ngFor="let bank of checkoutData.bankList" [value]="bank">
+                                {{bank}}
+                            </md-option>
+                        </md-select>
+                        <md-hint *ngIf="checkoutFormErrors.selectedNominee" class="errorMessage">
+                            {{checkoutFormErrors.selectedNominee}}
+                        </md-hint>
+                    </div>
+                    <div fxFlex class="total-inv-checkout">
+                        Total Investment Amount<br/>
+                        {{totalInvestmentAmount | currency:'INR':true:'1.0-0'}}
+                    </div>
+                </div>
+            </md-card>
+            <div fxLayout="row" fxLayoutAlign="end center" class="pad-tb-10">
+                <div fxFlex="20">
+                    <button type="submit" color="primary" md-raised-button="" class="cta-50">
+                        Continue Checkout
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+import {Injectable} from "@angular/core";
+import {Router, Resolve, ActivatedRouteSnapshot} from "@angular/router";
+import {Observable} from "rxjs";
+import {SipService} from "../sip.service";
+import {SmartSipFunds} from "./smart-sip-funds";
+
+@Injectable()
+export class SmartSipFundResolveService implements Resolve<boolean | SmartSipFunds[]> {
+    constructor(private router: Router, private sipService: SipService) {
+    }
+
+    resolve(route: ActivatedRouteSnapshot): Observable<boolean | SmartSipFunds[]> {
+
+        return this.sipService.getQuickSipFunds().map(output => {
+            if (output) {
+                return output as SmartSipFunds[];
+            } else {
+                this.router.navigate(['/login']);
+                return false;
+            }
+        });
+    }
+}

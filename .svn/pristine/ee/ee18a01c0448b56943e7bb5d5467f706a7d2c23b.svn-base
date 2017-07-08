@@ -1,0 +1,106 @@
+import { Component, OnInit }    from '@angular/core';
+import {DashboardDataService} from "../dashboard-data.service";
+import {ChartOptions} from "./chart-options";
+
+import {AssetClassFund} from "../asset-funds";
+
+//import {Logger} from "../../shared/logger/logger";
+
+@Component({
+    selector: 'app-chart',
+    styleUrls: ['./chart.component.scss'],
+    templateUrl: './chart.component.html',
+})
+export class ChartComponent implements OnInit{
+
+    investmentDataAvailable: boolean = false;
+    constructor(public dataService: DashboardDataService, public chartOptions:ChartOptions) { }
+
+    errorMessage: string;
+    options: Object;
+    point: any;
+    isDrilled : boolean = false;
+    noData:boolean = false;
+
+    asset:Array<Object> =[];
+    assetBreak:any = {};
+    assetOptions:Object;
+    assetBreakupOptions:Object;
+
+    serverError = {
+        assetAllocation: false
+    }
+
+    back(){
+        this.options = [];
+        this.assetOptions['series'][0]['data'] = this.asset;
+        this.options = this.assetOptions;
+        this.isDrilled = false;
+    }
+    onPointSelect (e) {
+        this.point = e.context.y;
+        this.options = [];
+        this.assetBreakupOptions['series'][0]['data'] = this.assetBreak[e.context.name];
+        this.options = this.assetBreakupOptions;
+        this.isDrilled = true;
+    }
+    ngOnInit(){
+        this.assetOptions = this.chartOptions.assetOptions;
+        this.assetBreakupOptions = this.chartOptions.assetBreakupOptions;
+        this.getInvestmentDetails();
+    }
+
+    isDataNull(any){
+        return any.length?false:true;
+    }
+
+    getInvestmentDetails(){
+
+        this.dataService.getInvestmentDetails()
+            .subscribe(
+                assetClass => {
+                    for (var x in assetClass) {
+                        if(assetClass[x]['investedAmt']) //check if non-zero
+                             this.asset.push(
+                                 {
+                                     'name':assetClass[x]['assetClass'],
+                                     'y':assetClass[x]['investedAmt']
+                                 });
+                    }
+                    this.noData = this.isDataNull(this.asset);
+                    this.options = this.assetOptions;
+                    this.assetOptions['series'][0]['data'] = this.asset;
+                    this.investmentDataAvailable = true;
+                },
+                err=>{
+                    console.log('an error occured');
+                    this.serverError['assetAllocation'] = true;
+                }
+            );
+        this.dataService.getInvestedFundDetails()
+            .subscribe(
+                assetClassFund => {
+                    assetClassFund as AssetClassFund;
+                    for(var i in assetClassFund) {
+
+                        var property = assetClassFund[i]['assetClass'];
+                        this.assetBreak[property] = [];
+                            for(var x in assetClassFund[i]['fundDetailsList']){
+                                this.assetBreak[property].push(
+                                    {
+                                        'name':assetClassFund[i]['fundDetailsList'][x]['fundName'],
+                                        'y': assetClassFund[i]['fundDetailsList'][x]['currentValue']
+                                });
+                            }
+                    }
+                },
+                err=>{
+                    console.log('an error occured');
+                    this.serverError['assetAllocation'] = true;
+                }
+            );
+
+    }
+
+
+}

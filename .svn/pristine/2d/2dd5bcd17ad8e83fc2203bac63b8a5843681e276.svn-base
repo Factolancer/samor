@@ -1,0 +1,35 @@
+import { Component, OnInit } from '@angular/core';
+import {DashboardDataService} from "../dashboard-data.service";
+
+@Component({
+  selector: 'app-product-solution',
+  templateUrl: './product-solution.component.html',
+  styleUrls: ['./product-solution.component.scss'],
+  providers: [DashboardDataService]
+})
+export class ProductSolutionComponent implements OnInit {
+
+  productSolutions:Array<Object>;
+   constructor(public dataService: DashboardDataService) { }
+  invest(){
+    console.log("invested");
+    let ran = this.dataService.getData();
+    console.log(ran);
+    console.log('done');
+
+  }
+  ngOnInit() {
+    this.productSolutions = [
+      {title:'Smart SIP', content:['Invest small to achieve your Financial Goals',
+      '5 clicks to start a Systematic Investment Plan (SIP)',
+      'Pre-selected top 3 Mutual Funds']},
+      {title:'Saving Plus', content:['Earn more from the money in your bank account',
+      'Way better returns than Savings Account (7-9%)',
+      'Instant Redemption with no Lock-in & Exit Load']},
+      {title:'Tax Saver', content:['Save Tax under Section 80C.',
+      'Earn tax-free returns via ELSS ',
+      'Pre-selected top 2 ELSS Funds']},
+    ]
+  }
+
+}

@@ -1,0 +1,246 @@
+import {Component, OnInit, trigger, transition, state, animate, style, keyframes, Input} from '@angular/core';
+import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+
+// google.load("visualization", "1.1", {packages:["corechart"]});
+
+@Component({
+    selector: 'demo',
+
+    templateUrl: './demo.component.html',
+    styleUrls: ['./../cash.styles.scss'],
+   // styles: ['button {font-size:1.8em;} #contant {padding:30px; background:#eeeeee; }'],
+
+
+providers: [],
+    animations: [
+    trigger('focusPanel', [
+        state('out' , style({ opacity: 0, transform: 'scale(0.0)' })),
+        state('in', style({ opacity: 1, transform: 'scale(0.0)' })),
+       // transition('1 => 0', animate('300ms')),
+        transition('1 => 0', animate('300ms')),
+     //   transition('void => ')
+    ])
+]
+
+})
+export class DemoComponent implements OnInit {
+
+   // state: string = 'out';
+    focusPanel = 'in';
+    heading = 'invisible';
+    @Input() mystate = 'in';
+    index: number = 0;
+    timeStep: number = 500;
+    multiplier: number = 1;
+
+    constructor(private router: Router) {
+        Observable.interval(2000)
+            .subscribe(x => {
+                //console.log(x);
+                //this.headingvisible = !this.headingvisible;
+                this.heading = (this.heading == 'visible') ? 'invisible' : 'visible';
+                if (x % 2 == 0)
+                    this.index = (x / 2) % 3
+            })
+    }
+    salary_1 = ['1 Jan', 'Salary', '70,000', '70,000']
+
+    headingarray = [
+        "Earn more by investing in SavingsPlus",
+        "Double your savings from SavingsPlus",
+        "Benefits of bank account.. with more returns - SavingsPlus"
+    ]
+    url = this.router.url;
+
+    toDemo() {
+        this.url = this.url + '/demo';
+        this.router.navigate([this.url]);
+    }
+
+    toDemoa() {
+        this.url = this.url + '../../demoa';
+        this.router.navigate([this.url]);
+    }
+
+    private data: Observable<number>;
+    values: number[] = [];
+    private anyErrors: boolean;
+    private finished: boolean;
+
+
+    ngOnInit() {
+        this.data = new Observable(observer => {
+            setTimeout(() => {
+                observer.next('1 Jan');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('Salary');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 70,000');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 70,000');
+            }, this.timeStep * this.multiplier);
+
+            this.multiplier = 2
+            setTimeout(() => {
+                observer.next('9 Jan');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('Expense 1');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 20,000');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 50,000');
+            }, this.timeStep * this.multiplier);
+
+            this.multiplier = 3;
+            setTimeout(() => {
+                observer.next('15 Jan');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('Expense 2');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 10,000');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 40,000');
+
+            }, this.timeStep * this.multiplier);
+            this.multiplier = 4;
+            setTimeout(() => {
+                observer.next('1 Feb');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('Salary');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 70,000');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 1,10,000');
+
+            }, this.timeStep * this.multiplier);
+            this.multiplier = 5;
+            setTimeout(() => {
+                observer.next('8 Feb');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('Expense 1');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 7,000');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 1,03,000');
+            }, this.timeStep * this.multiplier);
+            this.multiplier = 6;
+            setTimeout(() => {
+                observer.next('20 Feb');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('Expense 2');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 15,000');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 88,000');
+            }, this.timeStep * this.multiplier);
+            this.multiplier = 7
+
+            setTimeout(() => {
+                observer.next('1 Mar');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('Salary');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 70,000');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 1,58,000');
+            }, this.timeStep * this.multiplier);
+            this.multiplier = 8;
+            setTimeout(() => {
+                observer.next('10 Mar');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('Expense 1');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 10,000');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 1,48,000');
+            }, this.timeStep * this.multiplier);
+            this.multiplier = 9
+            setTimeout(() => {
+                observer.next('15 Mar');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('Expense 2');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 15,000');
+            }, this.timeStep * this.multiplier);
+
+            setTimeout(() => {
+                observer.next('₹ 1,33,000');
+            }, this.timeStep * this.multiplier);
+            this.multiplier = 10;
+            setTimeout(() => {
+                observer.complete();
+            }, this.timeStep * this.multiplier);
+        });
+
+        let subscription = this.data.subscribe(
+            value => this.values.push(value),
+            error => this.anyErrors = true,
+            () => this.finished = true
+        );
+    }
+    // testData() {
+    //     this.state = (this.state === 'in' ? 'out' : 'in');
+    //
+    //     console.log('k');
+    // }
+
+
+
+
+
+
+
+}

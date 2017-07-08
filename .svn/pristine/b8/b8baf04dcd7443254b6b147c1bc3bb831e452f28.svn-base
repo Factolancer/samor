@@ -1,0 +1,312 @@
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {SipCalcQuestion} from "./sip-calc-question";
+import {SipCalcGoal} from "./sip-calc-goal";
+import {Params, ActivatedRoute, Router} from "@angular/router";
+import {SipGoalQuestions} from "./questions";
+import {SipGoals} from "./goals";
+import {CalculationKeys} from "./calculation-keys";
+
+import {Logger} from "../../shared/logger/logger";
+import {MdDialogConfig, MdDialog} from "@angular/material";
+import {disclaimers} from "../../../properties/discalimers";
+import {InfoDialogComponent} from "../../shared/info-dialog.component";
+
+@Component({
+    selector: 'app-goal-based',
+    templateUrl: './goal-based.component.html',
+    styleUrls: ['./sip-calc.styles.scss'],
+})
+export class GoalBasedComponent implements OnInit {
+
+    chart: any;
+    orientation: string;
+    selectedIndex: number = 0;
+    questions: SipCalcQuestion[];
+    goal: SipCalcGoal;
+    goalId: any;
+    principal: number = 0;
+    years: number = 0;
+    amount: number = 0;
+    inflation: number = 0;
+    rate: number = 0;
+
+    xCategories: Array<any> = [];
+    amountGraphData: Array<any> = [];
+    inflationAdjustmentToolTip = "";
+    considerInflation: boolean;
+    showReCalculateButton: boolean;
+    retire: number = 60;
+    lifeExp: number = 85;
+
+    constructor(private router: Router, private route: ActivatedRoute, public logger: Logger,
+                private viewContainerRef: ViewContainerRef, private dialog: MdDialog) {
+
+    }
+
+    saveChartInstance(chartInstance: any) {
+        // this.logger.debug(chartInstance);
+        this.chart = chartInstance;
+    }
+
+    next() {
+        this.orientation = 'next';
+        if (this.selectedIndex == 0) {
+            this.selectedIndex = 2;
+        } else {
+            this.calculate();
+        }
+    }
+
+    prev() {
+        this.orientation = 'prev';
+        this.selectedIndex = 0;
+    }
+
+    inflationAdjustment(value: any) {
+        this.considerInflation = value;
+        this.calculate();
+        this.chart.series[0].setData(this.amountGraphData);
+    }
+
+    recalculate(value: any) {
+        if (value && value > 0) {
+            this.calculate();
+        }
+        this.chart.series[0].setData(this.amountGraphData);
+    }
+
+    setOption(minVal: number) {
+
+        let xToolTip = this.goal.xToolTip;
+        let yToolTip = this.goal.yToolTip;
+
+        this.options = {
+            title: {text: ''},
+            credits: {enabled: false},
+            chart: {
+                width: 600,
+                height: 230
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            },
+            xAxis: {
+                //min: minVal,
+                categories: [],
+                title: {
+                    text: this.goal.xAxisName,
+                    style: {'fontSize': '11px'}
+                }
+
+            },
+            colors: ["#77ba78", "#BF3235", "black"],
+            yAxis: {
+                title: {
+                    text: 'Amount(in INR.)',
+                    style: {'fontSize': '11px'}
+                },
+                labels: {
+                    formatter: function () {
+                        var val = this.value;
+                        if (val >= 10000000) val = (val / 10000000).toFixed(1) + 'Cr';
+                        else if (val >= 100000) val = (val / 100000).toFixed(1) + 'Lac';
+                        else if (val >= 1000) val = (val / 1000).toFixed(1) + 'k';
+                        return val;
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function () {
+                    var valy = this.point.y;
+                    if (valy >= 10000000) valy = (valy / 10000000).toFixed(2) + 'Cr';
+                    else if (valy >= 100000) valy = (valy / 100000).toFixed(2) + 'Lac';
+                    else if (valy >= 1000) valy = (valy / 1000).toFixed(2) + 'k';
+                    var valx = this.point.x;
+                    return xToolTip +' <b>'+ valx +'</b> '+ yToolTip + " INR " + ' <b>'+valy+'</b>';
+                    //return val;
+                }
+            },
+            legend: {
+                align: 'top',
+                verticalAlign: 'top',
+                layout: 'horizontal',
+                x: 100
+            },
+            series: [{
+                name: 'Amount',
+                data: []
+            }]
+        };
+    }
+
+    calculate() {
+
+
+        this.showReCalculateButton = false;
+        this.questions.forEach(question => {
+            switch (question.calculationKey) {
+                case CalculationKeys.inflation:
+                    this.inflation = question.answer;
+                    break;
+                case CalculationKeys.amount:
+                    this.amount = question.answer;
+                    break;
+                case CalculationKeys.rate:
+                    this.rate = question.answer;
+                    break;
+                case CalculationKeys.years:
+                    this.years = question.answer;
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        this.setOption(this.years);
+
+        if (this.goalId == 1) {
+
+            let retireAge = this.retire;
+            let currentAge = 0;
+            let expectedAge = this.lifeExp;
+            let expenses = 0;
+            let applicableRate = 0;
+
+            if (this.considerInflation) {
+                applicableRate = (this.rate - this.inflation) / 100;
+            } else {
+                applicableRate = this.rate / 100;
+            }
+
+            this.questions.forEach(question => {
+                if (question.id == 1)
+                    currentAge = +question.answer;
+                else if (question.id == 2)
+                    expenses = +question.answer;
+            });
+
+            this.years = retireAge - currentAge;
+            let postRetirementYears = expectedAge - retireAge;
+
+            let inflationCalculationFactor = 1 + (this.inflation / 100);
+            let rateCalculationFactor = 1 + (this.rate / 100);
+            let num = expenses * (this.rate / 100) *
+                (((inflationCalculationFactor / rateCalculationFactor) ** postRetirementYears) - 1 ) *
+                ((inflationCalculationFactor ** (this.years + 1)) / rateCalculationFactor);
+            let denom = rateCalculationFactor * ((rateCalculationFactor ** this.years) - 1 ) *
+                ((inflationCalculationFactor / rateCalculationFactor) - 1);
+            let amount = num / denom;
+
+            let graphAmount: number = 0;
+
+            this.amountGraphData = [];
+
+            let xAxisVal = currentAge + 1;
+            for (let graphTime = 1; graphTime <= this.years; graphTime++) {
+                graphAmount += ((amount * 12) * ((1 + this.rate / 100) ** graphTime));
+                this.amountGraphData.push([xAxisVal, Math.ceil(graphAmount)]);
+                xAxisVal += 1;
+            }
+
+            for (let graphTime = 1; graphTime < postRetirementYears; graphTime++) {
+                graphAmount = (graphAmount * (1 + this.rate / 100)) - ( 12 * expenses * (( 1 + this.inflation / 100) ** (this.years + graphTime)));
+                this.amountGraphData.push([xAxisVal, Math.ceil(graphAmount)]);
+                xAxisVal += 1;
+            }
+
+            this.amountGraphData.push([xAxisVal, 0]);
+            this.principal = Math.ceil(amount);
+
+
+        } else {
+
+            //calculations for all other goals
+            let applicableRate: number;
+            let adjustedAmount: number;
+            if (this.considerInflation) {
+                applicableRate = (this.rate - this.inflation) / 100;
+                adjustedAmount = this.amount * ((1 + this.inflation / 100) ** this.years);
+            } else {
+                applicableRate = this.rate / 100;
+                adjustedAmount = this.amount;
+            }
+
+            /*
+             //inflation adjusted amount
+             applicableRate = (rate - inflation) / 100;
+             adjustedAmount = goalAmount * ((1+ inflationRate/100)^(years))
+             compoundingFrequency = how many times is it compounding in one year.
+             calculationFactor = (1+applicableRate/100)^(1/compoundingFrequency)
+             months = years*12
+             numerator  = [calculationFactor -1]
+             denom = [calculationFactor^n-1] * [calculationFactor]
+             P = adjustedAmount * numerator / denominator ;
+
+             */
+            let months: number = this.years * 12;
+            let compoundFrequency: number = 12;
+            let calculationFactor: number = (1 + applicableRate) ** (1 / compoundFrequency);
+            let numerator: number = calculationFactor - 1;
+            let denom: number = (calculationFactor ** months - 1) * calculationFactor;
+            let principalValue: number = adjustedAmount * numerator / denom;
+
+            //calculation for graph
+            let graphAmount: number = 0;
+
+            this.amountGraphData = [];
+            let xAxisVal = 1;
+            for (let graphTime = 1; graphTime <= this.years; graphTime++) {
+                graphAmount += ((principalValue * 12) * ((1 + applicableRate) ** graphTime));
+                this.amountGraphData.push([xAxisVal, Math.ceil(graphAmount)]);
+                xAxisVal += 1;
+            }
+
+            this.principal = Math.ceil(principalValue);
+
+            if (this.considerInflation)
+                this.inflationAdjustmentToolTip = "Amount INR " + this.amount + " is adjusted for inflation";
+        }
+
+        this.options.xAxis.categories = this.xCategories;
+        this.options.series[0].data = this.amountGraphData;
+
+    }
+
+    options: any;
+
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            this.goalId = +params['id'];
+        });
+
+        this.questions = SipGoalQuestions[this.goalId - 1];
+        this.goal = SipGoals[this.goalId - 1];
+        this.logger.debug(this.goal);
+        this.considerInflation = true;
+        this.showReCalculateButton = false;
+
+
+//        this.disclaimer = "Disclaimer: The calculator, based on assumed rate of returns, is meant for illustration purposes only. The calculations are not based on any judgments of the future return of the debt and equity markets / sectors or of any individual security and should not be construed as promise on minimum returns and/or safeguard of capital. In the preparation of the calculator, Fincash has used information that is publicly available and information developed in-house. Information gathered and material used in this calculator is believed to be from reliable sources. Fincash however does not warrant the accuracy, reasonableness and/or completeness of any such information. While utmost care has been exercised while preparing the calculator, Fincash does not warrant the completeness or guarantee that the achieved computations are flawless and/or accurate and disclaims all liabilities, losses and damages arising out of the use or in respect of anything done in reliance of the calculator. The examples do not purport to represent the performance of any security or investments. In view of individual nature of tax consequences, each investor is advised to consult his/her own professional tax advisor before taking any investment decision.";
+    }
+
+
+    seeDisclaimers() {
+        let config = new MdDialogConfig();
+        config.width = "60vw";
+        config.height = "80vh";
+        config.viewContainerRef = this.viewContainerRef;
+
+        let infoDialogConfig = {
+            infoTitle: "Disclaimers",
+            infoText: [`${disclaimers.calculator_1}`, `${disclaimers.calculator_2}`, `${disclaimers.calculator_3}`, `${disclaimers.calculator_4}`]
+        }
+
+        let dialogRef = this.dialog.open(InfoDialogComponent, config);
+        dialogRef.componentInstance.config = infoDialogConfig;
+    }
+
+}

@@ -1,0 +1,349 @@
+import {Injectable} from "@angular/core";
+import {HttpService} from "./http-service.service";
+import {Subject} from "rxjs/Subject";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
+import {ExploreFundConstants} from "../../explore-funds/explore-funds.constants";
+import {Params, Router} from "@angular/router";
+import {FundSearchInput} from "../../explore-funds/fund-search-input";
+import {FundSearchResults} from "../../explore-funds/fund-search-results";
+import {FundSearchFacets} from "../../explore-funds/fund-search-facet";
+import {Logger} from "../logger/logger";
+
+import {HeaderService} from "./header.service";
+
+
+@Injectable()
+export class ExploreFundsService {
+
+    initializedSearchInput: FundSearchInput;
+    initializedSearchResults: FundSearchResults;
+
+    private fundSearchInputSource: BehaviorSubject<FundSearchInput>;
+    fundSearchInput: Observable<FundSearchInput>;
+
+    private fundSearchResultSource: BehaviorSubject<FundSearchResults>;
+    fundSearchResult: Observable<FundSearchResults>;
+
+    private fundSearchFacetSource: Subject<FundSearchFacets>;
+    fundSearchFacet: Observable<FundSearchFacets>;
+
+    constructor(private httpService: HttpService, private headerService: HeaderService, private router: Router, private logger: Logger) {
+        this.initializedSearchInput = new FundSearchInput;
+        this.initializedSearchResults = new FundSearchResults;
+        this.fundSearchInputSource = new BehaviorSubject<FundSearchInput>(this.initializedSearchInput);
+        this.fundSearchInput = this.fundSearchInputSource.asObservable();
+        this.fundSearchResultSource = new BehaviorSubject<FundSearchResults>(this.initializedSearchResults);
+        this.fundSearchResult = this.fundSearchResultSource.asObservable();
+        this.fundSearchFacetSource = new Subject<FundSearchFacets>();
+        this.fundSearchFacet = this.fundSearchFacetSource.asObservable();
+
+        this.logger.debug("ExploreFundsService", this.initializedSearchInput);
+        this.logger.debug("ExploreFundsService", this.initializedSearchResults);
+
+    }
+    /*for mobile view*/
+    applyfilter(searchInput: FundSearchInput) {
+        this.navigateToExplore(searchInput);
+    }
+
+
+    filterFunds(searchInput: FundSearchInput) {
+        searchInput.f = 0;
+        searchInput.qt = ExploreFundConstants.FILTER_QUERY;
+        let device = this.headerService.deviceType();
+        if (!(device === 'xs' || device === 'sm')) {
+            this.navigateToExplore(searchInput);
+        }
+    }
+
+    search(searchInput: FundSearchInput) {
+        return this.httpService.post("/fund/searchFund", searchInput).map(output => output as FundSearchResults);
+    }
+
+    getFundAutoCompleteData(term: string) {
+        return this.httpService.post("/fund/autoComplete", {term: term});
+    }
+
+    getFacetData(searchInput: FundSearchInput) {
+        return this.httpService.post("/fund/getFacets", searchInput).map(output => output as FundSearchFacets);
+    }
+
+    setFundSearchInput(searchInput: FundSearchInput) {
+        this.initializedSearchInput = searchInput;
+        this.fundSearchInputSource.next(searchInput);
+    }
+
+    navigateToExplore(searchInput: FundSearchInput) {
+        this.router.navigate(['/explore', searchInput]);
+    }
+
+    navigateToSIPExplore() {
+        let searchInput = this.getDefaultFundSearchInput();
+        searchInput.c = ["Equity"];
+        searchInput.o = ExploreFundConstants.SIP_FUNDS;
+        this.initializedSearchInput = searchInput;
+        this.router.navigate(['/explore', searchInput]);
+    }
+
+
+    navigateToELSSExplore() {
+        let searchInput = this.getDefaultFundSearchInput();
+        searchInput.c = ["Equity"];
+        searchInput.sc = ["ELSS"];
+        this.initializedSearchInput = searchInput;
+        this.router.navigate(['/explore', searchInput]);
+    }
+
+    getDefaultFundSearchInput(): FundSearchInput {
+        return new FundSearchInput();
+    }
+
+    setFundSearchResult(searchResult: FundSearchResults) {
+        this.initializedSearchResults = searchResult;
+        this.logger.debug("ExploreFundsService", searchResult)
+        this.fundSearchResultSource.next(searchResult);
+    }
+
+    setFundSearchFacet(facets: FundSearchFacets) {
+        this.fundSearchFacetSource.next(facets);
+    }
+
+
+    getSearchFundFromRoute(params: Params): Observable<FundSearchInput> {
+
+        let fundSearchInput = new FundSearchInput();
+
+        //am
+        if (params['am']) {
+            let amc = params['am'].split(',');
+            /*amc.forEach(value => {
+             if (/[^a-zA-Z0-9\s]/.test(value)) {
+             this.logger.debug(value);
+             fundSearchInput.am.push(value)
+             }
+             });*/
+            fundSearchInput.am = amc;
+        }
+
+        //q
+        if (params['q']) {
+            let keyword = params['q']
+            fundSearchInput.q = keyword;
+        }
+
+        //f
+        if (params['f']) {
+            let from = params['f']
+            if (+from < 0) {
+                fundSearchInput.f = 0;
+            } else if (+from > 540) {
+                fundSearchInput.f = 540;
+            } else {
+                fundSearchInput.f = +from;
+            }
+        }
+
+        //r
+        if (params['r']) {
+            let rows = params['r']
+            if (+rows <= 5) {
+                fundSearchInput.r = 5;
+            } else if (+rows > 5 && +rows <= 10) {
+                fundSearchInput.r = 10
+            } else if (+rows > 10 && +rows <= 15) {
+                fundSearchInput.r = 15
+            } else {
+                fundSearchInput.r = 15;
+            }
+
+        }
+
+        //ra
+        if (params['ra']) {
+            let rating = params['ra'].split(',');
+            rating.forEach(ratingVal => {
+                if (ratingVal <= 1) {
+                    fundSearchInput.ra.push(1);
+                } else if (ratingVal > 1 && ratingVal <= 2) {
+                    fundSearchInput.ra.push(2);
+                } else if (ratingVal > 2 && ratingVal <= 3) {
+                    fundSearchInput.ra.push(3);
+                } else if (ratingVal > 3 && ratingVal <= 4) {
+                    fundSearchInput.ra.push(4);
+                } else if (ratingVal > 4 && ratingVal <= 5) {
+                    fundSearchInput.ra.push(5);
+                }
+            })
+        }
+
+        //ag
+        if (params['ag']) {
+            let age = params['ag'];
+            if (+age < 0) {
+                fundSearchInput.ag = 0;
+            } else if (+age > 25) {
+                fundSearchInput.ag = 25;
+            } else {
+                fundSearchInput.ag = +age;
+            }
+
+        }
+
+        //c
+        if (params['c']) {
+            let category = params['c'].split(',');
+            fundSearchInput.c = category;
+        }
+
+        //sub Category
+        if (params['sc']) {
+            let subCategory = params['sc'].split(',');
+            fundSearchInput.sc = subCategory;
+        }
+
+        //se
+        if (params['se']) {
+            let sortElement = params['se']
+            fundSearchInput.se = sortElement;
+        }
+
+        //so
+        if (params['so']) {
+            let sortOrder = params['so']
+            if (sortOrder == 'asc') {
+                fundSearchInput.so = "asc";
+            } else {
+                fundSearchInput.so = "desc";
+            }
+
+        }
+
+        //ar
+        if (params['ar']) {
+            let aumRange = params['ar']
+            let aumRangeList = aumRange.split(',');
+            //let rating = params['ra'].split(',');
+            if (aumRange.length == 0) {
+                fundSearchInput.ar = [];
+            } else {
+                aumRangeList.forEach(aumRangeVal => {
+                    fundSearchInput.ar.push(aumRangeVal);
+                })
+            }
+
+            /*
+             if (aumRangeChk[0] < 0 || aumRangeChk[0] > 100000 || aumRangeChk[2] < 0 || aumRangeChk[2] > 100000 || aumRangeChk[1] != "TO") {
+             fundSearchInput.ar = [];
+             } else {
+             fundSearchInput.ar = aumRange;
+             }*/
+
+        }
+
+        //qt
+        if (params['qt']) {
+            let queryType = params['qt']
+
+            /*if (queryType != ExploreFundConstants.FILTER_QUERY ||
+             queryType != ExploreFundConstants.SORT_QUERY ||
+             queryType != ExploreFundConstants.PAGE_QUERY ||
+             queryType != ExploreFundConstants.SEARCH_QUERY) {
+             this.logger.debug(queryType);
+             fundSearchInput.qt = ExploreFundConstants.SEARCH_QUERY;
+             } else {*/
+            fundSearchInput.qt = queryType;
+            //}
+        }
+
+        //o
+        if (params['o']) {
+            let others = params['o']
+            if (others == ExploreFundConstants.SIP_FUNDS) {
+                fundSearchInput.o = ExploreFundConstants.SIP_FUNDS;
+            } else {
+                fundSearchInput.o = "";
+            }
+        }
+
+        this.initializedSearchInput = fundSearchInput;
+
+        return Observable.of(fundSearchInput);
+    }
+
+    getExploreTitle(searchInput: FundSearchInput): string {
+
+        let exploreTitle: string = "";
+
+        /*if (!searchInput) {
+         searchInput = this.getDefaultFundSearchInput();
+         }*/
+
+        //keyword
+        if (searchInput.q.length > 0) {
+            exploreTitle += "Keyword - " + searchInput.q;
+        }
+
+        //category
+        if (searchInput.c.length > 0) {
+            if (exploreTitle.length > 0) exploreTitle += " | "
+            exploreTitle += "Category - "
+            exploreTitle += searchInput.c.toString();
+        }
+
+        //sub category
+        if (searchInput.sc.length > 0) {
+            if (exploreTitle.length > 0) exploreTitle += " | "
+            exploreTitle += "Sub Category - ";
+            exploreTitle += searchInput.sc.toString();
+        }
+
+        //fund house
+        if (searchInput.am.length > 0) {
+            if (exploreTitle.length > 0) exploreTitle += " | "
+            exploreTitle += "Fund House - ";
+            exploreTitle += searchInput.am.toString();
+        }
+
+        //AUM
+        if (searchInput.ar.length > 0) {
+            if (exploreTitle.length > 0) exploreTitle += " | "
+            exploreTitle += "AUM - " + searchInput.ar;
+        }
+
+        //age
+        if (searchInput.ag > 0) {
+            if (exploreTitle.length > 0) exploreTitle += " | "
+            exploreTitle += "Fund Age - " + searchInput.ag;
+        }
+
+        //rating
+        if (searchInput.q.length > 0) {
+            if (exploreTitle.length > 0) exploreTitle += " | "
+            exploreTitle += "Rating - " + searchInput.q;
+        }
+
+        /*//sorting
+         if (searchInput.se.length > 0) {
+         if (exploreTitle.length > 0) exploreTitle += " | "
+         exploreTitle += "Sorting - " + searchInput.se + " " + searchInput.so;
+         }*/
+
+        /*//from
+         if (searchInput.f > 0) {
+         exploreTitle += " From - " + searchInput.f;
+         }
+
+         //rows
+         if (searchInput.r > 0) {
+         exploreTitle += " Rows - " + searchInput.r;
+         }*/
+
+        if (exploreTitle.length == 0) {
+            exploreTitle = "Explore Funds"
+        }
+
+        return exploreTitle;
+
+    }
+}

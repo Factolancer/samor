@@ -1,0 +1,75 @@
+import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Router} from "@angular/router";
+import {LoginService} from "../../core/services/login.service";
+import {Subscription} from "rxjs";
+import {KycStatusService} from "../../core/services/kycstatus.service";
+import {KYCGroup} from "../../constants/KYCGroup";
+import {animate, state, style, transition, trigger} from "@angular/animations";
+
+@Component({
+    selector: 'app-navigation-panel',
+    templateUrl: './navigation-panel.component.html',
+    styleUrls: ['./navigation-panel.component.scss'],
+    animations: [
+        trigger('toggleCollapse', [
+            state('collapse' , style({ height: '0px', overflow : 'hidden' }) ),
+            state('expand',  style({ height: '*' }) ),
+            transition('* => *', animate('.25s ease-in'))
+        ])
+    ]
+})
+export class NavigationPanelComponent implements OnInit, OnDestroy {
+    invested: boolean;
+    showEkycLink: boolean;
+    showRegLink: boolean;
+    result: any;
+    investedSub:Subscription;
+    showmyacc:boolean;
+    showrep:boolean;
+    showql:boolean;
+
+
+    constructor(public router: Router, public loginService: LoginService, private kycStatusService: KycStatusService) {
+        this.showEkycLink = false;
+        this.showmyacc = false;
+        this.showrep = false;
+        this.showql = false;
+    }
+
+    ngOnInit() {
+        this.ifInvested();
+        this.kycStatusService.checkKycStatus().subscribe(response => {
+            if (response['kycstatus']){
+                let kycStatus = response['kycstatus'];
+                if (kycStatus != KYCGroup.KYC_Done && kycStatus != KYCGroup.KYC_EXTERNALLYDONE){
+                    this.showEkycLink = true;
+                }
+                this.kycStatusService.checkUserStatus().subscribe(isVarified => {
+                    if (!isVarified){
+                        this.showRegLink = true;
+                    }
+                })
+            }
+        })
+    }
+
+    ngOnDestroy() {
+        this.investedSub.unsubscribe();
+    }
+
+    ifInvested() {
+        this.investedSub = this.loginService.userObservable.subscribe(userObject =>{
+            if (userObject && userObject.foliocount && userObject.foliocount > 0) {
+                this.invested = true;
+            } else {
+                this.invested = false;
+            }
+        })
+    }
+
+    goTo(link) {
+        this.router.navigateByUrl(link);
+    }
+
+
+}

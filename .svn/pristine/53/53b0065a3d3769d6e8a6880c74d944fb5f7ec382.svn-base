@@ -1,0 +1,54 @@
+<section class="data-body">
+
+    <div class="col-md-10 col-md-offset-1 alert-info pad-10">
+        Please complete your <b class="clickable" routerLink="/registration">Registration &amp; KYC</b>
+        process in order to make investments easy!
+    </div>
+    <div class="col-md-10 col-md-offset-1 ">
+        <div class="row dummy-height">
+            <div class="col-md-4 pad-10">
+                <h3 class="text-center">Holdings Summary</h3>
+                <table>
+                    <tr>
+                        <td>Current Holdings value:</td>
+                        <td> {{10000 | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                    <tr>
+                        <td>Invested Amount:</td>
+                        <td>{{10200 | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                    <tr>
+                        <td>Realized Gain/Loss:</td>
+                        <td>{{1500 | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                    <tr>
+                        <td>Unrealized Gain/Loss:</td>
+                        <td>{{-200 | currency:'INR':true:'1.0-0'}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4 pad-10">
+                <h3 class="text-center">Returns on Funds</h3>
+                Put Column Chart here
+            </div>
+            <div class="col-md-4 pad-10">
+                <h3 class="text-center">Asset Allocation</h3>
+                Put Pie Chart here
+            </div>
+        </div>
+        <div class="row dummy-height grey-back">
+            <div class="col-md-4 pad-10">
+                <h3 class="text-center">Smart SIP</h3>
+                <button md-raised-button="" color="primary" routerLink="/sip/smartsip">Invest</button>
+            </div>
+            <div class="col-md-4 pad-10">
+                <h3 class="text-center">Savings Plus</h3>
+                <button md-raised-button="" color="primary" routerLink="/cash">Invest</button>
+            </div>
+            <div class="col-md-4 pad-10">
+                <h3 class="text-center">Tax Saver</h3>
+                <button md-raised-button="" color="primary" routerLink="/tax/taxsaver">Invest</button>
+            </div>
+        </div>
+    </div>
+</section>

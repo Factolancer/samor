@@ -1,0 +1,149 @@
+import {Inject, Injectable} from "@angular/core";
+import {HttpService} from "./http-service.service";
+import {Logger} from "../logger/logger";
+import {Redemption} from "../../redemption/models/redemption";
+import {RedemptionBank} from "../../redemption/models/redemption-bank";
+import {RedemptionNominee} from "../../redemption/models/redemption-nominee";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
+import {RedemptionFund} from "../../redemption/models/redemption-fund";
+import {RedemptionSummary} from "../../redemption/models/redemption-summary";
+import {APP_CONFIG, IAppConfig} from "../../../environments/environment";
+import {isNullOrUndefined} from "util";
+import * as _ from "lodash";
+import {ExchangeRedemptionSummary} from "../../redemption/models/exchange-redemption-summary";
+import {DataStorageService} from "./data-storage.service";
+
+@Injectable()
+export class RedemptionService {
+    className: string;
+    redemptionData: BehaviorSubject<Redemption>;
+    redemptionObservable: Observable<Redemption>;
+    errorRedemptionData: RedemptionFund[];
+
+    constructor(private httpService: HttpService, private logger: Logger, private dataStorageService: DataStorageService,
+                @Inject(APP_CONFIG) private config: IAppConfig) {
+        this.className = "RedemptionService";
+        let redId = "";
+        if (!isNullOrUndefined(this.getRedemptionCartToken())){
+            redId = this.getRedemptionCartToken();
+        }
+        let redemption = new Redemption(redId, [], [], [], new RedemptionBank(1, "", "", "", ""), new RedemptionNominee("", "", ""));
+        this.redemptionData = new BehaviorSubject<Redemption>(redemption);
+        this.redemptionObservable = this.redemptionData as Observable<Redemption>;
+    }
+
+    getRedemptionAutoCompleteData(term: string) {
+        return this.httpService.securePost("/redeem/getRedeemSuggestion", {term: term});
+    }
+
+    getRedemptionData() {
+        // return new Redemption("", [], [], [], new RedemptionBank(1, "HDFC Bank", "Mahape", "22", "HDFC0002334"), new RedemptionNominee("", "", ""), 0);
+        return this.httpService.securePost("/checkout/getRedemptionDataSummary", {"redemptionId": this.redemptionData.getValue().redemptionId})
+            .subscribe(value => {
+                let redemptionTemp = this.redemptionData.getValue();
+                this.logger.debug("RED CART FROM HOLDING ", redemptionTemp);
+                this.logger.debug("SAVED CART ", value);
+
+                redemptionTemp.redemptionId = value['redemptionId'];
+                // redemptionTemp.fundsData = _.union(redemptionTemp.fundsData, value['fundsData']);
+                redemptionTemp.fundsData = _.uniqBy([...redemptionTemp.fundsData, ...value['fundsData']], JSON.stringify);
+                // redemptionTemp.fundsData = redemptionTemp.fundsData.concat(value['fundsData']);
+
+                /*redemptionTemp.fundsData = Array.from(new Set(redemptionTemp.fundsData).map((item) => item.option.soptRfnum && item.folioNo))*/
+                /*redemptionTemp.fundsData = redemptionTemp.fundsData.concat(value['fundsData'].filter(function(item) {
+                    return redemptionTemp.fundsData.indexOf(item) <0;
+                }));*/
+                /*value['fundsData'].forEach(function (item) {
+                    let funds = redemptionTemp.fundsData.filter(x => !(x.option.soptRfnum==item.option.soptRfnum && x.folioNo==item.folioNo))
+                    if (redemptionTemp.fundsData.indexOf(item)<0){
+                        redemptionTemp.fundsData.push(item);
+                    }
+                });*/
+                this.setRedemptionStateSubject(redemptionTemp);
+                // this.redemptionData.next(redemptionTemp);
+                this.logger.debug(this.className, this.redemptionData.getValue());
+            });
+    }
+
+
+    postRedemptionData() {
+        return this.httpService.securePost("/checkout/saveRedemptionData", {"redemptionId": this.redemptionData.getValue().redemptionId, "redemption": this.redemptionData.getValue()})
+    }
+
+    invest(imagePath: string) {
+        return this.httpService.securePost("/checkout/redeem", this.prepareSummary(imagePath), 90000, 0);
+    }
+
+    placeInExchange(imagePath: string, orderId:number){
+        let exchangeRedemptionSummary = new ExchangeRedemptionSummary(orderId,this.prepareSummary(imagePath));
+        return this.httpService.securePost("/checkout/redeemInExchange", exchangeRedemptionSummary, 90000, 0);
+    }
+
+    prepareSummary(imagePath: any): any {
+        /*let imagePathLocation = "";
+        if(typeof (imagePath) == 'string'){
+            imagePathLocation = imagePath;
+        }*/
+        let summaryFunds: RedemptionFund[] = [];
+
+        this.redemptionData.getValue().fundsData.forEach(fund => {
+            summaryFunds.push(new RedemptionFund(fund.fundId, fund.fundName, fund.plan, fund.option, fund.folioNo, fund.holdingMode, fund.selectedRedemptionMode,
+                +fund.amount, fund.amountUnitFlag, fund.fullPartialFlag, +fund.totalUnits, +fund.redeemableUnits,
+                +fund.currValue, +fund.currNav, fund.navDate, fund.redemptionAllowed, fund.minQuantity, fund.minAmount, fund.quantityMultiple,
+                fund.amountMultiple, fund.orderPlaced));
+        });
+        return new RedemptionSummary(summaryFunds, this.redemptionData.getValue().selectedBank.id, imagePath);
+    }
+
+    getSummaryInfo() {
+        return this.httpService.secureGet("/checkout/getSummaryInfo");
+    }
+
+    getInstaRedeemFunds() {
+        return this.httpService.secureGet("/redeem/getInstaFunds");
+    }
+
+    getRedemptionStateSubject() {
+        return this.redemptionData.getValue();
+    }
+
+    setRedemptionStateSubject(redemption: Redemption) {
+        this.setRedemptionCartToken(redemption.redemptionId);
+        this.redemptionData.next(redemption);
+    }
+
+    getRedemptionCartToken() {
+        let token = this.dataStorageService.get(this.config.redemptionCartToken);
+        return (token != null) ? token.toString() : null;
+        // return this.redemptionData.getValue().redemptionId
+    }
+
+    setRedemptionCartToken(redemptionId: string) {
+        if (redemptionId && redemptionId.length>0) {
+            this.dataStorageService.set(this.config.redemptionCartToken, redemptionId);
+        }
+    }
+
+    checkForInstaSchemes(redFunds: RedemptionFund[]) {
+        return this.httpService.securePost("/checkout/checkInstaProducts", {"redFunds": redFunds})
+    }
+
+    resetRedemptionCartData() {
+        let redemption = new Redemption("", [], [], [], new RedemptionBank(1, "", "", "", ""), new RedemptionNominee("", "", ""));
+        this.redemptionData.next(redemption);
+    }
+
+    getRelianceInstaAmtForDay(folioNo: String, soptrfnum: number, smtid: number) {
+        return this.httpService.securePost("/redeem/getRelianceFolioStatus", {"folioNo": folioNo, "soptrfnum": soptrfnum}, 60000, 0)
+    }
+
+    getBirlaInstaAmtForDay(folioNo: String, soptrfnum: number, smtid: number) {
+        return this.httpService.securePost("/redeem/getBirlaFolioStatus", {"folioNo": folioNo, "soptrfnum": soptrfnum}, 60000, 0)
+    }
+
+    /*mergeFundLists(primaryList: RedemptionFund[], secondaryList: RedemptionFund[]) {
+        let uncommonfunds = secondaryList.filter(x => x.option.soptRfnum === primary)
+        let funds = redemptionData.fundsData.filter(x => (x.option.soptRfnum==redemptionFund.option.soptRfnum && x.folioNo==redemptionFund.folioNo));
+    }*/
+}

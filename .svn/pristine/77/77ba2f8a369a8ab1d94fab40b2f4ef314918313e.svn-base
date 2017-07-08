@@ -1,0 +1,26 @@
+<section _ngcontent-pxi-10="">
+
+  <md-card class="sip-card">
+    <md-card-title>I Know Where to Invest</md-card-title>
+    <button _ngcontent-pxi-10="" color="primary" md-raised-button="" class="md-primary" ng-reflect-color="primary"><span
+      class="md-button-wrapper" [routerLink]="['/expert']">Invest</span>
+    </button>
+
+  </md-card>
+  <md-card class="sip-card">
+    <md-card-title>Use Fincash's Ratings</md-card-title>
+    <button _ngcontent-pxi-10="" color="primary" md-raised-button="" class="md-primary" ng-reflect-color="primary"><span
+      class="md-button-wrapper" [routerLink]="['/moderate']">Invest</span>
+    </button>
+  </md-card>
+
+  <md-card class="sip-card">
+    <md-card-title>Go For QuickSIP</md-card-title>
+    <button _ngcontent-pxi-10="" color="primary" md-raised-button="" class="md-primary" ng-reflect-color="primary"><span
+      class="md-button-wrapper" [routerLink]="['/quicksip']">Invest</span>
+    </button>
+  </md-card>
+</section>
+
+
+

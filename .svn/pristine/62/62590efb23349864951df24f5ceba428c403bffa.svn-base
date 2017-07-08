@@ -1,0 +1,48 @@
+import {Inject, Injectable, PLATFORM_ID} from "@angular/core";
+import {Logger} from "../logger/logger";
+import {isPlatformBrowser, isPlatformWorkerApp, isPlatformWorkerUi} from "@angular/common";
+import {DOCUMENT} from "@angular/platform-browser";
+
+
+@Injectable()
+export class UtilityService {
+
+    constructor(private logger: Logger, @Inject(PLATFORM_ID) private platformId: string,
+                @Inject(DOCUMENT) private _document: any) {
+
+    }
+
+    public parseString(string: string, data: any): string {
+        let regEx = /{([a-zA-Z0-9.]+)}/;
+        let stringArray = string.match(regEx);
+        this.logger.debug("UtilityService", data);
+
+        while (stringArray) {
+            let keyString = stringArray[1];
+            let keyStringArray = keyString.split('.');
+            let tempData = data;
+            let replacementString = stringArray[0];
+            keyStringArray.forEach(key => {
+                if (tempData && tempData[key]) {
+                    tempData = tempData[key];
+                } else {
+                    tempData = "";
+                }
+            });
+            string = string.replace(replacementString, tempData);
+            stringArray = string.match(regEx);
+        }
+        return string;
+    }
+
+    public scrollToTop() {
+
+        if (isPlatformBrowser(this.platformId) || isPlatformWorkerApp(this.platformId) || isPlatformWorkerUi(this.platformId)) {
+            let body = this._document.body; // For Chrome, Safari and Opera
+            let bodyMoz = this._document.documentElement; // Firefox and IE places the overflow at the <html> level, unless else is specified. Therefore, we use the documentElement property for these two browsers
+            body.scrollTop = 0;
+            bodyMoz.scrollTop = 0;
+            //this._document.getElementsByClassName('fc-body')[0].scrollTop = 0;
+        }
+    }
+}

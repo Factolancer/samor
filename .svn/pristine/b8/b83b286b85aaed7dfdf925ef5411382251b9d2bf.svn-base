@@ -1,0 +1,13 @@
+/**
+ * Created by Fincash on 23-01-2017.
+ */
+
+var path = require("path");
+
+exports.index = function (req, res) {
+    console.log("get request for /*");
+    var currentDirPath = path.resolve(__dirname);
+    console.log(currentDirPath);
+    res.sendFile('index.html', { root: currentDirPath + '/dist' });
+}
+

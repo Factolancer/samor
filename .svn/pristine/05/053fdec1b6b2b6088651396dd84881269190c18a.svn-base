@@ -1,0 +1,354 @@
+import {Component, OnInit, OnDestroy, Inject, ViewContainerRef} from "@angular/core";
+import {Router, Params, ActivatedRoute} from "@angular/router";
+import {Observable, Subscription} from "rxjs";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {PANValidator} from "../validators/validator";
+import {HttpService} from "../core/services/http-service.service";
+import {OTPService} from "./otp-service";
+import {JwtHelper} from "angular2-jwt";
+import {isNullOrUndefined} from "util";
+import {Logger} from "../core/logger/logger";
+import {KYCGroup} from "../constants/KYCGroup";
+import {IAppConfig, APP_CONFIG} from "../../environments/environment";
+import {SnackBarService} from "../core/services/snack-bar.service";
+import {ConfirmationDialogComponent} from "../shared/confirmation-dialog.component";
+import {MdDialogConfig, MdDialog} from "@angular/material";
+import {TitleService} from "../core/services/title.service";
+
+@Component({
+    selector: 'kyc-status',
+    templateUrl: './kyc-status.component.html',
+    styleUrls: ['./kyc-status.component.scss']
+})
+
+export class CheckKYCComponent implements OnInit, OnDestroy {
+
+    className: string;
+
+    routeSubscription: Subscription;
+    getUserDataSub: Subscription;
+    onSendOTPSub: Subscription;
+    getOTPDeliveryStatusSub: Subscription;
+    checkPANSub: Subscription;
+    panUpdateSub: Subscription;
+    regMobileSub: Subscription;
+    otpValidateSub: Subscription;
+    otptimer: Subscription;
+    KYCStatusForm: FormGroup;
+    PhoneValidationForm: FormGroup;
+    OTPValidationForm: FormGroup;
+
+    kycCompliant: boolean;
+    panGiven: boolean = false;
+    pan: string;
+
+    mobLength: number = 10;
+    PANLength: number = PANValidator.maxLength;
+    otpLength:number = 4;
+
+    userData: any;
+    ticks: number;
+    otpNextGapDuration: number = 15000;
+    OTPResloading: boolean = false;
+
+    otpErrorMessage: string;
+    otpInvalid: boolean = false;
+    otpVerified: boolean = false;
+    otpSent: boolean = false;
+    resendBtnState: boolean = false;
+    panResloading: boolean = false;
+    registredMobileData: any = {};
+    registereredPan: string;
+    encodedekycRes: string;
+    mob: any;
+    resolved: boolean = false;
+    messageStatus : string;
+
+    panConfirmed: boolean;
+    phoneFormSubmitted:boolean;
+    panFormSubmitted:boolean;
+
+    constructor(public router: Router, public http: HttpService, public route: ActivatedRoute, @Inject(APP_CONFIG) private config: IAppConfig,
+                private _fb: FormBuilder, private otpService: OTPService, private jwtHelper: JwtHelper, private  logger: Logger,
+                public viewContainerRef: ViewContainerRef, public snackBarService: SnackBarService, public dialog: MdDialog, public titleService: TitleService) {
+
+        this.className = 'CheckKYCComponent';
+        this.messageStatus = '';
+
+        this.routeSubscription = this.route.params.subscribe((params: Params) => {
+            this.logger.debug(this.className, params);
+            if (!isNullOrUndefined(params['encodedId'])) {
+                this.encodedekycRes = params['encodedId'];
+                this.logger.debug(this.className, this.encodedekycRes);
+                let responseObject = this.jwtHelper.decodeToken(this.encodedekycRes);
+                this.logger.debug(this.className, responseObject);
+
+                if(!isNullOrUndefined(responseObject) && !isNullOrUndefined(responseObject.success)){
+                    this.router.navigate(['/registration']);
+                }
+
+            }
+        });
+
+    }
+
+    ngOnInit() {
+        this.titleService.setTitle("registration");
+        this.getUserData();
+
+        this.PhoneValidationForm = this._fb.group({
+            mob: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern('^[0-9]{10}$')])]
+        });
+        this.KYCStatusForm = this._fb.group({
+            pan: ['', Validators.compose([Validators.required, Validators.minLength(10), PANValidator.isValidPANFormat])]
+        });
+        this.OTPValidationForm = this._fb.group({
+            otp: ['', Validators.compose([Validators.required])]
+        })
+    }
+
+
+    getUserData() {
+        this.getUserDataSub = this.otpService.getUserData()
+            .subscribe(
+                res => {
+                    let mob = res.mob || "";
+                    let pan = res.pan || "";
+                    this.resolved = true;
+                    this.logger.debug(this.className, res);
+                    this.registredMobileData.mob = mob;
+                    this.registredMobileData.regDate = res.mobRegDate || "";
+                    this.registereredPan = pan;
+                    //this.otpService.updateUserDetails('email', res.email);/*bring it back for live server for . issue*/
+                    this.otpService.updateUserDetails('mob', mob);
+                    if (this.registereredPan.length>0 && this.registredMobileData.mob.length>0){
+                        this.router.navigate([this.config.userBasicGuard.navigate])
+                    }
+                },
+                err => {
+                    this.logger.debug(this.className, 'error fetching user details')
+                }
+            )
+    }
+
+    goTo(link) {
+        let userData = this.otpService.getUserDetails();
+        this.router.navigate([link, userData]);
+    }
+    validatePhoneForm(isValid){
+        this.phoneFormSubmitted = true;
+        return isValid;
+    }
+    onSendOTP() {
+        this.OTPResloading = true;
+
+        this.userData = this.PhoneValidationForm.value;
+        let phone = '+91' + this.userData.mob;
+        let body = "Your OTP for Fincash verification is valid for 5 minute, please don't share. OTP:";
+
+        this.onSendOTPSub = this.otpService.sendOTP(phone, body).subscribe(
+            res => {
+                this.logger.debug(this.className, res);
+                if (!isNullOrUndefined(res) && !isNullOrUndefined(res.messageId))
+                    this.otpSent = true;
+                    this.OTPResloading = false;
+                    this.getOTPDeliveryStatusSub = Observable.interval(3000).take(10).flatMap(() => {
+                        return this.otpService.otpDeliveryStatus(res.messageId);
+                    }).subscribe(responseVal => {
+                        this.logger.debug(this.className, responseVal);
+                        if(!isNullOrUndefined(responseVal) && !isNullOrUndefined(responseVal.status)){
+                            this.messageStatus =  responseVal.status;
+                            if(this.getOTPDeliveryStatusSub && responseVal.status =='delivered'){
+                                this.getOTPDeliveryStatusSub.unsubscribe();
+                                this.resendBtnState = true;
+                                if (this.otptimer) {
+                                    this.otptimer.unsubscribe();
+                                }
+                                this.ticks = 0;
+                            } else{
+                                this.resendBtnState = true;
+                            }
+                        }
+                    });
+            },
+            err => {
+                this.logger.debug(this.className, 'an error occured');
+            }
+        )
+    }
+
+    resendOTP() {
+        this.messageStatus ='';
+        this.otptimer = Observable.timer(0, 1000).subscribe(t => {
+            this.ticks = this.otpNextGapDuration / 1000 - t;
+            if (this.ticks <= 0) {
+                this.otptimer.unsubscribe();
+            }
+        });
+        this.onSendOTP();
+        this.resendBtnState = false;
+        let timer = Observable.timer(this.otpNextGapDuration);
+        timer.subscribe(t => this.resendBtnState = true);
+    }
+
+
+    onValidateOTP() {
+
+        this.userData = this.OTPValidationForm.value;
+        this.mob = this.PhoneValidationForm.controls['mob'].value;
+        let otp = this.userData.otp;
+
+        this.otpValidateSub = this.otpService.validateOTP(otp).subscribe(
+            res => {
+                if(!isNullOrUndefined(res)){
+                    let otpValidity = res;
+                    this.logger.debug(this.className, 'otp validity' + otpValidity + 'mob num' + this.mob);
+                    if (otpValidity == true) {
+                        this.registerMobile(this.mob);
+                    }else{
+                        this.otpInvalid = true;
+                        this.otpErrorMessage = "Invalid OTP!"
+                    }
+                }else{
+                    this.otpInvalid = true;
+                    this.otpErrorMessage = "Invalid OTP!"
+                }
+
+            },
+            err => {
+                this.logger.debug(this.className, 'OTP Validation error');
+            }
+        )
+    }
+
+    registerMobile(mob) {
+        this.regMobileSub = this.http.post('/user/mobUpdate', {"mob": mob}).subscribe(
+            res => {
+                this.logger.debug(this.className, res);
+                this.otpVerified = true;
+                this.otpService.updateUserDetails('mob', mob);
+            },
+            err => {
+                this.logger.debug(this.className, "Error Occured registering mobile! :( " ,err.error);
+            }
+        )
+    }
+
+
+    validatePANKYC(isValid){
+        this.panFormSubmitted = true;
+        return isValid;
+    }
+
+    checkPAN() {
+        this.openPANConfirmationDialog()
+            .subscribe(value => {
+                if (value){
+                    this.userData = this.KYCStatusForm.value;
+                    let pan = this.userData.pan || "";
+                    let panObj = {};
+                    panObj["pan"] = pan;
+
+                    this.panResloading = true;
+
+                    this.panUpdateSub = this.http.post('/user/panUpdate',panObj).subscribe(
+                        res => {
+                            if (res['success']) {
+                                this.logger.debug(this.className, "pan updated with these details", res);
+                                this.snackBarService.showSnackBar(res['message'], "Okay", this.viewContainerRef)
+                                this.checkPANSub = this.http.post('/user/checkKYC', panObj)
+                                    .subscribe(response => {
+                                        this.logger.debug(this.className, response);
+                                        this.kycCompliant = (response.statusCode.toLowerCase() == "KS100".toLowerCase()) ? true : false;
+                                        this.panGiven = true;
+                                        this.panResloading = false;
+                                        this.otpService.updateUserDetails('pan', pan);
+                                        if (this.kycCompliant){
+                                            this.http.post('/user/updateKycStatus', {"kycStatus": KYCGroup.KYC_Done, "kycType": KYCGroup.KYCTYPE_PAN})
+                                                .subscribe(res => {
+                                                        this.logger.debug(this.className, "KYC status updated" + res)
+                                                    },
+                                                    error => {
+                                                        this.logger.debug(this.className, "KYC status update failed" + error.error);
+                                                    }
+                                                )
+                                        }
+                                    },
+                                    error => {
+                                        this.logger.debug(this.className, "Error occurred in KYC status checking " + error.error);
+                                    }
+                                )
+                            }
+                            else {
+                                this.snackBarService.showSnackBar(res['message'], "Okay", this.viewContainerRef)
+                                this.panResloading = false
+                                this.KYCStatusForm.controls['pan'].setValue("")
+                            }
+                        },
+                        err => {
+                            this.logger.debug(this.className, "Error occurred in pan update" + err.error);
+                            this.panResloading = false
+                            this.KYCStatusForm.controls['pan'].setValue("")
+                        }
+                    )
+                }
+            })
+    }
+
+    proceed() {
+        this.router.navigateByUrl('registration');
+    }
+
+    openPANConfirmationDialog(){
+        let config = new MdDialogConfig();
+        config.width = "30vw";
+        config.disableClose = true;
+        config.viewContainerRef = this.viewContainerRef;
+
+        let confirmationConfig = {
+            confirmationTitle: "Confirm PAN",
+            confirmationText: "Are you sure the given PAN is correct? PAN once submitted cannot be changed!",
+            confirmationActions: [['Y', "Yes", "hollow-cta-36"], ['N', "No", "hollow-cta-36"]]
+        }
+
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, config);
+        dialogRef.componentInstance.config = confirmationConfig;
+        return dialogRef.afterClosed().map(result => {
+            if (result[0] == 'Y') {
+                return true
+            } else {
+                return false
+            }
+        });
+    }
+
+    ngOnDestroy() {
+
+        this.routeSubscription.unsubscribe();
+
+        if (this.otptimer) {
+            this.otptimer.unsubscribe();
+        }
+        if (this.getUserDataSub) {
+            this.getUserDataSub.unsubscribe();
+        }
+        if (this.onSendOTPSub) {
+            this.onSendOTPSub.unsubscribe();
+        }
+        if (this.getOTPDeliveryStatusSub) {
+            this.getOTPDeliveryStatusSub.unsubscribe();
+        }
+        if (this.checkPANSub) {
+            this.checkPANSub.unsubscribe();
+        }
+        if (this.panUpdateSub) {
+            this.panUpdateSub.unsubscribe();
+        }
+        if (this.regMobileSub) {
+            this.regMobileSub.unsubscribe();
+        }
+        if (this.otpValidateSub) {
+            this.otpValidateSub.unsubscribe();
+        }
+    }
+}

@@ -1,0 +1,25 @@
+export class User{
+
+    constructor(
+        public Basic: {
+            pan: string;
+            mob: string;
+            email: string;
+            name: string;
+            dob: string;
+            gender: string;
+            marital_status?: string;
+        },
+        public KYC: {
+            job: string,
+            income: string,
+            father_spouse: string,
+            address_proof: string,
+            pin: string,
+            address: string,
+            district: string,
+            state: string
+        },
+        public Bank:{}
+    ){ }
+}

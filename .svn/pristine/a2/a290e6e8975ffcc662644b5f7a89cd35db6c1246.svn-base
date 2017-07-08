@@ -1,0 +1,20 @@
+/**
+ * Created by Fincash on 08-02-2017.
+ */
+import {NgModule} from "@angular/core";
+import {SharedModule} from "../shared/shared.module";
+import {kycRouting} from "./kyc-status.routes";
+import {CheckKYCComponent} from "./kyc-status.component";
+import {OTPService} from "./otp-service";
+
+@NgModule({
+    imports: [
+        SharedModule,
+        kycRouting
+    ],
+    declarations: [CheckKYCComponent],
+    entryComponents:[CheckKYCComponent],
+    providers:[OTPService]
+})
+export class KYCStatusdModule {
+}

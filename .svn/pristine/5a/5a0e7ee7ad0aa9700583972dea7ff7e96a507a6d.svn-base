@@ -1,0 +1,53 @@
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {Input} from "@angular/core/src/metadata/directives";
+import {BasicFactsheetComponent} from "../../factsheet/basic-factsheet.component";
+import {MdDialog} from "@angular/material/dialog";
+import {MdDialogRef} from "@angular/material/dialog";
+
+import {FactsheetService} from "../../factsheet/factsheet.service";
+import {Fund} from "../../models/fund";
+import {disclaimers} from "../../../properties/discalimers";
+
+@Component({
+    selector: 'app-savings-plus-card',
+    templateUrl: './savings-plus-card.component.html',
+    styleUrls: ['../cash.styles.scss']
+})
+export class SavingsPlusCardComponent implements OnInit {
+
+    //inputs
+    @Input() set funds(funds: Fund[]) {
+        this._funds = funds || [];
+        this.selectedFunds = this._funds;
+    }
+
+    _funds: Fund[];
+    selectedFunds: Fund[];
+    factsheetDialogRef: MdDialogRef<BasicFactsheetComponent>;
+    ratingDisclaimerText: string;
+
+    constructor(public viewContainerRef: ViewContainerRef, public dialog: MdDialog, public factsheetService: FactsheetService) {
+    }
+
+    changeFundComposition(checked: boolean, fundItem: Fund) {
+        if (checked) {
+            this.selectedFunds.push(fundItem);
+        } else {
+            this.selectedFunds = this.selectedFunds.filter(selectedFund => selectedFund.id != fundItem.id);
+        }
+
+        //console.log(this.selectedFunds);
+    }
+
+    viewFactSheet(fund: Fund) {
+        let config = this.factsheetService.getFactsheetDialogConfig();
+        config.viewContainerRef = this.viewContainerRef;
+        this.factsheetDialogRef = this.dialog.open(BasicFactsheetComponent, config);
+        this.factsheetDialogRef.componentInstance.fund = fund;
+    }
+
+    ngOnInit() {
+        this.ratingDisclaimerText = `${disclaimers.rating}`;
+    }
+
+}

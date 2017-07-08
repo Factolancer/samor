@@ -1,0 +1,261 @@
+@import "../../styles/partials/web-partials";
+//fund list styling
+
+.explore-fund-head {
+  background-color: $brand-secondary;
+  text-align: center;
+  color: $white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 20px;
+  margin-bottom: 2px;
+  border-radius: 0;
+}
+
+.loading {
+  font-size: 24px;
+}
+
+.fund-list {
+  font-size: 14px;
+  text-align: center;
+  padding: 12px;
+  margin-bottom: 2px;
+  border-radius: 0;
+}
+
+//pagination styling
+.page-number-btn {
+  background-color: $white;
+  color: $brand-secondary;
+  margin: 0 0 0 0;
+  text-align: center;
+  padding: 0 15px;
+  border: 0;
+  height: 25px;
+}
+
+.blue {
+  background-color: $brand-secondary;
+  color: $white;
+}
+
+.grey {
+  color: $dark-grey;
+}
+
+table, tr, td {
+  border: 1px solid $dark-grey;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+//search component styling
+
+.search-bar {
+  padding: 35px 0 20px 0;
+}
+
+.search-input {
+  border: solid 1px $dark-grey;
+  line-height: 35px;
+  padding-left: 10px;
+  font-size: 12px;
+  width: 83%;
+}
+
+.search-btn {
+  border-radius: 0 !important;
+  height: 35px;
+  //background: transparent;
+  float: right;
+}
+
+/deep/ .mat-autocomplete-panel {
+    .mat-option {
+      height: 20% !important;
+    }
+}
+
+/deep/ .mat-select-panel {
+  .mat-select-content {
+    .mat-option {
+      .line {
+        font-size: 14px;
+        line-height: 60px;
+      }
+    }
+  }
+}
+
+.remove-btn {
+  color: $black;
+  background-color: $white;
+  border: none;
+  font-size: 16px;
+  outline-style: none;
+
+  &:hover {
+    color: $brand-secondary;
+  }
+}
+
+
+.page-heading {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  line-height: 16px;
+  background-color: $brand-primary;
+  color: $white;
+
+  &:focus {
+    outline: none !important;
+  }
+}
+
+.fund-count {
+  font-size: 12px;
+}
+
+.cart-button {
+  position: fixed;
+  bottom: 20px;
+  right: 15px;
+  z-index: 1000;
+  float: right;
+  margin: 10px;
+}
+
+.comparison-button {
+  position: fixed;
+  bottom: 20px;
+  right: 15px;
+  z-index: 1000;
+  float: right;
+  margin: 10px;
+}
+
+.comparison-list {
+  position: fixed;
+  bottom: 20px;
+  right: 15px;
+  z-index: 999;
+  background-color: $white;
+  width: 320px;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
+  will-change: box-shadow;
+  font-size: 12px;
+
+  .top-bar {
+    padding: 10px;
+    background-color: $light-grey;
+    border-bottom: solid 1px $medium-grey;
+  }
+
+  .list-text {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: $text-dark-grey;
+
+    &:hover {
+      background-color: $light-grey;
+    }
+  }
+
+  .remove-button {
+    color: $text-medium-grey;
+  }
+}
+
+.watchlist-icon-btn {
+  color: $text-medium-grey;
+  line-height: 30px;
+  height: 36px;
+  width: 36px;
+  margin-left: 10px;
+}
+
+.md-button-toggle-label-content {
+  line-height: 20px !important;
+}
+
+.no-result-found {
+
+  padding: 40px 0;
+
+  .body {
+    background-color: $light-grey;
+    padding: 50px 0;
+
+    .line-1 {
+
+      &:first-of-type {
+        font-size: 40px;
+      }
+      color: $text-dark-grey;
+      letter-spacing: 3px;
+      font-size: 35px;
+    }
+
+    .line-2 {
+      color: $text-medium-grey;
+      font-size: 18px;
+
+    }
+
+    .image {
+      text-align: center;
+      max-width: 150px;
+    }
+  }
+
+  .grey-foot {
+    height: 50px;
+    background-color: $medium-grey;
+  }
+}
+
+md-checkbox {
+
+  font-size: 12px;
+
+  /deep/ .mat-checkbox-layout {
+
+    .mat-checkbox-inner-container {
+      height: 15px;
+      width: 15px;
+
+    }
+
+    .mat-checkbox-label {
+      line-height: 12px;
+    }
+  }
+}
+
+md-button-toggle-group {
+  /deep/ .mat-button-toggle-label-content {
+    line-height: 18px;
+    padding: 0 12px;
+  }
+}
+
+/deep/ .mat-autocomplete-panel {
+  max-height: 80vh;
+  max-width: 1024px;
+
+  md-option {
+    &.mat-option {
+      padding: 0 10px;
+      line-height: 24px;
+      height: 24px;
+      font-size: 12px;
+    }
+  }
+}

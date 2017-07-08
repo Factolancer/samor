@@ -1,0 +1,32 @@
+import {Injectable, Inject} from "@angular/core";
+import {Logger} from "../logger/logger";
+import {Http, Headers, RequestOptions} from "@angular/http";
+import {IAppConfig, APP_CONFIG} from "../../../environments/environment";
+
+@Injectable()
+export class UploadService {
+
+    uploadUrl: string;
+    className: string;
+
+    constructor(public logger: Logger, public http: Http, @Inject(APP_CONFIG) private config: IAppConfig){
+        this.className = "UploadService"
+        this.uploadUrl = this.config.fileUploadApi
+    }
+
+    public uploadDoc(formData: FormData){
+        let headers = this.setHeader()
+        let options = new RequestOptions({headers: headers});
+        return this.http.post(this.uploadUrl, formData);
+    }
+
+    public saveFilePath(pathObj: any) {
+        return this.http.post(this.config.playAPIUrl + '/secure/user/updateFilePath', pathObj)
+    }
+
+    private setHeader() {
+        this.logger.debug(this.className, "set Content type");
+        let headers = new Headers({'Content-Type': 'multipart/form-data'});
+        return headers;
+    }
+}

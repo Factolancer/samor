@@ -1,0 +1,91 @@
+<div class="col-md-8 col-md-offset-2 ">
+    <section class="data-head">
+        <div class="row">
+            <h1 class="center-align">Please answer the questions below</h1>
+        </div>
+    </section>
+    <section class="grey-back">
+        <div class="row" *ngIf="!amount">
+            <div class="col-md-2">
+                <img src="{{goal.imagePath}}">
+                {{goal.name}}
+
+            </div>
+            <div class="col-md-8">
+                <div [@questionAnimation]="orientation">
+                    {{selectedQuestion.statement}}<br/>
+                    {{selectedQuestion.helperText}}
+                    <md-input [(ngModel)]="selectedQuestion.answer" type="{{selectedQuestion.type}}"
+                              maxlength="{{selectedQuestion.maxLength}}"
+                              min="{{selectedQuestion.min}}" max="{{selectedQuestion.max}}"
+                              maxlength="selectedQuestion.inputLength" (keydown)="nextOnEnter($event)">
+                        <span md-prefix [innerHTML]="selectedQuestion.prefix"></span>
+                        <span md-suffix [innerHTML]="selectedQuestion.suffix"></span>
+                    </md-input>
+                </div>
+
+                <button md-button (click)="prev()">Previous</button>
+                <button md-button (click)="next()">Next</button>
+
+            </div>
+        </div>
+
+        <div class="row" *ngIf="amount">
+            <div class="col-md-12">
+                {{goal.name}}
+                <img src="{{goal.imagePath}}" class="pull-right">
+            </div>
+            <div class="col-md-12">
+                <p>
+                    <span *ngFor="let stmt of splitP; let i = index; let last=last;">
+                        <span>{{stmt}}</span>
+                        <span *ngIf="!last">
+                            <md-input [(ngModel)]="questions[i].answer" type="{{questions[i].type}}"
+                                      maxlength="{{questions[i].maxLength}}"
+                                      min="{{questions[i].min}}" max="{{questions[i].max}}"
+                                      (change)="showReCalculationOption()">
+                                <span md-prefix [innerHTML]="questions[i].prefix"></span>
+                                <span md-suffix [innerHTML]="questions[i].suffix"></span>
+                            </md-input>
+                        </span>
+                    </span>
+                </p>
+
+                <h3>Your total investment amount is {{investedAmount | currency:'INR':true:'1.0-0'}} and Expected amount
+                    after {{years}} Years is {{amount | currency:'INR':true:'1.0-0'}}. Net Profit of
+                    {{amount-investedAmount | currency:'INR':true:'1.0-0'}} </h3>
+            </div>
+            <div class="col-md-12">
+                <span GoogleChart id="line_chart" [chartData]="graphData" [chartOptions]="line_ChartOptions"
+                      chartType="LineChart"></span>
+            </div>
+            <div class="col-md-12">
+                <md-checkbox [checked]="true" (change)="inflationAdjustment($event.checked)">Adjust for inflation
+                </md-checkbox>
+                <button md-raised-button="" *ngIf="showReCalculateButton" (click)="calculate()">Recalculate</button>
+                <button md-raised-button="" (click)="simulate()">Simulate with 3 returns</button>
+                <!-- <button md-tooltip="disclaimer" tooltip-position="above">Disclaimer?</button>-->
+                <div class="pull-right">
+                    <button md-raised-button="" routerLink="/sip/calculator">Replay</button>
+                    <button md-raised-button="" routerLink="/sip">Invest Now</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table>
+                <thead>
+                <td>Return Rate</td>
+                <td>Market Value</td>
+                <td>Inflation Adjusted Value</td>
+                </thead>
+                <tbody>
+                <tr *ngFor="let value of simulatedValue; let i=index;">
+                    <td>{{futureYears[i]}}</td>
+                    <td>{{principal | currency:'INR':true:'1.0-0'}}</td>
+                    <td>{{value | currency:'INR':true:'1.0-0'}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>

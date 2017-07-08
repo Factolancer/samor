@@ -1,0 +1,3 @@
+<button md-mini-fab color="primary" (click)="add()" ngClass="{{cssClass}}">
+    <md-icon class="md-20">{{btnText}}</md-icon>
+</button>

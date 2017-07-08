@@ -1,0 +1,125 @@
+/**
+ * Created by Fincash on 12-09-2016.
+ */
+import {Component, Input, trigger, state, style, transition, animate, ChangeDetectorRef} from '@angular/core';
+
+interface Question {
+    id: number;
+    que: string;
+    options: string[];
+}
+
+type Orientation = ( "prev" | "next" | "none" | "current" );
+
+@Component({
+    selector: 'risk',
+    templateUrl: './risk.component.html',
+    styles: ['.elemnt{background-color:red}'],
+    // styleUrls: ['risk.component.css'],
+    animations: [
+        trigger('questionAnimation', [
+            // transition('void => prev', [
+            //   style({transform: 'translateX(-100%)'}),
+            //   animate(200, style({transform: 'translateX(0)'}))
+            // ]),
+            // transition('void => next', [
+            //   style({transform: 'translateX(100%)'}),
+            //   animate(200, style({transform: 'translate(0)'}))
+            // ]),
+            // transition('prev => void', [
+            //   animate(200)
+            // ]),
+            // transition('next => void', [
+            //   animate(200)
+            // ])
+            transition('void => prev', [ ///Entering
+                style({transform: 'translateX(-100%)', opacity: 0.0, zIndex: 2}),
+                animate('1s 100ms ease-in-out', style({transform: 'translateX(0)', opacity: 1.0, zIndex: 2}))
+            ]),
+            transition('prev => void', [ ///Leaving
+                style({transform: 'translateX(0)', opacity: 1.0}),
+                animate('1s 100ms ease-in-out', style({transform: 'translateX(100%)', opacity: 0.0, zIndex: 2}))
+            ]),
+            transition('void => next', [ ///Entering
+                style({transform: 'translateX(100%)', opacity: 0.0, zIndex: 2}),
+                animate('1s 100ms ease-in-out', style({transform: 'translateX(0)', opacity: 1.0, zIndex: 2}))
+            ]),
+            transition('next => void', [ ///Leaving
+                style(({transform: 'translate(0)', opacity: 1.0})),
+                animate('1s 100ms ease-in-out', style({transform: 'translateX(-100%)', opacity: 0.0, zIndex: 2}))
+            ])
+        ])
+    ]
+})
+
+export class RiskComponent {
+    public orientation: Orientation;
+    public selectedQuestion: Question;
+    public answer: string = '';
+    private questions: Question[];
+
+    constructor() {
+
+        this.questions = [
+            {
+                id: 1,
+                que: "What do you want to do?",
+                options: ["Save tax", "Gain superior returns", "Gain monthly returns from my investment", "Obtain greater interest on my liquid cash"]
+            },
+            {
+                id: 2,
+                que: "How much is your yearly income?",
+                options: ["<5", "5-10", ">10"]
+            },
+            {
+                id: 3,
+                que: "What is your age?",
+                options: ["18-30", "30-60", ">60"]
+            },
+            {
+                id: 4,
+                que: "Which of the following best describes your household?",
+                options: ["Dual income, no dependents", "Dual income, at least one dependent", "Single income, no dependents",
+                    "Single income, at least one dependent", "Retired or financially independent"]
+            },
+            {
+                id: 5,
+                que: "Higher returns generally means higher risks. Which of the below mentioned scenarios of potential loss in your investment during a year with negative returns is acceptable to you?",
+                options: ["I am not willing to accept a loss of more than 4%",
+                    "I am not willing to accept a loss of more than 10%",
+                    "I am not willing to accept a loss of more than 16%",
+                    "I am not willing to accept a loss of more than 36%",
+                    "I am willing to accept a loss of more than 36%"]
+            },
+            {
+                id: 6,
+                que: "How do you rate yourself as a risk taker when it comes to investment?",
+                options: ["I don’t take any risk",
+                    "I am a conservative risk taker",
+                    "I am an moderate risk taker",
+                    "I am aggressive",
+                    "I am very aggressive"]
+            }
+        ];
+
+        this.selectedQuestion = this.questions[0];
+    }
+
+    next() {
+        this.orientation = 'next';
+        let index = this.questions.indexOf(this.selectedQuestion);
+        this.selectedQuestion = this.questions[index + 1]
+            ? this.questions[index + 1]
+            : this.questions[0]
+        ;
+    }
+
+    prev() {
+        this.orientation = 'prev';
+        let index = this.questions.indexOf(this.selectedQuestion);
+        this.selectedQuestion = this.questions[index - 1]
+            ? this.questions[index - 1]
+            : this.questions[this.questions.length - 1]
+        ;
+    }
+}

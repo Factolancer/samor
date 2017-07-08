@@ -1,0 +1,1601 @@
+<section>
+    <!--<md-card _ngcontent-pxi-6>-->
+    <!--<md-card-title>-->
+    <md-toolbar color="lightgray" class="sectiontitle">Basic Details</md-toolbar>
+    <!--</md-card-title>-->
+    <!--<br/>-->
+    <!--<md-card-content>-->
+    <form [formGroup]="basicForm" (ngSubmit)="onBasicSubmit()" novalidate>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input required formControlName="pan" placeholder="PAN"></md-input>
+                <div *ngIf="!basicForm.controls.pan.getError('minLength') && (basicForm.controls['pan'].touched)"
+                     class="errorMessage">
+                    <span>Please enter minumupm 10 characters</span>
+                </div>
+                <div *ngIf="!basicForm.controls.pan.getError('required') && (basicForm.controls['pan'].touched)"
+                     class="errorMessage">
+                    <span>Please enter valid PAN number</span>
+                </div>
+
+                <!--<md-input id="pan" type="text" placeholder="PAN" required minlength="10" maxlength="10"-->
+                <!--name="pan" ngControl="pan" [(ngModel)]="user.Basic.pan" #pan="ngModel" [ngModelOptions]="{standalone: true}">-->
+                <!--&lt;!&ndash;<md-hint *ngIf="formErrors.pan" align="end" class="alert alert-danger">{{formErrors.pan}}</md-hint>&ndash;&gt;-->
+                <!--<div *ngIf="pan.errors && (pan.dirty || pan.touched)"-->
+                <!--class="alert alert-danger">-->
+                <!--<div [hidden]="!pan.errors.required">-->
+                <!--PAN is required-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</md-input>-->
+            </md-grid-tile>
+            <md-grid-tile style="display: block">
+                <md-input required formControlName="mob" placeholder="Mobile no"></md-input>
+                <div *ngIf="!basicForm.controls['mob'].valid && (basicForm.controls['mob'].touched)"
+                     class="errorMessage">
+                    <span>Please enter valid Mobile number</span>
+                </div>
+                <!--<md-input id="mob" type="number" placeholder="Mobile No." required minlength="10" maxlength="10"-->
+                <!--name="mob" ngControl="mob" [(ngModel)]="user.Basic.mob" #mob="ngModel" [ngModelOptions]="{standalone: true}"></md-input>-->
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group">
+                <md-input required formControlName="name" placeholder="Name"></md-input>
+                <div *ngIf="!basicForm.controls['name'].valid && (basicForm.controls['name'].touched)"
+                     class="errorMessage">
+                    <span>Name is required</span>
+                </div>
+                <!--<md-input id="name" type="text" placeholder="Name" required-->
+                <!--name="name" ngControl="name" [(ngModel)]="user.Basic.name" #name="ngModel" [ngModelOptions]="{standalone: true}"></md-input>-->
+            </md-grid-tile>
+            <md-grid-tile class="form-group">
+                <md-input required formControlName="email" placeholder="Email Id"></md-input>
+                <div *ngIf="!basicForm.controls['email'].valid && (basicForm.controls['email'].touched)"
+                     class="errorMessage">
+                    <span>Please enter valid email id</span>
+                </div>
+                <!--<md-input id="email" type="email" placeholder="Email Id" required-->
+                <!--name="email" ngControl="email" [(ngModel)]="user.Basic.email" #email="ngModel" [ngModelOptions]="{standalone: true}"></md-input>-->
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group">
+                <!--<label class="field_label">Date of Birth</label>-->
+                <md-input required formControlName="dob" type="date" class="date_margin"></md-input>
+                <!--<md-input id="dob" type="date" required ngControl="dob"-->
+                <!--name="dob" [(ngModel)]="user.Basic.dob" #dob="ngModel" [ngModelOptions]="{standalone: true}"></md-input>-->
+                <!--<label _ngcontent-lwp-8 class="md-input-placeholder md-float" required>Date of Birth</label>-->
+            </md-grid-tile>
+            <md-grid-tile class="form-group">
+                <md-radio-group required formControlName="gender">
+                    <md-radio-button value="Male">Male</md-radio-button>
+                    <md-radio-button value="Female">Female</md-radio-button>
+                </md-radio-group>
+                <!--<md-radio-group id="gender" required ngControl="gender" [(ngModel)]="user.Basic.gender" name="gender" #gender="ngModel" [ngModelOptions]="{standalone: true}">-->
+                <!--<md-radio-button value="Male">Male</md-radio-button>-->
+                <!--<md-radio-button value="Female">Female</md-radio-button>-->
+                <!--</md-radio-group>-->
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile class="form-group" style="display: block">
+                <md-radio-group required formControlName="marital_status">
+                    <md-radio-button value="Single">Single</md-radio-button>
+                    <md-radio-button value="Married">Married</md-radio-button>
+                </md-radio-group>
+                <!--<md-radio-group id="marital_status" ngControl="marital_status" [(ngModel)]="user.Basic.marital_status" name="marital_status" #marital_status="ngModel" [ngModelOptions]="{standalone: true}">-->
+                <!--<md-radio-button value="Single">Single</md-radio-button>-->
+                <!--<md-radio-button value="Married">Married</md-radio-button>-->
+                <!--</md-radio-group>-->
+            </md-grid-tile>
+            <md-grid-tile>
+                <button md-raised-button color="primary" [disabled]="!basicForm.valid">Save</button>
+                <!--<button md-raised-button type="submit" color="primary" [disabled]="!basicForm.form.valid">{{!basicForm.form.valid}}</button>-->
+            </md-grid-tile>
+        </md-grid-list>
+    </form>
+    <!--</md-card-content>-->
+    <!--</md-card>-->
+</section>
+
+<section>
+    <!--<md-card _ngcontent-pxi-6>-->
+    <md-toolbar color="lightgray" class="sectiontitle">Know Your Customer Details</md-toolbar>
+    <!--<br/>-->
+    <!--<md-card-content>-->
+    <form [formGroup]="kycForm" (ngSubmit)="onKYCSubmit()" novalidate>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <select required formControlName="job">
+                    <option *ngFor="let item of occupations" [value]="item.name">{{item.name}}</option>
+                </select>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input required formControlName="income" placeholder="Annual Income(in lakhs)"></md-input>
+                <div *ngIf="!kycForm.controls['income'].valid && (kycForm.controls['income'].touched)"
+                     class="errorMessage">
+                    <span>Required field</span>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input required formControlName="father_spouse" placeholder="Father/Spouse Name"></md-input>
+                <div *ngIf="!kycForm.controls['father_spouse'].valid && (kycForm.controls['father_spouse'].touched)"
+                     class="errorMessage">
+                    <span>Please enter Father/Spouse name</span>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <select formControlName="address_proof">
+                    <option *ngFor="let item of addressprooofs" [value]="item.name">{{item.name}}</option>
+                </select>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input type="text" required formControlName="address"
+                          placeholder="House Number, Street Name"></md-input>
+                <div *ngIf="!kycForm.controls['address'].valid && (kycForm.controls['address'].touched)"
+                     class="errorMessage">
+                    <span>Please enter your communication address</span>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input type="text" required formControlName="district" placeholder="Town/District"></md-input>
+                <div *ngIf="!kycForm.controls['district'].valid && (kycForm.controls['district'].touched)"
+                     class="errorMessage">
+                    <span>Required</span>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input type="text" required formControlName="state" placeholder="State"></md-input>
+                <div *ngIf="!kycForm.controls['state'].valid && (kycForm.controls['state'].touched)"
+                     class="errorMessage">
+                    <span>Required</span>
+                </div>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input required formControlName="pin" placeholder="Pin Code"></md-input>
+                <div *ngIf="!kycForm.controls['pin'].valid && (kycForm.controls['pin'].touched)"
+                     class="errorMessage">
+                    <span>Please enter valid 6 digit Pin Code</span>
+                </div>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+
+            </md-grid-tile>
+            <md-grid-tile>
+                <button md-raised-button color="primary" [disabled]="!kycForm.valid">Save</button>
+            </md-grid-tile>
+        </md-grid-list>
+    </form>
+    <!--</md-card-content>-->
+    <!--</md-card>-->
+</section>
+
+<section>
+    <!--<md-card _ngcontent-pxi-6>-->
+    <md-toolbar color="lightgray" class="sectiontitle">Bank Details</md-toolbar>
+    <!--<br/>-->
+    <!--<md-card-content>-->
+    <form [formGroup]="bankForm" (ngSubmit)="onBankSubmit()" novalidate>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input required formControlName="name" placeholder="Name as on Cheque Book"></md-input>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input required formControlName="ifsc" placeholder="IFSC Code"></md-input>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <select required formControlName="account_type">
+                    <option>Savings Account</option>
+                    <option>Current Account</option>
+                </select>
+            </md-grid-tile>
+            <md-grid-tile>
+                <md-input required formControlName="account_number" placeholder="Bank Account Number"></md-input>
+            </md-grid-tile>
+        </md-grid-list>
+        <md-grid-list cols="2" rowHeight="100px">
+            <md-grid-tile>
+                <md-input required formControlName="confirm_account_number"
+                          placeholder="Bank Account Number"></md-input>
+            </md-grid-tile>
+            <md-grid-tile>
+                <button md-raised-button color="primary" [disabled]="!bankForm.valid">Save</button>
+            </md-grid-tile>
+        </md-grid-list>
+    </form>
+    <!--</md-card-content>-->
+    <!--</md-card>-->
+</section>
+
+<!--<section class="all-forms col-xs-12">-->
+<!--<div role="tablist" class="panel-group">-->
+<!--<div class="basic-section panel panel-default">-->
+<!--<div class="panel-heading">-->
+<!--<h4 class="panel-title"><a data-toggle="collapse" aria-expanded="false"-->
+<!--aria-selected="false"-->
+<!--role="tab" class="collapsed"><i-->
+<!--class="fa fa-check"></i><span>Basic Details</span><i class="fa fa-angle-down flip"></i></a></h4>-->
+<!--</div>-->
+<!--<div class="panel-expand collapse" id="basic-panel" aria-hidden="true" role="tabpanel" aria-expanded="false"-->
+<!--style="height: 0px;">-->
+<!--<div class="panel-body">-->
+<!--<section id="investor-details">-->
+<!--<form class="col-xs-12 " id="investor-form" novalidate="novalidate"><input type="hidden"-->
+<!--id="kyc_status"-->
+<!--name="kyc_status"-->
+<!--value="KND"><input-->
+<!--type="hidden" id="camsData" name="camsData">-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding undefined"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: inline-block;">Email-->
+<!--Address</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text" name="user_email"-->
+<!--placeholder="Email Address">-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding undefined"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: inline-block;">Phone-->
+<!--Number</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text" name="user_phone"-->
+<!--id="user_phone"-->
+<!--placeholder="Phone Number"-->
+<!--maxlength="20"-->
+<!--aria-required="true"-->
+<!--aria-invalid="false"-->
+<!--class="valid"></section>-->
+<!--</section>-->
+<!--<section class="clearfix"></section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding undefined"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: none;">Pan Card-->
+<!--Number</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text"-->
+<!--name="user_pan_no"-->
+<!--id="user_pan_no"-->
+<!--placeholder="Pan Card Number"-->
+<!--maxlength="10"-->
+<!--aria-required="true"-->
+<!--aria-invalid="true"-->
+<!--class="formErrorMessage"-->
+<!--aria-describedby="user_pan_no-error"><span-->
+<!--id="user_pan_no-error" class="formErrorMessage">We need your PAN number</span>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: inline-block;">Date of-->
+<!--birth</label>-->
+<!--<section id="user_dob" class="col-xs-12 no-padding input-section datefield"><input-->
+<!--type="text" id="dob" class="inputs valid" name="day" placeholder="DD/MM/YYYY"-->
+<!--readonly="" aria-required="true" aria-invalid="false"-->
+<!--aria-describedby="dob-error"><span id="dob-error" class="formErrorMessage"-->
+<!--style="display: none;"></span></section>-->
+<!--</section>-->
+<!--<section class="clearfix"></section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding undefined"><label-->
+<!--class="col-xs-12 control-label no-padding">Name</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text" name="user_name"-->
+<!--id="user_name"-->
+<!--placeholder="Your name as on PAN card"-->
+<!--aria-required="true"-->
+<!--aria-invalid="true"-->
+<!--class="formErrorMessage"-->
+<!--aria-describedby="user_name-error"><span-->
+<!--id="user_name-error" class="formErrorMessage">This field is required.</span>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding "><label-->
+<!--class="col-xs-12 control-label no-padding"-->
+<!--style="display: inline-block;">Gender</label>-->
+<!--<section class="col-xs-12 no-padding input-section">-->
+<!--<section class="col-xs-4 no-padding"><input type="radio" name="gender" value="M"-->
+<!--id="M"><span class="check"></span><label-->
+<!--for="M" class="radio-label">Male</label></section>-->
+<!--<section class="col-xs-4 no-padding"><input type="radio" name="gender" value="F"-->
+<!--id="F"><span class="check"></span><label-->
+<!--for="F" class="radio-label">Female</label></section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="clearfix"></section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding" style="margin-bottom: auto;">-->
+<!--<label class="col-xs-12 control-label no-padding" style="display: inline-block;">Marital-->
+<!--Status</label>-->
+<!--<section class="col-xs-12 no-padding input-section">-->
+<!--<section class="col-xs-4 no-padding"><input type="radio" name="user_mstatus"-->
+<!--value="Single" id="Single"><span-->
+<!--class="check"></span><label for="Single" class="radio-label">Single</label>-->
+<!--</section>-->
+<!--<section class="col-xs-4 no-padding"><input type="radio" class=""-->
+<!--name="user_mstatus" value="Married"-->
+<!--id="Married"><span class="check"></span><label-->
+<!--for="Married" class="radio-label">Married</label></section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 no-padding"-->
+<!--style="margin-bottom: 0px; margin-top: 1em;">-->
+<!--<button type="button" class="btn btn-info save-button" id="to-communication"-->
+<!--name="communication-form">Save-->
+<!--</button>-->
+<!--</section>-->
+<!--</form>-->
+<!--</section>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="kyc-section panel panel-default">-->
+<!--<div class="panel-heading"><h4 class="panel-title"><a href="#" aria-expanded="false" aria-selected="false"-->
+<!--role="tab" class="collapsed"><i-->
+<!--class="fa fa-check"></i><span>Know Your Customer Details</span><i class="fa fa-angle-down flip"></i></a>-->
+<!--</h4></div>-->
+<!--<div class="panel-collapse collapse" aria-hidden="true" role="tabpanel" aria-expanded="false"-->
+<!--style="height: 0px;">-->
+<!--<div class="panel-body">-->
+<!--<section id="communication-details">-->
+<!--<form class="col-xs-12 " id="communication-form" novalidate="novalidate">-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding"><label-->
+<!--class="col-xs-12 control-label no-padding"-->
+<!--style="display: inline-block;">Occupation</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><select name="user_occupation">-->
+<!--<option value="Private Sector Service">Private sector company employee</option>-->
+<!--<option value="Public Sector Service">Public sector company employee</option>-->
+<!--<option value="Government Service">Government service employee</option>-->
+<!--<option value="Business">Business</option>-->
+<!--<option value="Professional">Professional/Consultant</option>-->
+<!--<option value="Agriculturist">Agriculturist</option>-->
+<!--<option value="Retired">Retired</option>-->
+<!--<option value="Housewife">Homemaker</option>-->
+<!--<option value="Student">Student</option>-->
+<!--<option value="Forex Dealer">Forex Dealer</option>-->
+<!--<option value="Others">Others</option>-->
+<!--</select></section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding"><label-->
+<!--class="col-xs-12 control-label no-padding">Annual income (in lakhs)</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><span class="lakh_text"><span-->
+<!--class="number">22</span><span class="lakh">lakhs</span></span><input type="tel"-->
+<!--autocomplete="off"-->
+<!--placeholder="Your income in lakhs (before tax)"-->
+<!--name="user_annual_income"-->
+<!--class="amountlakhs">-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="clearfix"></section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding hide-for-yes-kyc"><label-->
+<!--class="col-xs-12 control-label no-padding">Father/Spouse Name</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text"-->
+<!--name="user_f_spouse"-->
+<!--placeholder="Your father or spouse's name">-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding hide-for-yes-kyc"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: inline-block;">Address-->
+<!--Proof</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><select name="user_address_proof">-->
+<!--<option value="Passport">Passport</option>-->
+<!--<option value="Driving Licence">Driving Licence</option>-->
+<!--<option value="Adhaar Card">Adhaar Card</option>-->
+<!--<option value="Voter/Election Card">Voter/Election Card</option>-->
+<!--<option value="Ration Card">Ration Card</option>-->
+<!--<option value="Registered Lease or Sale Agreement">Registered Lease or Sale-->
+<!--Agreement-->
+<!--</option>-->
+<!--<option value="Latest Electricity Bill">Latest Electricity Bill</option>-->
+<!--<option value="Latest Gas Bill">Latest Gas Bill</option>-->
+<!--<option value="Latest Landline Phone Bill">Latest Landline Phone Bill</option>-->
+<!--<option value="Latest Bank statement/Passbook copy">Latest Bank Statement/Passbook-->
+<!--Copy-->
+<!--</option>-->
+<!--</select></section>-->
+<!--</section>-->
+<!--<section class="clearfix"></section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding"><label-->
+<!--class="col-xs-12 control-label no-padding">Address</label>-->
+<!--<section class="col-xs-12 input-section no-padding">-->
+<!--<section class="col-xs-12 no-padding"><input type="text" name="user_address_pin"-->
+<!--id="user_address_pin"-->
+<!--placeholder="Postal Code" maxlength="6"-->
+<!--style="padding-right: 20px;"-->
+<!--aria-required="true"-->
+<!--aria-invalid="true"-->
+<!--class="formErrorMessage"-->
+<!--aria-describedby="user_address_pin-error"><span-->
+<!--id="user_address_pin-error"-->
+<!--class="formErrorMessage">This field is required.</span></section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding">-->
+<!--<section class="col-xs-12 input-section no-padding">-->
+<!--<section class="col-xs-12 no-padding"><textarea name="user_address_l1" rows="1"-->
+<!--placeholder="House number, Street name ..."-->
+<!--maxlength="165"></textarea>-->
+<!--</section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="clearfix"></section>-->
+<!--<section class="address form-group col-xs-12 col-sm-6 no-padding">-->
+<!--<section class="col-xs-12 input-section no-padding"><input type="text"-->
+<!--name="user_address_l2"-->
+<!--id="user_address_l2"-->
+<!--placeholder="Town/District"-->
+<!--aria-required="true"-->
+<!--aria-invalid="true"-->
+<!--class="formErrorMessage"-->
+<!--aria-describedby="user_address_l2-error"><span-->
+<!--id="user_address_l2-error"-->
+<!--class="formErrorMessage">This field is required.</span></section>-->
+<!--</section>-->
+<!--<section class="address form-group col-xs-12 col-sm-6 no-padding">-->
+<!--<section class="col-xs-12 input-section no-padding"><input type="text"-->
+<!--name="user_address_l3"-->
+<!--id="user_address_l3"-->
+<!--placeholder="State">-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 no-padding" style="display: none;">-->
+<!--<section class="col-xs-6 no-padding input-section no-padding"><input-->
+<!--class="user_address_l3_dummy" name="user_address_l3_dummy"-->
+<!--id="user_address_l3_dummy" readonly="" placeholder="State,Town/District">-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="clearfix"></section>-->
+<!--<section class="form-group col-xs-12 no-padding">-->
+<!--<section class="col-xs-12 no-padding input-section">-->
+<!--<section class="col-xs-1 no-padding" style="max-width: 15px;"><input type="checkbox"-->
+<!--name="user_nominee_yes"-->
+<!--id="add_nominee">-->
+<!--</section>-->
+<!--<section class="col-xs-11"><label for="add_nominee" class="checkbox-label">I want to-->
+<!--add a nominee</label></section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding nominee-field"><label-->
+<!--class="col-xs-12 control-label no-padding">Nominee Name</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text"-->
+<!--name="user_nominee_name"-->
+<!--id="user_nominee_name"-->
+<!--placeholder="Your Nominee's name">-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding nominee-field"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: inline-block;">Relationship-->
+<!--to you</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><select-->
+<!--name="user_nominee_relationship">-->
+<!--<option value="Spouse">Spouse</option>-->
+<!--<option value="Brother">Brother</option>-->
+<!--<option value="Sister">Sister</option>-->
+<!--<option value="Parent">Parent</option>-->
+<!--<option value="Child">Child</option>-->
+<!--<option value="Other">Other</option>-->
+<!--</select></section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding nominee-field"><label-->
+<!--class="col-xs-12 control-label no-padding">Date of birth of nominee</label>-->
+<!--<section id="user_dob" class="col-xs-12 no-padding input-section datefield"><input-->
+<!--type="tel" id="nominee_dob" name="nominee_day" placeholder="DD/MM/YYYY"-->
+<!--readonly=""></section>-->
+<!--</section>-->
+<!--<section class="clearfix"></section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding nominee-minor" style=""><label-->
+<!--class="col-xs-12 control-label no-padding">Guardian Name</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text"-->
+<!--name="nominee_guardian_name"-->
+<!--placeholder="The guardian's name">-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="clearfix"></section>-->
+<!--<button type="button" class="btn btn-info save-button" id="to-bank" name="bank-form">Save-->
+<!--</button>-->
+<!--</form>-->
+<!--</section>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="bank-section panel panel-default">-->
+<!--<div class="panel-heading"><h4 class="panel-title"><a href="#" aria-expanded="false" aria-selected="false"-->
+<!--role="tab" class="collapsed"><i-->
+<!--class="fa fa-check"></i><span>Bank Details</span><i class="fa fa-angle-down"></i></a></h4></div>-->
+<!--<div class="panel-collapse collapse" aria-hidden="true" role="tabpanel" aria-expanded="false"-->
+<!--style="height: 0px;">-->
+<!--<div class="panel-body">-->
+<!--<section id="bank-details"><span class="bank_span"><img class="i_icon"-->
+<!--src="/gw-web-assets/img/icons/unversal_icon_i.svg">-->
+<!--&lt;!&ndash; react-text: 188 &ndash;&gt;NRI? Please fill details of your NRE/NRO bank account based in India since you can invest only through that.-->
+<!--&lt;!&ndash; /react-text &ndash;&gt;</span>-->
+<!--<form class="col-xs-12 " id="bank-form" novalidate="novalidate">-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding undefined"><label-->
+<!--class="col-xs-12 control-label no-padding">Account Holder's Name</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text"-->
+<!--name="user_account_name"-->
+<!--placeholder="Name as on Cheque Book">-->
+<!--</section>-->
+<!--</section>-->
+<!--<span class="ifsc"><a href="https://bankifsccode.com/"-->
+<!--target="_blank">Find your IFSC</a></span>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding undefined"><label-->
+<!--class="col-xs-12 control-label no-padding">IFSC Code</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text"-->
+<!--name="user_ifsc_code"-->
+<!--id="user_ifsc_code"-->
+<!--placeholder="IFSC Code (written in cheque book)"-->
+<!--autocomplete="off"-->
+<!--maxlength="11"></section>-->
+<!--</section>-->
+<!--<span class="ifsc err">Incorrect IFSC. Please enter correct IFSC.</span>-->
+<!--<section class="form-group col-xs-12 ifsc-elements" style="margin-bottom: 10px;"><input-->
+<!--type="hidden" name="ifsc_city" id="ifsc_city"><input type="hidden"-->
+<!--name="ifsc_branch_name"-->
+<!--id="ifsc_branch_name"><input-->
+<!--type="hidden" name="ifsc_bank_name" id="ifsc_bank_name"><input type="hidden"-->
+<!--name="ifsc_micr"-->
+<!--id="ifsc_micr">-->
+<!--<section class="col-xs-6 no-padding col-sm-offset-6"-->
+<!--style="font-size: 12px; top: -10px;"><span class="bank-text-span static-span"-->
+<!--id="ifsc_bank"></span><span>&lt;!&ndash; react-text: 209 &ndash;&gt;,-->
+<!--&lt;!&ndash; /react-text &ndash;&gt;<br></span><span class="branchn-text-span static-span"-->
+<!--id="ifsc_branch"></span><span>&lt;!&ndash; react-text: 213 &ndash;&gt;,-->
+<!--&lt;!&ndash; /react-text &ndash;&gt;<br></span><span class="city-text-span static-span"-->
+<!--id="ifsc_user_city"></span></section>-->
+<!--</section>-->
+<!--<section class="clearfix"></section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: inline-block;">Bank-->
+<!--Account Type</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><select name="user_account_type">-->
+<!--<option value="SB">Savings Account</option>-->
+<!--<option value="CA">Current Account</option>-->
+<!--<option value="SB NRE">Savings Account NRE</option>-->
+<!--<option value="SB NRO">Savings Account NRO</option>-->
+<!--<option value="Other">Other</option>-->
+<!--</select></section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding undefined"><label-->
+<!--class="col-xs-12 control-label no-padding">Bank Account Number</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text"-->
+<!--name="user_account_number"-->
+<!--placeholder="Your bank account number">-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="clearfix"></section>-->
+<!--<button type="button" class="btn btn-info save-button" id="to-other" name="other-form">-->
+<!--Save-->
+<!--</button>-->
+<!--<span class="lock"><img class="lockimg" src="/gw-web-assets/img/icons/investment_lock.svg">-->
+<!--&lt;!&ndash; react-text: 234 &ndash;&gt;We never share your information with any unauthorized party.-->
+<!--&lt;!&ndash; /react-text &ndash;&gt;</span></form>-->
+<!--</section>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="other-section panel panel-default">-->
+<!--<div class="panel-heading"><h4 class="panel-title"><a href="#" class="collapsed" aria-expanded="false"-->
+<!--aria-selected="false" role="tab"><i-->
+<!--class="fa fa-check"></i><span>Other Details</span><i class="fa fa-angle-down"></i></a></h4></div>-->
+<!--<div class="panel-collapse collapse" aria-hidden="true" role="tabpanel" aria-expanded="false">-->
+<!--<div class="panel-body">-->
+<!--<section id="other-details">-->
+<!--<form class="col-xs-12 " id="other-form" novalidate="novalidate">-->
+<!--<section class="form-group col-xs-12 no-padding"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: inline-block;">Investor-->
+<!--type</label>-->
+<!--<section class="col-xs-12 no-padding input-section">-->
+<!--<section class="col-xs-6 no-padding"><input type="radio" name="user_investor_type"-->
+<!--value="RI" id="resident_indian"><span-->
+<!--class="check"></span><label for="resident_indian" class="radio-label">Resident-->
+<!--Indian</label></section>-->
+<!--<section class="col-xs-6 no-padding"><input type="radio" class=""-->
+<!--name="user_investor_type" value="NRI"-->
+<!--id="non_resident_indian"><span-->
+<!--class="check"></span><label for="non_resident_indian" class="radio-label">NRI</label>-->
+<!--</section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding country_birth"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: inline-block;">Country of-->
+<!--birth</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><select name="user_bornin">-->
+<!--<option value="India">India</option>-->
+<!--<option value="Afghanistan">Afghanistan</option>-->
+<!--<option value="Albania">Albania</option>-->
+<!--<option value="Algeria">Algeria</option>-->
+<!--<option value="Andorra">Andorra</option>-->
+<!--<option value="Angola">Angola</option>-->
+<!--<option value="Antigua &amp; Deps">Antigua &amp; Deps</option>-->
+<!--<option value="Argentina">Argentina</option>-->
+<!--<option value="Armenia">Armenia</option>-->
+<!--<option value="Australia">Australia</option>-->
+<!--<option value="Austria">Austria</option>-->
+<!--<option value="Azerbaijan">Azerbaijan</option>-->
+<!--<option value="Bahamas">Bahamas</option>-->
+<!--<option value="Bahrain">Bahrain</option>-->
+<!--<option value="Bangladesh">Bangladesh</option>-->
+<!--<option value="Barbados">Barbados</option>-->
+<!--<option value="Belarus">Belarus</option>-->
+<!--<option value="Belgium">Belgium</option>-->
+<!--<option value="Belize">Belize</option>-->
+<!--<option value="Benin">Benin</option>-->
+<!--<option value="Bhutan">Bhutan</option>-->
+<!--<option value="Bolivia">Bolivia</option>-->
+<!--<option value="Bosnia Herzegovina">Bosnia Herzegovina</option>-->
+<!--<option value="Botswana">Botswana</option>-->
+<!--<option value="Brazil">Brazil</option>-->
+<!--<option value="Brunei">Brunei</option>-->
+<!--<option value="Bulgaria">Bulgaria</option>-->
+<!--<option value="Burkina">Burkina</option>-->
+<!--<option value="Burundi">Burundi</option>-->
+<!--<option value="Cambodia">Cambodia</option>-->
+<!--<option value="Cameroon">Cameroon</option>-->
+<!--<option value="Cape Verde">Cape Verde</option>-->
+<!--<option value="Central African Rep">Central African Rep</option>-->
+<!--<option value="Chad">Chad</option>-->
+<!--<option value="Chile">Chile</option>-->
+<!--<option value="China">China</option>-->
+<!--<option value="Colombia">Colombia</option>-->
+<!--<option value="Comoros">Comoros</option>-->
+<!--<option value="Congo">Congo</option>-->
+<!--<option value="Congo (Democratic Rep)">Congo (Democratic Rep)</option>-->
+<!--<option value="Costa Rica">Costa Rica</option>-->
+<!--<option value="Croatia">Croatia</option>-->
+<!--<option value="Cuba">Cuba</option>-->
+<!--<option value="Cyprus">Cyprus</option>-->
+<!--<option value="Czech Republic">Czech Republic</option>-->
+<!--<option value="Denmark">Denmark</option>-->
+<!--<option value="Djibouti">Djibouti</option>-->
+<!--<option value="Dominica">Dominica</option>-->
+<!--<option value="Dominican Republic">Dominican Republic</option>-->
+<!--<option value="East Timor">East Timor</option>-->
+<!--<option value="Ecuador">Ecuador</option>-->
+<!--<option value="Egypt">Egypt</option>-->
+<!--<option value="El Salvador">El Salvador</option>-->
+<!--<option value="Equatorial Guinea">Equatorial Guinea</option>-->
+<!--<option value="Eritrea">Eritrea</option>-->
+<!--<option value="Estonia">Estonia</option>-->
+<!--<option value="Ethiopia">Ethiopia</option>-->
+<!--<option value="Fiji">Fiji</option>-->
+<!--<option value="Finland">Finland</option>-->
+<!--<option value="France">France</option>-->
+<!--<option value="Gabon">Gabon</option>-->
+<!--<option value="Gambia">Gambia</option>-->
+<!--<option value="Georgia">Georgia</option>-->
+<!--<option value="Germany">Germany</option>-->
+<!--<option value="Ghana">Ghana</option>-->
+<!--<option value="Greece">Greece</option>-->
+<!--<option value="Grenada">Grenada</option>-->
+<!--<option value="Guatemala">Guatemala</option>-->
+<!--<option value="Guinea">Guinea</option>-->
+<!--<option value="Guinea-Bissau">Guinea-Bissau</option>-->
+<!--<option value="Guyana">Guyana</option>-->
+<!--<option value="Hong Kong">Hong Kong</option>-->
+<!--<option value="Haiti">Haiti</option>-->
+<!--<option value="Honduras">Honduras</option>-->
+<!--<option value="Hungary">Hungary</option>-->
+<!--<option value="Iceland">Iceland</option>-->
+<!--<option value="Indonesia">Indonesia</option>-->
+<!--<option value="Iran">Iran</option>-->
+<!--<option value="Iraq">Iraq</option>-->
+<!--<option value="Ireland (Republic)">Ireland (Republic)</option>-->
+<!--<option value="Israel">Israel</option>-->
+<!--<option value="Italy">Italy</option>-->
+<!--<option value="Ivory Coast">Ivory Coast</option>-->
+<!--<option value="Jamaica">Jamaica</option>-->
+<!--<option value="Japan">Japan</option>-->
+<!--<option value="Jordan">Jordan</option>-->
+<!--<option value="Kazakhstan">Kazakhstan</option>-->
+<!--<option value="Kenya">Kenya</option>-->
+<!--<option value="Kiribati">Kiribati</option>-->
+<!--<option value="Korea North">Korea North</option>-->
+<!--<option value="Korea South">Korea South</option>-->
+<!--<option value="Kosovo">Kosovo</option>-->
+<!--<option value="Kuwait">Kuwait</option>-->
+<!--<option value="Kyrgyzstan">Kyrgyzstan</option>-->
+<!--<option value="Laos">Laos</option>-->
+<!--<option value="Latvia">Latvia</option>-->
+<!--<option value="Lebanon">Lebanon</option>-->
+<!--<option value="Lesotho">Lesotho</option>-->
+<!--<option value="Liberia">Liberia</option>-->
+<!--<option value="Libya">Libya</option>-->
+<!--<option value="Liechtenstein">Liechtenstein</option>-->
+<!--<option value="Lithuania">Lithuania</option>-->
+<!--<option value="Luxembourg">Luxembourg</option>-->
+<!--<option value="Macedonia">Macedonia</option>-->
+<!--<option value="Madagascar">Madagascar</option>-->
+<!--<option value="Malawi">Malawi</option>-->
+<!--<option value="Malaysia">Malaysia</option>-->
+<!--<option value="Maldives">Maldives</option>-->
+<!--<option value="Mali">Mali</option>-->
+<!--<option value="Malta">Malta</option>-->
+<!--<option value="Marshall Islands">Marshall Islands</option>-->
+<!--<option value="Mauritania">Mauritania</option>-->
+<!--<option value="Mauritius">Mauritius</option>-->
+<!--<option value="Mexico">Mexico</option>-->
+<!--<option value="Micronesia">Micronesia</option>-->
+<!--<option value="Moldova">Moldova</option>-->
+<!--<option value="Monaco">Monaco</option>-->
+<!--<option value="Mongolia">Mongolia</option>-->
+<!--<option value="Montenegro">Montenegro</option>-->
+<!--<option value="Morocco">Morocco</option>-->
+<!--<option value="Mozambique">Mozambique</option>-->
+<!--<option value="Myanmar, (Burma)">Myanmar, (Burma)</option>-->
+<!--<option value="Namibia">Namibia</option>-->
+<!--<option value="Nauru">Nauru</option>-->
+<!--<option value="Nepal">Nepal</option>-->
+<!--<option value="Netherlands">Netherlands</option>-->
+<!--<option value="New Zealand">New Zealand</option>-->
+<!--<option value="Nicaragua">Nicaragua</option>-->
+<!--<option value="Niger">Niger</option>-->
+<!--<option value="Nigeria">Nigeria</option>-->
+<!--<option value="Norway">Norway</option>-->
+<!--<option value="Oman">Oman</option>-->
+<!--<option value="Pakistan">Pakistan</option>-->
+<!--<option value="Palau">Palau</option>-->
+<!--<option value="Panama">Panama</option>-->
+<!--<option value="Papua New Guinea">Papua New Guinea</option>-->
+<!--<option value="Paraguay">Paraguay</option>-->
+<!--<option value="Peru">Peru</option>-->
+<!--<option value="Philippines">Philippines</option>-->
+<!--<option value="Poland">Poland</option>-->
+<!--<option value="Portugal">Portugal</option>-->
+<!--<option value="Qatar">Qatar</option>-->
+<!--<option value="Romania">Romania</option>-->
+<!--<option value="Russian Federation">Russian Federation</option>-->
+<!--<option value="Rwanda">Rwanda</option>-->
+<!--<option value="St Kitts &amp; Nevis">St Kitts &amp; Nevis</option>-->
+<!--<option value="St Lucia">St Lucia</option>-->
+<!--<option value="Saint Vincent &amp; the Grenadines">Saint Vincent &amp; the-->
+<!--Grenadines-->
+<!--</option>-->
+<!--<option value="Samoa">Samoa</option>-->
+<!--<option value="San Marino">San Marino</option>-->
+<!--<option value="Sao Tome &amp; Principe">Sao Tome &amp; Principe</option>-->
+<!--<option value="Saudi Arabia">Saudi Arabia</option>-->
+<!--<option value="Senegal">Senegal</option>-->
+<!--<option value="Serbia">Serbia</option>-->
+<!--<option value="Seychelles">Seychelles</option>-->
+<!--<option value="Sierra Leone">Sierra Leone</option>-->
+<!--<option value="Singapore">Singapore</option>-->
+<!--<option value="Slovakia">Slovakia</option>-->
+<!--<option value="Slovenia">Slovenia</option>-->
+<!--<option value="Solomon Islands">Solomon Islands</option>-->
+<!--<option value="Somalia">Somalia</option>-->
+<!--<option value="South Africa">South Africa</option>-->
+<!--<option value="South Sudan">South Sudan</option>-->
+<!--<option value="Spain">Spain</option>-->
+<!--<option value="Sri Lanka">Sri Lanka</option>-->
+<!--<option value="Sudan">Sudan</option>-->
+<!--<option value="Suriname">Suriname</option>-->
+<!--<option value="Swaziland">Swaziland</option>-->
+<!--<option value="Sweden">Sweden</option>-->
+<!--<option value="Switzerland">Switzerland</option>-->
+<!--<option value="Syria">Syria</option>-->
+<!--<option value="Taiwan">Taiwan</option>-->
+<!--<option value="Tajikistan">Tajikistan</option>-->
+<!--<option value="Tanzania">Tanzania</option>-->
+<!--<option value="Thailand">Thailand</option>-->
+<!--<option value="Togo">Togo</option>-->
+<!--<option value="Tonga">Tonga</option>-->
+<!--<option value="Trinidad &amp; Tobago">Trinidad &amp; Tobago</option>-->
+<!--<option value="Tunisia">Tunisia</option>-->
+<!--<option value="Turkey">Turkey</option>-->
+<!--<option value="Turkmenistan">Turkmenistan</option>-->
+<!--<option value="Tuvalu">Tuvalu</option>-->
+<!--<option value="Uganda">Uganda</option>-->
+<!--<option value="Ukraine">Ukraine</option>-->
+<!--<option value="United Arab Emirates">United Arab Emirates</option>-->
+<!--<option value="United Kingdom">United Kingdom</option>-->
+<!--<option value="Uruguay">Uruguay</option>-->
+<!--<option value="Uzbekistan">Uzbekistan</option>-->
+<!--<option value="Vanuatu">Vanuatu</option>-->
+<!--<option value="Vatican City">Vatican City</option>-->
+<!--<option value="Venezuela">Venezuela</option>-->
+<!--<option value="Vietnam">Vietnam</option>-->
+<!--<option value="Yemen">Yemen</option>-->
+<!--<option value="Zambia">Zambia</option>-->
+<!--<option value="Zimbabwe">Zimbabwe</option>-->
+<!--</select></section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding user_place_birth_notindia"><label-->
+<!--class="col-xs-12 control-label no-padding">Place of Birth</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text"-->
+<!--name="user_place_birth_notindia"-->
+<!--id="user_place_birth_notindia"-->
+<!--placeholder="Place of Birth"-->
+<!--class="place_birth"-->
+<!--style="display: none;">-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 no-padding nri-correspondence-address"-->
+<!--style="margin-bottom: 0px; display: none;"><label-->
+<!--class="col-xs-12 control-label no-padding">Address</label>-->
+<!--<section class="col-xs-12 no-padding input-section">-->
+<!--<section class="col-xs-12 no-padding" style="margin-bottom: 25px;"><input-->
+<!--type="text" name="nri_correspondence_l1" id="nri_correspondence_l1"-->
+<!--placeholder="Overseas Communication Address" maxlength="165"></section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding nri-correspondence-address"-->
+<!--style="display: none;">-->
+<!--<section class="col-xs-12 no-padding input-section">-->
+<!--<section class="col-xs-12 no-padding" style="margin-bottom: 25px;"><input-->
+<!--type="text" name="nri_correspondence_pin" id="nri_correspondence_pin"-->
+<!--placeholder="Postal Code" maxlength="6"></section>-->
+<!--<section class="col-xs-12 no-padding"><input class="user_address_l3"-->
+<!--name="nri_correspondence_l3"-->
+<!--id="nri_correspondence_l3"-->
+<!--placeholder="State"></section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding nri-correspondence-address"-->
+<!--style="margin-bottom: 20px; display: none;">-->
+<!--<section class="col-xs-12 no-padding input-section">-->
+<!--<section class="col-xs-12 no-padding"><input type="text"-->
+<!--name="nri_correspondence_l2"-->
+<!--id="nri_correspondence_l2"-->
+<!--placeholder="Town/District"></section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<input type="hidden" name="user_nationality" value="India">-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding nri-correspondence-address"-->
+<!--style="display: none;"><label-->
+<!--class="col-xs-12 control-label no-padding">Country</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><select name="comm_country">-->
+<!--<option value="" selected="">Select</option>-->
+<!--<option value="India">India</option>-->
+<!--<option value="Afghanistan">Afghanistan</option>-->
+<!--<option value="Albania">Albania</option>-->
+<!--<option value="Algeria">Algeria</option>-->
+<!--<option value="Andorra">Andorra</option>-->
+<!--<option value="Angola">Angola</option>-->
+<!--<option value="Antigua &amp; Deps">Antigua &amp; Deps</option>-->
+<!--<option value="Argentina">Argentina</option>-->
+<!--<option value="Armenia">Armenia</option>-->
+<!--<option value="Australia">Australia</option>-->
+<!--<option value="Austria">Austria</option>-->
+<!--<option value="Azerbaijan">Azerbaijan</option>-->
+<!--<option value="Bahamas">Bahamas</option>-->
+<!--<option value="Bahrain">Bahrain</option>-->
+<!--<option value="Bangladesh">Bangladesh</option>-->
+<!--<option value="Barbados">Barbados</option>-->
+<!--<option value="Belarus">Belarus</option>-->
+<!--<option value="Belgium">Belgium</option>-->
+<!--<option value="Belize">Belize</option>-->
+<!--<option value="Benin">Benin</option>-->
+<!--<option value="Bhutan">Bhutan</option>-->
+<!--<option value="Bolivia">Bolivia</option>-->
+<!--<option value="Bosnia Herzegovina">Bosnia Herzegovina</option>-->
+<!--<option value="Botswana">Botswana</option>-->
+<!--<option value="Brazil">Brazil</option>-->
+<!--<option value="Brunei">Brunei</option>-->
+<!--<option value="Bulgaria">Bulgaria</option>-->
+<!--<option value="Burkina">Burkina</option>-->
+<!--<option value="Burundi">Burundi</option>-->
+<!--<option value="Cambodia">Cambodia</option>-->
+<!--<option value="Cameroon">Cameroon</option>-->
+<!--<option value="Cape Verde">Cape Verde</option>-->
+<!--<option value="Central African Rep">Central African Rep</option>-->
+<!--<option value="Chad">Chad</option>-->
+<!--<option value="Chile">Chile</option>-->
+<!--<option value="China">China</option>-->
+<!--<option value="Colombia">Colombia</option>-->
+<!--<option value="Comoros">Comoros</option>-->
+<!--<option value="Congo">Congo</option>-->
+<!--<option value="Congo (Democratic Rep)">Congo (Democratic Rep)</option>-->
+<!--<option value="Costa Rica">Costa Rica</option>-->
+<!--<option value="Croatia">Croatia</option>-->
+<!--<option value="Cuba">Cuba</option>-->
+<!--<option value="Cyprus">Cyprus</option>-->
+<!--<option value="Czech Republic">Czech Republic</option>-->
+<!--<option value="Denmark">Denmark</option>-->
+<!--<option value="Djibouti">Djibouti</option>-->
+<!--<option value="Dominica">Dominica</option>-->
+<!--<option value="Dominican Republic">Dominican Republic</option>-->
+<!--<option value="East Timor">East Timor</option>-->
+<!--<option value="Ecuador">Ecuador</option>-->
+<!--<option value="Egypt">Egypt</option>-->
+<!--<option value="El Salvador">El Salvador</option>-->
+<!--<option value="Equatorial Guinea">Equatorial Guinea</option>-->
+<!--<option value="Eritrea">Eritrea</option>-->
+<!--<option value="Estonia">Estonia</option>-->
+<!--<option value="Ethiopia">Ethiopia</option>-->
+<!--<option value="Fiji">Fiji</option>-->
+<!--<option value="Finland">Finland</option>-->
+<!--<option value="France">France</option>-->
+<!--<option value="Gabon">Gabon</option>-->
+<!--<option value="Gambia">Gambia</option>-->
+<!--<option value="Georgia">Georgia</option>-->
+<!--<option value="Germany">Germany</option>-->
+<!--<option value="Ghana">Ghana</option>-->
+<!--<option value="Greece">Greece</option>-->
+<!--<option value="Grenada">Grenada</option>-->
+<!--<option value="Guatemala">Guatemala</option>-->
+<!--<option value="Guinea">Guinea</option>-->
+<!--<option value="Guinea-Bissau">Guinea-Bissau</option>-->
+<!--<option value="Guyana">Guyana</option>-->
+<!--<option value="Hong Kong">Hong Kong</option>-->
+<!--<option value="Haiti">Haiti</option>-->
+<!--<option value="Honduras">Honduras</option>-->
+<!--<option value="Hungary">Hungary</option>-->
+<!--<option value="Iceland">Iceland</option>-->
+<!--<option value="Indonesia">Indonesia</option>-->
+<!--<option value="Iran">Iran</option>-->
+<!--<option value="Iraq">Iraq</option>-->
+<!--<option value="Ireland (Republic)">Ireland (Republic)</option>-->
+<!--<option value="Israel">Israel</option>-->
+<!--<option value="Italy">Italy</option>-->
+<!--<option value="Ivory Coast">Ivory Coast</option>-->
+<!--<option value="Jamaica">Jamaica</option>-->
+<!--<option value="Japan">Japan</option>-->
+<!--<option value="Jordan">Jordan</option>-->
+<!--<option value="Kazakhstan">Kazakhstan</option>-->
+<!--<option value="Kenya">Kenya</option>-->
+<!--<option value="Kiribati">Kiribati</option>-->
+<!--<option value="Korea North">Korea North</option>-->
+<!--<option value="Korea South">Korea South</option>-->
+<!--<option value="Kosovo">Kosovo</option>-->
+<!--<option value="Kuwait">Kuwait</option>-->
+<!--<option value="Kyrgyzstan">Kyrgyzstan</option>-->
+<!--<option value="Laos">Laos</option>-->
+<!--<option value="Latvia">Latvia</option>-->
+<!--<option value="Lebanon">Lebanon</option>-->
+<!--<option value="Lesotho">Lesotho</option>-->
+<!--<option value="Liberia">Liberia</option>-->
+<!--<option value="Libya">Libya</option>-->
+<!--<option value="Liechtenstein">Liechtenstein</option>-->
+<!--<option value="Lithuania">Lithuania</option>-->
+<!--<option value="Luxembourg">Luxembourg</option>-->
+<!--<option value="Macedonia">Macedonia</option>-->
+<!--<option value="Madagascar">Madagascar</option>-->
+<!--<option value="Malawi">Malawi</option>-->
+<!--<option value="Malaysia">Malaysia</option>-->
+<!--<option value="Maldives">Maldives</option>-->
+<!--<option value="Mali">Mali</option>-->
+<!--<option value="Malta">Malta</option>-->
+<!--<option value="Marshall Islands">Marshall Islands</option>-->
+<!--<option value="Mauritania">Mauritania</option>-->
+<!--<option value="Mauritius">Mauritius</option>-->
+<!--<option value="Mexico">Mexico</option>-->
+<!--<option value="Micronesia">Micronesia</option>-->
+<!--<option value="Moldova">Moldova</option>-->
+<!--<option value="Monaco">Monaco</option>-->
+<!--<option value="Mongolia">Mongolia</option>-->
+<!--<option value="Montenegro">Montenegro</option>-->
+<!--<option value="Morocco">Morocco</option>-->
+<!--<option value="Mozambique">Mozambique</option>-->
+<!--<option value="Myanmar, (Burma)">Myanmar, (Burma)</option>-->
+<!--<option value="Namibia">Namibia</option>-->
+<!--<option value="Nauru">Nauru</option>-->
+<!--<option value="Nepal">Nepal</option>-->
+<!--<option value="Netherlands">Netherlands</option>-->
+<!--<option value="New Zealand">New Zealand</option>-->
+<!--<option value="Nicaragua">Nicaragua</option>-->
+<!--<option value="Niger">Niger</option>-->
+<!--<option value="Nigeria">Nigeria</option>-->
+<!--<option value="Norway">Norway</option>-->
+<!--<option value="Oman">Oman</option>-->
+<!--<option value="Pakistan">Pakistan</option>-->
+<!--<option value="Palau">Palau</option>-->
+<!--<option value="Panama">Panama</option>-->
+<!--<option value="Papua New Guinea">Papua New Guinea</option>-->
+<!--<option value="Paraguay">Paraguay</option>-->
+<!--<option value="Peru">Peru</option>-->
+<!--<option value="Philippines">Philippines</option>-->
+<!--<option value="Poland">Poland</option>-->
+<!--<option value="Portugal">Portugal</option>-->
+<!--<option value="Qatar">Qatar</option>-->
+<!--<option value="Romania">Romania</option>-->
+<!--<option value="Russian Federation">Russian Federation</option>-->
+<!--<option value="Rwanda">Rwanda</option>-->
+<!--<option value="St Kitts &amp; Nevis">St Kitts &amp; Nevis</option>-->
+<!--<option value="St Lucia">St Lucia</option>-->
+<!--<option value="Saint Vincent &amp; the Grenadines">Saint Vincent &amp; the-->
+<!--Grenadines-->
+<!--</option>-->
+<!--<option value="Samoa">Samoa</option>-->
+<!--<option value="San Marino">San Marino</option>-->
+<!--<option value="Sao Tome &amp; Principe">Sao Tome &amp; Principe</option>-->
+<!--<option value="Saudi Arabia">Saudi Arabia</option>-->
+<!--<option value="Senegal">Senegal</option>-->
+<!--<option value="Serbia">Serbia</option>-->
+<!--<option value="Seychelles">Seychelles</option>-->
+<!--<option value="Sierra Leone">Sierra Leone</option>-->
+<!--<option value="Singapore">Singapore</option>-->
+<!--<option value="Slovakia">Slovakia</option>-->
+<!--<option value="Slovenia">Slovenia</option>-->
+<!--<option value="Solomon Islands">Solomon Islands</option>-->
+<!--<option value="Somalia">Somalia</option>-->
+<!--<option value="South Africa">South Africa</option>-->
+<!--<option value="South Sudan">South Sudan</option>-->
+<!--<option value="Spain">Spain</option>-->
+<!--<option value="Sri Lanka">Sri Lanka</option>-->
+<!--<option value="Sudan">Sudan</option>-->
+<!--<option value="Suriname">Suriname</option>-->
+<!--<option value="Swaziland">Swaziland</option>-->
+<!--<option value="Sweden">Sweden</option>-->
+<!--<option value="Switzerland">Switzerland</option>-->
+<!--<option value="Syria">Syria</option>-->
+<!--<option value="Taiwan">Taiwan</option>-->
+<!--<option value="Tajikistan">Tajikistan</option>-->
+<!--<option value="Tanzania">Tanzania</option>-->
+<!--<option value="Thailand">Thailand</option>-->
+<!--<option value="Togo">Togo</option>-->
+<!--<option value="Tonga">Tonga</option>-->
+<!--<option value="Trinidad &amp; Tobago">Trinidad &amp; Tobago</option>-->
+<!--<option value="Tunisia">Tunisia</option>-->
+<!--<option value="Turkey">Turkey</option>-->
+<!--<option value="Turkmenistan">Turkmenistan</option>-->
+<!--<option value="Tuvalu">Tuvalu</option>-->
+<!--<option value="Uganda">Uganda</option>-->
+<!--<option value="Ukraine">Ukraine</option>-->
+<!--<option value="United Arab Emirates">United Arab Emirates</option>-->
+<!--<option value="United Kingdom">United Kingdom</option>-->
+<!--<option value="Uruguay">Uruguay</option>-->
+<!--<option value="Uzbekistan">Uzbekistan</option>-->
+<!--<option value="Vanuatu">Vanuatu</option>-->
+<!--<option value="Vatican City">Vatican City</option>-->
+<!--<option value="Venezuela">Venezuela</option>-->
+<!--<option value="Vietnam">Vietnam</option>-->
+<!--<option value="Yemen">Yemen</option>-->
+<!--<option value="Zambia">Zambia</option>-->
+<!--<option value="Zimbabwe">Zimbabwe</option>-->
+<!--</select></section>-->
+<!--</section>-->
+<!--<section class="clearfix "></section>-->
+<!--<section class="clearfix "></section>-->
+<!--<section class="form-group col-xs-12 no-padding"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: inline-block;">Tax-->
+<!--resident of another country</label>-->
+<!--<section class="col-xs-12 no-padding input-section">-->
+<!--<section class="col-xs-6 no-padding"><input type="radio"-->
+<!--name="user_tax_other_country" value="N"-->
+<!--id="no_other"><span-->
+<!--class="check"></span><label for="no_other" class="radio-label">Tax resident-->
+<!--of India</label></section>-->
+<!--<section class="col-xs-6 no-padding"><input type="radio"-->
+<!--name="user_tax_other_country" value="Y"-->
+<!--id="yes_other"><span-->
+<!--class="check"></span><label for="yes_other" class="radio-label">Tax resident-->
+<!--of another Country</label></section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="col-xs-12 col-sm-6 tax-resident-other">-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding undefined"><label-->
+<!--class="col-xs-12 control-label no-padding">Country 1</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><select-->
+<!--name="tax_other_country_1">-->
+<!--<option value="" selected="">Select</option>-->
+<!--<option value="Afghanistan">Afghanistan</option>-->
+<!--<option value="Albania">Albania</option>-->
+<!--<option value="Algeria">Algeria</option>-->
+<!--<option value="Andorra">Andorra</option>-->
+<!--<option value="Angola">Angola</option>-->
+<!--<option value="Antigua &amp; Deps">Antigua &amp; Deps</option>-->
+<!--<option value="Argentina">Argentina</option>-->
+<!--<option value="Armenia">Armenia</option>-->
+<!--<option value="Australia">Australia</option>-->
+<!--<option value="Austria">Austria</option>-->
+<!--<option value="Azerbaijan">Azerbaijan</option>-->
+<!--<option value="Bahamas">Bahamas</option>-->
+<!--<option value="Bahrain">Bahrain</option>-->
+<!--<option value="Bangladesh">Bangladesh</option>-->
+<!--<option value="Barbados">Barbados</option>-->
+<!--<option value="Belarus">Belarus</option>-->
+<!--<option value="Belgium">Belgium</option>-->
+<!--<option value="Belize">Belize</option>-->
+<!--<option value="Benin">Benin</option>-->
+<!--<option value="Bhutan">Bhutan</option>-->
+<!--<option value="Bolivia">Bolivia</option>-->
+<!--<option value="Bosnia Herzegovina">Bosnia Herzegovina</option>-->
+<!--<option value="Botswana">Botswana</option>-->
+<!--<option value="Brazil">Brazil</option>-->
+<!--<option value="Brunei">Brunei</option>-->
+<!--<option value="Bulgaria">Bulgaria</option>-->
+<!--<option value="Burkina">Burkina</option>-->
+<!--<option value="Burundi">Burundi</option>-->
+<!--<option value="Cambodia">Cambodia</option>-->
+<!--<option value="Cameroon">Cameroon</option>-->
+<!--<option value="Cape Verde">Cape Verde</option>-->
+<!--<option value="Central African Rep">Central African Rep</option>-->
+<!--<option value="Chad">Chad</option>-->
+<!--<option value="Chile">Chile</option>-->
+<!--<option value="China">China</option>-->
+<!--<option value="Colombia">Colombia</option>-->
+<!--<option value="Comoros">Comoros</option>-->
+<!--<option value="Congo">Congo</option>-->
+<!--<option value="Congo (Democratic Rep)">Congo (Democratic Rep)</option>-->
+<!--<option value="Costa Rica">Costa Rica</option>-->
+<!--<option value="Croatia">Croatia</option>-->
+<!--<option value="Cuba">Cuba</option>-->
+<!--<option value="Cyprus">Cyprus</option>-->
+<!--<option value="Czech Republic">Czech Republic</option>-->
+<!--<option value="Denmark">Denmark</option>-->
+<!--<option value="Djibouti">Djibouti</option>-->
+<!--<option value="Dominica">Dominica</option>-->
+<!--<option value="Dominican Republic">Dominican Republic</option>-->
+<!--<option value="East Timor">East Timor</option>-->
+<!--<option value="Ecuador">Ecuador</option>-->
+<!--<option value="Egypt">Egypt</option>-->
+<!--<option value="El Salvador">El Salvador</option>-->
+<!--<option value="Equatorial Guinea">Equatorial Guinea</option>-->
+<!--<option value="Eritrea">Eritrea</option>-->
+<!--<option value="Estonia">Estonia</option>-->
+<!--<option value="Ethiopia">Ethiopia</option>-->
+<!--<option value="Fiji">Fiji</option>-->
+<!--<option value="Finland">Finland</option>-->
+<!--<option value="France">France</option>-->
+<!--<option value="Gabon">Gabon</option>-->
+<!--<option value="Gambia">Gambia</option>-->
+<!--<option value="Georgia">Georgia</option>-->
+<!--<option value="Germany">Germany</option>-->
+<!--<option value="Ghana">Ghana</option>-->
+<!--<option value="Greece">Greece</option>-->
+<!--<option value="Grenada">Grenada</option>-->
+<!--<option value="Guatemala">Guatemala</option>-->
+<!--<option value="Guinea">Guinea</option>-->
+<!--<option value="Guinea-Bissau">Guinea-Bissau</option>-->
+<!--<option value="Guyana">Guyana</option>-->
+<!--<option value="Hong Kong">Hong Kong</option>-->
+<!--<option value="Haiti">Haiti</option>-->
+<!--<option value="Honduras">Honduras</option>-->
+<!--<option value="Hungary">Hungary</option>-->
+<!--<option value="Iceland">Iceland</option>-->
+<!--<option value="Indonesia">Indonesia</option>-->
+<!--<option value="Iran">Iran</option>-->
+<!--<option value="Iraq">Iraq</option>-->
+<!--<option value="Ireland (Republic)">Ireland (Republic)</option>-->
+<!--<option value="Israel">Israel</option>-->
+<!--<option value="Italy">Italy</option>-->
+<!--<option value="Ivory Coast">Ivory Coast</option>-->
+<!--<option value="Jamaica">Jamaica</option>-->
+<!--<option value="Japan">Japan</option>-->
+<!--<option value="Jordan">Jordan</option>-->
+<!--<option value="Kazakhstan">Kazakhstan</option>-->
+<!--<option value="Kenya">Kenya</option>-->
+<!--<option value="Kiribati">Kiribati</option>-->
+<!--<option value="Korea North">Korea North</option>-->
+<!--<option value="Korea South">Korea South</option>-->
+<!--<option value="Kosovo">Kosovo</option>-->
+<!--<option value="Kuwait">Kuwait</option>-->
+<!--<option value="Kyrgyzstan">Kyrgyzstan</option>-->
+<!--<option value="Laos">Laos</option>-->
+<!--<option value="Latvia">Latvia</option>-->
+<!--<option value="Lebanon">Lebanon</option>-->
+<!--<option value="Lesotho">Lesotho</option>-->
+<!--<option value="Liberia">Liberia</option>-->
+<!--<option value="Libya">Libya</option>-->
+<!--<option value="Liechtenstein">Liechtenstein</option>-->
+<!--<option value="Lithuania">Lithuania</option>-->
+<!--<option value="Luxembourg">Luxembourg</option>-->
+<!--<option value="Macedonia">Macedonia</option>-->
+<!--<option value="Madagascar">Madagascar</option>-->
+<!--<option value="Malawi">Malawi</option>-->
+<!--<option value="Malaysia">Malaysia</option>-->
+<!--<option value="Maldives">Maldives</option>-->
+<!--<option value="Mali">Mali</option>-->
+<!--<option value="Malta">Malta</option>-->
+<!--<option value="Marshall Islands">Marshall Islands</option>-->
+<!--<option value="Mauritania">Mauritania</option>-->
+<!--<option value="Mauritius">Mauritius</option>-->
+<!--<option value="Mexico">Mexico</option>-->
+<!--<option value="Micronesia">Micronesia</option>-->
+<!--<option value="Moldova">Moldova</option>-->
+<!--<option value="Monaco">Monaco</option>-->
+<!--<option value="Mongolia">Mongolia</option>-->
+<!--<option value="Montenegro">Montenegro</option>-->
+<!--<option value="Morocco">Morocco</option>-->
+<!--<option value="Mozambique">Mozambique</option>-->
+<!--<option value="Myanmar, (Burma)">Myanmar, (Burma)</option>-->
+<!--<option value="Namibia">Namibia</option>-->
+<!--<option value="Nauru">Nauru</option>-->
+<!--<option value="Nepal">Nepal</option>-->
+<!--<option value="Netherlands">Netherlands</option>-->
+<!--<option value="New Zealand">New Zealand</option>-->
+<!--<option value="Nicaragua">Nicaragua</option>-->
+<!--<option value="Niger">Niger</option>-->
+<!--<option value="Nigeria">Nigeria</option>-->
+<!--<option value="Norway">Norway</option>-->
+<!--<option value="Oman">Oman</option>-->
+<!--<option value="Pakistan">Pakistan</option>-->
+<!--<option value="Palau">Palau</option>-->
+<!--<option value="Panama">Panama</option>-->
+<!--<option value="Papua New Guinea">Papua New Guinea</option>-->
+<!--<option value="Paraguay">Paraguay</option>-->
+<!--<option value="Peru">Peru</option>-->
+<!--<option value="Philippines">Philippines</option>-->
+<!--<option value="Poland">Poland</option>-->
+<!--<option value="Portugal">Portugal</option>-->
+<!--<option value="Qatar">Qatar</option>-->
+<!--<option value="Romania">Romania</option>-->
+<!--<option value="Russian Federation">Russian Federation</option>-->
+<!--<option value="Rwanda">Rwanda</option>-->
+<!--<option value="St Kitts &amp; Nevis">St Kitts &amp; Nevis</option>-->
+<!--<option value="St Lucia">St Lucia</option>-->
+<!--<option value="Saint Vincent &amp; the Grenadines">Saint Vincent &amp; the-->
+<!--Grenadines-->
+<!--</option>-->
+<!--<option value="Samoa">Samoa</option>-->
+<!--<option value="San Marino">San Marino</option>-->
+<!--<option value="Sao Tome &amp; Principe">Sao Tome &amp; Principe</option>-->
+<!--<option value="Saudi Arabia">Saudi Arabia</option>-->
+<!--<option value="Senegal">Senegal</option>-->
+<!--<option value="Serbia">Serbia</option>-->
+<!--<option value="Seychelles">Seychelles</option>-->
+<!--<option value="Sierra Leone">Sierra Leone</option>-->
+<!--<option value="Singapore">Singapore</option>-->
+<!--<option value="Slovakia">Slovakia</option>-->
+<!--<option value="Slovenia">Slovenia</option>-->
+<!--<option value="Solomon Islands">Solomon Islands</option>-->
+<!--<option value="Somalia">Somalia</option>-->
+<!--<option value="South Africa">South Africa</option>-->
+<!--<option value="South Sudan">South Sudan</option>-->
+<!--<option value="Spain">Spain</option>-->
+<!--<option value="Sri Lanka">Sri Lanka</option>-->
+<!--<option value="Sudan">Sudan</option>-->
+<!--<option value="Suriname">Suriname</option>-->
+<!--<option value="Swaziland">Swaziland</option>-->
+<!--<option value="Sweden">Sweden</option>-->
+<!--<option value="Switzerland">Switzerland</option>-->
+<!--<option value="Syria">Syria</option>-->
+<!--<option value="Taiwan">Taiwan</option>-->
+<!--<option value="Tajikistan">Tajikistan</option>-->
+<!--<option value="Tanzania">Tanzania</option>-->
+<!--<option value="Thailand">Thailand</option>-->
+<!--<option value="Togo">Togo</option>-->
+<!--<option value="Tonga">Tonga</option>-->
+<!--<option value="Trinidad &amp; Tobago">Trinidad &amp; Tobago</option>-->
+<!--<option value="Tunisia">Tunisia</option>-->
+<!--<option value="Turkey">Turkey</option>-->
+<!--<option value="Turkmenistan">Turkmenistan</option>-->
+<!--<option value="Tuvalu">Tuvalu</option>-->
+<!--<option value="Uganda">Uganda</option>-->
+<!--<option value="Ukraine">Ukraine</option>-->
+<!--<option value="United Arab Emirates">United Arab Emirates</option>-->
+<!--<option value="United Kingdom">United Kingdom</option>-->
+<!--<option value="Uruguay">Uruguay</option>-->
+<!--<option value="Uzbekistan">Uzbekistan</option>-->
+<!--<option value="Vanuatu">Vanuatu</option>-->
+<!--<option value="Vatican City">Vatican City</option>-->
+<!--<option value="Venezuela">Venezuela</option>-->
+<!--<option value="Vietnam">Vietnam</option>-->
+<!--<option value="Yemen">Yemen</option>-->
+<!--<option value="Zambia">Zambia</option>-->
+<!--<option value="Zimbabwe">Zimbabwe</option>-->
+<!--</select></section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding undefined"><label-->
+<!--class="col-xs-12 control-label no-padding">TIN number</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text"-->
+<!--name="tax_other_country_1_tin"-->
+<!--placeholder="TIN Number">-->
+<!--</section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="col-xs-12 col-sm-6 tax-resident-other">-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding undefined"><label-->
+<!--class="col-xs-12 control-label no-padding">Country 2</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><select-->
+<!--name="tax_other_country_2">-->
+<!--<option value="" selected="">Select</option>-->
+<!--<option value="Afghanistan">Afghanistan</option>-->
+<!--<option value="Albania">Albania</option>-->
+<!--<option value="Algeria">Algeria</option>-->
+<!--<option value="Andorra">Andorra</option>-->
+<!--<option value="Angola">Angola</option>-->
+<!--<option value="Antigua &amp; Deps">Antigua &amp; Deps</option>-->
+<!--<option value="Argentina">Argentina</option>-->
+<!--<option value="Armenia">Armenia</option>-->
+<!--<option value="Australia">Australia</option>-->
+<!--<option value="Austria">Austria</option>-->
+<!--<option value="Azerbaijan">Azerbaijan</option>-->
+<!--<option value="Bahamas">Bahamas</option>-->
+<!--<option value="Bahrain">Bahrain</option>-->
+<!--<option value="Bangladesh">Bangladesh</option>-->
+<!--<option value="Barbados">Barbados</option>-->
+<!--<option value="Belarus">Belarus</option>-->
+<!--<option value="Belgium">Belgium</option>-->
+<!--<option value="Belize">Belize</option>-->
+<!--<option value="Benin">Benin</option>-->
+<!--<option value="Bhutan">Bhutan</option>-->
+<!--<option value="Bolivia">Bolivia</option>-->
+<!--<option value="Bosnia Herzegovina">Bosnia Herzegovina</option>-->
+<!--<option value="Botswana">Botswana</option>-->
+<!--<option value="Brazil">Brazil</option>-->
+<!--<option value="Brunei">Brunei</option>-->
+<!--<option value="Bulgaria">Bulgaria</option>-->
+<!--<option value="Burkina">Burkina</option>-->
+<!--<option value="Burundi">Burundi</option>-->
+<!--<option value="Cambodia">Cambodia</option>-->
+<!--<option value="Cameroon">Cameroon</option>-->
+<!--<option value="Cape Verde">Cape Verde</option>-->
+<!--<option value="Central African Rep">Central African Rep</option>-->
+<!--<option value="Chad">Chad</option>-->
+<!--<option value="Chile">Chile</option>-->
+<!--<option value="China">China</option>-->
+<!--<option value="Colombia">Colombia</option>-->
+<!--<option value="Comoros">Comoros</option>-->
+<!--<option value="Congo">Congo</option>-->
+<!--<option value="Congo (Democratic Rep)">Congo (Democratic Rep)</option>-->
+<!--<option value="Costa Rica">Costa Rica</option>-->
+<!--<option value="Croatia">Croatia</option>-->
+<!--<option value="Cuba">Cuba</option>-->
+<!--<option value="Cyprus">Cyprus</option>-->
+<!--<option value="Czech Republic">Czech Republic</option>-->
+<!--<option value="Denmark">Denmark</option>-->
+<!--<option value="Djibouti">Djibouti</option>-->
+<!--<option value="Dominica">Dominica</option>-->
+<!--<option value="Dominican Republic">Dominican Republic</option>-->
+<!--<option value="East Timor">East Timor</option>-->
+<!--<option value="Ecuador">Ecuador</option>-->
+<!--<option value="Egypt">Egypt</option>-->
+<!--<option value="El Salvador">El Salvador</option>-->
+<!--<option value="Equatorial Guinea">Equatorial Guinea</option>-->
+<!--<option value="Eritrea">Eritrea</option>-->
+<!--<option value="Estonia">Estonia</option>-->
+<!--<option value="Ethiopia">Ethiopia</option>-->
+<!--<option value="Fiji">Fiji</option>-->
+<!--<option value="Finland">Finland</option>-->
+<!--<option value="France">France</option>-->
+<!--<option value="Gabon">Gabon</option>-->
+<!--<option value="Gambia">Gambia</option>-->
+<!--<option value="Georgia">Georgia</option>-->
+<!--<option value="Germany">Germany</option>-->
+<!--<option value="Ghana">Ghana</option>-->
+<!--<option value="Greece">Greece</option>-->
+<!--<option value="Grenada">Grenada</option>-->
+<!--<option value="Guatemala">Guatemala</option>-->
+<!--<option value="Guinea">Guinea</option>-->
+<!--<option value="Guinea-Bissau">Guinea-Bissau</option>-->
+<!--<option value="Guyana">Guyana</option>-->
+<!--<option value="Hong Kong">Hong Kong</option>-->
+<!--<option value="Haiti">Haiti</option>-->
+<!--<option value="Honduras">Honduras</option>-->
+<!--<option value="Hungary">Hungary</option>-->
+<!--<option value="Iceland">Iceland</option>-->
+<!--<option value="Indonesia">Indonesia</option>-->
+<!--<option value="Iran">Iran</option>-->
+<!--<option value="Iraq">Iraq</option>-->
+<!--<option value="Ireland (Republic)">Ireland (Republic)</option>-->
+<!--<option value="Israel">Israel</option>-->
+<!--<option value="Italy">Italy</option>-->
+<!--<option value="Ivory Coast">Ivory Coast</option>-->
+<!--<option value="Jamaica">Jamaica</option>-->
+<!--<option value="Japan">Japan</option>-->
+<!--<option value="Jordan">Jordan</option>-->
+<!--<option value="Kazakhstan">Kazakhstan</option>-->
+<!--<option value="Kenya">Kenya</option>-->
+<!--<option value="Kiribati">Kiribati</option>-->
+<!--<option value="Korea North">Korea North</option>-->
+<!--<option value="Korea South">Korea South</option>-->
+<!--<option value="Kosovo">Kosovo</option>-->
+<!--<option value="Kuwait">Kuwait</option>-->
+<!--<option value="Kyrgyzstan">Kyrgyzstan</option>-->
+<!--<option value="Laos">Laos</option>-->
+<!--<option value="Latvia">Latvia</option>-->
+<!--<option value="Lebanon">Lebanon</option>-->
+<!--<option value="Lesotho">Lesotho</option>-->
+<!--<option value="Liberia">Liberia</option>-->
+<!--<option value="Libya">Libya</option>-->
+<!--<option value="Liechtenstein">Liechtenstein</option>-->
+<!--<option value="Lithuania">Lithuania</option>-->
+<!--<option value="Luxembourg">Luxembourg</option>-->
+<!--<option value="Macedonia">Macedonia</option>-->
+<!--<option value="Madagascar">Madagascar</option>-->
+<!--<option value="Malawi">Malawi</option>-->
+<!--<option value="Malaysia">Malaysia</option>-->
+<!--<option value="Maldives">Maldives</option>-->
+<!--<option value="Mali">Mali</option>-->
+<!--<option value="Malta">Malta</option>-->
+<!--<option value="Marshall Islands">Marshall Islands</option>-->
+<!--<option value="Mauritania">Mauritania</option>-->
+<!--<option value="Mauritius">Mauritius</option>-->
+<!--<option value="Mexico">Mexico</option>-->
+<!--<option value="Micronesia">Micronesia</option>-->
+<!--<option value="Moldova">Moldova</option>-->
+<!--<option value="Monaco">Monaco</option>-->
+<!--<option value="Mongolia">Mongolia</option>-->
+<!--<option value="Montenegro">Montenegro</option>-->
+<!--<option value="Morocco">Morocco</option>-->
+<!--<option value="Mozambique">Mozambique</option>-->
+<!--<option value="Myanmar, (Burma)">Myanmar, (Burma)</option>-->
+<!--<option value="Namibia">Namibia</option>-->
+<!--<option value="Nauru">Nauru</option>-->
+<!--<option value="Nepal">Nepal</option>-->
+<!--<option value="Netherlands">Netherlands</option>-->
+<!--<option value="New Zealand">New Zealand</option>-->
+<!--<option value="Nicaragua">Nicaragua</option>-->
+<!--<option value="Niger">Niger</option>-->
+<!--<option value="Nigeria">Nigeria</option>-->
+<!--<option value="Norway">Norway</option>-->
+<!--<option value="Oman">Oman</option>-->
+<!--<option value="Pakistan">Pakistan</option>-->
+<!--<option value="Palau">Palau</option>-->
+<!--<option value="Panama">Panama</option>-->
+<!--<option value="Papua New Guinea">Papua New Guinea</option>-->
+<!--<option value="Paraguay">Paraguay</option>-->
+<!--<option value="Peru">Peru</option>-->
+<!--<option value="Philippines">Philippines</option>-->
+<!--<option value="Poland">Poland</option>-->
+<!--<option value="Portugal">Portugal</option>-->
+<!--<option value="Qatar">Qatar</option>-->
+<!--<option value="Romania">Romania</option>-->
+<!--<option value="Russian Federation">Russian Federation</option>-->
+<!--<option value="Rwanda">Rwanda</option>-->
+<!--<option value="St Kitts &amp; Nevis">St Kitts &amp; Nevis</option>-->
+<!--<option value="St Lucia">St Lucia</option>-->
+<!--<option value="Saint Vincent &amp; the Grenadines">Saint Vincent &amp; the-->
+<!--Grenadines-->
+<!--</option>-->
+<!--<option value="Samoa">Samoa</option>-->
+<!--<option value="San Marino">San Marino</option>-->
+<!--<option value="Sao Tome &amp; Principe">Sao Tome &amp; Principe</option>-->
+<!--<option value="Saudi Arabia">Saudi Arabia</option>-->
+<!--<option value="Senegal">Senegal</option>-->
+<!--<option value="Serbia">Serbia</option>-->
+<!--<option value="Seychelles">Seychelles</option>-->
+<!--<option value="Sierra Leone">Sierra Leone</option>-->
+<!--<option value="Singapore">Singapore</option>-->
+<!--<option value="Slovakia">Slovakia</option>-->
+<!--<option value="Slovenia">Slovenia</option>-->
+<!--<option value="Solomon Islands">Solomon Islands</option>-->
+<!--<option value="Somalia">Somalia</option>-->
+<!--<option value="South Africa">South Africa</option>-->
+<!--<option value="South Sudan">South Sudan</option>-->
+<!--<option value="Spain">Spain</option>-->
+<!--<option value="Sri Lanka">Sri Lanka</option>-->
+<!--<option value="Sudan">Sudan</option>-->
+<!--<option value="Suriname">Suriname</option>-->
+<!--<option value="Swaziland">Swaziland</option>-->
+<!--<option value="Sweden">Sweden</option>-->
+<!--<option value="Switzerland">Switzerland</option>-->
+<!--<option value="Syria">Syria</option>-->
+<!--<option value="Taiwan">Taiwan</option>-->
+<!--<option value="Tajikistan">Tajikistan</option>-->
+<!--<option value="Tanzania">Tanzania</option>-->
+<!--<option value="Thailand">Thailand</option>-->
+<!--<option value="Togo">Togo</option>-->
+<!--<option value="Tonga">Tonga</option>-->
+<!--<option value="Trinidad &amp; Tobago">Trinidad &amp; Tobago</option>-->
+<!--<option value="Tunisia">Tunisia</option>-->
+<!--<option value="Turkey">Turkey</option>-->
+<!--<option value="Turkmenistan">Turkmenistan</option>-->
+<!--<option value="Tuvalu">Tuvalu</option>-->
+<!--<option value="Uganda">Uganda</option>-->
+<!--<option value="Ukraine">Ukraine</option>-->
+<!--<option value="United Arab Emirates">United Arab Emirates</option>-->
+<!--<option value="United Kingdom">United Kingdom</option>-->
+<!--<option value="Uruguay">Uruguay</option>-->
+<!--<option value="Uzbekistan">Uzbekistan</option>-->
+<!--<option value="Vanuatu">Vanuatu</option>-->
+<!--<option value="Vatican City">Vatican City</option>-->
+<!--<option value="Venezuela">Venezuela</option>-->
+<!--<option value="Vietnam">Vietnam</option>-->
+<!--<option value="Yemen">Yemen</option>-->
+<!--<option value="Zambia">Zambia</option>-->
+<!--<option value="Zimbabwe">Zimbabwe</option>-->
+<!--</select></section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 col-sm-6 no-padding undefined"><label-->
+<!--class="col-xs-12 control-label no-padding">TIN number</label>-->
+<!--<section class="col-xs-12 no-padding input-section"><input type="text"-->
+<!--name="tax_other_country_2_tin"-->
+<!--placeholder="TIN Number">-->
+<!--</section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="clearfix "></section>-->
+<!--<section class="form-group col-xs-12 no-padding"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: inline-block;">-->
+<!--&lt;!&ndash; react-text: 1099 &ndash;&gt;Politically Exposed &lt;!&ndash; /react-text &ndash;&gt;<img class="i_icon"-->
+<!--src="/gw-web-assets/img/icons/unversal_icon_i.svg"-->
+<!--data-toggle="tooltip"-->
+<!--data-placement="top"-->
+<!--title=""-->
+<!--style="height: 10px; width: 10px;"-->
+<!--data-original-title="Individuals who are or have been entrusted with prominent public responsibilities in a foreign country, e.g., Heads of States or of Governments, senior politicians, etc."></label>-->
+<!--<section class="col-xs-12 no-padding input-section" data-toggle="tooltip"-->
+<!--data-placement="top" data-original-title="" title="">-->
+<!--<section class="col-xs-6 no-padding"><input type="radio" name="user_politically"-->
+<!--value="Y" id="yes_politically"><span-->
+<!--class="check"></span><label for="yes_politically"-->
+<!--class="radio-label">Yes</label></section>-->
+<!--<section class="col-xs-6 no-padding"><input type="radio" name="user_politically"-->
+<!--value="N" id="no_politically"><span-->
+<!--class="check"></span><label for="no_politically"-->
+<!--class="radio-label">No</label></section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="form-group col-xs-12 no-padding"><label-->
+<!--class="col-xs-12 control-label no-padding" style="display: inline-block;">Related to-->
+<!--a politically exposed person</label>-->
+<!--<section class="col-xs-12 no-padding input-section">-->
+<!--<section class="col-xs-6 no-padding"><input type="radio"-->
+<!--name="user_politically_related"-->
+<!--value="Y"-->
+<!--id="yes_politically_related"><span-->
+<!--class="check"></span><label for="yes_politically_related"-->
+<!--class="radio-label">Yes</label></section>-->
+<!--<section class="col-xs-6 no-padding"><input type="radio"-->
+<!--name="user_politically_related"-->
+<!--value="N"-->
+<!--id="no_politically_related"><span-->
+<!--class="check"></span><label for="no_politically_related"-->
+<!--class="radio-label">No</label></section>-->
+<!--</section>-->
+<!--</section>-->
+<!--<section class="clearfix "></section>-->
+<!--<button type="button" class="btn btn-info save-button" id="to-upload" name="upload-form">-->
+<!--Save-->
+<!--</button>-->
+<!--</form>-->
+<!--</section>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="upload-section panel panel-default">-->
+<!--<div class="panel-heading"><h4 class="panel-title"><a href="#" class="collapsed" aria-expanded="false"-->
+<!--aria-selected="false" role="tab"><i-->
+<!--class="fa fa-check"></i><span>Upload Documents</span><i class="fa fa-angle-down"></i></a></h4></div>-->
+<!--<div class="panel-collapse collapse" aria-hidden="true" role="tabpanel" aria-expanded="false">-->
+<!--<div class="panel-body">-->
+<!--<section id="upload-details">-->
+<!--<form class="col-md-6 col-xs-12" id="upload-form">-->
+<!--<section class="form-group col-xs-12 no-padding" style="margin-bottom: 0px;">-->
+<!--<section class="col-xs-12 no-padding input-section fileUpload">-->
+<!--<section class="col-xs-offset-1 col-xs-11 upload-text"><span>Upload copy of bank statement/ cancelled cheque having name</span>-->
+<!--</section>-->
+<!--<section class="col-xs-1 yellowbox"><img-->
+<!--src="../gw-web-assets/img/icons/check_upload_icon.svg"></section>-->
+<!--<input type="file" name="myfile" class="col-xs-11 file-upload" id="user_file_check"-->
+<!--accept="image/x-png, image/jpeg , image/jpg, application/pdf"></section>-->
+<!--<section id="progressbox" class="progress-bar-div col-xs-12 no-padding">-->
+<!--<section id="progressbar" class="progressbar"></section>-->
+<!--<section id="statustxt" class="statustxt">0%</section>-->
+<!--<section id="output1" class="output-text">Uploading..</section>-->
+<!--</section>-->
+<!--<section class="upload-error"></section>-->
+<!--<span class="lock desktoplock"-->
+<!--style="display: block; clear: both; padding-top: 25px;"><img class="lockimg"-->
+<!--src="/gw-web-assets/img/icons/investment_lock.svg">-->
+<!--&lt;!&ndash; react-text: 1148 &ndash;&gt;We never share your information with any unauthorized party.-->
+<!--&lt;!&ndash; /react-text &ndash;&gt;</span></section>-->
+<!--<img id="check_image" src="#" class="image_preview"></form>-->
+<!--<form class="col-md-6 col-xs-12" id="upload-form2">-->
+<!--<section class="form-group col-xs-12 no-padding">-->
+<!--<section class="col-xs-12 no-padding input-section fileUpload">-->
+<!--<section class="col-xs-offset-1 col-xs-11 upload-text"><span>Upload a clearly visible copy of your PAN card copy/signature</span>-->
+<!--</section>-->
+<!--<section class="col-xs-1 yellowbox"><img-->
+<!--src="../gw-web-assets/img/icons/signature_upload_icon.svg"></section>-->
+<!--<input type="file" name="myfile" class="col-xs-11 file-upload" id="user_file_sign"-->
+<!--accept="image/x-png, image/jpeg , image/jpg, application/pdf"></section>-->
+<!--<section id="progressbox2" class="progress-bar-div col-xs-12 no-padding">-->
+<!--<section id="progressbar_file_2" class="progressbar"></section>-->
+<!--<section id="statustxt_file_2" class="statustxt">0%</section>-->
+<!--<section id="output2" class="output-text">Uploading..</section>-->
+<!--</section>-->
+<!--<section class="upload-error2"></section>-->
+<!--<span class="lock mobilelock"-->
+<!--style="display: none; clear: both; padding-top: 25px;"><img class="lockimg"-->
+<!--src="/gw-web-assets/img/icons/investment_lock.svg">-->
+<!--&lt;!&ndash; react-text: 1165 &ndash;&gt;We never share your information with any unauthorized party.-->
+<!--&lt;!&ndash; /react-text &ndash;&gt;</span></section>-->
+<!--<button type="button" class="btn btn-info save-button" id="to-finish" name="finish-form">-->
+<!--Save-->
+<!--</button>-->
+<!--<button type="button" class="btn btn-info upload-button" id="upload-later"-->
+<!--name="finish-form" data-toggle="tooltip" data-placement="top" title=""-->
+<!--data-original-title="You can send the documents later">Upload Later-->
+<!--</button>-->
+<!--<img id="sign_image" src="#" class="image_preview"></form>-->
+<!--</section>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</section>-->

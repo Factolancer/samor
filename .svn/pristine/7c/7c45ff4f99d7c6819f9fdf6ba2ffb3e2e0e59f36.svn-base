@@ -1,0 +1,20 @@
+'use strict';
+
+var express = require('express');
+var passport = require('passport');
+var passportController = require('./passport');
+
+var router = express.Router();
+
+router
+  .get('/', passport.authenticate('google', {
+    failureRedirect: '/auth/signup',
+    scope: ['profile'],
+    session: false
+  }))
+  .get('/callback', passport.authenticate('google', {
+    failureRedirect: '/auth/signup',
+    session: false
+  }),passportController.processCallback);
+
+module.exports = router;

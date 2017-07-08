@@ -1,0 +1,151 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="wrapper">
+    <div fxFlex="80">
+        <div fxLayout="column" fxLayoutAlign="center center" class="pad-tb-35">
+            <div fxFlex class="center-align heading-32-blue">Fund Comparison</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="10px">
+            <div fxFlex>
+                <md-card class="parameters-head heading-14">Parameters</md-card>
+                <md-card class="no-padding parameters">
+                    <div>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40">
+                                Basics
+                            </div>
+                            <div fxFlex="80">
+                                <md-card class="sub">Current NAV</md-card>
+                                <md-card class="sub">Fincash Rating</md-card>
+                                <md-card class="sub">Category</md-card>
+                                <md-card class="sub">Plan Options</md-card>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                    </div>
+                    <div>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40">
+                                Performance
+                            </div>
+                            <div fxFlex="80">
+                                <md-card class="sub">3 Month Return</md-card>
+                                <md-card class="sub">1 Year Return</md-card>
+                                <md-card class="sub">3 Year Return</md-card>
+                                <md-card class="sub">5 Year Return</md-card>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                    </div>
+                    <div>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40">
+                                Portfolio
+                            </div>
+                            <div fxFlex="80">
+                                <md-card class="sub">Asset Allocation</md-card>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                    </div>
+                    <div>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="40">
+                                Other Details
+                            </div>
+                            <div fxFlex="80">
+                                <md-card class="sub">AUM</md-card>
+                                <md-card class="sub">Min Investment</md-card>
+                                <md-card class="sub">Benchmark</md-card>
+                                <md-card class="sub">Exit Load</md-card>
+                            </div>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+            <div fxFlex *ngFor="let fund of funds;let index= index;">
+                <md-card class="fund-{{index+1}}">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxFlex="80" class="heading-14">{{fund.name}}</div>
+                        <div fxFlex="20">
+                            <button md-icon-button="" class="watchlist-icon-btn"
+                                    (click)="addToWatchlist(fund.id)">
+                                <md-icon class="md-24 watchlist-icon">&#xE8F4;</md-icon><!--EYE ICON-->
+                            </button>
+                        </div>
+                    </div>
+                </md-card>
+                <md-card class="no-padding fund-detail">
+                    <table class="fund-table">
+                        <tr class="fund-data">
+                            <td class="text">
+                                {{fund.nav | currency:'INR':true:'1.0-2'}}
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                <span [innerHTML]="fund.rating | rating"></span>
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                {{fund.category}}
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                TBD
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                {{fund.ret3mn | percent:'1.0-2'}}
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                {{fund.ret1yr | percent:'1.0-2'}}
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                {{fund.ret3yr | percent:'1.0-2'}}
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                {{fund.ret5yr | percent:'1.0-2'}}
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                TBD
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                {{fund.aum | currency:'INR':true:'1.0-0'}}
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                {{fund.minInvestment | currency:'INR':true:'1.0-0'}}
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                TBD
+                            </td>
+                        </tr>
+                        <tr class="fund-data">
+                            <td class="text">
+                                TBD
+                            </td>
+                        </tr>
+                    </table>
+                </md-card>
+                <app-add-to-cart-button [btnText]="'Add to Cart'"
+                                        [fundId]="funds[0]['id']"
+                                        [cssClass]="'cta-50'"></app-add-to-cart-button>
+            </div>
+        </div>
+    </div>
+</div>

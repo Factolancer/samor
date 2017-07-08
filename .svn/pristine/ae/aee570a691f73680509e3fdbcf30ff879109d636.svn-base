@@ -1,0 +1,565 @@
+@import "../../styles/partials/web-partials";
+//fund list styling
+
+.explore-fund-head {
+  background-color: $brand-secondary;
+  text-align: center;
+  color: $white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 20px;
+  margin-bottom: 2px;
+  border-radius: 0;
+}
+
+.resendOTP{
+    background-color: white;
+    color:$brand-secondary;
+    font-size: 12px;
+    padding: 3px 0;
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    position: absolute;
+    margin-top: -10px;
+    right: 30%;
+    outline: none;
+&.disabled{
+     color: $medium-grey;
+     cursor: default;
+ }
+}
+.otp-container{
+    border: solid 0.5px $medium-grey;
+    margin-bottom: 20px;
+.heading{
+    background-color: $light-grey;
+    border-bottom: solid 0.5px $medium-grey;
+    text-align: center;
+    padding: 10px 0;
+}
+}
+.otp-kyc-content{
+.otp-container{
+    height: 220px;
+    padding-bottom: 10px;}
+}
+.otp-validateOTP-content{
+@include fadeInElement(1.5s);
+}
+
+.msgDeliveryStatus{
+    display: block;
+    position: absolute;
+    font-size: 85%;
+    right:0;
+    top:5px;
+&.sent{
+     color:orange;
+ }
+&.delivered{
+     color: $success;
+ }
+}
+.otp-timer{
+@include fadeInElement(0.5s);
+    position: absolute;
+    left: 50%;
+    margin-top: -8px;
+}
+.loading {
+  font-size: 24px;
+}
+
+.fund-list {
+  font-size: 14px;
+  text-align: center;
+  padding: 12px;
+  margin-bottom: 2px;
+  border-radius: 0;
+}
+
+//pagination styling
+.page-number-btn {
+  background-color: $white;
+  color: $brand-secondary;
+  margin: 0 0 0 0;
+  text-align: center;
+  padding: 0 15px;
+  border: 0;
+  height: 25px;
+}
+
+.blue {
+  background-color: $brand-secondary;
+  color: $white;
+}
+
+.grey {
+  color: $dark-grey;
+}
+
+table, tr, td {
+  border: 1px solid $dark-grey;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+//search component styling
+
+.search-bar {
+  padding: 35px 0 20px 0;
+}
+.search-bar-m{
+  padding: 20px 0;
+}
+
+.search-input {
+  //border: solid 1px $dark-grey;
+  //line-height: 35px;
+  //padding-left: 10px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.search-btn {
+  border-radius: 0 !important;
+  height: 35px;
+  //background: transparent;
+  float: right;
+}
+
+.vis-hidden{
+  visibility: hidden ;
+}
+
+/deep/ .mat-autocomplete-panel {
+    .mat-option {
+      height: 20% !important;
+    }
+}
+
+/deep/ .mat-select-panel {
+  .mat-select-content {
+    .mat-option {
+      .line {
+        font-size: 14px;
+        line-height: 60px;
+      }
+    }
+  }
+}
+
+.remove-btn {
+  color: $black;
+  background-color: $white;
+  border: none;
+  font-size: 16px;
+  outline-style: none;
+
+  &:hover {
+    color: $brand-secondary;
+  }
+}
+
+
+.page-heading {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  line-height: 16px;
+  background-color: $brand-primary;
+  color: $white;
+
+  &:focus {
+    outline: none !important;
+  }
+}
+
+.fund-count {
+  font-size: 12px;
+}
+
+.cart-button {
+  position: fixed;
+  bottom: 20px;
+  right: 15px;
+  z-index: 1000;
+  float: right;
+  margin: 10px;
+}
+
+.watchlist-icon-btn {
+  color: $text-medium-grey;
+  line-height: 30px;
+  height: 36px;
+  width: 36px;
+  margin-left: 10px;
+}
+
+.md-button-toggle-label-content {
+  line-height: 20px !important;
+}
+
+.no-result-found {
+
+  padding: 40px 0;
+
+  .body {
+    background-color: $light-grey;
+    padding: 50px 0;
+
+    .line-1 {
+
+      &:first-of-type {
+        font-size: 40px;
+      }
+      color: $text-dark-grey;
+      letter-spacing: 3px;
+      font-size: 35px;
+    }
+
+    .line-2 {
+      color: $text-medium-grey;
+      font-size: 18px;
+
+    }
+
+    .image {
+      text-align: center;
+      max-width: 150px;
+    }
+  }
+
+  .grey-foot {
+    height: 50px;
+    background-color: $medium-grey;
+  }
+}
+
+.summary {
+
+  .link {
+    color: $brand-secondary;
+  }
+
+  .section {
+    margin: 10px 0;
+
+    &:last-of-type {
+      margin-top: 20px;
+    }
+
+    .section-title {
+      line-height: 18px;
+      color: $white;
+      background-color: $medium-grey;
+      font-size: 16px;
+      padding: 5px;
+    }
+
+    .sip-disclaimer-text {
+      padding: 10px 0;
+      font-style: italic;
+      font-size: 12px;
+      font-weight: 400;
+      color: $text-dark-grey;
+    }
+  }
+
+  .fund-list-title {
+    background-color: $brand-secondary;
+    color: $white;
+    font-size: 14px;
+    padding: 10px 10px;
+    text-align: center;
+  }
+
+  .fund-list-body {
+    color: $text-dark-grey;
+    font-size: 14px;
+    padding: 10px 10px;
+    text-align: center;
+
+    .plan-option {
+      font-size: 12px;
+      color: $text-dark-grey;
+      font-weight: 400;
+      span {
+        color: $text-medium-grey;
+        padding: 0 10px 0 0;
+      }
+    }
+
+    .name {
+      text-align: left;
+    }
+
+  }
+
+  .investor-details {
+    margin: 40px 0 0 0;
+
+    .head {
+      background-color: $medium-grey;
+      color: $white;
+      padding: 10px 0;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .body {
+      padding: 10px 10px;
+      font-size: 14px;
+
+      .key {
+        color: $text-dark-grey;
+        padding: 10px 10px;
+        font-weight: 700;
+      }
+
+      .value {
+        color: $text-medium-grey;
+        padding: 10px 10px;
+
+        .line-2 {
+          color: $text-medium-grey;
+          font-size: 12px;
+        }
+      }
+
+    }
+  }
+
+  .investment-amount {
+
+    .right {
+      background-color: $brand-secondary;
+      color: $white;
+      font-size: 18px;
+      padding: 20px 10px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .left {
+      color: $text-dark-grey;
+      font-size: 14px;
+      padding: 20px 10px;
+      font-weight: 700;
+    }
+  }
+
+  .agreement {
+    font-size: 12px;
+    color: $text-dark-grey;
+    font-weight: 700;
+
+    md-checkbox {
+      font-size: 12px;
+      /deep/ .mat-checkbox-layout {
+
+        padding: 2px 0;
+
+        .mat-checkbox-inner-container {
+          height: 15px;
+          width: 15px;
+
+          .mat-checkbox-frame {
+            border: 2px solid;
+          }
+        }
+
+        .mat-checkbox-label {
+          line-height: 15px;
+        }
+      }
+    }
+  }
+
+  .ip-time {
+    font-size: 10px;
+    color: $text-dark-grey;
+    text-align: right;
+  }
+
+  .disclaimer {
+
+    .title {
+      font-size: 14px;
+      color: $text-dark-grey;
+      border-bottom: 1px solid $text-dark-grey;
+    }
+
+    .body-text {
+      font-size: 10px;
+      color: $text-medium-grey;
+      padding: 10px 20px;
+
+    }
+  }
+
+  .back-button {
+    color: $text-medium-grey;
+
+    &:hover {
+      color: $text-dark-grey;
+
+      .icon {
+        background-color: $light-grey;
+      }
+    }
+
+    .icon {
+      border-radius: 50%;
+      margin: auto;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+    }
+
+    .text {
+      font-size: 12px;
+      padding: auto;
+      margin: auto;
+    }
+
+  }
+
+}
+
+.order-ack {
+  color: $text-dark-grey;
+
+  .title {
+    font-size: 18px;
+    letter-spacing: 2px;
+    padding: 10px 0;
+    font-weight: 700;
+  }
+
+  .print {
+    font-size: 12px;
+    font-weight: 300;
+    text-align: right;
+    padding: 10px 0;
+  }
+
+  .head {
+    background-color: $light-grey;
+    font-size: 14px;
+    padding: 20px 10px;
+    color: $text-dark-grey;
+    font-weight: 700;
+  }
+
+  .body {
+    text-align: center;
+    color: $text-medium-grey;
+
+    .table-head {
+      padding: 10px 20px;
+      background-color: $dark-grey;
+      color: $white;
+      font-weight: 700;
+    }
+
+    .table-body {
+      padding: 30px 20px;
+      border-bottom: solid 1px $text-dark-grey;
+      text-align: left;
+      line-height: 18px;
+
+      .plan-option {
+        font-size: 12px;
+        color: $text-dark-grey;
+        span {
+          color: $text-medium-grey;
+          padding: 0 10px 0 0;
+        }
+      }
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+    }
+
+    .success-msg {
+      color: $success;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .failed-msg {
+      color: $error;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  }
+
+  .disclaimer {
+    font-size: 10px;
+    font-style: italic;
+    color: $text-medium-grey;
+    padding: 20px 0;
+  }
+
+}
+
+md-checkbox {
+
+  font-size: 12px;
+
+  /deep/ .mat-checkbox-layout {
+
+    .mat-checkbox-inner-container {
+      height: 15px;
+      width: 15px;
+
+    }
+
+    .mat-checkbox-label {
+      line-height: 12px;
+    }
+  }
+}
+
+md-button-toggle-group {
+  /deep/ .mat-button-toggle-label-content {
+    line-height: 18px;
+    padding: 0 12px;
+  }
+}
+
+/deep/ .mat-autocomplete-panel {
+  max-height: 80vh;
+  max-width: 1024px;
+
+  md-option {
+    &.mat-option {
+      padding: 0 10px;
+      line-height: 24px;
+      height: 24px;
+      font-size: 12px;
+    }
+  }
+}
+
+md-slide-toggle {
+  .medium-grey-text{
+    color: $text-medium-grey !important;
+  }
+}
+
+.res-table{
+  white-space: nowrap;
+  max-width: 100vw !important;
+  overflow-x: scroll;
+}
+.res-table > div{display: inline-block !important;text-align: left !important;}
+.bor-b-1-lgray {
+  border-bottom: 1px solid $light-grey;
+}

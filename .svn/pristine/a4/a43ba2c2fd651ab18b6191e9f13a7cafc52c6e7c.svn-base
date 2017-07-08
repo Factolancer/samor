@@ -1,0 +1,191 @@
+@import "../../styles/partials/web-partials";
+
+.cart-product-head {
+  background-color: $brand-secondary;
+  color: $white;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  border-radius: 0;
+  padding: 15px;
+}
+
+.cart-product {
+  margin-bottom: 25px;
+}
+
+.cart-product-divider {
+  border-color: $dark-grey;
+  padding: 5px 0;
+}
+
+.cart-product-item {
+  background-color: $white;
+  border-radius: 0;
+  color: $black;
+  .fund {
+    padding: 10px 0;
+  }
+  .fund-m{
+    padding: 10px;
+    background-color: $brand-secondary;
+    color: $white;
+  }
+
+  .product-tag {
+    color: #BFBFBF;
+    font-size: 10px;
+    border: solid 1px #BFBFBF;
+    border-radius: 5px;
+    padding: 1px 5px;
+  }
+}
+.ignore-button{
+    height: 50px;
+    font-size: 16px !important;
+}
+
+.remove-btn {
+  color: $black;
+  background-color: $white;
+  border: none;
+  font-size: 16px;
+  outline-style: none;
+
+  &:hover {
+    color: $brand-secondary;
+  }
+}
+.remove-btn-m{
+  @extend .remove-btn;
+  background-color: transparent;
+  color: $white;
+}
+
+.add-funds {
+  color: $brand-secondary;
+  font-size: 12px;
+  padding: 0;
+}
+.add-funds-m {
+  background-color: $light-grey;
+  font-size: 12px;
+  padding: 0;
+  color: $dark-grey;
+}
+
+.cart-nav {
+  position: relative;
+
+  .count {
+    position: absolute;
+    background-color: #60b3D4;
+    color: #FFFFFF;
+    height: 15px;
+    line-height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    right: 0;
+    top:-12px;
+    font-size: 10px;
+  }
+}
+
+/deep/ .mat-select {
+  width: 80%;
+
+  .mat-select-trigger {
+    font-size: 14px;
+  }
+}
+
+.no-funds {
+  img{max-width: 50vw;}
+  .text {
+    font-size: 42px;
+    color: $text-dark-grey;
+    letter-spacing: 2px;
+    text-align: center;
+    span {
+      color: $brand-secondary;
+    }
+  }
+}
+.box-shadow{
+  box-shadow: 2px 2px 9px 2px $medium-grey;
+  -moz-box-shadow: 2px 2px 9px 2px $medium-grey;
+  -webkit-box-shadow: 2px 2px 9px 2px $medium-grey;
+}
+
+.transaction-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: solid 1px #d6d6d6;
+.highlight {
+    background-color: $light-grey;
+    font-size: 19px;
+}
+.trans-heading{
+    margin: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+th, td {
+    text-align: center;
+    font-size: 12px;
+
+i {
+    font-size: 0.8em;
+}
+}
+th {
+    background-color: $medium-grey;
+    height: 50px;
+    vertical-align: middle
+}
+tbody {
+tr {
+    height: 50px;
+}
+.pay-now{
+    text-align: left;
+}
+.cancel{
+    text-align: right;
+}
+td{
+.oval{
+    border-radius: 10px;
+    line-height: 25px;
+    min-width: 0px;
+    width: 80px;
+    padding: 0px;
+}
+.cancel-txn{
+    padding: 5px 10px;
+    margin-left: 10px;
+    width: 70px;
+    background-color: $light-grey;color:$dark-grey;border:1px solid $brand-secondary;
+    font-size: 12px;
+    font-weight: 500;
+    outline: none;
+&:hover{
+     cursor: pointer;
+     background-color: $material-warn;color:$white;border:1px solid $material-warn;
+ }
+&:active{
+ @include ripple();
+ }
+}
+.cancel-mar{
+    margin-right: 36px;
+}
+}
+tr:nth-child(odd) {
+    background-color: $light-grey;
+}
+
+}
+}
+}

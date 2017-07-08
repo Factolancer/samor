@@ -1,0 +1,81 @@
+import { Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {DashboardDataService} from "./dashboard-data.service";
+import {ChartOptions} from "./chart/chart-options";
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  providers: [DashboardDataService, ChartOptions]
+})
+
+export class DashboardComponent implements OnInit {
+  public invested:Boolean;
+  public showDistribution:Boolean = false;
+  private pf:Object;
+  portfolioDataAvailable: boolean = false;
+  pendingDataAvailable: boolean = false;
+
+  serverError = {
+      pf:false,
+      assetAllocation: false
+  }
+
+  private pendings:Array<Object> = [];
+  constructor(public dataService: DashboardDataService) { };
+
+  ngOnInit() {
+    this.getPortfolio();
+    this.getPendingDetails();
+    this.ifInvested();
+  }
+  ifInvested(){
+      console.log('investment status');
+      this.dataService.hasInvested()
+          .subscribe(
+              res=>{
+                  this.invested  = res;
+              },
+              err=>{console.log('an error occured')}
+          )
+  }
+
+  getPortfolio(){
+    console.log('portfolio');
+    this.dataService.getPortfolio()
+        .subscribe(
+            res=>{
+                console.log("get portfolio part");
+                console.log(res);
+              this.pf = res;
+              for(var i in this.pf['assetClassDetails']){
+                  console.log("inside");
+                  console.log(this.pf['assetClassDetails'][i]['assetClass']);
+                  console.log(this.pf['assetClassDetails'][i]['investedAmt']);
+              }
+              this.portfolioDataAvailable = true;
+            },
+            err=>{
+                console.log('an error occured');
+                this.serverError['pf'] = true;
+            }
+        )
+  }
+  getPendingDetails(){
+    console.log('registration status called');
+    this.dataService.getPendingDetails()
+        .subscribe(
+            res=>{
+              console.log(res);
+              this.pendings = res;
+              this.pendingDataAvailable = true;
+            },
+            err=>{console.log('an error occured')}
+        )
+  }
+
+
+}
+
+

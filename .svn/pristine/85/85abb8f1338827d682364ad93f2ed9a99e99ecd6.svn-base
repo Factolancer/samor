@@ -1,0 +1,15 @@
+import {SummaryProduct} from "./summary-product";
+export interface Summary {
+    products: SummaryProduct[],
+    name: string,
+    nominee: string,
+    pan: string,
+    bank: string,
+    totalInvestment: number,
+    kyc: boolean,
+    risk: boolean,
+    agreement: boolean,
+    disclaimer: string,
+    ipAddress: string,
+    time: string,
+}

@@ -1,0 +1,54 @@
+<div *ngFor="let fundItem of _funds">
+    <md-card class="fund-card">
+        <md-card-content>
+            <table width="100%" class="no-border">
+                <tr>
+                    <!--<td>-->
+                        <!--<md-checkbox [(ngModel)]="fundItem.selected"-->
+                                     <!--(change)="changeFundComposition($event.checked, fundItem)">-->
+                        <!--</md-checkbox>-->
+                    <!--</td>-->
+                    <td>
+                        <div>
+                            <span (click)="viewFactSheet(fundItem)" class="cash-fund-name clickable">
+                                <md-icon class="md-14">&#xE873;</md-icon>&nbsp;&nbsp;{{fundItem.name}}
+                            </span>
+                        </div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span>Fincash's Fund Rating - </span>
+                            <span [outerHTML]="fundItem.rating | rating"></span>
+                        </div>
+                        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span>Riskometer - </span>
+                            <span>{{fundItem.risk}}</span>
+                        </div>
+                    </td>
+                    <td class="fund-card-item">
+                        <span>1 Month Return</span><br/>
+                        <span class="dark-grey">{{fundItem.return1mn}}%</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span>3 Month Return</span><br/>
+                        <span class="dark-grey mar-tb-5">{{fundItem.return3mn}}%</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span>1 Year Return</span><br/>
+                        <span class="dark-grey">{{fundItem.return1yr}}%</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span>Fund Age</span><br/>
+                        <span class="dark-grey">{{fundItem.age}} years</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span>AUM</span><br/>
+                        <span class="dark-grey">{{fundItem.aum | currency:'INR':true:'1.0-0' }} Cr.</span>
+                    </td>
+                    <td class="fund-card-item">
+                        <span>Min. Investment</span><br/>
+                        <span class="dark-grey">{{fundItem.minInvestment | currency:'INR':true:'1.0-0'}}</span>
+                    </td>
+                </tr>
+            </table>
+        </md-card-content>
+    </md-card>
+</div>

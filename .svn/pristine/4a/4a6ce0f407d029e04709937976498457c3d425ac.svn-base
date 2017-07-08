@@ -1,0 +1,45 @@
+<div class="col-sm-10 col-sm-offset-1">
+    <div class="row journey">
+        <div class="col-sm-2 col-sm-offset-2 no-padding">
+            <div class="journey-line">
+                <div class="blue-circle"></div>
+                <span class="text">Tax Saver</span>
+            </div>
+        </div>
+        <div class="col-sm-2 no-padding">
+            <div class="journey-line">
+                <div class="blue-circle"></div>
+                <span class="text">Fund Selection</span>
+            </div>
+        </div>
+        <div class="col-sm-2 no-padding">
+            <div class="journey-line">
+                <div class="grey-circle"></div>
+                <span class="text">Investment Portfolio</span>
+            </div>
+        </div>
+        <div class="col-sm-2 no-padding">
+            <div class="journey-line">
+                <div class="grey-circle"></div>
+                <span class="text">Summary &amp; Checkout</span>
+                <div class="grey-circle" style="left:95%;"></div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12 center-align heading-32 pad-tb-15">Invest in TaxSaver ELSS Schemes</div>
+        </div>
+        <div class="row grey-back pad-20">
+            <app-tax-saver-card #taxSaverFundsComp [funds]="taxSaverFunds"></app-tax-saver-card>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-sm-offset-5">
+                <div class="product-cta">
+                    <button color="primary" md-raised-button="" class="cta-50"
+                            (click)="proceed(taxSaverFundsComp.selectedFunds)">Proceed
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

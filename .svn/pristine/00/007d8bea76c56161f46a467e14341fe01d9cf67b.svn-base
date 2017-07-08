@@ -1,0 +1,23 @@
+@import "../../../styles/styles";
+.chart-container{position: relative}
+
+.clickable{
+  cursor: pointer;
+}
+.backButton{
+  @include slideElement(0.5s, ease-out, 0s, 1, -100%, 0);
+  cursor: pointer;
+  float:right;
+  opacity: 0.7;
+  position: absolute;
+  left: 90%;
+  z-index: 200;
+  &:hover{opacity: 1;}
+  margin: 5px;
+}
+chart{
+  float:left;
+}
+.loading {
+  img{height: 25px; width: 25px;}
+}
